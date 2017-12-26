@@ -2183,6 +2183,10 @@
 
 			#main > section.one {
 				background-color: #81918E;
+				background-attachment: fixed;
+				background-position: center;
+				background-repeat: no-repeat;
+				background-size: cover;
 				background-image: url("../../images/banner.jpg");
 			}
 
