@@ -6,7 +6,7 @@
 -->
 <html>
 <head>
-    <title>※ GISt</title>
+    <title>※ DigestQuest</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
@@ -55,27 +55,28 @@
                     <div class="8u 12u(mobile)" id="content">
                         <article id="main">
                             <header>
-                                <h2><a href="#">About <strong>GISt</strong></a></h2>
+                                <h2>About <strong>DigestQuest</strong></h2>
                                 <p>
                                      Getting the GISt of our food: using AR to fill in the missing link from farm to table
                                 </p>
                             </header>
-                            <a href="#" class="image featured"><img src="images/gist_team.jpg" alt="" /></a>
+                            <a href="#" class="image featured"><img src="images/digestquest_team.jpg" alt="" /></a>
                             <p>
-
+                                <blockquote>Won Best in Design at HackMerced 2018</blockquote>
+                                <br />
                                 Image processing is rapidly growing, allowing unprecedented amounts of data analysis in many fields. We, the Digest Quest team, appreciated the challenge of jumping into this new field and seeing what we could come out with.
                                 Of course, all of us carry around our own personal image processing machines, our smartphones. Why not design an app that can use this untapped processing potential to do something all of us try so far but fail to do: lose weight.
                                 <br /><br />
                                 Digest Quest allows users to seamlessly pull out their phone, snap a picture of their food's nutritional label, and immediately see the fruits of their labor: a breakdown calorie by calorie of their diet, letting them leverage the knowledge of what they've consumed to improve their dieting habits.
                             </p>
-                            <a href="#" class="image featured"><img src="images/gist_people.jpg" alt="" /></a>
+                            <a href="#" class="image featured"><img src="images/digestquest_people.jpg" alt="" /></a>
 
                             <section>
                                 <header>
                                     <h3>Code</h3>
                                 </header>
                                 <div class="content">
-                                    <p>Over 2000 handwritten lines of code run Iterate's inline editor, intepreter, and UI, with many more lines running backend processes such as bluetooth integration with Arduino. Here's a taste of the intepreter (named Compiler): </p>
+                                    <p>Digest Quest is a heuristic image processing (specifically, optical character recognition) web app. We utilize Tesseract's open-source JavaScript OCR API to turn a camera's picture into a smattering of characters vaguely related to what the nutritional label actually says. This is where our custom heuristic algorithm comes into play. Because OCR is not perfect, we apply representativeness heuristics to find the closest matches between the nutritional label's expected values and the values produced by Tesseract. Here's what the heuristics look like: </p>
                                     <pre><code>/* Heuristic interpretation of OCR output (Tesseract.js) */
 for(var i = 0; i&lt;wordsLength; i++)
 {
@@ -111,7 +112,7 @@ for(var i = 0; i&lt;wordsLength; i++)
           }
           ...
 </code></pre>
-                                    <p>Iterate was a great exercise in object-oriented programming, data structures (like stacks and lists seen above), proper coding conventions, and string parsing. For the complete code, see Iterate's GitHub repository!</p>
+                                    <p>DigestQuest leverages many exciting features. The first of these is our heuristic data parser, taking the garbled mess of an OCR API call and formatting it into a usable data base. We also proudly integrated many computer science concepts into one package, leading to some beautiful multi-language interoperability. Lastly, with our UX/UI emphasis and analysis, we were able to create a unique, one-of-a-kind approach to data visualization.</p>
 
                                 </div>
                             </section>
@@ -121,18 +122,17 @@ for(var i = 0; i&lt;wordsLength; i++)
                         <hr class="first" />
                         <section>
                             <header>
-                                <h3><a href="#">Iterate's Poster:</a></h3>
+                                <h3><a href="#">DigestQuest's Logo:</a></h3>
                             </header>
-                            <a href="#" style="border: 1px solid #CCCCCC; padding: 6px" class="image featured"><img src="images/iterate_poster.jpg" alt="" /></a>
+                            <a href="#" style="border: 1px solid #CCCCCC; padding: 6px" class="image featured"><img src="images/digest_logo.jpg" alt="" /></a>
                             <p>
-                                Iterate is ported to Android, IOS, WebGL, and Windows. Try the web version using the button below!
+                                We struggled with the DNS connecting to our host server provider, and spent much of the hackathon attempting to have JQuery and Node.js connect to our Tesseract API to allow for image processing. Due to these issues, there is no functional demo for this app.
                             </p>
                             <footer>
-                                <a href="iterate-webgl.html" class="button">Try Iterate</a>
                             </footer>
                         </section>
                         <hr />
-                        <iframe src="http://docs.google.com/gview?url=http://www.brianhungerman.com/Iterate.pptx&embedded=true" style="width:400px; height:400px;" frameborder="0"></iframe>
+                        <iframe src="http://docs.google.com/gview?url=http://www.brianhungerman.com/Digest.pptx&embedded=true" style="width:400px; height:400px;" frameborder="0"></iframe>
                         <hr />
                         <section>
                             <header>
@@ -143,23 +143,23 @@ for(var i = 0; i&lt;wordsLength; i++)
                             </p>
                             <div class="row 50%">
                                 <div class="4u">
+                                    <a href="iterate.html" class="image fit"><img src="images/iterate.jpg" alt="" /></a>
+                                </div>
+                                <div class="8u">
+                                    <h4>Iterate</h4>
+                                    <p>
+                                        A multilingual C# intepreter teaching aid visualized by Unity3D.
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row 50%">
+                                <div class="4u">
                                     <a href="#" class="image fit"><img src="images/gist.jpg" alt="" /></a>
                                 </div>
                                 <div class="8u">
                                     <h4>GISt</h4>
                                     <p>
                                         Getting the GISt of our food: using AR to fill the missing link from farm to table.
-                                    </p>
-                                </div>
-                            </div>
-                            <div class="row 50%">
-                                <div class="4u">
-                                    <a href="#" class="image fit"><img src="images/digestquest.jpg" alt="" /></a>
-                                </div>
-                                <div class="8u">
-                                    <h4>DigestQuest</h4>
-                                    <p>
-                                        FitBit for your stomach: a heuristic image processing web application.
                                     </p>
                                 </div>
                             </div>
