@@ -6,7 +6,7 @@
 -->
 <html>
 <head>
-    <title>※ Iterate</title>
+    <title>※ GISt</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
@@ -55,20 +55,20 @@
                     <div class="8u 12u(mobile)" id="content">
                         <article id="main">
                             <header>
-                                <h2><a href="#">About <strong>Iterate</strong></a></h2>
+                                <h2><a href="#">About <strong>GISt</strong></a></h2>
                                 <p>
-                                    A multilingual C# intepreter teaching aid visualized by Unity3D.
+                                     Getting the GISt of our food: using AR to fill in the missing link from farm to table
                                 </p>
                             </header>
-                            <a href="#" class="image featured"><img src="images/iterate_judge.jpg" alt="" /></a>
+                            <a href="#" class="image featured"><img src="images/gist_team.jpg" alt="" /></a>
                             <p>
 
-                                In the past fifty years, computers have gone from a state of nonexistence to the forefront of our modern economy. Despite this, programming still retains a sense of complexity and obscurity that precludes most people from even participating in this burgeoning industry.
-                                Looking forward, the ability to add to this sector will be essential to compete in the global economy. Despite this, the options available to learning the language of computers are slim.
-                                <br /><br />On one hand, there are learning tools like Scratch, which teach programming concepts, but neglect exposing would-be programmers to practical syntax. On the other hand, standard IDEs have steep learning curves and are often intimidating to newcomers.
-                                Iterate offers a middle path between these options, teaching the logic and syntax of code, but in a safe and simple environment.
+                                Image processing is rapidly growing, allowing unprecedented amounts of data analysis in many fields. We, the Digest Quest team, appreciated the challenge of jumping into this new field and seeing what we could come out with.
+                                Of course, all of us carry around our own personal image processing machines, our smartphones. Why not design an app that can use this untapped processing potential to do something all of us try so far but fail to do: lose weight.
+                                <br /><br />
+                                Digest Quest allows users to seamlessly pull out their phone, snap a picture of their food's nutritional label, and immediately see the fruits of their labor: a breakdown calorie by calorie of their diet, letting them leverage the knowledge of what they've consumed to improve their dieting habits.
                             </p>
-                            <a href="#" class="image featured"><img src="images/iterate_people.jpg" alt="" /></a>
+                            <a href="#" class="image featured"><img src="images/gist_people.jpg" alt="" /></a>
 
                             <section>
                                 <header>
@@ -76,44 +76,40 @@
                                 </header>
                                 <div class="content">
                                     <p>Over 2000 handwritten lines of code run Iterate's inline editor, intepreter, and UI, with many more lines running backend processes such as bluetooth integration with Arduino. Here's a taste of the intepreter (named Compiler): </p>
-                                    <pre><code>/* Parsing all the lines of text*/
-public void Compiler_compile(List&lt;string&gt;lines_in)
+                                    <pre><code>/* Heuristic interpretation of OCR output (Tesseract.js) */
+for(var i = 0; i&lt;wordsLength; i++)
 {
-        for (current_line = 0; current_line < lines_in.Count; current_line++)
-        {
-                Compiler_compile(lines_in[current_line]);
-        }
-}
-/* Parsing each line of text into code (a.k.a. where the magic happens) */
-public void Compiler_compile(string line)
-{
-        if (line.IndexOf("while (") == 0)
-        {
-            string condition = ("(" + Parser_splitStringBetween(line, "(", ")") + ")");
-            if (Compiler_booleanEvaluation(condition))
-                 tasks.Push(new TaskObject(current_line, Compiler_findMatchingBracket(current_line), condition, 
-            else
-                 current_line = Compiler_findNextInstanceOf(current_line, "}");
-        }
-        if (line.IndexOf("for (") == 0)
-        {
-            Compiler_addVariable(Parser_splitStringBetween(line, "(", ";") + ";");
-            string condition = ("(" + Parser_splitStringBetween(line, "; ", ";") + ")");
-            if (Compiler_booleanEvaluation(condition))
-                  tasks.Push(new TaskObject(current_line, Compiler_findMatchingBracket(current_line), condition, 
-                  (Parser_splitStringBetween(line, Parser_splitStringBetween(line, "; ", ";"), ")") + ";").Substring(2)));
-            else
-                  current_line = Compiler_findNextInstanceOf(current_line, 
-        }
-        if (tasks.Count != 0)
-        {
-            if (current_line == tasks.Peek().ending_line)
-            {
-                current_line = Compiler_doEndOfTask(tasks.Peek());
-                if (current_line == tasks.Peek().ending_line) tasks.Pop();
-            }
-        }
-        ...
+     console.log(words[i])
+     for(var j =0;j!=words[i].length;j++)
+     {    //CALORIE CASE
+          if((words[i].charAt(0)=="c"||words[i].charAt(0)=="C")&&(words[i].length==7||words[i].length==8))//calories
+          {
+                var threshhold=5,similarity=0;
+                var chars=["a","l","o","r","i","e","s"];
+                for(var n=0; n!=String(words[i]).length;n++)//cycle through word characters
+                {
+                    for(var k = 0;k!=chars.length;k++)//compare against chars
+                         if(String(words[i])[n]==chars[k])
+                              similarity++;
+                }
+                if(similarity>=threshhold)
+                {
+                     for(var index=0;index&lt;String(words[i+1]).length;index++)
+                     if(String(String(words[i+1])[index])=="O")
+                          words[i+1][index]=0;
+                     else if(String(String(words[i+1])[index])<"0"||String(String(words[i+1])[index])>"9")//if is not #
+                     {
+                          words[i+1]=words[i+1].substr(0,index);//extracts non#
+                          index--;
+                     }
+                     calorie=words[i+1];
+                     i++;
+                }
+                else
+                     continue;
+                console.log(calorie +" calories")
+          }
+          ...
 </code></pre>
                                     <p>Iterate was a great exercise in object-oriented programming, data structures (like stacks and lists seen above), proper coding conventions, and string parsing. For the complete code, see Iterate's GitHub repository!</p>
 

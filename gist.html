@@ -6,7 +6,7 @@
 -->
 <html>
 <head>
-    <title>※ Iterate</title>
+    <title>※ GISt</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
@@ -55,67 +55,65 @@
                     <div class="8u 12u(mobile)" id="content">
                         <article id="main">
                             <header>
-                                <h2><a href="#">About <strong>Iterate</strong></a></h2>
+                                <h2><a href="#">About <strong>GISt</strong></a></h2>
                                 <p>
-                                    A multilingual C# intepreter teaching aid visualized by Unity3D.
+                                     Getting the GISt of our food: using AR to fill in the missing link from farm to table
                                 </p>
                             </header>
-                            <a href="#" class="image featured"><img src="images/iterate_judge.jpg" alt="" /></a>
+                            <a href="#" class="image featured"><img src="images/gist_team.jpg" alt="" /></a>
                             <p>
 
-                                In the past fifty years, computers have gone from a state of nonexistence to the forefront of our modern economy. Despite this, programming still retains a sense of complexity and obscurity that precludes most people from even participating in this burgeoning industry.
-                                Looking forward, the ability to add to this sector will be essential to compete in the global economy. Despite this, the options available to learning the language of computers are slim.
-                                <br /><br />On one hand, there are learning tools like Scratch, which teach programming concepts, but neglect exposing would-be programmers to practical syntax. On the other hand, standard IDEs have steep learning curves and are often intimidating to newcomers.
-                                Iterate offers a middle path between these options, teaching the logic and syntax of code, but in a safe and simple environment.
+                                In today's global economy it's easier than ever to have the food we want, whenever we want it. Take some berries for example, they taste great... but do we know where they're from? I don't. And that's an issue, we don't know the environmental impact of these berries, nor if they're a local product or not. That's where GISt comes in, to let us get the GISt of where our food comes from.
+                                <br /><br />
+                                GISt allows you to gather more information about your preferred produce through a fun, colorful, and interactive AR experience. This allows consumers to better understand the health and environmental impact of their purchases.
                             </p>
-                            <a href="#" class="image featured"><img src="images/iterate_people.jpg" alt="" /></a>
+                            <a href="#" class="image featured"><img src="images/gist_app.jpg" alt="" /></a>
 
                             <section>
                                 <header>
                                     <h3>Code</h3>
                                 </header>
                                 <div class="content">
-                                    <p>Over 2000 handwritten lines of code run Iterate's inline editor, intepreter, and UI, with many more lines running backend processes such as bluetooth integration with Arduino. Here's a taste of the intepreter (named Compiler): </p>
-                                    <pre><code>/* Parsing all the lines of text*/
-public void Compiler_compile(List&lt;string&gt;lines_in)
+                                    <p>GISt is powered by the Vuforia API via Unity3D. To design the program, our UX/UI researcher drafted multiple prototypes and created user stories in Axure RP 8. These were built in Unity3D with C#. Maps, GIS data, and farm data is pulled via the OSIsoft API, JavaScript, JSON, and MapBox. The snippet below shows our integration with OSIsoft to know efficiencies of UC Davis buildings:</p>
+                                    <pre><code>/*Pulling data from UC Davis building efficiencies*/
+public void OSIsoft_Call()
 {
-        for (current_line = 0; current_line < lines_in.Count; current_line++)
-        {
-                Compiler_compile(lines_in[current_line]);
-        }
+      ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
+      var client = new WebClient { Credentials = new NetworkCredential("------", "------") };
+      var response = client.DownloadString("https://ucd-piwebapi.ou.ad3.ucdavis.edu/piwebapi/streams/-----");
+      response = response.Substring(response.IndexOf("Value") + 7);
+      response = response.Substring(0, 5);
+      GameObject.Find("efficencyTxt").GetComponent<Text>().text = "Efficiency: " + response + "%";
+      GameObject.Find("efficencyTxt").transform.parent.gameObject.GetComponent<Image>().color = new Color(1 - float.Parse(response) / 100f, float.Parse(response) / 100f, 0);
 }
-/* Parsing each line of text into code (a.k.a. where the magic happens) */
-public void Compiler_compile(string line)
+
+public bool MyRemoteCertificateValidationCallback(System.Object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
 {
-        if (line.IndexOf("while (") == 0)
-        {
-            string condition = ("(" + Parser_splitStringBetween(line, "(", ")") + ")");
-            if (Compiler_booleanEvaluation(condition))
-                 tasks.Push(new TaskObject(current_line, Compiler_findMatchingBracket(current_line), condition, 
-            else
-                 current_line = Compiler_findNextInstanceOf(current_line, "}");
-        }
-        if (line.IndexOf("for (") == 0)
-        {
-            Compiler_addVariable(Parser_splitStringBetween(line, "(", ";") + ";");
-            string condition = ("(" + Parser_splitStringBetween(line, "; ", ";") + ")");
-            if (Compiler_booleanEvaluation(condition))
-                  tasks.Push(new TaskObject(current_line, Compiler_findMatchingBracket(current_line), condition, 
-                  (Parser_splitStringBetween(line, Parser_splitStringBetween(line, "; ", ";"), ")") + ";").Substring(2)));
-            else
-                  current_line = Compiler_findNextInstanceOf(current_line, 
-        }
-        if (tasks.Count != 0)
-        {
-            if (current_line == tasks.Peek().ending_line)
-            {
-                current_line = Compiler_doEndOfTask(tasks.Peek());
-                if (current_line == tasks.Peek().ending_line) tasks.Pop();
-            }
-        }
-        ...
+      bool isOk = true;
+      // If there are errors in the certificate chain, look at each error to determine the cause.
+      if (sslPolicyErrors != SslPolicyErrors.None)
+      {
+          for (int i = 0; i < chain.ChainStatus.Length; i++)
+          {
+                if (chain.ChainStatus[i].Status != X509ChainStatusFlags.RevocationStatusUnknown)
+                {
+                    chain.ChainPolicy.RevocationFlag = X509RevocationFlag.EntireChain;
+                    chain.ChainPolicy.RevocationMode = X509RevocationMode.Online;
+                    chain.ChainPolicy.UrlRetrievalTimeout = new System.TimeSpan(0, 1, 0);
+                    chain.ChainPolicy.VerificationFlags = X509VerificationFlags.AllFlags;
+                    bool chainIsValid = chain.Build((X509Certificate2)certificate);
+                    if (!chainIsValid)
+                    {
+                        isOk = false;
+                    }
+                }
+           }
+      }
+      return isOk;
+}
+...
 </code></pre>
-                                    <p>Iterate was a great exercise in object-oriented programming, data structures (like stacks and lists seen above), proper coding conventions, and string parsing. For the complete code, see Iterate's GitHub repository!</p>
+                                    <p>There were multiple complications with Android SDK integration and Java JDK errors that prevented an Android build from functioning. However, the team was still able to push through and get a working, better-than-minimum-viable-product prototype to demonstrate the key mechanics and functions GISt has to offer. Interacting with the OSIsoft, MapBox, and Vuforia APIs helped us expand ourselves on very diversified aspects of computer science and cognitive science.</p>
 
                                 </div>
                             </section>
@@ -125,34 +123,32 @@ public void Compiler_compile(string line)
                         <hr class="first" />
                         <section>
                             <header>
-                                <h3><a href="#">Iterate's Poster:</a></h3>
+                                <h3><a href="#">GISt's Scannable Apples:</a></h3>
                             </header>
-                            <a href="#" style="border: 1px solid #CCCCCC; padding: 6px" class="image featured"><img src="images/iterate_poster.jpg" alt="" /></a>
+                            <a href="#" style="border: 1px solid #CCCCCC; padding: 6px" class="image featured"><img src="images/gist_apple.jpg" alt="" /></a>
                             <p>
-                                Iterate is ported to Android, IOS, WebGL, and Windows. Try the web version using the button below!
+                                GISt generates unique, scannable apples based on the latitude and longitude of the farm that the produce is from. Try out this random apple generation using the button below!
                             </p>
                             <footer>
-                                <a href="iterate-webgl.html" class="button">Try Iterate</a>
+                                <a href="#" class="button">NOT SYNCED</a>
                             </footer>
                         </section>
-                        <hr />
-                        <iframe src="http://docs.google.com/gview?url=http://www.brianhungerman.com/Iterate.pptx&embedded=true" style="width:400px; height:400px;" frameborder="0"></iframe>
                         <hr />
                         <section>
                             <header>
                                 <h3><a href="#">More Projects</a></h3>
                             </header>
                             <p>
-                                In addition to Iterate, I have many more exciting projects to share! Here are some of my favorites:
+                                In addition to GISt, I have many more exciting projects to share! Here are some of my favorites:
                             </p>
                             <div class="row 50%">
                                 <div class="4u">
-                                    <a href="#" class="image fit"><img src="images/gist.jpg" alt="" /></a>
+                                    <a href="#" class="image fit"><img src="images/iterate.jpg" alt="" /></a>
                                 </div>
                                 <div class="8u">
-                                    <h4>GISt</h4>
+                                    <h4>Iterate</h4>
                                     <p>
-                                        Getting the GISt of our food: using AR to fill the missing link from farm to table.
+                                        A multilingual C# intepreter teaching aid visualized by Unity3D.
                                     </p>
                                 </div>
                             </div>
