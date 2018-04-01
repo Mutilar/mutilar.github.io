@@ -1,0 +1,10 @@
+{
+"TOTAL_MEMORY": 268435456,
+"dataUrl": "SpaceNinjas.data.unityweb",
+"asmCodeUrl": "SpaceNinjas.asm.code.unityweb",
+"asmMemoryUrl": "SpaceNinjas.asm.memory.unityweb",
+"asmFrameworkUrl": "SpaceNinjas.asm.framework.unityweb",
+"backgroundUrl": "SpaceNinjas.jpg",
+"splashScreenStyle": "Dark",
+"backgroundColor": "#FFFFFF"
+}
