@@ -1,0 +1,10 @@
+{
+"TOTAL_MEMORY": 268435456,
+"dataUrl": "Voodoo.data.unityweb",
+"asmCodeUrl": "Voodoo.asm.code.unityweb",
+"asmMemoryUrl": "Voodoo.asm.memory.unityweb",
+"asmFrameworkUrl": "Voodoo.asm.framework.unityweb",
+"backgroundUrl": "Voodoo.jpg",
+"splashScreenStyle": "Light",
+"backgroundColor": "#FFFFFF"
+}
