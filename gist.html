@@ -76,44 +76,7 @@
                                 </header>
                                 <div class="content">
                                     <p>GISt is powered by the Vuforia API via Unity3D. To design the program, our UX/UI researcher drafted multiple prototypes and created user stories in Axure RP 8. These were built in Unity3D with C#. Maps, GIS data, and farm data is pulled via the OSIsoft API, JavaScript, JSON, and MapBox. The snippet below shows our integration with OSIsoft to know efficiencies of UC Davis buildings:</p>
-                                    <pre><code>/*Pulling data from UC Davis building efficiencies*/
-public void OSIsoft_Call()
-{
-      ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
-      var client = new WebClient { Credentials = new NetworkCredential("------", "------") };
-      var response = client.DownloadString("https://ucd-piwebapi.ou.ad3.ucdavis.edu/piwebapi/streams/-----");
-      response = response.Substring(response.IndexOf("Value") + 7);
-      response = response.Substring(0, 5);
-      GameObject.Find("efficencyTxt").GetComponent<Text>().text = "Efficiency: " + response + "%";
-      GameObject.Find("efficencyTxt").transform.parent.gameObject.GetComponent<Image>().color = new Color(1 - float.Parse(response) / 100f, float.Parse(response) / 100f, 0);
-}
-
-public bool MyRemoteCertificateValidationCallback(System.Object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
-{
-      bool isOk = true;
-      // If there are errors in the certificate chain, look at each error to determine the cause.
-      if (sslPolicyErrors != SslPolicyErrors.None)
-      {
-          for (int i = 0; i < chain.ChainStatus.Length; i++)
-          {
-                if (chain.ChainStatus[i].Status != X509ChainStatusFlags.RevocationStatusUnknown)
-                {
-                    chain.ChainPolicy.RevocationFlag = X509RevocationFlag.EntireChain;
-                    chain.ChainPolicy.RevocationMode = X509RevocationMode.Online;
-                    chain.ChainPolicy.UrlRetrievalTimeout = new System.TimeSpan(0, 1, 0);
-                    chain.ChainPolicy.VerificationFlags = X509VerificationFlags.AllFlags;
-                    bool chainIsValid = chain.Build((X509Certificate2)certificate);
-                    if (!chainIsValid)
-                    {
-                        isOk = false;
-                    }
-                }
-           }
-      }
-      return isOk;
-}
-...
-</code></pre>
+                                    <script src="https://gist.github.com/Mutilar/f453ef26f38137b6b4293618b94ddf6d.js"></script>
                                     <p>There were multiple complications with Android SDK integration and Java JDK errors that prevented an Android build from functioning. However, the team was still able to push through and get a working, better-than-minimum-viable-product prototype to demonstrate the key mechanics and functions GISt has to offer. Interacting with the OSIsoft, MapBox, and Vuforia APIs helped us expand ourselves on very diversified aspects of computer science and cognitive science.</p>
 
                                 </div>

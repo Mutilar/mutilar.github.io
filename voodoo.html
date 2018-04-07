@@ -73,38 +73,7 @@
                                 </header>
                                 <div class="content">
                                     <p>As one of my first projects, there are many coding practices employed here that stand out as interesting artifacts of my less enlightened past. Here's the code powering the random, continuous terrain generation: </p>
-                                    <pre><code>/* Generation starts here */
-Vector3 renderPosition = new Vector3 (xDistance, yLocation, 0);
-for (int pos=0; pos!=chunksToGenerate; pos++) {
-    xDistance += terrains [lastIndex].getL ();
-    if (flatFor > 0) {
-        Instantiate (getTerrain ("flat", currentVegetation), getRenderPosition (), renderRotation);
-            if (transitioning) {
-                transitioning = false
-                //takes off the "to" part of the string to convert it to a nontransition state
-                currentVegetation = currentVegetation.Substring (2);
-        } else
-            switchVeg ();
-        flatFor--;
-    } else {
-        int dir = newDirection ();
-        yLocation += terrains [lastIndex].getH () / 2;
-        if (dir == 1)
-            Instantiate (getTerrain ("up", currentVegetation), getRenderPosition (), renderRotation);
-        else if (dir == -1)
-            Instantiate (getTerrain ("down", currentVegetation), getRenderPosition (), renderRotation);
-        else if (dir >=0)
-            Instantiate (getTerrain ("flat", currentVegetation), getRenderPosition (), renderRotation);
-    }
-    addUnderground (getRenderPosition ());
-    if (pos == chunksToGenerate - 1 && !endingGeneration) {
-        endingGeneration = true;
-        flatFor = 6;
-        pos -= 6;
-        addEndColliders ();
-    }
-}
-</code></pre>
+                                    <script src="https://gist.github.com/Mutilar/388303c106b592479c630d6f288c0776.js"></script>
                                     <p> The code of this project does serve as a good reminder for the amout of growth I've had in game programming. While many aspects of the game were rushed, I am proud to say it is my first playable, decently-long game, and the project served as motivation to pick up the hobby of game design.</p>
                                 </div>
                             </section>

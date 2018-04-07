@@ -76,50 +76,7 @@
                                 </header>
                                 <div class="content">
                                     <p>The entire game runs on less than 200 lines of code (excluding the 100+ comments). Here's the entire script controlling how the player swings her sword: </p>
-                                    <pre><code>/* When Player Clicks, Swing Sword */
-private void Attack()
-{
-    //If the cooldown for attacking is done
-    if (attack_counter == 0)
-    {
-        //Plays animation (overrides other animations)
-        this.GetComponent<Animator>().Play("swing");
-
-        //Reset delay on attacking so you can't spam attacks
-        attack_counter = attack_cooldown;
-
-        //Plays a soundfile at the player's position
-        if (SFX_enabled) AudioSource.PlayClipAtPoint(SFX_sword, this.transform.position);
-
-        //How far the raycast goes out (how far the sword reaches)
-        float swingRange = .25f;
-
-        //Variable that holds information on the Raycasts that will be performed
-        RaycastHit2D swingInfo;
-
-        if (this.transform.localScale.x == 1)
-        {
-            //Raycasts out from the left side of the player going left
-            swingInfo = Physics2D.Raycast(new Vector2(this.transform.position.x - .1f, this.transform.position.y),new Vector2(-1f,0f),swingRange);
-        }
-        else
-        {
-            //Raycasts out from the right side of the player going right
-            swingInfo = Physics2D.Raycast(new Vector2(this.transform.position.x + .1f, this.transform.position.y),new Vector2(1f,0f),swingRange);
-        }
-        //If the collider found something
-        if (swingInfo.collider != null)
-        {
-            //If the swinging hit an enemy
-            if (swingInfo.collider.gameObject.GetComponent<Person_Health>() != null)
-            {
-                //Do damage to the enemy and run its animations
-                swingInfo.collider.gameObject.GetComponent<Person_Health>().takeDamage();	
-            }
-        }				
-    }
-}
-</code></pre>
+                                    <script src="https://gist.github.com/Mutilar/e8b5ff7cb24fd8749713e1a31f7c752d.js"></script>
                                     <p>As you can see, all of Space Ninjas' code is overly commented. This was important, as we were teaching a middle school audience who had no previous exposure to programming. It also helped in cases where other assistants needed to teach using my code.</p>
                                 </div>
                             </section>

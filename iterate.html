@@ -77,45 +77,7 @@
                                 </header>
                                 <div class="content">
                                     <p>Over 2000 handwritten lines of code run Iterate's inline editor, intepreter, and UI, with many more lines running backend processes such as bluetooth integration with Arduino. Here's a taste of the intepreter (named Compiler): </p>
-                                    <pre><code>/* Parsing all the lines of text*/
-public void Compiler_compile(List&lt;string&gt;lines_in)
-{
-        for (current_line = 0; current_line < lines_in.Count; current_line++)
-        {
-                Compiler_compile(lines_in[current_line]);
-        }
-}
-/* Parsing each line of text into code (a.k.a. where the magic happens) */
-public void Compiler_compile(string line)
-{
-        if (line.IndexOf("while (") == 0)
-        {
-            string condition = ("(" + Parser_splitStringBetween(line, "(", ")") + ")");
-            if (Compiler_booleanEvaluation(condition))
-                 tasks.Push(new TaskObject(current_line, Compiler_findMatchingBracket(current_line), condition, 
-            else
-                 current_line = Compiler_findNextInstanceOf(current_line, "}");
-        }
-        if (line.IndexOf("for (") == 0)
-        {
-            Compiler_addVariable(Parser_splitStringBetween(line, "(", ";") + ";");
-            string condition = ("(" + Parser_splitStringBetween(line, "; ", ";") + ")");
-            if (Compiler_booleanEvaluation(condition))
-                  tasks.Push(new TaskObject(current_line, Compiler_findMatchingBracket(current_line), condition, 
-                  (Parser_splitStringBetween(line, Parser_splitStringBetween(line, "; ", ";"), ")") + ";").Substring(2)));
-            else
-                  current_line = Compiler_findNextInstanceOf(current_line, 
-        }
-        if (tasks.Count != 0)
-        {
-            if (current_line == tasks.Peek().ending_line)
-            {
-                current_line = Compiler_doEndOfTask(tasks.Peek());
-                if (current_line == tasks.Peek().ending_line) tasks.Pop();
-            }
-        }
-        ...
-</code></pre>
+                                    <script src="https://gist.github.com/Mutilar/c0b074c175fa8a4605587d46096e2c67.js"></script>
                                     <p>Iterate was a great exercise in object-oriented programming, data structures (like stacks and lists seen above), proper coding conventions, and string parsing. For the complete code, see Iterate's GitHub repository!</p>
 
                                 </div>
