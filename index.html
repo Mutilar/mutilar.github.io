@@ -6,6 +6,10 @@
 -->
 <html>
 <head>
+
+    <script src='https://api.mapbox.com/mapbox-gl-js/v0.44.2/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v0.44.2/mapbox-gl.css' rel='stylesheet' />
+
     <title>※ Brian Hungerman</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -277,7 +281,7 @@
                     largest computer science club on campus.
                     <br /><br />
 
-                    <table>
+                   <!-- <table>
                         <tr>
                             <td style="float:left;width: 40%">
                                 <table>
@@ -386,7 +390,7 @@
                             </td>
                         </tr>
 
-                    </table>
+                    </table>-->
 
                     &nbsp;<br />
                     Official transcript available upon request.
@@ -400,27 +404,36 @@
 
         <div class="wrapper style2">
             <article id="awards" class="container special">
-                <img style="width:100%" src="images/merced.jpg" alt="" />
+                <div id='map' style='width: 100%; height: 476px;'></div>
+                <script>
+                    mapboxgl.accessToken = 'pk.eyJ1IjoibXV0aWxhciIsImEiOiJjamZ1bnJ3bXQzbjRqMnFzMmdzOGY1b2ZxIn0.h86IZyxf0QV4Ay3FTAaaCg';
+                    var map = new mapboxgl.Map({
+                        container: 'map',
+                        style: 'mapbox://styles/mapbox/light-v9'
+                    });
+                </script>
                 <header>
-                    <h2>I've won a few Awards</h2>
+                    <h2>I've been around the block</h2>
                     <p>
-                        Broad recognition of my acheivements is evident.
+                        Check out where I've won awards, competed, and made myself known.
                     </p>
                 </header>
-                <p>
-                    Academically and professionally, I have been bestowed great honors for my hard work and perseverance.
-                    My competitive nature and compulsive personality result in me pushing myself to achieve things I at one time never thought possible.
-                    Here's a (mostly) complete list of the awards I've racked up over the years:
-                    <br /><br />
-                    <a href="http://engineeringservicelearning.ucmerced.edu/team-sustainablesites"><img src="images/hackmerced.png" alt="" /></a>
-                    <a href="http://engineeringservicelearning.ucmerced.edu/team-sustainablesites"><img src="images/hackdavis.png" alt="" /></a>
-                    <a href="http://engineeringservicelearning.ucmerced.edu/team-sustainablesites"><img src="images/citrushack.png" alt="" /></a>
-                    <a href="http://engineeringservicelearning.ucmerced.edu/team-sustainablesites"><img src="images/pitchfest.jpg" alt="" /></a>
-                    <a href="http://engineeringservicelearning.ucmerced.edu/team-sustainablesites"><img src="images/ucmerced_seal.png" alt="" /></a>
 
+                <p>
+
+                    <!--      Academically and professionally, I have been bestowed great honors for my hard work and perseverance.
+          My competitive nature and compulsive personality result in me pushing myself to achieve things I at one time never thought possible.
+          Here's a (mostly) complete list of the awards I've racked up over the years:
+          <br /><br />
+          <a href="http://engineeringservicelearning.ucmerced.edu/team-sustainablesites"><img src="images/hackmerced.png" alt="" /></a>
+          <a href="http://engineeringservicelearning.ucmerced.edu/team-sustainablesites"><img src="images/hackdavis.png" alt="" /></a>
+          <a href="http://engineeringservicelearning.ucmerced.edu/team-sustainablesites"><img src="images/citrushack.png" alt="" /></a>
+          <a href="http://engineeringservicelearning.ucmerced.edu/team-sustainablesites"><img src="images/pitchfest.jpg" alt="" /></a>
+          <a href="http://engineeringservicelearning.ucmerced.edu/team-sustainablesites"><img src="images/ucmerced_seal.png" alt="" /></a>
+        -->
                 </p>
                 <footer>
-                    <a href="right-sidebar.html" class="button">More Projects</a>
+                    <a href="right-sidebar.html" class="button">Full map</a>
                 </footer>
 
             </article>
