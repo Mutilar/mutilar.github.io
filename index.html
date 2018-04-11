@@ -206,6 +206,160 @@
 
         <!-- Main -->
         <div class="wrapper style2">
+            <article id="awards" class="container special">
+                <!--<div id='map' style='width: 100%; height: 476px;'></div>-->
+                <div id='map' style='width: 100%; height: 476px;'></div>
+
+                <div class='map-overlay-container'>
+                    <div class='map-overlay'>
+                        <h2 style="text-align:center;" id='location-title'></h2>
+                        <p style="text-align:center; font-size:1.5em; line-height:1.5em" id='location-description'></p>
+
+                    </div>
+                </div>
+                <script>
+                    mapboxgl.accessToken = 'pk.eyJ1IjoibXV0aWxhciIsImEiOiJjamZ1bnJ3bXQzbjRqMnFzMmdzOGY1b2ZxIn0.h86IZyxf0QV4Ay3FTAaaCg';
+                    var map = new mapboxgl.Map({
+                        container: 'map',
+                        style: 'mapbox://styles/mapbox/light-v9',
+                        center: [-119.66, 37],
+                        pitch: 30,
+                        bearing: 50,
+                        zoom: 5.95
+
+                    });
+                    var title = document.getElementById('location-title');
+                    var description = document.getElementById('location-description');
+
+                    var locations = [{
+                        "id": "2",
+                        "title": "HackMerced",
+                        "description": "DigestQuest",
+                        "camera": {
+                            center: [-120.4235, 37.3665],
+                            zoom: 12.21,
+                            pitch: 50
+                        }
+                    }, {
+                        "id": "3",
+                        "title": "HackDavis",
+                        "description": "GISt",
+                        "camera": {
+                            center: [-121.7582, 38.5429],
+                            bearing: -8.9,
+                            zoom: 11.68
+                        }
+                    }, {
+                        "id": "1",
+                        "title": "Citrus Hack",
+                        "description": "Coming soon.",
+                        "camera": {
+                            center: [-117.3278, 33.9729],
+                            bearing: 25.3,
+                            zoom: 11.5
+                        }
+                    }, {
+                        "id": "4",
+                        "title": "SD Hacks",
+                        "description": "Coming soon.",
+                        "camera": {
+                            center: [-117.2347, 32.8793],
+                            bearing: 36,
+                            zoom: 11.37
+                        }
+                    }, {
+                        "id": "5",
+                        "title": "HackFresno",
+                        "description": "Coming soon.",
+                        "camera": {
+                            center: [-119.7458, 36.8147],
+                            bearing: 28.4,
+                            zoom: 11.64
+                        }
+                    }, {
+                        "title": "I've been around the block",
+                        "description": "Check out where I've competed, won awards, and made myself known.",
+                        "camera": {
+                            center: [-119.66, 37],
+                            pitch: 30,
+                            bearing: 50,
+                            zoom: 5.95
+                        }
+                    }];
+
+                    function highlightBorough(code) {
+                        // Only show the polygon feature that cooresponds to `borocode` in the data
+                        map.setFilter('highlight', ["==", "borocode", code]);
+                    }
+
+                    function playback(index) {
+                        title.textContent = locations[index].title;
+                        description.textContent = locations[index].description;
+
+                        highlightBorough(locations[index].id ? locations[index].id : '');
+
+                        // Animate the map position based on camera properties
+                        map.flyTo(locations[index].camera);
+
+                        map.once('moveend', function () {
+                            // Duration the slide is on screen after interaction
+                            window.setTimeout(function () {
+                                // Increment index
+                                index = (index + 1 === locations.length) ? 0 : index + 1;
+                                playback(index);
+                            }, 6000); // After callback, show the location for 3 seconds.
+                        });
+                    }
+
+                    // Display the last title/description first
+                    title.textContent = locations[locations.length - 1].title;
+                    description.textContent = locations[locations.length - 1].description;
+
+                    map.on('load', function () {
+
+                        map.addLayer({
+                            "id": "highlight",
+                            "type": "fill",
+                            "source": {
+                                "type": "vector",
+                                "url": "mapbox://mapbox.8ibmsn6u"
+                            },
+                            "source-layer": "original",
+                            "paint": {
+                                "fill-color": "#fd6b50",
+                                "fill-opacity": 0.25
+                            },
+                            "filter": ["==", "borocode", ""]
+                        }, 'neighborhood_small_label'); // Place polygon under the neighborhood labels.
+
+                        // Start the playback animation for each borough
+                        playback(0);
+                    });
+
+                </script>
+                <header></header>
+
+                <p>
+
+                    <!--      Academically and professionally, I have been bestowed great honors for my hard work and perseverance.
+                  My competitive nature and compulsive personality result in me pushing myself to achieve things I at one time never thought possible.
+                  Here's a (mostly) complete list of the awards I've racked up over the years:
+                  <br /><br />
+                  <a href="http://engineeringservicelearning.ucmerced.edu/team-sustainablesites"><img src="images/hackmerced.png" alt="" /></a>
+                  <a href="http://engineeringservicelearning.ucmerced.edu/team-sustainablesites"><img src="images/hackdavis.png" alt="" /></a>
+                  <a href="http://engineeringservicelearning.ucmerced.edu/team-sustainablesites"><img src="images/citrushack.png" alt="" /></a>
+                  <a href="http://engineeringservicelearning.ucmerced.edu/team-sustainablesites"><img src="images/pitchfest.jpg" alt="" /></a>
+                  <a href="http://engineeringservicelearning.ucmerced.edu/team-sustainablesites"><img src="images/ucmerced_seal.png" alt="" /></a>
+                -->
+                </p>
+                <footer>
+                    <a href="right-sidebar.html" class="button">Full map</a>
+                </footer>
+
+            </article>
+        </div>
+
+        <div class="wrapper style2">
 
             <article id="main" class="container special">
                 <img style="width:100%" src="images/work.jpg" alt="" />
@@ -281,163 +435,127 @@
                     largest computer science club on campus.
                     <br /><br />
 
-                   <!-- <table>
-                        <tr>
-                            <td style="float:left;width: 40%">
-                                <table>
-                                    <caption>Classes:</caption>
+                    <!-- <table>
+                     <tr>
+                         <td style="float:left;width: 40%">
+                             <table>
+                                 <caption>Classes:</caption>
 
-                                    <tr>
-                                        <td><strong>Computer Science & Engineering</strong></td>
-                                    </tr>
-                                    <tr>
-                                        <td>AP Computer Science A</td>
-                                        <td>5</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Data Structures</td>
-                                        <td>A</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Computer Organization</td>
-                                        <td>A</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Discrete Mathematics</td>
-                                        <td>A</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Algorithms</td>
-                                        <td>IP</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Database Systems</td>
-                                        <td>IP</td>
-                                    </tr>
-                                    <tr><td>&nbsp;</td></tr>
-                                    <tr>
-                                        <td><strong>Engineering</strong></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Statics and Dynamics</td>
-                                        <td>A-</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Engineering Service Learning</td>
-                                        <td>A+</td>
-                                    </tr>
-                                    <tr><td>&nbsp;</td></tr>
-                                    <tr>
-                                        <td><strong>Sciences</strong></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Introductory Physics I</td>
-                                        <td>A</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Introductory Physics II</td>
-                                        <td>A</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Biology Today</td>
-                                        <td>A</td>
-                                    </tr>
-                                    <tr><td>&nbsp;</td></tr>
-                                    <tr>
-                                        <td><strong>Mathematics</strong></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Calculus I (Engineering)</td>
-                                        <td>A+</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Calculus II (Engineering)</td>
-                                        <td>A</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Vector Calculus</td>
-                                        <td>IP</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Linear Algebra & Differential Equations</td>
-                                        <td>IP</td>
-                                    </tr>
-                                    <tr><td>&nbsp;</td></tr>
-                                    <tr>
-                                        <td><strong>General Education</strong></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Intro to American Politics</td>
-                                        <td>A</td>
-                                    </tr>
-                                    <tr>
-                                        <td>College Reading & Composition</td>
-                                        <td>A+</td>
-                                    </tr>
-                                    <tr>
-                                        <td>The World at Home</td>
-                                        <td>A</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Spanish I</td>
-                                        <td>A</td>
-                                    </tr>
+                                 <tr>
+                                     <td><strong>Computer Science & Engineering</strong></td>
+                                 </tr>
+                                 <tr>
+                                     <td>AP Computer Science A</td>
+                                     <td>5</td>
+                                 </tr>
+                                 <tr>
+                                     <td>Data Structures</td>
+                                     <td>A</td>
+                                 </tr>
+                                 <tr>
+                                     <td>Computer Organization</td>
+                                     <td>A</td>
+                                 </tr>
+                                 <tr>
+                                     <td>Discrete Mathematics</td>
+                                     <td>A</td>
+                                 </tr>
+                                 <tr>
+                                     <td>Algorithms</td>
+                                     <td>IP</td>
+                                 </tr>
+                                 <tr>
+                                     <td>Database Systems</td>
+                                     <td>IP</td>
+                                 </tr>
+                                 <tr><td>&nbsp;</td></tr>
+                                 <tr>
+                                     <td><strong>Engineering</strong></td>
+                                 </tr>
+                                 <tr>
+                                     <td>Statics and Dynamics</td>
+                                     <td>A-</td>
+                                 </tr>
+                                 <tr>
+                                     <td>Engineering Service Learning</td>
+                                     <td>A+</td>
+                                 </tr>
+                                 <tr><td>&nbsp;</td></tr>
+                                 <tr>
+                                     <td><strong>Sciences</strong></td>
+                                 </tr>
+                                 <tr>
+                                     <td>Introductory Physics I</td>
+                                     <td>A</td>
+                                 </tr>
+                                 <tr>
+                                     <td>Introductory Physics II</td>
+                                     <td>A</td>
+                                 </tr>
+                                 <tr>
+                                     <td>Biology Today</td>
+                                     <td>A</td>
+                                 </tr>
+                                 <tr><td>&nbsp;</td></tr>
+                                 <tr>
+                                     <td><strong>Mathematics</strong></td>
+                                 </tr>
+                                 <tr>
+                                     <td>Calculus I (Engineering)</td>
+                                     <td>A+</td>
+                                 </tr>
+                                 <tr>
+                                     <td>Calculus II (Engineering)</td>
+                                     <td>A</td>
+                                 </tr>
+                                 <tr>
+                                     <td>Vector Calculus</td>
+                                     <td>IP</td>
+                                 </tr>
+                                 <tr>
+                                     <td>Linear Algebra & Differential Equations</td>
+                                     <td>IP</td>
+                                 </tr>
+                                 <tr><td>&nbsp;</td></tr>
+                                 <tr>
+                                     <td><strong>General Education</strong></td>
+                                 </tr>
+                                 <tr>
+                                     <td>Intro to American Politics</td>
+                                     <td>A</td>
+                                 </tr>
+                                 <tr>
+                                     <td>College Reading & Composition</td>
+                                     <td>A+</td>
+                                 </tr>
+                                 <tr>
+                                     <td>The World at Home</td>
+                                     <td>A</td>
+                                 </tr>
+                                 <tr>
+                                     <td>Spanish I</td>
+                                     <td>A</td>
+                                 </tr>
 
-                                </table>
-                            </td>
-                            <td style="float:right;width: 59%">
-                                <img src="images/tall_brian.png" alt="" />
-                            </td>
-                        </tr>
+                             </table>
+                         </td>
+                         <td style="float:right;width: 59%">
+                             <img src="images/tall_brian.png" alt="" />
+                         </td>
+                     </tr>
 
-                    </table>-->
-
+                 </table>-->
                     &nbsp;<br />
                     Official transcript available upon request.
                 </p>
                 <!--<footer>
                 <a href="right-sidebar.html" class="button">Continue Reading</a>
             </footer>-->
-</article>
-
-        </div>
-
-        <div class="wrapper style2">
-            <article id="awards" class="container special">
-                <div id='map' style='width: 100%; height: 476px;'></div>
-                <script>
-                    mapboxgl.accessToken = 'pk.eyJ1IjoibXV0aWxhciIsImEiOiJjamZ1bnJ3bXQzbjRqMnFzMmdzOGY1b2ZxIn0.h86IZyxf0QV4Ay3FTAaaCg';
-                    var map = new mapboxgl.Map({
-                        container: 'map',
-                        style: 'mapbox://styles/mapbox/light-v9'
-                    });
-                </script>
-                <header>
-                    <h2>I've been around the block</h2>
-                    <p>
-                        Check out where I've won awards, competed, and made myself known.
-                    </p>
-                </header>
-
-                <p>
-
-                    <!--      Academically and professionally, I have been bestowed great honors for my hard work and perseverance.
-          My competitive nature and compulsive personality result in me pushing myself to achieve things I at one time never thought possible.
-          Here's a (mostly) complete list of the awards I've racked up over the years:
-          <br /><br />
-          <a href="http://engineeringservicelearning.ucmerced.edu/team-sustainablesites"><img src="images/hackmerced.png" alt="" /></a>
-          <a href="http://engineeringservicelearning.ucmerced.edu/team-sustainablesites"><img src="images/hackdavis.png" alt="" /></a>
-          <a href="http://engineeringservicelearning.ucmerced.edu/team-sustainablesites"><img src="images/citrushack.png" alt="" /></a>
-          <a href="http://engineeringservicelearning.ucmerced.edu/team-sustainablesites"><img src="images/pitchfest.jpg" alt="" /></a>
-          <a href="http://engineeringservicelearning.ucmerced.edu/team-sustainablesites"><img src="images/ucmerced_seal.png" alt="" /></a>
-        -->
-                </p>
-                <footer>
-                    <a href="right-sidebar.html" class="button">Full map</a>
-                </footer>
-
             </article>
+
         </div>
+
+
 
 
         <!-- Features -->
