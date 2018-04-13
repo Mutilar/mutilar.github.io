@@ -14,8 +14,8 @@ var alternate = 0;
 
 var locations = [{
     "id": "2",
-    "title": "HackMerced",
-    "description": "DigestQuest",
+    "title": "Merced, CA",
+    "description": "University of Califorina, Merced",
     "camera": {
         center: [-120.4235, 37.3665],
         zoom: 16,
@@ -26,8 +26,8 @@ var locations = [{
     }
 }, {
     "id": "3",
-    "title": "HackDavis",
-    "description": "GISt",
+    "title": "Davis, CA",
+    "description": "University of Califorina, Davis",
     "camera": {
         center: [-121.7582, 38.5429],
         zoom: 16,
@@ -37,8 +37,8 @@ var locations = [{
     }
 }, {
     "id": "1",
-    "title": "Citrus Hack",
-    "description": "Coming soon.",
+    "title": "Riverside, CA",
+    "description": "University of Califorina, Riverside",
     "camera": {
         center: [-117.3278, 33.9729],
         zoom: 16,
@@ -48,8 +48,8 @@ var locations = [{
     }
 }, {
     "id": "4",
-    "title": "SD Hacks",
-    "description": "Coming soon.",
+    "title": "San Diego, CA",
+    "description": "University of Califorina, San Diego",
     "camera": {
         center: [-117.2347, 32.8793],
         zoom: 16,
@@ -59,8 +59,8 @@ var locations = [{
     }
 }, {
     "id": "5",
-    "title": "HackFresno",
-    "description": "Coming soon.",
+    "title": "Fresno, CA",
+    "description": "Fresno State University",
     "camera": {
         center: [-119.7458, 36.8147],
         zoom: 16,
@@ -114,6 +114,8 @@ title.textContent = locations[locations.length - 1].title;
 description.textContent = locations[locations.length - 1].description;
 
 map.on('load', function () {
+
+  
     // Insert the layer beneath any symbol layer.
     var layers = map.getStyle().layers;
 
@@ -149,6 +151,44 @@ map.on('load', function () {
             'fill-extrusion-opacity': .6
         }
     }, labelLayerId);// Place polygon under the neighborhood labels.
+    map.addLayer({
+        "id": "points",
+        "type": "symbol",
+        "source": {
+            "type": "geojson",
+            "data": {
+                "type": "FeatureCollection",
+                "features": [{
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [-77.03238901390978, 38.913188059745586]
+                    },
+                    "properties": {
+                        "title": "<p class='icon github'>Fork me on GitHub</p>",
+                        "icon": "monument"
+                    }
+                }, {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [-122.414, 37.776]
+                    },
+                    "properties": {
+                        "title": "Mapbox SF",
+                        "icon": "harbor"
+                    }
+                }]
+            }
+        },
+        "layout": {
+            "icon-image": "{icon}-15",
+            "text-field": "{title}",
+            "text-font": ["Open Sans Semibold", "Arial Unicode MS Bold"],
+            "text-offset": [0, 0.6],
+            "text-anchor": "top"
+        }
+    });
 
     // Start the playback animation for each borough
     playback(0, 0);
