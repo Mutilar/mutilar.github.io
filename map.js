@@ -91,7 +91,7 @@ var locations = [{
 function playback(display, index) {
     title.textContent = locations[display].title;
     description.textContent = locations[display].description;
-    
+
 
     // Animate the map position based on camera properties
     map.flyTo(locations[display].camera);
@@ -123,7 +123,7 @@ description.textContent = locations[locations.length - 1].description;
 
 map.on('load', function () {
 
-  
+
     // Insert the layer beneath any symbol layer.
     var layers = map.getStyle().layers;
 
@@ -168,24 +168,12 @@ map.on('load', function () {
                 "type": "FeatureCollection",
                 "features": [{
                     "type": "Feature",
-                    "geometry": {
-                        "type": "Point",
-                        "coordinates": [-77.03238901390978, 38.913188059745586]
-                    },
-                    "properties": {
-                        "title": "<p class='icon github'>Fork me on GitHub</p>",
-                        "icon": "monument"
-                    }
+                    "geometry": { "type": "Point", "coordinates": [-120.423096, 37.366286] },
+                    "properties": { "title": "Merced", "icon": "monument" }
                 }, {
                     "type": "Feature",
-                    "geometry": {
-                        "type": "Point",
-                        "coordinates": [-122.414, 37.776]
-                    },
-                    "properties": {
-                        "title": "Mapbox SF",
-                        "icon": "harbor"
-                    }
+                    "geometry": { "type": "Point", "coordinates": [-121.759634, 38.541808] },
+                    "properties": { "title": "Davis", "icon": "monument" }
                 }]
             }
         },
@@ -199,7 +187,7 @@ map.on('load', function () {
     });
 
 
-  
+
     // Start the playback animation for each borough
     //playback(0, 0);
 });
