@@ -11,7 +11,7 @@ var map = new mapboxgl.Map({
 var title = document.getElementById('location-title');
 var description = document.getElementById('location-description');
 var alternate = 0;
-
+var pitch = Math.floor((Math.random() * 90) + 1);
 var locations = [{
     "id": "2",
     "title": "Merced, CA",
@@ -19,8 +19,9 @@ var locations = [{
     "camera": {
         center: [-120.4235, 37.3665],
         zoom: 16,
-        pitch: 50,
-        speed: .5,
+        bearing: pitch,
+        pitch: pitch,
+        speed: .45,
         curve: 1
 
     }
@@ -31,8 +32,9 @@ var locations = [{
     "camera": {
         center: [-121.7582, 38.5429],
         zoom: 16,
-        bearing: -8.9,
-        speed: .5,
+        bearing: pitch,
+        pitch: pitch,
+        speed: .45,
         curve: 1
     }
 }, {
@@ -42,7 +44,8 @@ var locations = [{
     "camera": {
         center: [-117.3278, 33.9729],
         zoom: 16,
-        bearing: 25.3,
+        bearing: pitch,
+        pitch: pitch,
         speed: .5,
         curve: 1
     }
@@ -53,7 +56,8 @@ var locations = [{
     "camera": {
         center: [-117.2347, 32.8793],
         zoom: 16,
-        bearing: 36,
+        bearing: pitch,
+        pitch: pitch,
         speed: .5,
         curve: 1
     }
@@ -64,7 +68,8 @@ var locations = [{
     "camera": {
         center: [-119.7458, 36.8147],
         zoom: 16,
-        bearing: 28.4,
+        bearing: pitch,
+        pitch: pitch,
         speed: .5,
         curve: 1
 
@@ -77,6 +82,7 @@ var locations = [{
         zoom: 6.01,
         pitch: 30,
         bearing: 50,
+
         speed: .5,
         curve: 1
     }
@@ -91,11 +97,13 @@ function playback(display, index) {
     map.flyTo(locations[display].camera);
 
     map.once('moveend', function () {
+        var speed = 10000;
+        pitch = Math.floor((Math.random() * 90) + 1);
         // Duration the slide is on screen after interaction
         window.setTimeout(function () {
             if (alternate == 0) {
                 alternate = 1;
-
+                speed = 10000;
                 playback(5, index);
             }
             else {
@@ -105,7 +113,7 @@ function playback(display, index) {
             }
             // Increment index
 
-        }, 1000); // After callback, show the location for 3 seconds.
+        }, speed); // After callback, show the location for 3 seconds.
     });
 }
 
@@ -190,6 +198,8 @@ map.on('load', function () {
         }
     });
 
+
+  
     // Start the playback animation for each borough
-    playback(0, 0);
+    //playback(0, 0);
 });
