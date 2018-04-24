@@ -8,6 +8,17 @@
 <head>
 
     <script src='https://api.mapbox.com/mapbox-gl-js/v0.44.2/mapbox-gl.js'></script>
+
+    <script type="text/javascript" src="/static/jquery-3.3.1.js"></script>
+    <script type="text/javascript" language="javascript">
+        var $ = jQuery.noConflict();
+        $(document).ready(function () {
+            init();
+        });
+        function init() {
+        }
+    </script>
+
     <link href='https://api.mapbox.com/mapbox-gl-js/v0.44.2/mapbox-gl.css' rel='stylesheet' />
 
     <title>※ Brian Hungerman</title>
@@ -66,6 +77,13 @@
                 <p>
                     Clicking on a project will provide more information. Also check out my <a href="https://github.com/Mutilar">GitHub</a> repositories and <a href="https://devpost.com/BrianHungerman">DevPost</a> projects!
                 </p>
+                <input id="myButton" type="button" name="answer" />
+
+                $('#myButton').click(function() {
+                $('#myDiv').toggle('slow', function() {
+                // Animation complete.
+                });
+                });
             </header>
         </section>
 
@@ -73,7 +91,7 @@
         <section class="carousel">
             <div class="reel">
 
-                <article>
+                <article id="myDiv">
                     <a href="iterate.html" class="image featured"><img src="images/iterate.jpg" alt="" /></a>
                     <header>
                         <h3><a href="iterate.html">Iterate</a></h3>
@@ -109,14 +127,14 @@
                     <header>
                         <h3><a href="dogpark.html">DogPark</a></h3>
                     </header>
-                    <p>Tinder for pet adoption: humanizing the adoption process,<br /><strong>PitchFest</strong> 2nd place pitch</p>
+                    <p>Tinder for pet adoption: humanizing the adoption process,<br /> finalist pitch in TESUM's <strong>PitchFest</strong></p>
                 </article>
                 <article>
                     <a href="lucas.html" class="image featured"><img src="images/lucas.jpg" alt="" /></a>
                     <header>
                         <h3><a href="lucas.html">L.U.C.A.S</a></h3>
                     </header>
-                    <p>Logarithmic Ultrasonic Collision Avoidance System,<br /> hopefully winning <strong>Citrus Hack</strong></p>
+                    <p>Logarithmic Ultrasonic Collision Avoidance System,<br /> winning $1000 at <strong>Citrus Hack</strong></p>
                 </article>
                 <article>
                     <a href="#" class="image featured"><img src="images/test.jpg" alt="" /></a>
