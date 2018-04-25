@@ -18,11 +18,13 @@
             var showing_hacks = true;
             var showing_games = true;
 
+            
+
             $('#ProjectButton').click(function () {
                 $('.Project').toggle('fast', function () {
                     if (showing_projects === true) {
                         showing_projects = false;
-                        $("#ProjectButton").toggleClass('fa-angle-double-down');
+                        $("#ProjectButton").toggleClass('fa-ban fa-check');
                     }
                     else {
                         showing_projects = true;
@@ -119,7 +121,13 @@
                     <br />
                     <br />
                 </p>
-                <input id="ProjectButton" type="button" name="answer" value="Projects" class="fa-angle-double-down" />&nbsp;&nbsp;&nbsp;
+
+
+                <button id="ProjectButton">
+                    <i class="fa fa-ban"></i>
+                </button>
+                <!--<input  type="button" name="answer" value="Projects" class="fa-angle-double-down" />&nbsp;&nbsp;&nbsp;
+    -->
                 <input id="HackButton" type="button" name="answer" value="Hacks" />&nbsp;&nbsp;&nbsp;
                 <input id="GameButton" type="button" name="answer" value="Games" />
             </header>
@@ -279,7 +287,7 @@
                         <p style="text-align:center; font-size:1.5em; line-height:1.5em" id='location-description'></p>
                     </div>
                 </div>
-                <script src="map.js" type="text/javascript"></script>               
+                <script src="map.js" type="text/javascript"></script>
                 <header></header>
                 <p>
 
@@ -292,7 +300,7 @@
                   <a href="http://engineeringservicelearning.ucmerced.edu/team-sustainablesites"><img src="images/citrushack.png" alt="" /></a>
                   <a href="http://engineeringservicelearning.ucmerced.edu/team-sustainablesites"><img src="images/pitchfest.jpg" alt="" /></a>
                   <a href="http://engineeringservicelearning.ucmerced.edu/team-sustainablesites"><img src="images/ucmerced_seal.png" alt="" /></a>
-               
+
                 </p>
                 <footer>
                     <!--   <a href="right-sidebar.html" class="button">Full map</a>
@@ -354,8 +362,8 @@
                     <br />
                 </p>
                 <!--<footer>
-                <a href="right-sidebar.html" class="button">Continue Reading</a>
-            </footer>-->
+                    <a href="right-sidebar.html" class="button">Continue Reading</a>
+                </footer>-->
             </article>
         </div>
         <div class="wrapper style2">
@@ -380,120 +388,120 @@
                     <br /><br />
 
                     <!-- <table>
-                     <tr>
-                         <td style="float:left;width: 40%">
-                             <table>
-                                 <caption>Classes:</caption>
+                        <tr>
+                            <td style="float:left;width: 40%">
+                                <table>
+                                    <caption>Classes:</caption>
 
-                                 <tr>
-                                     <td><strong>Computer Science & Engineering</strong></td>
-                                 </tr>
-                                 <tr>
-                                     <td>AP Computer Science A</td>
-                                     <td>5</td>
-                                 </tr>
-                                 <tr>
-                                     <td>Data Structures</td>
-                                     <td>A</td>
-                                 </tr>
-                                 <tr>
-                                     <td>Computer Organization</td>
-                                     <td>A</td>
-                                 </tr>
-                                 <tr>
-                                     <td>Discrete Mathematics</td>
-                                     <td>A</td>
-                                 </tr>
-                                 <tr>
-                                     <td>Algorithms</td>
-                                     <td>IP</td>
-                                 </tr>
-                                 <tr>
-                                     <td>Database Systems</td>
-                                     <td>IP</td>
-                                 </tr>
-                                 <tr><td>&nbsp;</td></tr>
-                                 <tr>
-                                     <td><strong>Engineering</strong></td>
-                                 </tr>
-                                 <tr>
-                                     <td>Statics and Dynamics</td>
-                                     <td>A-</td>
-                                 </tr>
-                                 <tr>
-                                     <td>Engineering Service Learning</td>
-                                     <td>A+</td>
-                                 </tr>
-                                 <tr><td>&nbsp;</td></tr>
-                                 <tr>
-                                     <td><strong>Sciences</strong></td>
-                                 </tr>
-                                 <tr>
-                                     <td>Introductory Physics I</td>
-                                     <td>A</td>
-                                 </tr>
-                                 <tr>
-                                     <td>Introductory Physics II</td>
-                                     <td>A</td>
-                                 </tr>
-                                 <tr>
-                                     <td>Biology Today</td>
-                                     <td>A</td>
-                                 </tr>
-                                 <tr><td>&nbsp;</td></tr>
-                                 <tr>
-                                     <td><strong>Mathematics</strong></td>
-                                 </tr>
-                                 <tr>
-                                     <td>Calculus I (Engineering)</td>
-                                     <td>A+</td>
-                                 </tr>
-                                 <tr>
-                                     <td>Calculus II (Engineering)</td>
-                                     <td>A</td>
-                                 </tr>
-                                 <tr>
-                                     <td>Vector Calculus</td>
-                                     <td>IP</td>
-                                 </tr>
-                                 <tr>
-                                     <td>Linear Algebra & Differential Equations</td>
-                                     <td>IP</td>
-                                 </tr>
-                                 <tr><td>&nbsp;</td></tr>
-                                 <tr>
-                                     <td><strong>General Education</strong></td>
-                                 </tr>
-                                 <tr>
-                                     <td>Intro to American Politics</td>
-                                     <td>A</td>
-                                 </tr>
-                                 <tr>
-                                     <td>College Reading & Composition</td>
-                                     <td>A+</td>
-                                 </tr>
-                                 <tr>
-                                     <td>The World at Home</td>
-                                     <td>A</td>
-                                 </tr>
-                                 <tr>
-                                     <td>Spanish I</td>
-                                     <td>A</td>
-                                 </tr>
+                                    <tr>
+                                        <td><strong>Computer Science & Engineering</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td>AP Computer Science A</td>
+                                        <td>5</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Data Structures</td>
+                                        <td>A</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Computer Organization</td>
+                                        <td>A</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Discrete Mathematics</td>
+                                        <td>A</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Algorithms</td>
+                                        <td>IP</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Database Systems</td>
+                                        <td>IP</td>
+                                    </tr>
+                                    <tr><td>&nbsp;</td></tr>
+                                    <tr>
+                                        <td><strong>Engineering</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Statics and Dynamics</td>
+                                        <td>A-</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Engineering Service Learning</td>
+                                        <td>A+</td>
+                                    </tr>
+                                    <tr><td>&nbsp;</td></tr>
+                                    <tr>
+                                        <td><strong>Sciences</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Introductory Physics I</td>
+                                        <td>A</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Introductory Physics II</td>
+                                        <td>A</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Biology Today</td>
+                                        <td>A</td>
+                                    </tr>
+                                    <tr><td>&nbsp;</td></tr>
+                                    <tr>
+                                        <td><strong>Mathematics</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Calculus I (Engineering)</td>
+                                        <td>A+</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Calculus II (Engineering)</td>
+                                        <td>A</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Vector Calculus</td>
+                                        <td>IP</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Linear Algebra & Differential Equations</td>
+                                        <td>IP</td>
+                                    </tr>
+                                    <tr><td>&nbsp;</td></tr>
+                                    <tr>
+                                        <td><strong>General Education</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Intro to American Politics</td>
+                                        <td>A</td>
+                                    </tr>
+                                    <tr>
+                                        <td>College Reading & Composition</td>
+                                        <td>A+</td>
+                                    </tr>
+                                    <tr>
+                                        <td>The World at Home</td>
+                                        <td>A</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Spanish I</td>
+                                        <td>A</td>
+                                    </tr>
 
-                             </table>
-                         </td>
-                         <td style="float:right;width: 59%">
-                             <img src="images/tall_brian.png" alt="" />
-                         </td>
-                     </tr>
+                                </table>
+                            </td>
+                            <td style="float:right;width: 59%">
+                                <img src="images/tall_brian.png" alt="" />
+                            </td>
+                        </tr>
 
-                 </table>-->
-                   
+                    </table>-->
+
                 </p>
                 <!--<footer>
-                <a href="right-sidebar.html" class="button">Continue Reading</a>
-            </footer>-->
+                    <a href="right-sidebar.html" class="button">Continue Reading</a>
+                </footer>-->
             </article>
 
         </div>
