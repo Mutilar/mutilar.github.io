@@ -21,39 +21,40 @@
             
 
             $('#ProjectButton').click(function () {
+                if (showing_projects === true) {
+                    showing_projects = false;
+                    $("#ProjectButton").prop('value', 'See Projects');
+                    // $("#ProjectButton").toggleClass('fa-ban fa-check');
+                }
+                else {
+                    showing_projects = true;
+                    $("#ProjectButton").prop('value', 'Hide Projects');
+                }
                 $('.Project').toggle('fast', function () {
-                    if (showing_projects === true) {
-                        showing_projects = false;
-                        $("#ProjectButton").toggleClass('fa-ban fa-check');
-                    }
-                    else {
-                        showing_projects = true;
-                        $("#ProjectButton").prop('value', 'Hide Projects');
-                    }
                 });
             });
             $('#HackButton').click(function () {
+                if (showing_hacks === true) {
+                    showing_hacks = false;
+                    $("#HackButton").prop('value', 'See Hacks');
+                }
+                else {
+                    showing_hacks = true;
+                    $("#HackButton").prop('value', 'Hide Hacks');
+                }
                 $('.Hack').toggle('fast', function () {
-                    if (showing_hacks === true) {
-                        showing_hacks = false;
-                        $("#HackButton").prop('value', 'See Hacks');
-                    }
-                    else {
-                        showing_hacks = true;
-                        $("#HackButton").prop('value', 'Hide Hacks');
-                    }
                 });
             });
             $('#GameButton').click(function () {
+                if (showing_games === true) {
+                    showing_games = false;
+                    $("#GameButton").prop('value', 'See Games');
+                }
+                else {
+                    showing_games = true;
+                    $("#GameButton").prop('value', 'Hide Games');
+                }
                 $('.Game').toggle('fast', function () {
-                    if (showing_games === true) {
-                        showing_games = false;
-                        $("#GameButton").prop('value', 'See Games');
-                    }
-                    else {
-                        showing_games = true;
-                        $("#GameButton").prop('value', 'Hide Games');
-                    }
                 });
             });
         });
@@ -123,11 +124,12 @@
                 </p>
 
 
-                <button id="ProjectButton">
+                <!--<button id="ProjectButton">
                     <i class="fa fa-ban"></i>
                 </button>
                 <!--<input  type="button" name="answer" value="Projects" class="fa-angle-double-down" />&nbsp;&nbsp;&nbsp;
     -->
+                <input id="ProjectButton" type="button" name="answer" value="Projects" />&nbsp;&nbsp;&nbsp;
                 <input id="HackButton" type="button" name="answer" value="Hacks" />&nbsp;&nbsp;&nbsp;
                 <input id="GameButton" type="button" name="answer" value="Games" />
             </header>
@@ -183,11 +185,11 @@
                     <p>Logarithmic Ultrasonic Collision Avoidance System,<br /> winning $1000 at <strong>Citrus Hack</strong></p>
                 </article>
                 <article class="Hack">
-                    <a href="#" class="image featured"><img src="images/test.jpg" alt="" /></a>
+                    <a href="#" class="image featured"><img src="images/smartank.jpg" alt="" /></a>
                     <header>
                         <h3><a href="#">SMARTank</a></h3>
                     </header>
-                    <p>A fully autonomous agricultural irrigation-monitoring robot,<br />hopefully winning <strong>HackFresno</strong></p>
+                    <p>A fully autonomous agricultural irrigation-monitoring robot,<br /> winning <strong>HackFresno</strong></p>
                 </article>
                 <article class="Hack">
                     <a href="sriracha.html" class="image featured"><img src="images/sriracha.jpg" alt="" /></a>
@@ -201,7 +203,7 @@
                     <header>
                         <h3><a href="#">Breeze</a></h3>
                     </header>
-                    <p>Air quality sensing phone module for asthma and air quality awareness,<br />hopefully winning <strong>CitrusHacks</strong></p>
+                    <p>Air quality sensing phone module for asthma and air quality awareness,<br />hopefully winning <strong>something</strong></p>
                 </article>
                 <article class="Hack">
                     <a href="#" class="image featured"><img src="images/motorskills.jpg" alt="" /></a>
@@ -210,6 +212,20 @@
                     </header>
                     <p>Industrial IOT electric motor machine learning monitoring system,<br /> hopefully winning <strong>something</strong></p>
                 </article>
+        <!--        <article class="Hack">
+                    <a href="#" class="image featured"><img src="images/motorskills.jpg" alt="" /></a>
+                    <header>
+                        <h3><a href="#">Eleat</a></h3>
+                    </header>
+                    <p>An app to help you eat healthy on a budget,<br /> hopefully winning <strong>something</strong></p>
+                </article>
+                <article class="Hack">
+                    <a href="#" class="image featured"><img src="images/motorskills.jpg" alt="" /></a>
+                    <header>
+                        <h3><a href="#">Twiddle</a></h3>
+                    </header>
+                    <p>Health monitoring appliance to notify caretakers in emergencies,<br /> hopefully winning <strong>something</strong></p>
+                </article>-->
                 <article class="Project">
                     <a class="image featured">
                         <video style="vertical-align:middle; width:100%; height:100%" controls>
