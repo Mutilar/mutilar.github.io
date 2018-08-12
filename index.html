@@ -89,7 +89,9 @@
             <nav id="nav">
                 <ul>
                     <li>
-                        About Me
+                        <a href="#banner" class="scrolly">
+                            About Me
+                        </a>
                         <ul>
                             <li><a href="#banner" class="scrolly">Portfolio</a></li>
                             <li><a href="#main" class="scrolly">Experience</a></li>
@@ -97,8 +99,7 @@
                             <li><a href="#features" class="scrolly">Leadership</a></li>
                         </ul>
                     </li>
-                    <li><a href="projects.html">Projects</a></li>
-                    <li><a href="http://testing.brianhungerman.com">Testing</a></li>
+                    <!--<li><a href="http://testing.brianhungerman.com">Testing</a></li>-->
                     <li><a href="/Resume.pdf">Resume</a></li>
                     <li><a href="#footer" class="scrolly">Contact Me</a></li>
                 </ul>
@@ -127,7 +128,6 @@
                 <input style="background:#5B485B; font-weight:500" id="GameButton" type="button" name="answer" value="Games" />
             </header>
         </section>
-
         <!-- Carousel -->
         <section class="carousel">
             <div class="reel">
@@ -146,6 +146,47 @@
                     </header>
                     <p>Utilizing GIS and Big Data to promote sustainability initiatives,<br /> winning $2,000 at <strong>Innovate to Grow</strong></p>
                 </article>
+                <article class="Project">
+                    <a href="#" class="image featured"><img src="images/firmi.jpg" alt="" /></a>
+                    <header>
+                        <h3><a href="#">Server Monitoring Dashboard</a></h3>
+                    </header>
+                    <p>Icinga, Graphite & Grafana powered dashboard allowing for at-a-glance server diagonistics and trend analysis</p>
+                </article>
+                <article class="Project">
+                    <a href="#" class="image featured"><img src="images/firmi.jpg" alt="" /></a>
+                    <header>
+                        <h3><a href="#">Firmi</a></h3>
+                    </header>
+                    <p>Getting a grasp of your Fermi Surfaces: a solid-state physics research fellowship project through MACES</p>
+                </article>
+                <article class="Project">
+                    <a class="image featured">
+                        <video style="vertical-align:middle; width:100%; height:100%" controls>
+                            <source src="AMAX.mp4" type="video/mp4">
+                        </video>
+                        <p>&nbsp;</p>
+                    </a>
+                    <header>
+                        <h3>AMAX ESD Detection System</h3>
+                    </header>
+                    <p>Haptic security measure to ensure AMAX employees are grounded, a corporate-sponsored project</p>
+                </article>
+                <article class="Project">
+                    <a href="websites.html" class="image featured"><img src="images/websites.jpg" alt="" /></a>
+                    <header>
+                        <h3><a href="websites.html">Various Websites</a></h3>
+                    </header>
+                    <p>Live websites I have developed for various organizations, mostly via the Drupal CMS</p>
+                </article>
+
+
+            </div>
+        </section>
+        <br />
+        <!-- Carousel -->
+        <section class="carousel">
+            <div class="reel">
                 <article class="Hack">
                     <a href="lucas.html" class="image featured"><img src="images/lucas.jpg" alt="" /></a>
                     <header>
@@ -167,47 +208,12 @@
                     </header>
                     <p>FitBit for your stomach: a heuristic image processing web application,<br /> winning <strong>HackMerced</strong></p>
                 </article>
-
-                <article class="Game">
-                    <a href="spaceninjas.html" class="image featured"><img src="images/space-ninjas.jpg" alt="" /></a>
-                    <header>
-                        <h3><a href="spaceninjas.html">Space Ninjas</a></h3>
-                    </header>
-                    <p>A short platformer game, used to teach middle schoolers how to make their own 2D games</p>
-                </article>
-
-                <article class="Project">
-                    <a class="image featured">
-                        <video style="vertical-align:middle; width:100%; height:100%" controls>
-                            <source src="AMAX.mp4" type="video/mp4">
-                        </video>
-                        <p>&nbsp;</p>
-                    </a>
-                    <header>
-                        <h3>AMAX ESD Detection System</h3>
-                    </header>
-                    <p>Haptic security measure to ensure AMAX employees are grounded, a corporate-sponsored project</p>
-                </article>
                 <article class="Hack">
                     <a href="dogpark.html" class="image featured"><img src="images/dogpark.jpg" alt="" /></a>
                     <header>
                         <h3><a href="dogpark.html">DogPark</a></h3>
                     </header>
                     <p>Tinder for pet adoption: humanizing the adoption process,<br /> finalist pitch in TESUM's <strong>PitchFest</strong></p>
-                </article>
-                <article class="Game">
-                    <a href="#" class="image featured"><img src="images/seerauber.jpg" alt="" /></a>
-                    <header>
-                        <h3><a href="#">Seerauber</a></h3>
-                    </header>
-                    <p>Polygonal Pirates Prowling the Pacific: <br />a distributed-AI pirate game,<br /> my current side project</p>
-                </article>
-                <article class="Project">
-                    <a href="#" class="image featured"><img src="images/firmi.jpg" alt="" /></a>
-                    <header>
-                        <h3><a href="#">Firmi</a></h3>
-                    </header>
-                    <p>Getting a grasp of your Fermi Surfaces: a solid-state physics research fellowship project through MACES</p>
                 </article>
                 <article class="Hack">
                     <a href="#" class="image featured"><img src="images/smartank.jpg" alt="" /></a>
@@ -237,22 +243,70 @@
                     </header>
                     <p>Industrial IOT electric motor machine learning monitoring system,<br /> hopefully winning <strong>something</strong></p>
                 </article>
-                <!--        <article class="Hack">
-        <a href="#" class="image featured"><img src="images/motorskills.jpg" alt="" /></a>
-        <header>
-            <h3><a href="#">Eleat</a></h3>
-        </header>
-        <p>An app to help you eat healthy on a budget,<br /> hopefully winning <strong>something</strong></p>
-    </article>
-    <article class="Hack">
-        <a href="#" class="image featured"><img src="images/motorskills.jpg" alt="" /></a>
-        <header>
-            <h3><a href="#">Twiddle</a></h3>
-        </header>
-        <p>Health monitoring appliance to notify caretakers in emergencies,<br /> hopefully winning <strong>something</strong></p>
-    </article>-->
+                <article class="Hack">
+                    <header>
+                        <h3><a href="#">Future Ideas --></a></h3>
+                    </header>
+                    <p><strong>The following are reminders of potential projects</strong></p>
+                </article>
 
+                <article class="Hack">
+                    <header>
+                        <h3><a href="#">Eleat</a></h3>
+                    </header>
+                    <p>An app to help you eat healthy on a budget,<br /> hopefully winning <strong>something</strong></p>
+                </article>
+                <article class="Hack">
+                    <header>
+                        <h3><a href="#">Twiddle</a></h3>
+                    </header>
+                    <p>Health monitoring appliance to notify caretakers in emergencies,<br /> hopefully winning <strong>something</strong></p>
+                </article>
+                <article class="Hack">
+                    <header>
+                        <h3><a href="#">ComposeIt</a></h3>
+                    </header>
+                    <p>Sheet music generator powered by anything making noise,<br /> hopefully winning <strong>something</strong></p>
+                </article>
+                <article class="Hack">
+                    <header>
+                        <h3><a href="#">ChemisTRY</a></h3>
+                    </header>
+                    <p>Virtual reality chemistry tutor and visualizer,<br /> hopefully winning <strong>something</strong></p>
+                </article>
+                <article class="Hack">
+                    <header>
+                        <h3><a href="#">deltaV</a></h3>
+                    </header>
+                    <p>Driving/riding alert system,<br /> hopefully winning <strong>something</strong></p>
+                </article>
+                <article class="Hack">
+                    <header>
+                        <h3><a href="#">TankVR</a></h3>
+                    </header>
+                    <p>Using VR to interact with RC robots/drones, <br /> hopefully winning <strong>something</strong></p>
+                </article>
 
+            </div>
+        </section>
+        <br />
+        <!-- Carousel -->
+        <section class="carousel">
+            <div class="reel">
+                <article class="Game">
+                    <a href="spaceninjas.html" class="image featured"><img src="images/space-ninjas.jpg" alt="" /></a>
+                    <header>
+                        <h3><a href="spaceninjas.html">Space Ninjas</a></h3>
+                    </header>
+                    <p>A short platformer game, used to teach middle schoolers how to make their own 2D games</p>
+                </article>
+                <article class="Game">
+                    <a href="#" class="image featured"><img src="images/seerauber.jpg" alt="" /></a>
+                    <header>
+                        <h3><a href="#">Seerauber</a></h3>
+                    </header>
+                    <p>Polygonal Pirates Prowling the Pacific: <br />a distributed-AI pirate game,<br /> my current side project</p>
+                </article>
                 <article class="Game">
                     <a href="voodoo.html" class="image featured"><img src="images/voodoo.jpg" alt="" /></a>
                     <header>
@@ -274,16 +328,6 @@
                     </header>
                     <p>A complete retro sci-fi tower defense game designed and coded in 36 hours at HackMerced 2016</p>
                 </article>
-
-
-                <article class="Project">
-                    <a href="websites.html" class="image featured"><img src="images/websites.jpg" alt="" /></a>
-                    <header>
-                        <h3><a href="websites.html">Various Websites</a></h3>
-                    </header>
-                    <p>Live websites I have developed for various organizations, mostly via the Drupal CMS</p>
-                </article>
-
             </div>
         </section>
 
