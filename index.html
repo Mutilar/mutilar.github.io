@@ -1,8 +1,18 @@
 ﻿<!DOCTYPE HTML>
 <html>
+
 <head>
     <!-- <script src='https://api.mapbox.com/mapbox-gl-js/v0.44.2/mapbox-gl.js'></script> -->
-  
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-131413029-2"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-131413029-2');
+    </script>
+
     <script src="jquery-3.3.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@2.0.943/build/pdf.min.js"></script>
     <script>
@@ -64,7 +74,7 @@
     <!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
     <link rel="stylesheet" href="assets/css/main.css" />
     <style>
-        
+
         /* The Modal (background) */
         .modal {
             display: none; /* Hidden by default */
@@ -106,17 +116,18 @@
         </style>
     <!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
 </head>
+
 <body class="homepage">
     <div id="page-wrapper">
 
         <!-- Header -->
         <div id="header">
-<!-- particles.js container -->
+            <!-- particles.js container -->
 
-<div style = "width:100%; height:100%; z-index:0; position: absolute; top:0px; left:0px" id = "particles-js"></div>
-<!-- scripts -->
-<script src="assets/js/particles.js"></script>
-<script src="assets/js/app.js"></script>
+            <div style="width:100%; height:100%; z-index:0; position: absolute; top:0px; left:0px" id="particles-js"></div>
+            <!-- scripts -->
+            <script src="assets/js/particles.js"></script>
+            <script src="assets/js/app.js"></script>
             <!-- Inner -->
             <div class="inner">
                 <header>
@@ -128,7 +139,9 @@
                     </a>
                 </header>
                 <footer>
-                    <a href="#banner" class="circled scrolly"><div class="icon fa-angle-double-down"></div> </a>
+                    <a href="#banner" class="circled scrolly">
+                        <div class="icon fa-angle-double-down"></div>
+                    </a>
 
                 </footer>
             </div>
@@ -150,7 +163,7 @@
                     <!--<li><a href="http://testing.brianhungerman.com">Testing</a></li>-->
 
 
-                    <li><a href="#" id ="myBtn">Resume</a></li>
+                    <li><a href="#" id="myBtn">Resume</a></li>
                     <li><a href="#footer" class="scrolly">Contact Me</a></li>
                 </ul>
             </nav>
@@ -159,18 +172,18 @@
         <!-- The Modal -->
         <div id="myModal" class="modal">
 
-          <!-- Modal content -->
-          <div class="modal-content">
-      
-            <span class="close">&times;</span>
-            <center>
-                    <a href="Resume.pdf"> <img src="resume.png" style="width:95%">
-                    Download </a>
-            </center>
+            <!-- Modal content -->
+            <div class="modal-content">
 
-            
-          </div>
-      
+                <span class="close">&times;</span>
+                <center>
+                    <a href="Resume.pdf"> <img src="resume.png" style="width:95%">
+                        Download </a>
+                </center>
+
+
+            </div>
+
         </div>
 
         <!-- Banner -->
@@ -178,7 +191,8 @@
             <header>
                 <h2>Here's my Portfolio</h2>
                 <p>
-                    Clicking on a project will provide more information. Also check out my <a href="https://github.com/Mutilar">GitHub</a> repositories and <a href="https://devpost.com/BrianHungerman">DevPost</a> projects!
+                    Clicking on a project will provide more information. Also check out my <a href="https://github.com/Mutilar">GitHub</a>
+                    repositories and <a href="https://devpost.com/BrianHungerman">DevPost</a> projects!
                     <br />
                     <br />
                 </p>
@@ -203,28 +217,32 @@
                     <header>
                         <h3><a href="iterate.html">Iterate</a></h3>
                     </header>
-                    <p>A multilingual C# intepreter teaching aid visualized by Unity3D, <br />winning $5,000 at CITRIS' <strong>MAC</strong></p>
+                    <p>A multilingual C# intepreter teaching aid visualized by Unity3D, <br />winning $5,000 at CITRIS'
+                        <strong>MAC</strong></p>
                 </article>
                 <article class="Project">
                     <a href="ozone.html" class="image featured"><img src="images/ozone.jpg" alt="" /></a>
                     <header>
                         <h3><a href="ozone.html">Ozone</a></h3>
                     </header>
-                    <p>Utilizing GIS and Big Data to promote sustainability initiatives,<br /> winning $2,000 at <strong>Innovate to Grow</strong></p>
+                    <p>Utilizing GIS and Big Data to promote sustainability initiatives,<br /> winning $2,000 at
+                        <strong>Innovate to Grow</strong></p>
                 </article>
                 <article class="Project">
                     <a href="#" class="image featured"><img src="images/dashboard.jpg" alt="" /></a>
                     <header>
                         <h3><a href="#">Server Monitoring Dashboard</a></h3>
                     </header>
-                    <p>Icinga, Graphite & Grafana powered dashboard allowing for at-a-glance server diagonistics and trend analysis</p>
+                    <p>Icinga, Graphite & Grafana powered dashboard allowing for at-a-glance server diagonistics and
+                        trend analysis</p>
                 </article>
                 <article class="Project">
                     <a href="#" class="image featured"><img src="images/firmi.jpg" alt="" /></a>
                     <header>
                         <h3><a href="#">Firmi</a></h3>
                     </header>
-                    <p>Getting a grasp of your Fermi Surfaces: a solid-state physics research fellowship project through MACES</p>
+                    <p>Getting a grasp of your Fermi Surfaces: a solid-state physics research fellowship project
+                        through MACES</p>
                 </article>
                 <article class="Project">
                     <a class="image featured">
@@ -260,18 +278,19 @@
                     <p>Logarithmic Ultrasonic Collision Avoidance System,<br /> winning $1,000 at <strong>Citrus Hack</strong></p>
                 </article>
                 <article class="Hack">
-                        <a href="sriracha.html" class="image featured"><img src="images/sriracha.jpg" alt="" /></a>
-                        <header>
-                            <h3><a href="sriracha.html">SRIRACHA</a></h3>
-                        </header>
-                        <p>A fully autonomous room-mapping robot for first responders,<br /> winning <strong>SDHacks</strong></p>
-                    </article>
+                    <a href="sriracha.html" class="image featured"><img src="images/sriracha.jpg" alt="" /></a>
+                    <header>
+                        <h3><a href="sriracha.html">SRIRACHA</a></h3>
+                    </header>
+                    <p>A fully autonomous room-mapping robot for first responders,<br /> winning <strong>SDHacks</strong></p>
+                </article>
                 <article class="Hack">
                     <a href="gist.html" class="image featured"><img src="images/gist.jpg" alt="" /></a>
                     <header>
                         <h3><a href="gist.html">GISt</a></h3>
                     </header>
-                    <p>Getting the GISt of our food: using AR to fill the missing link from farm to table,<br /> winning <strong>HackDavis</strong></p>
+                    <p>Getting the GISt of our food: using AR to fill the missing link from farm to table,<br />
+                        winning <strong>HackDavis</strong></p>
                 </article>
                 <article class="Hack">
                     <a href="digestquest.html" class="image featured"><img src="images/digestquest.jpg" alt="" /></a>
@@ -285,7 +304,8 @@
                     <header>
                         <h3><a href="dogpark.html">DogPark</a></h3>
                     </header>
-                    <p>Tinder for pet adoption: humanizing the adoption process,<br /> finalist pitch in TESUM's <strong>PitchFest</strong></p>
+                    <p>Tinder for pet adoption: humanizing the adoption process,<br /> finalist pitch in TESUM's
+                        <strong>PitchFest</strong></p>
                 </article>
                 <article class="Hack">
                     <a href="#" class="image featured"><img src="images/smartank.jpg" alt="" /></a>
@@ -299,14 +319,16 @@
                     <header>
                         <h3><a href="#">Breeze</a></h3>
                     </header>
-                    <p>Air quality sensing phone module for asthma and air quality awareness,<br />hopefully winning <strong>something</strong></p>
+                    <p>Air quality sensing phone module for asthma and air quality awareness,<br />hopefully winning
+                        <strong>something</strong></p>
                 </article>
                 <article class="Hack">
                     <a href="#" class="image featured"><img src="images/motorskills.jpg" alt="" /></a>
                     <header>
                         <h3><a href="#">Motor Skills</a></h3>
                     </header>
-                    <p>Industrial IOT electric motor machine learning monitoring system,<br /> hopefully winning <strong>something</strong></p>
+                    <p>Industrial IOT electric motor machine learning monitoring system,<br /> hopefully winning
+                        <strong>something</strong></p>
                 </article>
                 <!-- <article class="Hack">
                     <header>
@@ -369,7 +391,8 @@
                     <header>
                         <h3><a href="#">Seerauber</a></h3>
                     </header>
-                    <p>Polygonal Pirates Prowling the Pacific: <br />a distributed-AI pirate game,<br /> my current side project</p>
+                    <p>Polygonal Pirates Prowling the Pacific: <br />a distributed-AI pirate game,<br /> my current
+                        side project</p>
                 </article>
                 <article class="Game">
                     <a href="voodoo.html" class="image featured"><img src="images/voodoo.jpg" alt="" /></a>
@@ -383,7 +406,8 @@
                     <header>
                         <h3><a href="#">Galactic Conquest</a></h3>
                     </header>
-                    <p>A seed-generated, object-oriented galaxy exploration game written in Java and Swing GUI Framework</p>
+                    <p>A seed-generated, object-oriented galaxy exploration game written in Java and Swing GUI
+                        Framework</p>
                 </article>
                 <article class="Game">
                     <a href="#" class="image featured"><img src="images/graviton.jpg" alt="" /></a>
@@ -410,7 +434,7 @@
                 <p>
                     <center>
                         <a href="http://microsoft.com">
-                            <img style="vertical-align:middle" src="images/microsoft.png" alt="" />  <br />
+                            <img style="vertical-align:middle" src="images/microsoft.png" alt="" /> <br />
                         </a><strong> Software Engineering Intern</strong> @ <a href="http://microsoft.com"><strong>Microsoft</strong></a><br />
                         May 2019 - Present
                     </center>
@@ -420,36 +444,50 @@
                     <br />
                     <center>
                         <a href="http://ventana.com">
-                            <img style="vertical-align:middle" src="images/Ventana_Roche.jpg" alt="" />  <br />
-                        </a><strong>Platform Software Engineering Intern</strong> @ <a href="http://ventana.com"><strong>Roche Tissue Diagonistics (Ventana)</strong></a><br />
+                            <img style="vertical-align:middle" src="images/Ventana_Roche.jpg" alt="" /> <br />
+                        </a><strong>Platform Software Engineering Intern</strong> @ <a href="http://ventana.com"><strong>Roche
+                                Tissue Diagonistics (Ventana)</strong></a><br />
                         May 2018 - December 2018
                     </center>
                     <ul style="list-style-type: disc">
-                        <li>Developed enterprise-level server monitoring dashboard using LAMP, Icinga, Graphite, Grafana technology stack, tracking 500+ services on 50+ servers, allowing for real-time debugging of underlying infrastructure.</li>
-                        <li>Practiced agile software development with biweekly sprints and daily scrums, working closely with quality assurance and algorithm teams.</li>
-                        <li>Delivered features, bugfixes, and code optimizations for commercial digital pathology web application in MEAN stack.</li>
-                        <li>Implemented and benchmarked WebGL solution to replace Open Sea Dragon image viewing & FabricJS drawing functionalities, significantly speeding render times and frame rates of web service.</li>
-                        <li>Worked to modernize and restructure application technology stack from Angular 1 to Angular 7, incorporating the redux design pattern and PixiJS.</li>
+                        <li>Developed enterprise-level server monitoring dashboard using LAMP, Icinga, Graphite,
+                            Grafana technology stack, tracking 500+ services on 50+ servers, allowing for real-time
+                            debugging of underlying infrastructure.</li>
+                        <li>Practiced agile software development with biweekly sprints and daily scrums, working
+                            closely with quality assurance and algorithm teams.</li>
+                        <li>Delivered features, bugfixes, and code optimizations for commercial digital pathology web
+                            application in MEAN stack.</li>
+                        <li>Implemented and benchmarked WebGL solution to replace Open Sea Dragon image viewing &
+                            FabricJS drawing functionalities, significantly speeding render times and frame rates of
+                            web service.</li>
+                        <li>Worked to modernize and restructure application technology stack from Angular 1 to Angular
+                            7, incorporating the redux design pattern and PixiJS.</li>
                     </ul>
                     <br />
                     <center>
                         <a href="http://citris.ucmerced.edu">
-                            <img style="vertical-align:middle" src="images/CITRIS_UCM.png" alt="" />  <br />
-                        </a><strong>Web Developer</strong> @ <a href="http://citris.ucmerced.edu"><strong>Center for Information Technology Research in the Interest of Society (CITRIS)</strong></a><br />
+                            <img style="vertical-align:middle" src="images/CITRIS_UCM.png" alt="" /> <br />
+                        </a><strong>Web Developer</strong> @ <a href="http://citris.ucmerced.edu"><strong>Center for
+                                Information Technology Research in the Interest of Society (CITRIS)</strong></a><br />
                         May 2017 - Present
                     </center>
                     <ul style="list-style-type: disc">
                         <li>Responsible for modernizing and maintaining CITRIS’ online presence.</li>
-                        <li>Leading the Tech for Social Good program, promoting student-led initiatives for social impact, including the Mobile App Challenge, HackMerced, etc.</li>
-                        <li>Streamlined new hire onboarding practices to address CITRIS’ high turnover rate, improving internal continuity.</li>
-                        <li>Built multiple sites utilizing the Drupal CMS and Acquia Dev Desktop, emphasizing on the readability and maintainability of systems.</li>
-                        <li>Collaborated with numerous organizations, including UC Water, UC Merced Sustainability, UASRegs, VICE Lab, etc.</li>
+                        <li>Leading the Tech for Social Good program, promoting student-led initiatives for social
+                            impact, including the Mobile App Challenge, HackMerced, etc.</li>
+                        <li>Streamlined new hire onboarding practices to address CITRIS’ high turnover rate, improving
+                            internal continuity.</li>
+                        <li>Built multiple sites utilizing the Drupal CMS and Acquia Dev Desktop, emphasizing on the
+                            readability and maintainability of systems.</li>
+                        <li>Collaborated with numerous organizations, including UC Water, UC Merced Sustainability,
+                            UASRegs, VICE Lab, etc.</li>
                     </ul>
                     <br />
                     <center>
                         <a href="http://andes.ucmerced.edu">
-                            <img style="vertical-align:middle" src="images/VICELAB_UCM.png" alt="" />  <br />
-                        </a><strong>Research Assistant</strong> @ <a href="http://andes.ucmerced.edu/"><strong>ANDES Lab</strong></a><br />
+                            <img style="vertical-align:middle" src="images/VICELAB_UCM.png" alt="" /> <br />
+                        </a><strong>Research Assistant</strong> @ <a href="http://andes.ucmerced.edu/"><strong>ANDES
+                                Lab</strong></a><br />
                         January 2019 - Present
                     </center>
                     <ul style="list-style-type: disc">
@@ -458,28 +496,37 @@
                     <br />
                     <center>
                         <a href="http://vicelab.ucmerced.edu">
-                            <img style="vertical-align:middle" src="images/VICELAB_UCM.png" alt="" />  <br />
-                        </a><strong>Research Assistant</strong> @ <a href="http://vicelab.ucmerced.edu/"><strong>VICE Lab</strong></a><br />
+                            <img style="vertical-align:middle" src="images/VICELAB_UCM.png" alt="" /> <br />
+                        </a><strong>Research Assistant</strong> @ <a href="http://vicelab.ucmerced.edu/"><strong>VICE
+                                Lab</strong></a><br />
                         August 2018 - Present
                     </center>
                     <ul style="list-style-type: disc">
                         <li>Introducing novel computational approaches to environmental engineering.</li>
-                        <li>Developing geospatial analysis solutions for hydrologic, agricultural, and sustainability problems utilizing the Google Earth Engine API via JavaScript.</li>
-                        <li>Prepared time-series satellite imagery animations tracking hyrological conditions of stock ponds for PhD's thesis defense.</li>
-                        <li>Oversaw team of undergraduate researchers to develop scripts in Google Earth Engine to track time-series fallowing of farmland.</li>
+                        <li>Developing geospatial analysis solutions for hydrologic, agricultural, and sustainability
+                            problems utilizing the Google Earth Engine API via JavaScript.</li>
+                        <li>Prepared time-series satellite imagery animations tracking hyrological conditions of stock
+                            ponds for PhD's thesis defense.</li>
+                        <li>Oversaw team of undergraduate researchers to develop scripts in Google Earth Engine to
+                            track time-series fallowing of farmland.</li>
                     </ul>
                     <br />
                     <center>
                         <a href="http://maces.ucmerced.edu">
-                            <img style="vertical-align:middle" src="images/MACES_UCM.png" alt="" />  <br />
-                        </a><strong>Research Assistant</strong> @ <a href="http://maces.ucmerced.edu/"><strong>Merced nAnomaterials Center for Research and Sensing (MACES)</strong></a><br />
+                            <img style="vertical-align:middle" src="images/MACES_UCM.png" alt="" /> <br />
+                        </a><strong>Research Assistant</strong> @ <a href="http://maces.ucmerced.edu/"><strong>Merced
+                                nAnomaterials Center for Research and Sensing (MACES)</strong></a><br />
                         October 2017 - May 2018
                     </center>
                     <ul style="list-style-type: disc">
-                        <li>Developed computational solid-state physics algorithms to derive and print Fermi surfaces, helping visualize and corporealize abstract 3D models.</li>
-                        <li>Utilized Marching Cubes algorithm and 3D printing via Fortran to interpolate band structure files into an approximate polygonal isosurface.</li>
-                        <li>Presented research at an annual symposium, part of the NASA's Minority University Research and Education Project (MUREP)</li>
-                        <li>Worked under Professor David Strubbe, generalizing his program, <a href="http://faculty.ucmerced.edu/dstrubbe/Firmi/"><strong>Firmi</strong></a>, to work for more band structure files and edge cases. </li>
+                        <li>Developed computational solid-state physics algorithms to derive and print Fermi surfaces,
+                            helping visualize and corporealize abstract 3D models.</li>
+                        <li>Utilized Marching Cubes algorithm and 3D printing via Fortran to interpolate band structure
+                            files into an approximate polygonal isosurface.</li>
+                        <li>Presented research at an annual symposium, part of the NASA's Minority University Research
+                            and Education Project (MUREP)</li>
+                        <li>Worked under Professor David Strubbe, generalizing his program, <a href="http://faculty.ucmerced.edu/dstrubbe/Firmi/"><strong>Firmi</strong></a>,
+                            to work for more band structure files and edge cases. </li>
                     </ul>
                     <br />
                 </p>
@@ -503,10 +550,12 @@
                     Studying in Merced, the Gateway to Yosemite, has proven fruitful.
                     In addition to my exceptional academics (GPA: 3.83 as of Spring 2018), I've been a part of
                     numerous on-campus organizations and departments, including
-                    in the <strong>School of Engineering's Innovate to Grow Planning Committee</strong> and as the computer science ambassador
+                    in the <strong>School of Engineering's Innovate to Grow Planning Committee</strong> and as the
+                    computer science ambassador
                     through the <strong>Center for Career and Professional Advancement</strong>. I also served as
                     the Community Outreach Officer for the <strong>Association for Computing Machinery</strong>, the
-                    largest computer science club on campus, and as an Executive Director for <strong>HackMerced</strong>, the campus's annual hackathon event.
+                    largest computer science club on campus, and as an Executive Director for <strong>HackMerced</strong>,
+                    the campus's annual hackathon event.
                 </p>
             </article>
 
@@ -525,14 +574,17 @@
                 </header>
                 <div class="row">
                     <article class="4u 12u(mobile) special">
-                        <a href="http://engineeringservicelearning.ucmerced.edu/team-sustainablesites" class="image featured"><img src="images/pic07.jpg" alt="" /></a>
+                        <a href="http://engineeringservicelearning.ucmerced.edu/team-sustainablesites" class="image featured"><img
+                                src="images/pic07.jpg" alt="" /></a>
                         <header>
                             <h3><strong><a href="#">Sustainable Sites</a></strong></h3>
                             <h5>Project Manager</h5>
                         </header>
                         <p>
-                            As part of the School of Engineering's Engineering Service Learning program, I am managing a team of twelve to design, build, and publish
-                            a geotracking web application for the Department of Sustainability to help users better understand sustainability projects on campus.
+                            As part of the School of Engineering's Engineering Service Learning program, I am managing
+                            a team of twelve to design, build, and publish
+                            a geotracking web application for the Department of Sustainability to help users better
+                            understand sustainability projects on campus.
                         </p>
                     </article>
                     <article class="4u 12u(mobile) special">
@@ -542,19 +594,24 @@
                             <h5>Project Manager</h5>
                         </header>
                         <p>
-                            Working with an entrepreneurial UC Merced alumnus, we are developing novel teaching techniques and curriculum to revolutionize K-12 STEM education
-                            via project-based learning. I develop and teach <i>From Bits to Scripts</i> lesson plans on microprocessors, software-hardware interactions and coding.
+                            Working with an entrepreneurial UC Merced alumnus, we are developing novel teaching
+                            techniques and curriculum to revolutionize K-12 STEM education
+                            via project-based learning. I develop and teach <i>From Bits to Scripts</i> lesson plans on
+                            microprocessors, software-hardware interactions and coding.
                         </p>
                     </article>
                     <article class="4u 12u(mobile) special">
-                        <a href="http://summerofgamedesign.webs.com" class="image featured"><img src="images/pic09.jpg" alt="" /></a>
+                        <a href="http://summerofgamedesign.webs.com" class="image featured"><img src="images/pic09.jpg"
+                                alt="" /></a>
                         <header>
                             <h3><strong><a href="#">Summer of Game Design</a></strong></h3>
                             <h5>Founder</h5>
                         </header>
                         <p>
-                            Working with my high school computer science professor, we started and ran a two-week-long game design and programming summer camp.
-                            I wrote and taught curriculum on basic C# programming via Unity3D, and helped the non-profit program raise $25,000 for new computers for the school's computer lab.
+                            Working with my high school computer science professor, we started and ran a two-week-long
+                            game design and programming summer camp.
+                            I wrote and taught curriculum on basic C# programming via Unity3D, and helped the
+                            non-profit program raise $25,000 for new computers for the school's computer lab.
                         </p>
                     </article>
                 </div>
@@ -567,8 +624,10 @@
                             <h5>Electrical Team Lead, Treasurer</h5>
                         </header>
                         <p>
-                            Competing in FRC (For Inspiration & Recognition of Science & Technology Robotics Competition), I worked designing and integrating Team 1458's electrical systems.
-                            This involved installing sensors and motor controllers, supplying power via a power distribution board, managing batteries, and overseeing a team of five.
+                            Competing in FRC (For Inspiration & Recognition of Science & Technology Robotics
+                            Competition), I worked designing and integrating Team 1458's electrical systems.
+                            This involved installing sensors and motor controllers, supplying power via a power
+                            distribution board, managing batteries, and overseeing a team of five.
                         </p>
                     </article>
 
@@ -579,18 +638,22 @@
                             <h5>Community Outreach Officer</h5>
                         </header>
                         <p>
-                            As part of the Association for Computing Machinery's UC Merced chapter, I fostered community engagement via workshops, seminars, and tours. I also helped to host
-                            ACM's LAN parties, and hosted seminars targeted towards professional and social development for computer science students.
+                            As part of the Association for Computing Machinery's UC Merced chapter, I fostered
+                            community engagement via workshops, seminars, and tours. I also helped to host
+                            ACM's LAN parties, and hosted seminars targeted towards professional and social development
+                            for computer science students.
                         </p>
                     </article>
                     <article class="4u 12u(mobile) special">
-                        <a href="https://hackmerced.com" class="image featured"><img src="images/hackmerced_icon.jpg" alt="" /></a>
+                        <a href="https://hackmerced.com" class="image featured"><img src="images/hackmerced_icon.jpg"
+                                alt="" /></a>
                         <header>
                             <h3><strong><a href="#">HackMerced</a></strong></h3>
                             <h5>Executive Director</h5>
                         </header>
                         <p>
-                            Overseeing a team of 20 to coordinate UCM’s annual hackathons, engaging with 30 corporate sponsors, raising $10,000 and hosting 400 competitors.
+                            Overseeing a team of 20 to coordinate UCM’s annual hackathons, engaging with 30 corporate
+                            sponsors, raising $10,000 and hosting 400 competitors.
                         </p>
                     </article>
                 </div>
@@ -611,8 +674,10 @@
                             </header>
                             <p>Reach me at any time via any of the programs linked below!</p>
                             <ul class="icons">
-                                <li><a href="https://www.linkedin.com/in/brian-hungerman/" class="icon fa-linkedin"><span class="label">LinkedIn</span></a></li>
-                                <li><a href="https://www.facebook.com/BrianMHungerman" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
+                                <li><a href="https://www.linkedin.com/in/brian-hungerman/" class="icon fa-linkedin"><span
+                                            class="label">LinkedIn</span></a></li>
+                                <li><a href="https://www.facebook.com/BrianMHungerman" class="icon fa-facebook"><span
+                                            class="label">Facebook</span></a></li>
                                 <li><a href="https://github.com/Mutilar" class="icon fa-github"><span class="label">GitHub</span></a></li>
                                 <li><a href="mailto:brianhungerman@gmail.com" class="icon fa-envelope"><span class="label">Email</span></a></li>
                                 <li><a href="tel:12094468256" class="icon fa-phone"><span class="label">Phone</span></a></li>
@@ -649,30 +714,31 @@
     <script>
         // Get the modal
         var modal = document.getElementById('myModal');
-        
+
         // Get the button that opens the modal
         var btn = document.getElementById("myBtn");
-        
+
         // Get the <span> element that closes the modal
         var span = document.getElementsByClassName("close")[0];
-        
+
         // When the user clicks the button, open the modal 
-        btn.onclick = function() {
+        btn.onclick = function () {
             modal.style.display = "block";
         }
-        
+
         // When the user clicks on <span> (x), close the modal
-        span.onclick = function() {
+        span.onclick = function () {
             modal.style.display = "none";
         }
-        
+
         // When the user clicks anywhere outside of the modal, close it
-        window.onclick = function(event) {
+        window.onclick = function (event) {
             if (event.target == modal) {
                 modal.style.display = "none";
             }
         }
-        </script>
+    </script>
 
 </body>
+
 </html>
