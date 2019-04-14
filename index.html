@@ -50,6 +50,7 @@
     <script src="https://unpkg.com/github-calendar@latest/dist/github-calendar.min.js"></script>
     <link rel="stylesheet" href="assets/css/calendar.css" />
     <link rel="stylesheet" href="assets/css/collapsible.css" />
+    <link rel="stylesheet" href="assets/css/modal.css" />
     <style>
         /* The hero image */
         .hero-image {
@@ -84,10 +85,27 @@
             box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
             transition: 0.3s;
             /* width: 19% */
-            width:17em;
+            width: 17em;
+        }
+
+        .chip {
+            display: inline-block;
+            padding: 0 25px;
+            height: 50px;
+            font-size: 16px;
+            line-height: 50px;
+            border-radius: 25px;
+            background-color: #f1f1f1;
+        }
+
+        .chip img {
+            float: left;
+            margin: 0 10px 0 -25px;
+            height: 50px;
+            width: 50px;
+            border-radius: 50%;
         }
     </style>
-    <!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
 </head>
 
 <body class="homepage">
@@ -109,7 +127,6 @@
                     <a href="#banner" class="circled scrolly">
                         <div class="icon fa-angle-double-down"></div>
                     </a>
-
                 </footer>
             </div>
 
@@ -127,7 +144,7 @@
                             <li><a href="#features" class="scrolly">Leadership</a></li>
                         </ul>
                     </li>
-                    <li><a href="#" id="myBtn">Resume</a></li>
+                    <!-- <li><a href="#" id="myBtn">Resume</a></li> -->
                     <li><a href="#footer" class="scrolly">Contact Me</a></li>
                 </ul>
             </nav>
@@ -157,7 +174,7 @@
                 <h2>Here's my Portfolio</h2>
                 <p>
                     I'm a <strong>Software Engineer</strong> interested in <strong><a href="https://en.wikipedia.org/wiki/Graph_theory">Graph
-                        Theory</a></strong> and <strong><a href="https://en.wikipedia.org/wiki/Gamification">Gamification</a></strong>.
+                            Theory</a></strong> and <strong><a href="https://en.wikipedia.org/wiki/Gamification">Gamification</a></strong>.
                 </p>
             </header>
 
@@ -166,7 +183,6 @@
                 <img style="width:100%" src="images/microsoft.jpg" alt="" />
                 <h3 style="text-align: center;">Microsoft</h3>
                 <p style="text-align: center;">Software Engineering Intern</p>
-
                 <a class="icon fa-calendar"> May 2019 - August 2019 </a> <br>
                 <a class="icon fa-map-marker"> Redmond, Washington </a>
                 <button class="collapsible" style="text-align: center; margin:10px 0px 0px 0px;">Read more...</button>
@@ -181,22 +197,6 @@
                 <a class="icon fa-calendar"> May 2018 - December 2018 </a> <br>
                 <a class="icon fa-map-marker"> Santa Clara, California </a>
                 <button class="collapsible" style="text-align: center; margin:10px 0px 0px 0px;">Read more...</button>
-                <div class="content">
-                    <ul style="list-style-type: disc">
-                        <li>Developed enterprise-level server monitoring dashboard using LAMP, Icinga, Graphite,
-                            Grafana technology stack, tracking 500+ services on 50+ servers, allowing for real-time
-                            debugging of underlying infrastructure.</li>
-                        <li>Practiced agile software development with biweekly sprints and daily scrums, working
-                            closely with quality assurance and algorithm teams.</li>
-                        <li>Delivered features, bugfixes, and code optimizations for commercial digital pathology web
-                            application in MEAN stack.</li>
-                        <li>Implemented and benchmarked WebGL solution to replace Open Sea Dragon image viewing &
-                            FabricJS drawing functionalities, significantly speeding render times and frame rates of
-                            web service.</li>
-                        <li>Worked to modernize and restructure application technology stack from Angular 1 to Angular
-                            7, incorporating the redux design pattern and PixiJS.</li>
-                    </ul>
-                </div>
             </div>
             <div class="card">
                 <img style="width:100%" src="images/vicelab.jpg" alt="" />
@@ -206,15 +206,7 @@
                 <a class="icon fa-map-marker"> Merced, California </a>
                 <button class="collapsible" style="text-align: center; margin:10px 0px 0px 0px;">Read more...</button>
                 <div class="content">
-                    <ul style="list-style-type: disc">
-                        <li>Introducing novel computational approaches to environmental engineering.</li>
-                        <li>Developing geospatial analysis solutions for hydrologic, agricultural, and sustainability
-                            problems utilizing the Google Earth Engine API via JavaScript.</li>
-                        <li>Prepared time-series satellite imagery animations tracking hyrological conditions of stock
-                            ponds for PhD's thesis defense.</li>
-                        <li>Oversaw team of undergraduate researchers to develop scripts in Google Earth Engine to
-                            track time-series fallowing of farmland.</li>
-                    </ul>
+
                 </div>
             </div>
             <div class="card">
@@ -225,7 +217,6 @@
                 <a class="icon fa-map-marker"> Merced, California </a>
                 <button class="collapsible" style="text-align: center; margin:10px 0px 0px 0px;">Read more...</button>
                 <div class="content">
-                    <p>To be determined!</p>
                 </div>
             </div>
             <div class="card">
@@ -236,16 +227,6 @@
                 <a class="icon fa-map-marker"> Merced, California </a>
                 <button class="collapsible" style="text-align: center; margin:10px 0px 0px 0px;">Read more...</button>
                 <div class="content">
-                    <ul style="list-style-type: disc">
-                        <li>Developed computational solid-state physics algorithms to derive and print Fermi surfaces,
-                            helping visualize and corporealize abstract 3D models.</li>
-                        <li>Utilized Marching Cubes algorithm and 3D printing via Fortran to interpolate band structure
-                            files into an approximate polygonal isosurface.</li>
-                        <li>Presented research at an annual symposium, part of the NASA's Minority University Research
-                            and Education Project (MUREP)</li>
-                        <li>Worked under Professor David Strubbe, generalizing his program, <a href="http://faculty.ucmerced.edu/dstrubbe/Firmi/"><strong>Firmi</strong></a>,
-                            to work for more band structure files and edge cases. </li>
-                    </ul>
                 </div>
             </div>
 
@@ -257,17 +238,6 @@
                 <a class="icon fa-map-marker"> Merced, California </a>
                 <button class="collapsible" style="text-align: center; margin:10px 0px 0px 0px;">Read more...</button>
                 <div class="content">
-                    <ul style="list-style-type: disc">
-                        <li>Responsible for modernizing and maintaining CITRIS’ online presence.</li>
-                        <li>Leading the Tech for Social Good program, promoting student-led initiatives for social
-                            impact, including the Mobile App Challenge, HackMerced, etc.</li>
-                        <li>Streamlined new hire onboarding practices to address CITRIS’ high turnover rate, improving
-                            internal continuity.</li>
-                        <li>Built multiple sites utilizing the Drupal CMS and Acquia Dev Desktop, emphasizing on the
-                            readability and maintainability of systems.</li>
-                        <li>Collaborated with numerous organizations, including UC Water, UC Merced Sustainability,
-                            UASRegs, VICE Lab, etc.</li>
-                    </ul>
                 </div>
             </div>
             <div class="card">
@@ -289,7 +259,6 @@
                 <a class="icon fa-map-marker"> Merced, California </a>
                 <button class="collapsible" style="text-align: center; margin:10px 0px 0px 0px;">Read more...</button>
                 <div class="content">
-                    <p>To be determined!</p>
                 </div>
             </div>
             <div class="card">
@@ -300,7 +269,6 @@
                 <a class="icon fa-map-marker"> Danville, California </a>
                 <button class="collapsible" style="text-align: center; margin:10px 0px 0px 0px;">Read more...</button>
                 <div class="content">
-                    <p>To be determined!</p>
                 </div>
             </div>
             <div class="card">
@@ -311,23 +279,106 @@
                 <a class="icon fa-map-marker"> Danville, California </a>
                 <button class="collapsible" style="text-align: center; margin:10px 0px 0px 0px;">Read more...</button>
                 <div class="content">
-                    <p>To be determined!</p>
                 </div>
             </div>
+
+            <div style="width:100%; float:left">
+                <hr>
+                <h2>Projects</h2>
+
+
+                <!-- Trigger/Open The Modal -->
+                <button id="myBtn">Open Modal</button>
+                <!-- The Modal -->
+                <div id="myModal" class="modal">
+
+                    <!-- Modal content -->
+                    <div class="modal-content">
+                        <span class="close">&times;</span>
+                        <p>Some text in the Modal..</p>
+                    </div>
+
+                </div>
+            </div>
+
+            <div style="width:100%; float:left">
+
+
+                <div class="card">
+                    <img style="width:100%" src="images/redtierobotics.jpg" alt="" />
+                    <h3 style="text-align: center;">Red Tie Robotics (FRC 1458)</h3>
+                    <p style="text-align: center;">Electrical Team Lead, Treasurer</p>
+                    <a class="icon fa-calendar"> August 2014 - May 2016 </a> <br>
+                    <a class="icon fa-map-marker"> Danville, California </a>
+                    <button class="collapsible" style="text-align: center; margin:10px 0px 0px 0px;">Read more...</button>
+                    <div class="content">
+                        <p>To be determined!</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <img style="width:100%" src="images/redtierobotics.jpg" alt="" />
+                    <h3 style="text-align: center;">Red Tie Robotics (FRC 1458)</h3>
+                    <p style="text-align: center;">Electrical Team Lead, Treasurer</p>
+                    <a class="icon fa-calendar"> August 2014 - May 2016 </a> <br>
+                    <a class="icon fa-map-marker"> Danville, California </a>
+                    <button class="collapsible" style="text-align: center; margin:10px 0px 0px 0px;">Read more...</button>
+                    <div class="content">
+                        <p>To be determined!</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <img style="width:100%" src="images/redtierobotics.jpg" alt="" />
+                    <h3 style="text-align: center;">Red Tie Robotics (FRC 1458)</h3>
+                    <p style="text-align: center;">Electrical Team Lead, Treasurer</p>
+                    <a class="icon fa-calendar"> August 2014 - May 2016 </a> <br>
+                    <a class="icon fa-map-marker"> Danville, California </a>
+                    <button class="collapsible" style="text-align: center; margin:10px 0px 0px 0px;">Read more...</button>
+                    <div class="content">
+                        <p>To be determined!</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <img style="width:100%" src="images/redtierobotics.jpg" alt="" />
+                    <h3 style="text-align: center;">Red Tie Robotics (FRC 1458)</h3>
+                    <p style="text-align: center;">Electrical Team Lead, Treasurer</p>
+                    <a class="icon fa-calendar"> August 2014 - May 2016 </a> <br>
+                    <a class="icon fa-map-marker"> Danville, California </a>
+                    <button class="collapsible" style="text-align: center; margin:10px 0px 0px 0px;">Read more...</button>
+                    <div class="content">
+                        <p>To be determined!</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <img style="width:100%" src="images/redtierobotics.jpg" alt="" />
+                    <h3 style="text-align: center;">Red Tie Robotics (FRC 1458)</h3>
+                    <p style="text-align: center;">Electrical Team Lead, Treasurer</p>
+                    <a class="icon fa-calendar"> August 2014 - May 2016 </a> <br>
+                    <a class="icon fa-map-marker"> Danville, California </a>
+                    <button class="collapsible" style="text-align: center; margin:10px 0px 0px 0px;">Read more...</button>
+                    <div class="content">
+                        <p>To be determined!</p>
+                    </div>
+                </div>
+            </div>
+
         </section>
+
 
         <div class="wrapper style2">
             <article id="education" class="container special">
                 <!-- <p>...</p> -->
                 <img style="width:100%" src="images/work.jpg" alt="" />
                 <header>
-                    <h2>I also have an Education</h2>
+                    <hr>
+                    <h2>Skills</h2>
                     <p>
                         I'm a Computer Science & Engineering undergraduate at the University of California, Merced.
                         <br />
                         <i>Official transcript available upon request.</i>
                     </p>
                 </header>
+
+
                 <!-- <p>
                     Studying in Merced, the Gateway to Yosemite, has proven fruitful.
                     In addition to my exceptional academics (GPA: 3.83 as of Spring 2018), I've been a part of
@@ -441,45 +492,48 @@
                 </div>
             </section>
  -->
-        </div>
+    </div>
 
-        <!-- Footer -->
-        <div id="footer">
-            <div class="container">
-                <div class="row">
-                    <div class="12u">
 
-                        <!-- Contact -->
-                        <section class="contact">
-                            <header>
-                                <h3>Want to meet up?</h3>
-                            </header>
-                            <p>Reach me at any time via any of the programs linked below!</p>
-                            <ul class="icons">
-                                <li><a href="https://www.linkedin.com/in/brian-hungerman/" class="icon fa-linkedin"><span
-                                            class="label">LinkedIn</span></a></li>
-                                <li><a href="https://www.facebook.com/BrianMHungerman" class="icon fa-facebook"><span
-                                            class="label">Facebook</span></a></li>
-                                <li><a href="https://github.com/Mutilar" class="icon fa-github"><span class="label">GitHub</span></a></li>
-                                <li><a href="mailto:brianhungerman@gmail.com" class="icon fa-envelope"><span class="label">Email</span></a></li>
-                                <li><a href="tel:12094468256" class="icon fa-phone"><span class="label">Phone</span></a></li>
-                            </ul>
-                        </section>
 
-                        <!-- Copyright -->
-                        <hr />
-                        <div class="copyright">
-                            <ul class="menu">
-                                <li>&copy; Brian Hungerman</li>
-                                <li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
-                            </ul>
-                        </div>
 
+
+    <!-- Footer -->
+    <div id="footer">
+        <div class="container">
+            <div class="row">
+                <div class="12u">
+
+                    <!-- Contact -->
+                    <section class="contact">
+                        <header>
+                            <h3>Want to meet up?</h3>
+                        </header>
+                        <p>Reach me at any time via any of the programs linked below!</p>
+                        <ul class="icons">
+                            <li><a href="https://www.linkedin.com/in/brian-hungerman/" class="icon fa-linkedin"><span
+                                        class="label">LinkedIn</span></a></li>
+                            <li><a href="https://www.facebook.com/BrianMHungerman" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
+                            <li><a href="https://github.com/Mutilar" class="icon fa-github"><span class="label">GitHub</span></a></li>
+                            <li><a href="mailto:brianhungerman@gmail.com" class="icon fa-envelope"><span class="label">Email</span></a></li>
+                            <li><a href="tel:12094468256" class="icon fa-phone"><span class="label">Phone</span></a></li>
+                        </ul>
+                    </section>
+
+                    <!-- Copyright -->
+                    <hr />
+                    <div class="copyright">
+                        <ul class="menu">
+                            <li>&copy; Brian Hungerman</li>
+                            <li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+                        </ul>
                     </div>
 
                 </div>
+
             </div>
         </div>
+    </div>
 
     </div>
 
@@ -506,6 +560,33 @@
                     content.style.display = "block";
                 }
             });
+        }
+    </script>
+    <script>
+        // Get the modal
+        var modal = document.getElementById('myModal');
+
+        // Get the button that opens the modal
+        var btn = document.getElementById("myBtn");
+
+        // Get the <span> element that closes the modal
+        var span = document.getElementsByClassName("close")[0];
+
+        // When the user clicks the button, open the modal 
+        btn.onclick = function () {
+            modal.style.display = "block";
+        }
+
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function () {
+            modal.style.display = "none";
+        }
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
         }
     </script>
 </body>
