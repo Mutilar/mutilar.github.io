@@ -1,11 +1,11 @@
-ID,NAME,TITLE,DATE,TEXT
-iterate,Iterate,CITRIS Mobile App Challenge,M 2017,tbd
-ozone,Ozone,Innovate to Grow,M 2018,tbd
-gasleek,GasLeek,ValleyHacks,J 2019,tbd
-sriracha,SRIRACHA,SDHacks,O 2018,tbd
-motorskills,MotorSkills,SLO Hacks,J 2019,tbd
-chemistry,chemisTRY,CruzHacks,F 2019,tbd
-blindsight,Blindsight,CitrusHack,A 2018,tbd
-gist,GISt,HackDavis,J 2018,tbd
-digestquest,DigestQuest,HackMerced,S 2017,tbd
-smartank,SMARTank,HackFresno,A 2018,tbd
+ID,NAME,TITLE,DATE,LOCATION,TEXT
+iterate,Iterate,CITRIS Mobile App Challenge,M 2017,"Merced, California",tbd
+ozone,Ozone,Innovate to Grow,M 2018,"Merced, California",tbd
+gasleek,GasLeek,ValleyHacks,J 2019,"Modesto, California",tbd
+sriracha,SRIRACHA,SDHacks,O 2018,"San Diego, California",tbd
+motorskills,MotorSkills,SLO Hacks,J 2019,"San Luis Obispo, California",tbd
+chemistry,chemisTRY,CruzHacks,F 2019,"Santa Cruz, California",tbd
+blindsight,Blindsight,CitrusHack,A 2018,"Riverside, California",tbd
+gist,GISt,HackDavis,J 2018,"Davis, California",tbd
+digestquest,DigestQuest,HackMerced,S 2017,"Merced, California",tbd
+smartank,SMARTank,HackFresno,A 2018,"Fresno, California",tbd
