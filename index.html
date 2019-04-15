@@ -177,6 +177,25 @@
                             Theory</a></strong> and <strong><a href="https://en.wikipedia.org/wiki/Gamification">Gamification</a></strong>.
                 </p>
             </header>
+
+            <!-- The Modal -->
+            <div id="modal" class="modal">
+
+                <!-- Modal content -->
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <img id="modal-image" class="image featured" style="box-shadow: 5px 5px 25px -5px rgba(0, 0, 0, 0.45); margin:3em; width:25%; float:left"
+                        src="../images/people/josh-viers.jpg">
+                    <h2 class="namePosition" id="modal-name" style="margin:3em; color:white">
+                    </h2>
+                    <h3 id="modal-title" style="margin:3em; color:white">
+                    </h3>
+                    <p id="modal-biography" style="margin:3em; color:white">
+                    </p>
+                </div>
+
+            </div>
+
             <div id="experience"></div>
 
             <div style="width:100%; float:left">
@@ -197,26 +216,13 @@
             </div>
 
             <div id="projects"></div>
-            
+
 
 
             <div style="width:100%; float:left">
                 <hr>
                 <h2>Games</h2>
 
-
-                <!-- Trigger/Open The Modal -->
-                <button id="myBtn">Open Modal</button>
-                <!-- The Modal -->
-                <div id="myModal" class="modal">
-
-                    <!-- Modal content -->
-                    <div class="modal-content">
-                        <span class="close">&times;</span>
-                        <p>Some text in the Modal..</p>
-                    </div>
-
-                </div>
             </div>
 
             <div id="games"></div>
@@ -400,7 +406,7 @@
 
     <!-- Scripts -->
     <script src="assets/js/jquery.min.js"></script>
-	<script src="/assets/js/jquery.csv.min.js"></script>
+    <script src="/assets/js/jquery.csv.min.js"></script>
     <script src="assets/js/jquery.dropotron.min.js"></script>
     <script src="assets/js/jquery.scrolly.min.js"></script>
     <script src="assets/js/jquery.onvisible.min.js"></script>
@@ -409,19 +415,68 @@
     <!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
     <script src="assets/js/main.js"></script>
     <script>
+        var experience_data;
+        var project_data;
+
+        var modal = document.getElementById('modal');
+        var span = document.getElementsByClassName("close")[0];
+
+        // When the user clicks the button, open the modal 
+        btn.onclick = function () {
+            modal.style.display = "block";
+        }
+
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function () {
+            modal.style.display = "none";
+        }
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+        function loadModal(id) {
+            if (id != '') {
+                modal.style.display = "block";
+                var logo = document.getElementById('modal-image');
+                logo.src = '/images/' + id + '.jpg';
+                var name = document.getElementById('modal-name');
+                name.innerHTML = getInfo(id).NAME;
+                var title = document.getElementById('modal-title');
+                title.innerHTML = getInfo(id).TITLE;
+                var biography = document.getElementById('modal-biography');
+                biography.innerHTML = getInfo(id).TEXT;
+            }
+        }
+
+        function getInfo(id) {
+            for (var i = 0; i < data.length; i++) {
+                if (experience_data[i].ID == id) {
+                    return experience_data[i];
+                }
+            }
+        }
+
         $(function () {
+            $(window).on('hashchange', function (event) {
+                loadModal(window.location.hash.substring(1));
+            });
+
             $.get("/experience.csv").then(function (text, status, xhr) {
-                var data = $.csv.toObjects(text);
+                experience_data = $.csv.toObjects(text);
 
                 for (var i = 0; i < data.length; i++) {
                     $("#experience").append(
                         $.parseHTML(
                             '<a href="#' + data[i].ID + '" class="card">' +
-                            '<img style="width:100%" src="images/'+ data[i].ID +'.jpg" alt="" />' + 
-                            '<p style="text-align: center; font-size: 1.25em; font-weight:400; line-height:1.25em; ">'+ data[i].NAME +'</p>' +
-                            '<p style="text-align: center;">'+ data[i].TITLE +'</p>' +
-                            '<p style="margin:1em" class="icon fa-calendar"> '+ data[i].DATE +' </p>' +
-                            '<p style="margin:1em" class="icon fa-map-marker"> &nbsp;'+ data[i].LOCATION +' </p>' +
+                            '<img style="width:100%" src="images/' + data[i].ID + '.jpg" alt="" />' +
+                            '<p style="text-align: center; font-size: 1.25em; font-weight:400; line-height:1.25em; ">' + data[i].NAME + '</p>' +
+                            '<p style="text-align: center;">' + data[i].TITLE + '</p>' +
+                            '<p style="margin:1em" class="icon fa-calendar"> ' + data[i].DATE + ' </p>' +
+                            '<p style="margin:1em" class="icon fa-map-marker"> &nbsp;' + data[i].LOCATION + ' </p>' +
                             '</a>'
                         ));
                 }
@@ -433,11 +488,11 @@
                     $("#projects").append(
                         $.parseHTML(
                             '<div class="button card">' +
-                            '<img style="width:100%" src="images/'+ data[i].ID +'.jpg" alt="" />' + 
-                            '<h3 style="text-align: center;">'+ data[i].NAME +'</h3>' +
-                            '<p style="text-align: center;">'+ data[i].TITLE +'</p>' +
-                            '<a class="icon fa-calendar"> '+ data[i].DATE +' </a> <br>' +
-                            '<a class="icon fa-map-marker"> '+ data[i].LOCATION +' </a>' +
+                            '<img style="width:100%" src="images/' + data[i].ID + '.jpg" alt="" />' +
+                            '<h3 style="text-align: center;">' + data[i].NAME + '</h3>' +
+                            '<p style="text-align: center;">' + data[i].TITLE + '</p>' +
+                            '<a class="icon fa-calendar"> ' + data[i].DATE + ' </a> <br>' +
+                            '<a class="icon fa-map-marker"> ' + data[i].LOCATION + ' </a>' +
                             '<button class="collapsible" style="text-align: center; margin:10px 0px 0px 0px;">Read more...</button>' +
                             '</div>'
                         ));
@@ -461,49 +516,6 @@
             //     }
             // });
         });
-    </script>
-    <script>
-        var coll = document.getElementsByClassName("collapsible");
-        var i;
-
-        for (i = 0; i < coll.length; i++) {
-            coll[i].addEventListener("click", function () {
-                this.classList.toggle("active");
-                var content = this.nextElementSibling;
-                if (content.style.display === "block") {
-                    content.style.display = "none";
-                } else {
-                    content.style.display = "block";
-                }
-            });
-        }
-    </script>
-    <script>
-        // Get the modal
-        var modal = document.getElementById('myModal');
-
-        // Get the button that opens the modal
-        var btn = document.getElementById("myBtn");
-
-        // Get the <span> element that closes the modal
-        var span = document.getElementsByClassName("close")[0];
-
-        // When the user clicks the button, open the modal 
-        btn.onclick = function () {
-            modal.style.display = "block";
-        }
-
-        // When the user clicks on <span> (x), close the modal
-        span.onclick = function () {
-            modal.style.display = "none";
-        }
-
-        // When the user clicks anywhere outside of the modal, close it
-        window.onclick = function (event) {
-            if (event.target == modal) {
-                modal.style.display = "none";
-            }
-        }
     </script>
 </body>
 
