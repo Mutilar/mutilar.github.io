@@ -460,33 +460,32 @@
             $.get("/experience.csv").then(function (text, status, xhr) {
                 experience_data = $.csv.toObjects(text);
 
-                for (var i = 0; i < data.length; i++) {
+                for (var i = 0; i < experience_data.length; i++) {
                     $("#experience").append(
                         $.parseHTML(
-                            '<a href="#' + data[i].ID + '" class="card">' +
-                            '<img style="width:100%" src="images/' + data[i].ID + '.jpg" alt="" />' +
-                            '<p style="text-align: center; font-size: 1.25em; font-weight:400; line-height:1.25em; ">' + data[i].NAME + '</p>' +
-                            '<p style="text-align: center;">' + data[i].TITLE + '</p>' +
-                            '<p style="margin:1em" class="icon fa-calendar"> ' + data[i].DATE + ' </p>' +
-                            '<p style="margin:1em" class="icon fa-map-marker"> &nbsp;' + data[i].LOCATION + ' </p>' +
+                            '<a href="#' + experience_data[i].ID + '" class="card">' +
+                            '<img style="width:100%" src="images/' + experience_data[i].ID + '.jpg" alt="" />' +
+                            '<p style="text-align: center; font-size: 1.25em; font-weight:400; line-height:1.25em; ">' + experience_data[i].NAME + '</p>' +
+                            '<p style="text-align: center;">' + experience_data[i].TITLE + '</p>' +
+                            '<p style="margin:1em" class="icon fa-calendar"> ' + experience_data[i].DATE + ' </p>' +
+                            '<p style="margin:1em" class="icon fa-map-marker"> &nbsp;' + experience_data[i].LOCATION + ' </p>' +
                             '</a>'
                         ));
                 }
             });
             $.get("/projects.csv").then(function (text, status, xhr) {
-                var data = $.csv.toObjects(text);
+                project_data = $.csv.toObjects(text);
 
-                for (var i = 0; i < data.length; i++) {
+                for (var i = 0; i < project_data.length; i++) {
                     $("#projects").append(
                         $.parseHTML(
-                            '<div class="button card">' +
-                            '<img style="width:100%" src="images/' + data[i].ID + '.jpg" alt="" />' +
-                            '<h3 style="text-align: center;">' + data[i].NAME + '</h3>' +
-                            '<p style="text-align: center;">' + data[i].TITLE + '</p>' +
-                            '<a class="icon fa-calendar"> ' + data[i].DATE + ' </a> <br>' +
-                            '<a class="icon fa-map-marker"> ' + data[i].LOCATION + ' </a>' +
-                            '<button class="collapsible" style="text-align: center; margin:10px 0px 0px 0px;">Read more...</button>' +
-                            '</div>'
+                            '<a href="#' + project_data[i].ID + '" class="card">' +
+                            '<img style="width:100%" src="images/' + project_data[i].ID + '.jpg" alt="" />' +
+                            '<p style="text-align: center; font-size: 1.25em; font-weight:400; line-height:1.25em; ">' + project_data[i].NAME + '</p>' +
+                            '<p style="text-align: center;">' + project_data[i].TITLE + '</p>' +
+                            '<p style="margin:1em" class="icon fa-calendar"> ' + project_data[i].DATE + ' </p>' +
+                            '<p style="margin:1em" class="icon fa-map-marker"> &nbsp;' + project_data[i].LOCATION + ' </p>' +
+                            '</a>'
                         ));
                 }
             });
