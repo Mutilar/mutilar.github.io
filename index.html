@@ -177,13 +177,32 @@
                             Theory</a></strong> and <strong><a href="https://en.wikipedia.org/wiki/Gamification">Gamification</a></strong>.
                 </p>
             </header>
-            <div id="experience">
-
-            </div>
+            <div id="experience"></div>
 
             <div style="width:100%; float:left">
                 <hr>
                 <h2>Projects</h2>
+
+                <!-- Trigger/Open The Modal -->
+                <button id="myBtn">Open Modal</button>
+                <!-- The Modal -->
+                <div id="myModal" class="modal">
+
+                    <!-- Modal content -->
+                    <div class="modal-content">
+                        <span class="close">&times;</span>
+                        <p>Some text in the Modal..</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="projects"></div>
+            
+
+
+            <div style="width:100%; float:left">
+                <hr>
+                <h2>Games</h2>
 
 
                 <!-- Trigger/Open The Modal -->
@@ -200,9 +219,7 @@
                 </div>
             </div>
 
-            <div id="projects">
-
-            </div>
+            <div id="games"></div>
 
 
         </section>
@@ -399,13 +416,12 @@
                 for (var i = 0; i < data.length; i++) {
                     $("#experience").append(
                         $.parseHTML(
-                            '<div class="card">' +
+                            '<div class="button card">' +
                             '<img style="width:100%" src="images/'+ data[i].ID +'.jpg" alt="" />' + 
                             '<h3 style="text-align: center;">'+ data[i].NAME +'</h3>' +
                             '<p style="text-align: center;">'+ data[i].TITLE +'</p>' +
                             '<a class="icon fa-calendar"> '+ data[i].DATE +' </a> <br>' +
                             '<a class="icon fa-map-marker"> '+ data[i].LOCATION +' </a>' +
-                            '<button class="collapsible" style="text-align: center; margin:10px 0px 0px 0px;">Read more...</button>' +
                             '</div>'
                         ));
                 }
@@ -416,7 +432,7 @@
                 for (var i = 0; i < data.length; i++) {
                     $("#projects").append(
                         $.parseHTML(
-                            '<div class="card">' +
+                            '<div class="button card">' +
                             '<img style="width:100%" src="images/'+ data[i].ID +'.jpg" alt="" />' + 
                             '<h3 style="text-align: center;">'+ data[i].NAME +'</h3>' +
                             '<p style="text-align: center;">'+ data[i].TITLE +'</p>' +
@@ -427,6 +443,23 @@
                         ));
                 }
             });
+            // $.get("/games.csv").then(function (text, status, xhr) {
+            //     var data = $.csv.toObjects(text);
+
+            //     for (var i = 0; i < data.length; i++) {
+            //         $("#projects").append(
+            //             $.parseHTML(
+            //                 '<div class="card">' +
+            //                 '<img style="width:100%" src="images/'+ data[i].ID +'.jpg" alt="" />' + 
+            //                 '<h3 style="text-align: center;">'+ data[i].NAME +'</h3>' +
+            //                 '<p style="text-align: center;">'+ data[i].TITLE +'</p>' +
+            //                 '<a class="icon fa-calendar"> '+ data[i].DATE +' </a> <br>' +
+            //                 '<a class="icon fa-map-marker"> '+ data[i].LOCATION +' </a>' +
+            //                 '<button class="collapsible" style="text-align: center; margin:10px 0px 0px 0px;">Read more...</button>' +
+            //                 '</div>'
+            //             ));
+            //     }
+            // });
         });
     </script>
     <script>
