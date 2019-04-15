@@ -172,8 +172,7 @@
         <div id="modal" class="modal">
             <div class="modal-content">
                 <span class="close">&times;</span>
-                <img id="modal-image" class="image" style="width:40%; float:left"
-                        src="/images/microsoft.jpg" />
+                <img id="modal-image" class="image" style="width:40%; float:left" src="/images/microsoft.jpg" />
                 <div style="width:60%; float:left;">
                     <h3 id="modal-name" style="margin:1em 0em 0em 0em;"></h3>
                     <h4 id="modal-title" style="margin:2em 0em 3em 0em;"></h4>
@@ -274,6 +273,7 @@
     <script>
         var experience_data;
         var project_data;
+        var game_data;
 
         var modal = document.getElementById('modal');
         var span = document.getElementsByClassName("close")[0];
@@ -346,23 +346,22 @@
                         ));
                 }
             });
-            // $.get("/games.csv").then(function (text, status, xhr) {
-            //     var data = $.csv.toObjects(text);
+            $.get("/games.csv").then(function (text, status, xhr) {
+                var game_data = $.csv.toObjects(text);
 
-            //     for (var i = 0; i < data.length; i++) {
-            //         $("#projects").append(
-            //             $.parseHTML(
-            //                 '<div class="card">' +
-            //                 '<img style="width:100%" src="images/'+ data[i].ID +'.jpg" alt="" />' + 
-            //                 '<h3 style="text-align: center;">'+ data[i].NAME +'</h3>' +
-            //                 '<p style="text-align: center;">'+ data[i].TITLE +'</p>' +
-            //                 '<a class="icon fa-calendar"> '+ data[i].DATE +' </a> <br>' +
-            //                 '<a class="icon fa-map-marker"> '+ data[i].LOCATION +' </a>' +
-            //                 '<button class="collapsible" style="text-align: center; margin:10px 0px 0px 0px;">Read more...</button>' +
-            //                 '</div>'
-            //             ));
-            //     }
-            // });
+                for (var i = 0; i < game_data.length; i++) {
+                    $("#games").append(
+                        $.parseHTML(
+                            '<a href="#' + game_data[i].ID + '" class="card">' +
+                            '<img style="width:100%" src="images/' + game_data[i].ID + '.jpg" alt="" />' +
+                            '<p style="text-align: center; font-size: 1.25em; font-weight:400; line-height:1.25em; ">' + game_data[i].NAME + '</p>' +
+                            '<p style="text-align: center;">' + game_data[i].TITLE + '</p>' +
+                            '<p style="margin:1em" class="icon fa-calendar"> ' + game_data[i].DATE + ' </p>' +
+                            '<p style="margin:1em" class="icon fa-map-marker"> &nbsp;' + game_data[i].LOCATION + ' </p>' +
+                            '</a>'
+                        ));
+                }
+            });
         });
     </script>
 </body>
