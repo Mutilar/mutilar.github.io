@@ -418,10 +418,10 @@
                         $.parseHTML(
                             '<a href="#' + data[i].ID + '" class="card">' +
                             '<img style="width:100%" src="images/'+ data[i].ID +'.jpg" alt="" />' + 
-                            '<h3 style="text-align: center;">'+ data[i].NAME +'</h3>' +
+                            '<p style="text-align: center; font-size: 1.25em; font-weight:400; line-height:1.25em; ">'+ data[i].NAME +'</p>' +
                             '<p style="text-align: center;">'+ data[i].TITLE +'</p>' +
                             '<p style="margin:1em" class="icon fa-calendar"> '+ data[i].DATE +' </p>' +
-                            '<p style="margin:1em" class="icon fa-map-marker"> '+ data[i].LOCATION +' </p>' +
+                            '<p style="margin:1em" class="icon fa-map-marker"> &nbsp;'+ data[i].LOCATION +' </p>' +
                             '</a>'
                         ));
                 }
