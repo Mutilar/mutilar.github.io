@@ -339,11 +339,11 @@
                     } else if (flag == "GAMES") {
                         $("#games").append(
                             $.parseHTML(
-                                '<a href="#' + game_data[i].ID + '" class="card">' +
-                                '<img style="width:100%" src="images/' + game_data[i].ID + '.jpg" alt="" />' +
-                                '<p style="text-align: center; font-size: 1.25em; font-weight:400; line-height:1.25em; ">' + game_data[i].NAME + '</p>' +
-                                '<p style="text-align: center;">' + game_data[i].TITLE + '</p>' +
-                                '<p style="margin:1em" class="icon fa-calendar"> ' + game_data[i].DATE + ' </p>' +
+                                '<a href="#' + data[i].ID + '" class="card">' +
+                                '<img style="width:100%" src="images/' + data[i].ID + '.jpg" alt="" />' +
+                                '<p style="text-align: center; font-size: 1.25em; font-weight:400; line-height:1.25em; ">' + data[i].NAME + '</p>' +
+                                '<p style="text-align: center;">' + data[i].TITLE + '</p>' +
+                                '<p style="margin:1em" class="icon fa-calendar"> ' + data[i].DATE + ' </p>' +
                                 '</a>'
                             ));
                     }
