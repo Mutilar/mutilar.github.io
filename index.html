@@ -173,9 +173,9 @@
             </header>
             <div id="experience" style="width:100%; float:left"></div>
             <div style="width:100%; float:left"> </div>
-            
+
             <header>
-                    <hr>
+                <hr>
                 <h2>Projects</h2>
                 <p>
                     Whether it be for <strong><a href="https://en.wikipedia.org/wiki/Hackathon">Hackathons</a></strong>
@@ -186,9 +186,9 @@
             </header>
             <div id="projects" style="width:100%; float:left"> </div>
             <div style="width:100%; float:left"> </div>
-            
+
             <header>
-                    <hr>
+                <hr>
                 <h2>Games</h2>
                 <p>
                     Game programming offers unique coding challenges that are directly
@@ -266,9 +266,8 @@
     <script src="assets/js/util.js"></script>
     <script src="assets/js/main.js"></script>
     <script>
-        var experience_data;
-        var project_data;
-        var game_data;
+        var data;
+        string flag = "";
 
         var modal = document.getElementById('modal');
         var span = document.getElementsByClassName("close")[0];
@@ -297,9 +296,9 @@
         }
 
         function getInfo(id) {
-            for (var i = 0; i < experience_data.length; i++) {
-                if (experience_data[i].ID == id) {
-                    return experience_data[i];
+            for (var i = 0; i < data.length; i++) {
+                if (data[i].ID == id) {
+                    return data[i];
                 }
             }
         }
@@ -309,53 +308,78 @@
                 loadModal(window.location.hash.substring(1));
             });
 
-            $.get("/experience.csv").then(function (text, status, xhr) {
-                experience_data = $.csv.toObjects(text);
+            $.get("/content.csv").then(function (text, status, xhr) {
+                data = $.csv.toObjects(text);
 
-                for (var i = 0; i < experience_data.length; i++) {
-                    $("#experience").append(
-                        $.parseHTML(
-                            '<a href="#' + experience_data[i].ID + '" class="card">' +
-                            '<img style="width:100%" src="images/' + experience_data[i].ID + '.jpg" alt="" />' +
-                            '<p style="text-align: center; font-size: 1.25em; font-weight:400; line-height:1.25em; ">' + experience_data[i].NAME + '</p>' +
-                            '<p style="text-align: center;">' + experience_data[i].TITLE + '</p>' +
-                            '<p style="margin:1em" class="icon fa-calendar"> ' + experience_data[i].DATE + ' </p>' +
-                            '<p style="margin:1em" class="icon fa-map-marker"> &nbsp;' + experience_data[i].LOCATION + ' </p>' +
-                            '</a>'
-                        ));
+                for (var i = 0; i < data.length; i++) {
+                    if (data[i].ID == "EXPERIENCE" || data[i].ID == "PROJECTS" || data[i].ID == "GAMES") {
+                        flag = data[i].ID;
+                    } else if (flag == "EXPERIENCE") {
+                        $("#experience").append(
+                            $.parseHTML(
+                                '<a href="#' + data[i].ID + '" class="card">' +
+                                '<img style="width:100%" src="images/' + data[i].ID + '.jpg" alt="" />' +
+                                '<p style="text-align: center; font-size: 1.25em; font-weight:400; line-height:1.25em; ">' + data[i].NAME + '</p>' +
+                                '<p style="text-align: center;">' + data[i].TITLE + '</p>' +
+                                '<p style="margin:1em" class="icon fa-calendar"> ' + data[i].DATE + ' </p>' +
+                                '<p style="margin:1em" class="icon fa-map-marker"> &nbsp;' + data[i].LOCATION + ' </p>' +
+                                '</a>'
+                            ));
+                    } else if (flag == "PROJECTS") {
+                        ("#projects").append(
+                            $.parseHTML(
+                                '<a href="#' + data[i].ID + '" class="card">' +
+                                '<img style="width:100%" src="images/' + data[i].ID + '.jpg" alt="" />' +
+                                '<p style="text-align: center; font-size: 1.25em; font-weight:400; line-height:1.25em; ">' + data[i].NAME + '</p>' +
+                                '<p style="text-align: center;">' + data[i].TITLE + '</p>' +
+                                '<p style="margin:1em" class="icon fa-calendar"> ' + data[i].DATE + ' </p>' +
+                                '<p style="margin:1em" class="icon fa-map-marker"> &nbsp;' + data[i].LOCATION + ' </p>' +
+                                '</a>'
+                            ));
+                    } else if (flag == "GAMES") {
+                        $("#games").append(
+                            $.parseHTML(
+                                '<a href="#' + game_data[i].ID + '" class="card">' +
+                                '<img style="width:100%" src="images/' + game_data[i].ID + '.jpg" alt="" />' +
+                                '<p style="text-align: center; font-size: 1.25em; font-weight:400; line-height:1.25em; ">' + game_data[i].NAME + '</p>' +
+                                '<p style="text-align: center;">' + game_data[i].TITLE + '</p>' +
+                                '<p style="margin:1em" class="icon fa-calendar"> ' + game_data[i].DATE + ' </p>' +
+                                '</a>'
+                            ));
+                    }
                 }
             });
-            $.get("/projects.csv").then(function (text, status, xhr) {
-                project_data = $.csv.toObjects(text);
+            // $.get("/projects.csv").then(function (text, status, xhr) {
+            //     project_data = $.csv.toObjects(text);
 
-                for (var i = 0; i < project_data.length; i++) {
-                    $("#projects").append(
-                        $.parseHTML(
-                            '<a href="#' + project_data[i].ID + '" class="card">' +
-                            '<img style="width:100%" src="images/' + project_data[i].ID + '.jpg" alt="" />' +
-                            '<p style="text-align: center; font-size: 1.25em; font-weight:400; line-height:1.25em; ">' + project_data[i].NAME + '</p>' +
-                            '<p style="text-align: center;">' + project_data[i].TITLE + '</p>' +
-                            '<p style="margin:1em" class="icon fa-calendar"> ' + project_data[i].DATE + ' </p>' +
-                            '<p style="margin:1em" class="icon fa-map-marker"> &nbsp;' + project_data[i].LOCATION + ' </p>' +
-                            '</a>'
-                        ));
-                }
-            });
-            $.get("/games.csv").then(function (text, status, xhr) {
-                var game_data = $.csv.toObjects(text);
+            //     for (var i = 0; i < project_data.length; i++) {
+            //         $("#projects").append(
+            //             $.parseHTML(
+            //                 '<a href="#' + project_data[i].ID + '" class="card">' +
+            //                 '<img style="width:100%" src="images/' + project_data[i].ID + '.jpg" alt="" />' +
+            //                 '<p style="text-align: center; font-size: 1.25em; font-weight:400; line-height:1.25em; ">' + project_data[i].NAME + '</p>' +
+            //                 '<p style="text-align: center;">' + project_data[i].TITLE + '</p>' +
+            //                 '<p style="margin:1em" class="icon fa-calendar"> ' + project_data[i].DATE + ' </p>' +
+            //                 '<p style="margin:1em" class="icon fa-map-marker"> &nbsp;' + project_data[i].LOCATION + ' </p>' +
+            //                 '</a>'
+            //             ));
+            //     }
+            // });
+            // $.get("/games.csv").then(function (text, status, xhr) {
+            //     var game_data = $.csv.toObjects(text);
 
-                for (var i = 0; i < game_data.length; i++) {
-                    $("#games").append(
-                        $.parseHTML(
-                            '<a href="#' + game_data[i].ID + '" class="card">' +
-                            '<img style="width:100%" src="images/' + game_data[i].ID + '.jpg" alt="" />' +
-                            '<p style="text-align: center; font-size: 1.25em; font-weight:400; line-height:1.25em; ">' + game_data[i].NAME + '</p>' +
-                            '<p style="text-align: center;">' + game_data[i].TITLE + '</p>' +
-                            '<p style="margin:1em" class="icon fa-calendar"> ' + game_data[i].DATE + ' </p>' +
-                            '</a>'
-                        ));
-                }
-            });
+            //     for (var i = 0; i < game_data.length; i++) {
+            //         $("#games").append(
+            //             $.parseHTML(
+            //                 '<a href="#' + game_data[i].ID + '" class="card">' +
+            //                 '<img style="width:100%" src="images/' + game_data[i].ID + '.jpg" alt="" />' +
+            //                 '<p style="text-align: center; font-size: 1.25em; font-weight:400; line-height:1.25em; ">' + game_data[i].NAME + '</p>' +
+            //                 '<p style="text-align: center;">' + game_data[i].TITLE + '</p>' +
+            //                 '<p style="margin:1em" class="icon fa-calendar"> ' + game_data[i].DATE + ' </p>' +
+            //                 '</a>'
+            //             ));
+            //     }
+            // });
         });
     </script>
 </body>
