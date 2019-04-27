@@ -368,7 +368,8 @@
                     } else if (flag == "PROJECTS") {
                         $("#projects").append(
                             $.parseHTML(
-                                '<a href="#' + data[i].ID + '" class="card">' +
+                                '<a href="#' + data[i].ID + '" class="card tooltip">' +
+                                '<span class="tooltiptext"><p style="margin:1em" class="icon fa-calendar"><a href=' + data[i].GITHUB + '>Check out the repo!</a></p></span>' + 
                                 '<img style="width:100%" src="images/' + data[i].ID + '.jpg" alt="" />' +
                                 '<p style="text-align: center; font-size: 1.25em; font-weight:400; line-height:1.25em; ">' + data[i].NAME + '</p>' +
                                 '<p style="text-align: center;">' + data[i].TITLE + '</p>' +
@@ -379,7 +380,8 @@
                     } else if (flag == "GAMES") {
                         $("#games").append(
                             $.parseHTML(
-                                '<a href="#' + data[i].ID + '" class="card">' +
+                                '<a href="#' + data[i].ID + '" class="card tooltip">' +
+                                '<span class="tooltiptext"><p style="margin:1em" class="icon fa-calendar"><a href=' + data[i].GITHUB + '>Check out the repo!</a></p></span>' + 
                                 '<img style="width:100%" src="images/' + data[i].ID + '.jpg" alt="" />' +
                                 '<p style="text-align: center; font-size: 1.25em; font-weight:400; line-height:1.25em; ">' + data[i].NAME + '</p>' +
                                 '<p style="text-align: center;">' + data[i].TITLE + '</p>' +
