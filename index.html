@@ -95,16 +95,16 @@
 
         .tooltip .tooltiptext {
             visibility: hidden;
-            width: 120px;
+            width: 10em;
             background-color: #555;
             color: #fff;
             text-align: center;
             border-radius: 6px;
-            padding: 5px 0;
+            padding: 5px;
             position: absolute;
             z-index: 1;
-            bottom: 125%;
-            left: 50%;
+            bottom: 65%;
+            left: 39%;
             margin-left: -60px;
             opacity: 0;
             transition: opacity 0.3s;
@@ -357,7 +357,7 @@
                         $("#experience").append(
                             $.parseHTML(
                                 '<a href="#' + data[i].ID + '" class="card tooltip"">' +
-                                '<span class="tooltiptext">Tooltip text</span>' + 
+                                '<span class="tooltiptext">Click for more info!</span>' + 
                                 '<img style="width:100%" src="images/' + data[i].ID + '.jpg" alt="" />' +
                                 '<p style="text-align: center; font-size: 1.25em; font-weight:400; line-height:1.25em; ">' + data[i].NAME + '</p>' +
                                 '<p style="text-align: center;">' + data[i].TITLE + '</p>' +
