@@ -267,7 +267,7 @@
     <script src="assets/js/main.js"></script>
     <script>
         var data;
-        string flag = "";
+        var flag = "";
 
         var modal = document.getElementById('modal');
         var span = document.getElementsByClassName("close")[0];
@@ -349,37 +349,6 @@
                     }
                 }
             });
-            // $.get("/projects.csv").then(function (text, status, xhr) {
-            //     project_data = $.csv.toObjects(text);
-
-            //     for (var i = 0; i < project_data.length; i++) {
-            //         $("#projects").append(
-            //             $.parseHTML(
-            //                 '<a href="#' + project_data[i].ID + '" class="card">' +
-            //                 '<img style="width:100%" src="images/' + project_data[i].ID + '.jpg" alt="" />' +
-            //                 '<p style="text-align: center; font-size: 1.25em; font-weight:400; line-height:1.25em; ">' + project_data[i].NAME + '</p>' +
-            //                 '<p style="text-align: center;">' + project_data[i].TITLE + '</p>' +
-            //                 '<p style="margin:1em" class="icon fa-calendar"> ' + project_data[i].DATE + ' </p>' +
-            //                 '<p style="margin:1em" class="icon fa-map-marker"> &nbsp;' + project_data[i].LOCATION + ' </p>' +
-            //                 '</a>'
-            //             ));
-            //     }
-            // });
-            // $.get("/games.csv").then(function (text, status, xhr) {
-            //     var game_data = $.csv.toObjects(text);
-
-            //     for (var i = 0; i < game_data.length; i++) {
-            //         $("#games").append(
-            //             $.parseHTML(
-            //                 '<a href="#' + game_data[i].ID + '" class="card">' +
-            //                 '<img style="width:100%" src="images/' + game_data[i].ID + '.jpg" alt="" />' +
-            //                 '<p style="text-align: center; font-size: 1.25em; font-weight:400; line-height:1.25em; ">' + game_data[i].NAME + '</p>' +
-            //                 '<p style="text-align: center;">' + game_data[i].TITLE + '</p>' +
-            //                 '<p style="margin:1em" class="icon fa-calendar"> ' + game_data[i].DATE + ' </p>' +
-            //                 '</a>'
-            //             ));
-            //     }
-            // });
         });
     </script>
 </body>
