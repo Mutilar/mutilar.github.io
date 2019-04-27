@@ -52,33 +52,6 @@
     <link rel="stylesheet" href="assets/css/collapsible.css" />
     <link rel="stylesheet" href="assets/css/modal.css" />
     <style>
-        /* The hero image */
-        .hero-image {
-            /* Use "linear-gradient" to add a darken background effect to the image (photographer.jpg). This will make the text easier to read */
-            background-image: url("images/brian.jpg");
-            border-radius: 12%;
-            /* Set a specific height */
-            height: 100px;
-            /* width: 13.5em; */
-
-            /* Position and center the image to scale nicely on all screens */
-            background-position: center;
-            background-repeat: no-repeat;
-            background-size: contain;
-            position: relative;
-        }
-
-        /* Place text in the middle of the image */
-        .hero-text {
-            text-align: center;
-            position: absolute;
-            top: 93%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 100%;
-            color: white;
-        }
-
         .card {
             float: left;
             margin: 5px;
@@ -86,24 +59,6 @@
             transition: 0.3s;
             /* width: 19% */
             width: 17em;
-        }
-
-        .chip {
-            display: inline-block;
-            padding: 0 25px;
-            height: 50px;
-            font-size: 16px;
-            line-height: 50px;
-            border-radius: 25px;
-            background-color: #f1f1f1;
-        }
-
-        .chip img {
-            float: left;
-            margin: 0 10px 0 -25px;
-            height: 50px;
-            width: 50px;
-            border-radius: 50%;
         }
     </style>
 </head>
@@ -212,10 +167,12 @@
         <div class="wrapper style2">
             <article id="education" class="container special">
                 <!-- <p>...</p> -->
+                
+                <hr>
+
                 <img style="width:100%" src="images/work.jpg" alt="" />
                 <header>
-                    <hr>
-                    <h2>Skills</h2>
+                    <h2>Education</h2>
                     <p>
                         I'm a Computer Science & Engineering undergraduate at the University of California, Merced.
                         <br />
@@ -357,7 +314,6 @@
                             '<p style="text-align: center; font-size: 1.25em; font-weight:400; line-height:1.25em; ">' + game_data[i].NAME + '</p>' +
                             '<p style="text-align: center;">' + game_data[i].TITLE + '</p>' +
                             '<p style="margin:1em" class="icon fa-calendar"> ' + game_data[i].DATE + ' </p>' +
-                            '<p style="margin:1em" class="icon fa-map-marker"> &nbsp;' + game_data[i].LOCATION + ' </p>' +
                             '</a>'
                         ));
                 }
@@ -365,232 +321,4 @@
         });
     </script>
 </body>
-
 </html>
-
-
-
-<!--
-
-
-    
-        !-- Projects --
-        <section class="carousel">
-                <div class="reel">
-    
-                    <article class="Project">
-                        <a href="iterate.html" class="image featured"><img src="images/iterate.jpg" alt="" /></a>
-                        <header>
-                            <h3><a href="iterate.html">Iterate</a></h3>
-                        </header>
-                        <p>A multilingual C# intepreter teaching aid visualized by Unity3D, <br />winning $5,000 at CITRIS'
-                            <strong>MAC</strong></p>
-                    </article>
-                    <article class="Project">
-                        <a href="ozone.html" class="image featured"><img src="images/ozone.jpg" alt="" /></a>
-                        <header>
-                            <h3><a href="ozone.html">Ozone</a></h3>
-                        </header>
-                        <p>Utilizing GIS and Big Data to promote sustainability initiatives,<br /> winning $2,000 at
-                            <strong>Innovate to Grow</strong></p>
-                    </article>
-                    <article class="Project">
-                        <a href="#" class="image featured"><img src="images/dashboard.jpg" alt="" /></a>
-                        <header>
-                            <h3><a href="#">Server Monitoring Dashboard</a></h3>
-                        </header>
-                        <p>Icinga, Graphite & Grafana powered dashboard allowing for at-a-glance server diagonistics and
-                            trend analysis</p>
-                    </article>
-                    <article class="Project">
-                        <a href="#" class="image featured"><img src="images/firmi.jpg" alt="" /></a>
-                        <header>
-                            <h3><a href="#">Firmi</a></h3>
-                        </header>
-                        <p>Getting a grasp of your Fermi Surfaces: a solid-state physics research fellowship project
-                            through MACES</p>
-                    </article>
-                    <article class="Project">
-                        <a class="image featured">
-                            <video style="vertical-align:middle; width:100%; height:100%" controls>
-                                <source src="AMAX.mp4" type="video/mp4">
-                            </video>
-                            <p>&nbsp;</p>
-                        </a>
-                        <header>
-                            <h3>AMAX ESD Detection System</h3>
-                        </header>
-                        <p>Haptic security measure to ensure AMAX employees are grounded, a corporate-sponsored project</p>
-                    </article>
-                    <article class="Project">
-                        <a href="websites.html" class="image featured"><img src="images/websites.jpg" alt="" /></a>
-                        <header>
-                            <h3><a href="websites.html">Various Websites</a></h3>
-                        </header>
-                        <p>Live websites I have developed for various organizations, mostly via the Drupal CMS</p>
-                    </article>
-    
-    
-                </div>
-            </section>
-            !-- Hacks --
-            <section class="carousel">
-                <div class="reel">
-                    <article class="Hack">
-                        <a href="lucas.html" class="image featured"><img src="images/lucas.jpg" alt="" /></a>
-                        <header>
-                            <h3><a href="lucas.html">L.U.C.A.S</a></h3>
-                        </header>
-                        <p>Logarithmic Ultrasonic Collision Avoidance System,<br /> winning $1,000 at <strong>Citrus Hack</strong></p>
-                    </article>
-                    <article class="Hack">
-                        <a href="sriracha.html" class="image featured"><img src="images/sriracha.jpg" alt="" /></a>
-                        <header>
-                            <h3><a href="sriracha.html">SRIRACHA</a></h3>
-                        </header>
-                        <p>A fully autonomous room-mapping robot for first responders,<br /> winning <strong>SDHacks</strong></p>
-                    </article>
-                    <article class="Hack">
-                        <a href="gist.html" class="image featured"><img src="images/gist.jpg" alt="" /></a>
-                        <header>
-                            <h3><a href="gist.html">GISt</a></h3>
-                        </header>
-                        <p>Getting the GISt of our food: using AR to fill the missing link from farm to table,<br />
-                            winning <strong>HackDavis</strong></p>
-                    </article>
-                    <article class="Hack">
-                        <a href="digestquest.html" class="image featured"><img src="images/digestquest.jpg" alt="" /></a>
-                        <header>
-                            <h3><a href="digestquest.html">DigestQuest</a></h3>
-                        </header>
-                        <p>FitBit for your stomach: a heuristic image processing web application,<br /> winning <strong>HackMerced</strong></p>
-                    </article>
-                    <article class="Hack">
-                        <a href="dogpark.html" class="image featured"><img src="images/dogpark.jpg" alt="" /></a>
-                        <header>
-                            <h3><a href="dogpark.html">DogPark</a></h3>
-                        </header>
-                        <p>Tinder for pet adoption: humanizing the adoption process,<br /> finalist pitch in TESUM's
-                            <strong>PitchFest</strong></p>
-                    </article>
-                    <article class="Hack">
-                        <a href="#" class="image featured"><img src="images/smartank.jpg" alt="" /></a>
-                        <header>
-                            <h3><a href="#">SMARTank</a></h3>
-                        </header>
-                        <p>A fully autonomous agricultural irrigation-monitoring robot,<br /> winning <strong>HackFresno</strong></p>
-                    </article>
-                    <article class="Hack">
-                        <a href="#" class="image featured"><img src="images/breeze.jpg" alt="" /></a>
-                        <header>
-                            <h3><a href="#">Breeze</a></h3>
-                        </header>
-                        <p>Air quality sensing phone module for asthma and air quality awareness,<br />hopefully winning
-                            <strong>something</strong></p>
-                    </article>
-                    <article class="Hack">
-                        <a href="#" class="image featured"><img src="images/motorskills.jpg" alt="" /></a>
-                        <header>
-                            <h3><a href="#">Motor Skills</a></h3>
-                        </header>
-                        <p>Industrial IOT electric motor machine learning monitoring system,<br /> winning
-                            <strong>SLO Hacks</strong></p>
-                    </article>
-                    <article class="Hack">
-                        <a href="#" class="image featured"><img src="images/motorskills.jpg" alt="" /></a>
-                        <header>
-                            <h3><a href="#">GasLEEK</a></h3>
-                        </header>
-                        <p>Machine Learning Gas Price Predictor,<br /> winning
-                            <strong>Valley Hacks</strong></p>
-                    </article>
-                    <article class="Hack">
-                        <header>
-                            <h3><a href="#">ChemisTRY</a></h3>
-                        </header>
-                        <p>Augmented reality chemistry tutor and visualizer,<br /> losing <strong>CruzHacks</strong></p>
-                    </article>
-                 !-- <article class="Hack">
-                        <header>
-                            <h3><a href="#">Future Ideas </a></h3>
-                        </header>
-                        <p><strong>The following are reminders of potential projects</strong></p>
-                    </article>
-    
-                    <article class="Hack">
-                        <header>
-                            <h3><a href="#">Eleat</a></h3>
-                        </header>
-                        <p>An app to help you eat healthy on a budget,<br /> hopefully winning <strong>something</strong></p>
-                    </article>
-                    <article class="Hack">
-                        <header>
-                            <h3><a href="#">Twiddle</a></h3>
-                        </header>
-                        <p>Health monitoring appliance to notify caretakers in emergencies,<br /> hopefully winning <strong>something</strong></p>
-                    </article>
-                    <article class="Hack">
-                        <header>
-                            <h3><a href="#">ComposeIt</a></h3>
-                        </header>
-                        <p>Sheet music generator powered by anything making noise,<br /> hopefully winning <strong>something</strong></p>
-                    </article>
-                    
-                    <article class="Hack">
-                        <header>
-                            <h3><a href="#">deltaV</a></h3>
-                        </header>
-                        <p>Driving/riding alert system,<br /> hopefully winning <strong>something</strong></p>
-                    </article>
-                    <article class="Hack">
-                        <header>
-                            <h3><a href="#">TankVR</a></h3>
-                        </header>
-                        <p>Using VR to interact with RC robots/drones, <br /> hopefully winning <strong>something</strong></p>
-                    </article> --
-    
-                </div>
-            </section>
-            !-- Games --
-            <section class="carousel">
-                <div class="reel">
-                    <article class="Game">
-                        <a href="spaceninjas.html" class="image featured"><img src="images/space-ninjas.jpg" alt="" /></a>
-                        <header>
-                            <h3><a href="spaceninjas.html">Space Ninjas</a></h3>
-                        </header>
-                        <p>A short platformer game, used to teach middle schoolers how to make their own 2D games</p>
-                    </article>
-                    <article class="Game">
-                        <a href="#" class="image featured"><img src="images/seerauber.jpg" alt="" /></a>
-                        <header>
-                            <h3><a href="#">Seerauber</a></h3>
-                        </header>
-                        <p>Polygonal Pirates Prowling the Pacific: <br />a distributed-AI pirate game,<br /> my current
-                            side project</p>
-                    </article>
-                    <article class="Game">
-                        <a href="voodoo.html" class="image featured"><img src="images/voodoo.jpg" alt="" /></a>
-                        <header>
-                            <h3><a href="voodoo.html">Voodoo</a></h3>
-                        </header>
-                        <p>A minion-swarming game,<br /> my first fullly polished 2D game written in C# via Unity3D</p>
-                    </article>
-                    <article class="Game">
-                        <a href="#" class="image featured"><img src="images/galconq.jpg" alt="" /></a>
-                        <header>
-                            <h3><a href="#">Galactic Conquest</a></h3>
-                        </header>
-                        <p>A seed-generated, object-oriented galaxy exploration game written in Java and Swing GUI
-                            Framework</p>
-                    </article>
-                    <article class="Game">
-                        <a href="#" class="image featured"><img src="images/graviton.jpg" alt="" /></a>
-                        <header>
-                            <h3><a href="#">Graviton</a></h3>
-                        </header>
-                        <p>A complete retro sci-fi tower defense game, <br /> losing <strong>HackMerced</strong></p>
-                    </article>
-                </div>
-            </section>
--->
