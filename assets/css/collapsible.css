@@ -62,7 +62,7 @@
 }
 
 .hero-image {
-    background-image: url("images/brian.jpg");
+    background-image: url("../../images/brian.jpg");
     border-radius: 12%;
     height: 100px;
     background-position: center;
