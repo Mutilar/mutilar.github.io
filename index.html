@@ -2,17 +2,13 @@
 <html>
 
 <head>
-    <!-- <script src='https://api.mapbox.com/mapbox-gl-js/v0.44.2/mapbox-gl.js'></script> -->
-    <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-131413029-2"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag() { dataLayer.push(arguments); }
         gtag('js', new Date());
-
         gtag('config', 'UA-131413029-2');
     </script>
-
     <script src="assets/js/jquery-3.3.1.min.js"></script>
     <script>
         $(function () {
@@ -21,7 +17,6 @@
         $(window).resize(function () {
             resize();
         })
-
         function resize() {
             var height = $('.position-relative').height();
             if (height == null) {
@@ -31,17 +26,8 @@
                 height = 100;
             }
             $('.hero-image').height(height);
-
-            //  var width = $('.hero-image').width();
-            //  if (width > height) {
-            //     $('.hero-image').width(height);
-            //  }
         }
-
-        // $(window).resize(); //on page load
-        // $(".hero-image").css({ 'height': ($(".calendar").height() + 'px') });
     </script>
-
     <title>※ Brian Hungerman</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -51,89 +37,11 @@
     <link rel="stylesheet" href="assets/css/calendar.css" />
     <link rel="stylesheet" href="assets/css/collapsible.css" />
     <link rel="stylesheet" href="assets/css/modal.css" />
-    <style>
-        /* The hero image */
-        .hero-image {
-            /* Use "linear-gradient" to add a darken background effect to the image (photographer.jpg). This will make the text easier to read */
-            background-image: url("images/brian.jpg");
-            border-radius: 12%;
-            /* Set a specific height */
-            height: 100px;
-            /* width: 13.5em; */
-            /* Position and center the image to scale nicely on all screens */
-            background-position: center;
-            background-repeat: no-repeat;
-            background-size: contain;
-            position: relative;
-        }
-
-        /* Place text in the middle of the image */
-        .hero-text {
-            text-align: center;
-            position: absolute;
-            top: 93%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 100%;
-            color: white;
-        }
-
-        .card {
-            float: left;
-            margin: 5px;
-            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-            transition: 0.3s;
-            /* width: 19% */
-            width: 17em;
-        }
-
-        .tooltip {
-            position: relative;
-            display: inline-block;
-            border-bottom: 1px dotted black;
-        }
-
-        .tooltip .tooltiptext {
-            visibility: hidden;
-            width: 11em;
-            background-color: #555;
-            color: #fff;
-            text-align: center;
-            border-radius: 6px;
-            padding: 5px;
-            position: absolute;
-            z-index: 1;
-            bottom: 65%;
-            left: 35%;
-            margin-left: -60px;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        .tooltip .tooltiptext::after {
-            content: "";
-            position: absolute;
-            top: 100%;
-            left: 50%;
-            margin-left: -5px;
-            border-width: 5px;
-            border-style: solid;
-            border-color: #555 transparent transparent transparent;
-        }
-
-        .tooltip:hover .tooltiptext {
-            visibility: visible;
-            opacity: 1;
-        }
-    </style>
 </head>
 
 <body class="homepage">
     <div id="page-wrapper">
-
-        <!-- Header -->
         <div id="header">
-            <!-- Inner -->
             <div class="inner">
                 <header>
                     <h1><a href="#banner" class="scrolly">※ Brian Hungerman</a></h1>
@@ -149,8 +57,6 @@
                     </a>
                 </footer>
             </div>
-
-            <!-- Nav -->
             <nav id="nav">
                 <ul>
                     <li>
@@ -158,19 +64,15 @@
                             About Me
                         </a>
                         <ul>
-                            <li><a href="#banner" class="scrolly">Portfolio</a></li>
-                            <li><a href="#main" class="scrolly">Experience</a></li>
-                            <li><a href="#education" class="scrolly">Education</a></li>
-                            <li><a href="#features" class="scrolly">Leadership</a></li>
+                            <li><a href="#experience" class="scrolly">Experience</a></li>
+                            <li><a href="#projects" class="scrolly">Projects</a></li>
+                            <li><a href="#games" class="scrolly">Games</a></li>
                         </ul>
                     </li>
-                    <!-- <li><a href="#" id="myBtn">Resume</a></li> -->
                     <li><a href="#footer" class="scrolly">Contact Me</a></li>
                 </ul>
             </nav>
-
         </div>
-
         <a href="https://github.com/Mutilar">
             <div class="calendar" style="float: right; width:85%"></div>
         </a>
@@ -187,8 +89,6 @@
                 </ul>
             </div>
         </div>
-
-        <!-- Modal -->
         <div id="modal" class="modal">
             <div class="modal-content">
                 <span class="close">&times;</span>
@@ -200,11 +100,10 @@
                 <p id="modal-biography" style="margin:3em;"></p>
             </div>
         </div>
-
-        <!-- Banner -->
         <section id="banner">
             <header>
-                <h2>Here's my Portfolio</h2>
+                <h2>&nbsp;<br>
+                    Here's my Portfolio</h2>
                 <p>
                     I'm a <strong>Software Engineer</strong> interested in <strong><a href="https://en.wikipedia.org/wiki/Graph_theory">Graph
                             Theory</a></strong> and <strong><a href="https://en.wikipedia.org/wiki/Gamification">Gamification</a></strong>.
@@ -212,10 +111,8 @@
             </header>
             <div id="experience" style="width:100%; float:left"></div>
             <div style="width:100%; float:left"> </div>
-
             <header>
-                <hr>
-                <h2>Projects</h2>
+                <h2>&nbsp;<br>Projects</h2>
                 <p>
                     Whether it be for <strong><a href="https://en.wikipedia.org/wiki/Hackathon">Hackathons</a></strong>
                     or competitions like <strong>CITRIS' Mobile App Challenge</strong> or <strong>Innovate to Grow</strong>,
@@ -225,10 +122,8 @@
             </header>
             <div id="projects" style="width:100%; float:left"> </div>
             <div style="width:100%; float:left"> </div>
-
             <header>
-                <hr>
-                <h2>Games</h2>
+                <h2>&nbsp;<br>Games</h2>
                 <p>
                     Game programming offers unique coding challenges that are directly
                     translatable into other computer science fields.<br> Here are some of my favorite creations. Click
@@ -238,18 +133,12 @@
             <div id="games" style="width:100%; float:left"></div>
             <div style="width:100%; float:left"> </div>
         </section>
-
-
         <div class="wrapper style2">
             <article id="education" class="container special">
-                <!-- <p>...</p> -->
-
                 <div style="width:100%; float:left"> </div>
-                <hr>
-
                 <img style="width:100%" src="images/work.jpg" alt="" />
                 <header>
-                    <h2>Education</h2>
+                    <h2>&nbsp;<br>Education</h2>
                     <p>
                         I'm a Computer Science & Engineering undergraduate at the University of California, Merced.
                         <br />
@@ -259,13 +148,10 @@
             </article>
         </div>
     </div>
-
-    <!-- Footer -->
     <div id="footer">
         <div class="container">
             <div class="row">
                 <div class="12u">
-                    <!-- Contact -->
                     <section class="contact">
                         <header>
                             <h3>Want to meet up?</h3>
@@ -280,8 +166,6 @@
                             <li><a href="tel:12094468256" class="icon fa-phone"><span class="label">Phone</span></a></li>
                         </ul>
                     </section>
-
-                    <!-- Copyright -->
                     <hr />
                     <div class="copyright">
                         <ul class="menu">
@@ -294,8 +178,6 @@
         </div>
     </div>
     </div>
-
-    <!-- Scripts -->
     <script src="assets/js/jquery.min.js"></script>
     <script src="/assets/js/jquery.csv.min.js"></script>
     <script src="assets/js/jquery.dropotron.min.js"></script>
@@ -307,10 +189,8 @@
     <script>
         var data;
         var flag = "";
-
         var modal = document.getElementById('modal');
         var span = document.getElementsByClassName("close")[0];
-
         span.onclick = function () {
             modal.style.display = "none";
         }
@@ -319,7 +199,6 @@
                 modal.style.display = "none";
             }
         }
-
         function loadModal(id) {
             if (id != '') {
                 modal.style.display = "block";
@@ -333,7 +212,6 @@
                 biography.innerHTML = getInfo(id).TEXT;
             }
         }
-
         function getInfo(id) {
             for (var i = 0; i < data.length; i++) {
                 if (data[i].ID == id) {
@@ -341,7 +219,6 @@
                 }
             }
         }
-
         $(function () {
             $(window).on('hashchange', function (event) {
                 loadModal(window.location.hash.substring(1));
@@ -357,7 +234,7 @@
                         $("#experience").append(
                             $.parseHTML(
                                 '<a href="#' + data[i].ID + '" class="card tooltip"">' +
-                                '<span class="tooltiptext">Click for more info!</span>' + 
+                                '<span class="tooltiptext">Click for more info!</span>' +
                                 '<img style="width:100%" src="images/' + data[i].ID + '.jpg" alt="" />' +
                                 '<p style="text-align: center; font-size: 1.25em; font-weight:400; line-height:1.25em; ">' + data[i].NAME + '</p>' +
                                 '<p style="text-align: center;">' + data[i].TITLE + '</p>' +
@@ -369,7 +246,7 @@
                         $("#projects").append(
                             $.parseHTML(
                                 '<a href="#' + data[i].ID + '" class="card tooltip">' +
-                                '<span class="tooltiptext"><p style="margin:1em" class="icon fa-github"> Click for the repo!</p></span>' + 
+                                '<span class="tooltiptext"><p style="margin:1em" class="icon fa-github"> Click for the repo!</p></span>' +
                                 '<img style="width:100%" src="images/' + data[i].ID + '.jpg" alt="" />' +
                                 '<p style="text-align: center; font-size: 1.25em; font-weight:400; line-height:1.25em; ">' + data[i].NAME + '</p>' +
                                 '<p style="text-align: center;">' + data[i].TITLE + '</p>' +
@@ -381,7 +258,7 @@
                         $("#games").append(
                             $.parseHTML(
                                 '<a href="#' + data[i].ID + '" class="card tooltip">' +
-                                '<span class="tooltiptext"><p style="margin:1em" class="icon fa-github"> Click for the repo!</p></span>' + 
+                                '<span class="tooltiptext"><p style="margin:1em" class="icon fa-github"> Click for the repo!</p></span>' +
                                 '<img style="width:100%" src="images/' + data[i].ID + '.jpg" alt="" />' +
                                 '<p style="text-align: center; font-size: 1.25em; font-weight:400; line-height:1.25em; ">' + data[i].NAME + '</p>' +
                                 '<p style="text-align: center;">' + data[i].TITLE + '</p>' +
