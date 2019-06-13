@@ -23,13 +23,19 @@
             <a class="portrait" href="https://minimal-developer.netlify.com/"><img src="images/brian.jpg"></a>
             <div class="name"><a href="https://minimal-developer.netlify.com/">Brian Hungerman</a></div>
             <p>
-                    I'm a <strong>Software Engineer</strong> interested in <strong><a href="https://en.wikipedia.org/wiki/Graph_theory">Graph
-                    Theory</a></strong> and <strong><a href="https://en.wikipedia.org/wiki/Gamification">Gamification</a></strong>.
+                I'm a <strong>Software Engineer</strong> interested in <strong><a
+                        href="https://en.wikipedia.org/wiki/Graph_theory">Graph
+                        Theory</a></strong> and <strong><a
+                        href="https://en.wikipedia.org/wiki/Gamification">Gamification</a></strong>.
             </p>
             <div class="bio">
-                Software Engineering Intern <br><strong><a target="_blank" href="http://www.github.com/azure" title="Azure">@azure</a> <a target="_blank" href="http://www.github.com/microsoft" title="Microsoft">@microsoft</a></strong><br>
-                Researching <strong><a target="_blank" href="http://www.github.com/vicelab" title="VICE Lab">@vicelab</a></strong><br>
-                Developing <strong><a target="_blank" href="http://www.github.com/bitnaughts" title="BitNaughts">@bitnaughts</a></strong>
+                Software Engineering Intern <br><strong><a target="_blank" href="http://www.github.com/azure"
+                        title="Azure">@azure</a> <a target="_blank" href="http://www.github.com/microsoft"
+                        title="Microsoft">@microsoft</a></strong><br>
+                Researching <strong><a target="_blank" href="http://www.github.com/vicelab"
+                        title="VICE Lab">@vicelab</a></strong><br>
+                Developing <strong><a target="_blank" href="http://www.github.com/bitnaughts"
+                        title="BitNaughts">@bitnaughts</a></strong>
             </div>
             <div class="links">
                 <a target="_blank" href="https://www.linkedin.com/in/brian-hungerman/" class="fa fa-linkedin"></a>
@@ -49,19 +55,40 @@
             <li class="tab"><a href="contact.html">Reach out!</a></li>
         </ul>
     </nav>
-
-    <div class="item" id = "projects">
-        <div class="card">
-            <div class="date">June 12, 2019</div>
-            <h1><a href="projects.html">What Problems I've Tackled</a></h1>
-            <div class="content">
-                <p>
-                    <div style="text-align:left">From building platforms to fight cancer with machine learning and big data...</div> <br>
-                    <div style="text-align:center">...to teaching game design, coding, and robotics across the socioeconomic spectrum...</div><br> 
-                    <div style="text-align:right">...to analysing hydrologic and ecosystemic implications of Central Valley agriculture.</div><br>
-                    I've had amazing opportunities to work at empowering companies, nonprofits organizations, and research labs. Being proud of where I work and what I work on are my top priorities.
-                </p>
+    <div id="projects">
+        <div class="item">
+            <div class="card">
+                <div class="date">June 12, 2019</div>
+                <h1><a href="projects.html">What Problems I've Tackled</a></h1>
+                <div class="content">
+                    <p>
+                        <div style="text-align:left">From building platforms to fight cancer with machine learning and
+                            big data...</div> <br>
+                        <div style="text-align:center">...to teaching game design, coding, and robotics across the
+                            socioeconomic spectrum...</div><br>
+                        <div style="text-align:right">...to analysing hydrologic and ecosystemic implications of Central
+                            Valley agriculture.</div><br>
+                        I've had amazing opportunities to work at empowering companies, nonprofits organizations, and
+                        research labs. Being proud of where I work and what I work on are my top priorities.
+                    </p>
+                </div>
             </div>
+
+
+
+
+        </div>
+        <div class='item'>
+            <a href="tesT" class='card'>
+                <div class='logo'><img src='example.png' width='160' height='160' /></div>
+                <h1>Example Project</h1>
+                <div class='content'>
+                    <p>The terms foobar, or foo and others like "First Object Oriented" and "Binary Arbitrary Reason"
+                        are used as placeholder names
+                        in computer programming or computer-related documentation. They have been used to name entities
+                        such as variables...</p>
+                </div>
+            </a>
         </div>
     </div>
     <script type="text/javascript">
@@ -90,64 +117,67 @@
             updateStream();
         });
     </script>
-    
-  
+
+
 </body>
 <script src="./assets/js/jquery.min.js"></script>
 <script src="./assets/js/jquery.csv.min.js"></script>
 <script>
-        // var data;
-        // var flag = "";
-        // var modal = document.getElementById('modal');
-        // var span = document.getElementsByClassName("close")[0];
-        // span.onclick = function () {
-        //     modal.style.display = "none";
-        // }
-        // window.onclick = function (event) {
-        //     if (event.target == modal) {
-        //         modal.style.display = "none";
-        //     }
-        // }
-        // function loadModal(id) {
-        //     if (id != '') {
-        //         modal.style.display = "block";
-        //         var logo = document.getElementById('modal-image');
-        //         logo.src = '/images/' + id + '.jpg';
-        //         var name = document.getElementById('modal-name');
-        //         name.innerHTML = getInfo(id).NAME;
-        //         var title = document.getElementById('modal-title');
-        //         title.innerHTML = getInfo(id).TITLE;
-        //         var biography = document.getElementById('modal-biography');
-        //         biography.innerHTML = getInfo(id).TEXT;
-        //     }
-        // }
-        // function getInfo(id) {
-        //     for (var i = 0; i < data.length; i++) {
-        //         if (data[i].ID == id) {
-        //             return data[i];
-        //         }
-        //     }
-        // }
-        $(function () {
-            // $(window).on('hashchange', function (event) {
-            //     loadModal(window.location.hash.substring(1));
-            // });
-            $.get("/projects.csv").then(function (text, status, xhr) {
-                data = $.csv.toObjects(text);
-                for (var i = 0; i < data.length; i++) {
-                        $("#projects").append(
-                            $.parseHTML(
-                                '<a href="#' + data[i].ID + '" class="card tooltip"">' +
-                                '<span class="tooltiptext">Click for more info!</span>' +
-                                '<img style="width:100%" src="images/' + data[i].ID + '.jpg" alt="" />' +
-                                '<p style="text-align: center; font-size: 1.25em; font-weight:400; line-height:1.25em; ">' + data[i].NAME + '</p>' +
-                                '<p style="text-align: center;">' + data[i].TITLE + '</p>' +
-                                '<p style="margin:1em" class="icon fa-calendar"> ' + data[i].DATE + ' </p>' +
-                                '<p style="margin:1em" class="icon fa-map-marker"> &nbsp;' + data[i].LOCATION + ' </p>' +
-                                '</a>'
-                            ));
-                }
-            });
+    // var data;
+    // var flag = "";
+    // var modal = document.getElementById('modal');
+    // var span = document.getElementsByClassName("close")[0];
+    // span.onclick = function () {
+    //     modal.style.display = "none";
+    // }
+    // window.onclick = function (event) {
+    //     if (event.target == modal) {
+    //         modal.style.display = "none";
+    //     }
+    // }
+    // function loadModal(id) {
+    //     if (id != '') {
+    //         modal.style.display = "block";
+    //         var logo = document.getElementById('modal-image');
+    //         logo.src = '/images/' + id + '.jpg';
+    //         var name = document.getElementById('modal-name');
+    //         name.innerHTML = getInfo(id).NAME;
+    //         var title = document.getElementById('modal-title');
+    //         title.innerHTML = getInfo(id).TITLE;
+    //         var biography = document.getElementById('modal-biography');
+    //         biography.innerHTML = getInfo(id).TEXT;
+    //     }
+    // }
+    // function getInfo(id) {
+    //     for (var i = 0; i < data.length; i++) {
+    //         if (data[i].ID == id) {
+    //             return data[i];
+    //         }
+    //     }
+    // }
+    $(function () {
+        // $(window).on('hashchange', function (event) {
+        //     loadModal(window.location.hash.substring(1));
+        // });
+        $.get("/projects.csv").then(function (text, status, xhr) {
+            data = $.csv.toObjects(text);
+            for (var i = 0; i < data.length; i++) {
+                $("#projects").append($.parseHTML(
+                    '<div class="item">' +
+                        '<a href="#' + data[i].ID + '" class="card">' +
+                            '<div class="logo"><img src="images/' + data[i].ID + '.jpg" width="160" height="160" /></div>' +
+                            '<h1>' + data[i].NAME + '</h1>' + 
+                            '<h3>' + data[i].TITLE + '</h3>' +
+                            '<div class="content">' +
+                                '<p style="margin:1em" class="fa fa-calendar"> ' + data[i].DATE + ' </p>' +
+                                '<p style="margin:1em" class="fa fa-map-marker"> &nbsp;' + data[i].LOCATION + ' </p>' +
+                            '</div>' +
+                        '</a>' +
+                    '</div>'
+                ));
+            }
         });
-    </script>
+    });
+</script>
+
 </html>
