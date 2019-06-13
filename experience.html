@@ -1,0 +1,89 @@
+<html>
+
+<head>
+    <title>Brian Hungerman</title>
+    <meta name="description" content="My website: brianhungerman.com. View for resume, portfolio, etc.">
+    <meta name="author" content="Brian Hungerman">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta name="robots" content="noodp">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script type="text/javascript"></script>
+    <link rel="shortcut icon" type="image/x-icon" href="https://minimal-developer.netlify.com/favicon.ico">
+    <link rel="icon" type="image/jpeg" href="images/brian.jpg">
+    <link rel="apple-touch-icon" type="image/jpeg" href="images/brian.jpg">
+    <link rel="apple-touch-icon-precomposed" type="image/jpeg" href="images/brian.jpg">
+    <link rel="fluid-icon" type="image/jpeg" href="images/brian.jpg">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="main.css" />
+</head>
+
+<body>
+    <div class="header">
+        <div class="profile">
+            <a class="portrait" href="https://minimal-developer.netlify.com/"><img src="images/brian.jpg"></a>
+            <div class="name"><a href="https://minimal-developer.netlify.com/">Brian Hungerman</a></div>
+            <div class="bio">
+                Software Engineering Intern <br><strong><a target="_blank" href="http://www.github.com/azure" title="Azure">@azure</a> <a target="_blank" href="http://www.github.com/microsoft" title="Microsoft">@microsoft</a></strong><br>
+                Researching <strong><a target="_blank" href="http://www.github.com/vicelab" title="VICE Lab">@vicelab</a></strong><br>
+                Developing <strong><a target="_blank" href="http://www.github.com/bitnaughts" title="BitNaughts">@bitnaughts</a></strong>
+            </div>
+            <div class="links">
+                <a target="_blank" href="https://www.linkedin.com/in/brian-hungerman/" class="fa fa-linkedin"></a>
+                <a target="_blank" href="https://www.facebook.com/BrianMHungerman" class="fa fa-facebook"></a>
+                <a target="_blank" href="https://github.com/Mutilar" class="fa fa-github"></a>
+                <a target="_blank" href="mailto:brianhungerman@gmail.com" class="fa fa-envelope"></a>
+            </div>
+        </div>
+    </div>
+    <nav class="navigation">
+        <ul class="tabs" id="tabs">
+            <li class="tab"><a href="index.html">Home</a></li>
+            <li class="tab"><a href="experience.html">Experience</a></li>
+            <li class="tab"><a href="projects.html">Projects</a></li>
+            <li class="tab"><a href="hackathons.html">Hackathons</a></li>
+            <li class="tab"><a href="games.html">Games</a></li>
+            <li class="tab"><a class="active" href="contact.html">Reach out!</a></li>
+        </ul>
+    </nav>
+
+    <div class="item">
+        <div class="card">
+            <div class="date">June 12, 2019</div>
+            <h1><a href="experience.html"></a></h1>
+            <div class="content">
+                <p>
+                    I've had amazing opportunities to work at empowering companies and research labs striving to change the world in the positive, <br>from building platforms to fight cancer with ML and Big Data... <br> ... to teaching game design, computer programming, and robotics across California... <br> ... to .
+                    
+
+                </p>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        function updateStream() {
+            var element = document.getElementById("stream");
+            if (element) {
+                var rect = element.getBoundingClientRect();
+                var threshold = 0;
+                if (rect.bottom > threshold && (window.innerHeight - rect.top) > threshold) {
+                    var url = element.getAttribute("title");
+                    var xmlHttp = new XMLHttpRequest();
+                    xmlHttp.open("GET", url, true);
+                    xmlHttp.onreadystatechange = function () {
+                        if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+                            element.insertAdjacentHTML('beforebegin', xmlHttp.responseText);
+                            element.parentNode.removeChild(element);
+                            updateStream();
+                        }
+                    };
+                    xmlHttp.send(null);
+                }
+            }
+        }
+        updateStream();
+        window.addEventListener('scroll', function (e) {
+            updateStream();
+        });
+    </script>
+</body>
+</html>
