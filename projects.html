@@ -165,12 +165,11 @@
                 $("#projects").append($.parseHTML(
                     '<div class="item">' +
                         '<a href="#' + data[i].ID + '" class="card">' +
+                            '<div class="date">' + data[i].DATE + '</div>' +
                             '<div class="logo"><img src="images/' + data[i].ID + '.jpg" width="160" height="160" /></div>' +
                             '<h1>' + data[i].NAME + '</h1>' + 
-                            '<h3>' + data[i].TITLE + '</h3>' +
                             '<div class="content">' +
-                                '<p style="margin:1em" class="fa fa-calendar"> ' + data[i].DATE + ' </p>' +
-                                '<p style="margin:1em" class="fa fa-map-marker"> &nbsp;' + data[i].LOCATION + ' </p>' +
+                                data[i].TITLE + 
                             '</div>' +
                         '</a>' +
                     '</div>'
