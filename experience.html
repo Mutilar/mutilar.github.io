@@ -135,13 +135,14 @@
                 for (var i = 0; i < data.length; i++) {
                         $("#experience").append(
                             $.parseHTML(
+                                '<br>' +
                                 '<a href="#' + data[i].ID + '" class="card tooltip"">' +
                                 '<span class="tooltiptext">Click for more info!</span>' +
-                                '<img style="width:100%" src="images/' + data[i].ID + '.jpg" alt="" />' +
+                                '<img style="width:30%" src="images/' + data[i].ID + '.jpg" alt="" />' +
                                 '<p style="text-align: center; font-size: 1.25em; font-weight:400; line-height:1.25em; ">' + data[i].NAME + '</p>' +
                                 '<p style="text-align: center;">' + data[i].TITLE + '</p>' +
-                                '<p style="margin:1em" class="icon fa-calendar"> ' + data[i].DATE + ' </p>' +
-                                '<p style="margin:1em" class="icon fa-map-marker"> &nbsp;' + data[i].LOCATION + ' </p>' +
+                                '<p style="margin:1em" class="fa fa-calendar"> ' + data[i].DATE + ' </p>' +
+                                '<p style="margin:1em" class="fa fa-map-marker"> &nbsp;' + data[i].LOCATION + ' </p>' +
                                 '</a>'
                             ));
                 }
