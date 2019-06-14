@@ -13,7 +13,15 @@
             background-color: #ffffff;
         }
 
+        a, u {
+            text-decoration: none;
+        }
+
         .fa {
+            font-size: 14px;
+            padding: 4px;
+        }
+        .large-icon {
             font-size: 26px;
             padding: 13px;
         }
