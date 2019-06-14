@@ -131,26 +131,29 @@
         //     }
         // }
         $(function () {
-            // $(window).on('hashchange', function (event) {
-            //     loadModal(window.location.hash.substring(1));
-            // });
-            $.get("/experience.csv").then(function (text, status, xhr) {
-                data = $.csv.toObjects(text);
-                for (var i = 0; i < data.length; i++) {
-                        $("#experience").append(
-                            $.parseHTML(
-                                '<br>' +
-                                '<a href="#' + data[i].ID + '" class="card tooltip"">' +
-                                '<span class="tooltiptext">Click for more info!</span>' +
-                                '<img style="width:30%" src="images/' + data[i].ID + '.jpg" alt="" />' +
-                                '<p style="text-align: center; font-size: 1.25em; font-weight:400; line-height:1.25em; ">' + data[i].NAME + '</p>' +
-                                '<p style="text-align: center;">' + data[i].TITLE + '</p>' +
-                                '<p style="margin:1em" class="fa fa-calendar"> ' + data[i].DATE + ' </p>' +
-                                '<p style="margin:1em" class="fa fa-map-marker"> &nbsp;' + data[i].LOCATION + ' </p>' +
-                                '</a>'
-                            ));
-                }
-            });
+        // $(window).on('hashchange', function (event) {
+        //     loadModal(window.location.hash.substring(1));
+        // });
+        $.get("/experience.csv").then(function (text, status, xhr) {
+            data = $.csv.toObjects(text);
+            for (var i = 0; i < data.length; i++) {
+                $("#experience").append($.parseHTML(
+                    '<div class="item">' +
+                        '<a href="#' + data[i].ID + '" class="card">' +
+                            '<div class="date"><div class="fa fa-calendar"></div>' + data[i].DATE + '<br><div class="fa fa-map-marker"></div>' + data[i].LOCATION + '</div>' +
+                            '<div class="logo"><img src="images/' + data[i].ID + '.jpg" width="200" height="160" /></div>' +
+                            '<h1>' + data[i].NAME + '</h1>' + 
+                            '<div class="content">' +
+                                data[i].TITLE + 
+                            '</div>' +
+                            '<div class="content">' +
+                                data[i].TEXT + 
+                            '</div>' +
+                        '</a>' +
+                    '</div>'
+                ));
+            }
         });
+    });
     </script>
 </html>
