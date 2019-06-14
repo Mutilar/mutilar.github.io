@@ -165,8 +165,8 @@
                 $("#projects").append($.parseHTML(
                     '<div class="item">' +
                         '<a href="#' + data[i].ID + '" class="card">' +
-                            '<div class="date">' + data[i].DATE + '<br>' + data[i].LOCATION + '</div>' +
-                            '<div class="logo"><img src="images/' + data[i].ID + '.jpg" width="500" height="160" /></div>' +
+                            '<div class="date"><div class="fa fa-calendar"></div>' + data[i].DATE + '<br><div class="fa fa-map-marker"></div>' + data[i].LOCATION + '</div>' +
+                            '<div class="logo"><img src="images/' + data[i].ID + '.jpg" width="200" height="160" /></div>' +
                             '<h1>' + data[i].NAME + '</h1>' + 
                             '<div class="content">' +
                                 data[i].TITLE + 
