@@ -32,10 +32,10 @@
                 Developing <strong><a target="_blank" href="http://www.github.com/bitnaughts" title="BitNaughts">@bitnaughts</a></strong>
             </div>
             <div class="links">
-                <a target="_blank" href="https://www.linkedin.com/in/brian-hungerman/" class="fa fa-linkedin"></a>
-                <a target="_blank" href="https://www.facebook.com/BrianMHungerman" class="fa fa-facebook"></a>
-                <a target="_blank" href="https://github.com/Mutilar" class="fa fa-github"></a>
-                <a target="_blank" href="mailto:brianhungerman@gmail.com" class="fa fa-envelope"></a>
+                <a target="_blank" href="https://www.linkedin.com/in/brian-hungerman/" class="large-icon fa fa-linkedin"></a>
+                <a target="_blank" href="https://www.facebook.com/BrianMHungerman" class="large-icon fa fa-facebook"></a>
+                <a target="_blank" href="https://github.com/Mutilar" class="large-icon fa fa-github"></a>
+                <a target="_blank" href="mailto:brianhungerman@gmail.com" class="large-icon fa fa-envelope"></a>
             </div>
         </div>
     </div>
@@ -52,7 +52,6 @@
 
     <div class="item" id = "hackathons">
         <div class="card">
-            <div class="date">June 12, 2019</div>
             <h1><a href="hackathons.html">What I've Cobbled Together</a></h1>
             <div class="content">
                 <p>
@@ -138,17 +137,20 @@
                 for (var i = 0; i < data.length; i++) {
                         $("#hackathons").append(
                             $.parseHTML(
-                                '<a href="#' + data[i].ID + '" class="card tooltip"">' +
-                                '<span class="tooltiptext">Click for more info!</span>' +
-                                '<img style="width:100%" src="images/' + data[i].ID + '.jpg" alt="" />' +
-                                '<p style="text-align: center; font-size: 1.25em; font-weight:400; line-height:1.25em; ">' + data[i].NAME + '</p>' +
-                                '<p style="text-align: center;">' + data[i].TITLE + '</p>' +
-                                '<p style="margin:1em" class="icon fa-calendar"> ' + data[i].DATE + ' </p>' +
-                                '<p style="margin:1em" class="icon fa-map-marker"> &nbsp;' + data[i].LOCATION + ' </p>' +
-                                '</a>'
-                            ));
-                }
-            });
+                    '<div class="item">' +
+                        '<a href="#' + data[i].ID + '" class="card">' +
+                            '<div class="date"><div class="fa fa-calendar"></div>' + data[i].DATE + '<br><div class="fa fa-map-marker"></div>' + data[i].LOCATION + '</div>' +
+                            '<div class="logo"><img src="images/' + data[i].ID + '.jpg" width="200" height="74" /></div>' +
+                            '<h1>' + data[i].NAME + '</h1>' + 
+                            '<div class="content">' +
+                                '<p>' + data[i].TITLE + '</p>' + 
+                                '<i>' + data[i].MOTTO + '</i>' + 
+                            '</div>' +
+                        '</a>' +
+                    '</div>'
+                ));
+            }
         });
+    });
     </script>
 </html>
