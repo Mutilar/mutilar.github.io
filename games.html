@@ -49,17 +49,18 @@
             <li class="tab"><a href="contact.html">Reach out!</a></li>
         </ul>
     </nav>
-
-    <div class="item" id = "games">
-        <div class="card">
-            <h1><a href="games.html">How I Express Myself Creatively</a></h1>
-            <div class="content">
-                <p>
-                        <div style="text-align:left">From hands-on applications of graph theory and data structures...</div> <br>
-                        <div style="text-align:center">...to tinkering with finite state machines and model view controllers...</div><br> 
-                        <div style="text-align:right">...to understanding challenges in big data processing, rendering, and visualization.</div><br>
-                        Game programming offers unique coding challenges that are directly translatable into other computer science fields. Here are some of my favorite creations. Click any to play and learn more.
-                </p>
+    <div id = "games">
+        <div class="item" >
+            <div class="card">
+                <h1><a href="games.html">How I Express Myself Creatively</a></h1>
+                <div class="content">
+                    <p>
+                            <div style="text-align:left">From hands-on applications of graph theory and data structures...</div> <br>
+                            <div style="text-align:center">...to tinkering with finite state machines and model view controllers...</div><br> 
+                            <div style="text-align:right">...to understanding challenges in big data processing, rendering, and visualization.</div><br>
+                            Game programming offers unique coding challenges that are directly translatable into other computer science fields. Here are some of my favorite creations. Click any to play and learn more.
+                    </p>
+                </div>
             </div>
         </div>
     </div>
@@ -136,17 +137,20 @@
                 for (var i = 0; i < data.length; i++) {
                         $("#games").append(
                             $.parseHTML(
-                                '<a href="#' + data[i].ID + '" class="card tooltip"">' +
-                                '<span class="tooltiptext">Click for more info!</span>' +
-                                '<img style="width:100%" src="images/' + data[i].ID + '.jpg" alt="" />' +
-                                '<p style="text-align: center; font-size: 1.25em; font-weight:400; line-height:1.25em; ">' + data[i].NAME + '</p>' +
-                                '<p style="text-align: center;">' + data[i].TITLE + '</p>' +
-                                '<p style="margin:1em" class="icon fa-calendar"> ' + data[i].DATE + ' </p>' +
-                                '<p style="margin:1em" class="icon fa-map-marker"> &nbsp;' + data[i].LOCATION + ' </p>' +
-                                '</a>'
-                            ));
-                }
-            });
+                                '<div class="item">' +
+                        '<a href="#' + data[i].ID + '" class="card">' +
+                            '<div class="date"><div class="fa fa-calendar"></div>' + data[i].DATE + '<br><div class="fa fa-map-marker"></div>' + data[i].LOCATION + '</div>' +
+                            '<div class="logo"><img src="images/' + data[i].ID + '.jpg" width="200" height="74" /></div>' +
+                            '<h1>' + data[i].NAME + '</h1>' + 
+                            '<div class="content">' +
+                                '<p>' + data[i].TITLE + '</p>' + 
+                                '<i>' + data[i].MOTTO + '</i>' + 
+                            '</div>' +
+                        '</a>' +
+                    '</div>'
+                ));
+            }
         });
+    });
     </script>
 </html>
