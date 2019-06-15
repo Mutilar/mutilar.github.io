@@ -358,19 +358,19 @@
             }
 
             .header .profile .name {
-                margin-left: 120px;
+                margin-left: 190px;
                 font-size: 16px;
                 padding: 0 0 0 0;
             }
 
             .header .profile .bio {
-                margin-left: 120px;
+                margin-left: 190px;
                 font-size: 12px;
                 margin-top: 0px;
             }
 
             .header .profile .blurb {
-                margin-left: 120px;
+                margin-left: 190px;
                 font-size: 12px;
                 margin-top: 0px;
             }
@@ -382,12 +382,12 @@
             .header .profile .portrait img {
                 overflow: none;
                 border-radius: 6px;
-                width: 110px;
-                height: 110px;
+                width: 179px;
+                height: 179px;
             }
 
             .header .profile .links {
-                margin-left: 120px;
+                margin-left: 190px;
                 border-top: 0;
                 padding-top: 0;
                 margin-top: 20px;
