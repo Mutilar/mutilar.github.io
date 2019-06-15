@@ -1,4 +1,4 @@
-ID,NAME,TITLE,DATE,LOCATION,GITHUB,MOTTO,TEXT
+ID,NAME,TITLE,DATE,LOCATION,MOTTO,GITHUB,TEXT
 gasleek,GasLeek,ValleyHacks,January 2019,"Modesto, California",Applying linear regression machine learning to gas prices to help drivers and truckers save money at the gas pump,https://github.com/plebeiathon/gasLEEK,tbd
 chemistry,ChemisTRY,CruzHacks,January 2019,"Santa Cruz, California",Augmented Reality Project Based Learning for Middle-School Chemistry,https://github.com/plebeiathon/ChemisTRY,tbd
 gist,GISt,HackDavis,January 2018,"Davis, California",Getting the GISt of our food: using AR to fill in the missing link from farm to table,https://github.com/plebeiathon/GISt,tbd
