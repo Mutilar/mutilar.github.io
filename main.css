@@ -91,6 +91,11 @@
             margin-top: 24px;
             display: block;
         }
+        .header .profile .blurb {
+            line-height: 1.5;
+            margin-top: 24px;
+            display: block;
+        }
 
         .header .profile .portrait {
             position: absolute;
@@ -308,6 +313,10 @@
                 margin-top: 14px;
             }
 
+            .header .profile .blurb {
+                margin-top: 14px;
+            }
+
             .header .profile .portrait img {
                 width: 179px;
                 height: 179px;
@@ -355,6 +364,12 @@
             }
 
             .header .profile .bio {
+                margin-left: 120px;
+                font-size: 12px;
+                margin-top: 0px;
+            }
+
+            .header .profile .blurb {
                 margin-left: 120px;
                 font-size: 12px;
                 margin-top: 0px;
