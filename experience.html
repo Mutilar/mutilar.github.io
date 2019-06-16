@@ -87,13 +87,9 @@
 
     span.onclick = function () {
         modal.style.display = "none";
-        window.location.hash = "#";
     }
     window.onclick = function (event) {
-        if (event.target == modal) {
-            modal.style.display = "none";
-            window.location.hash = "#";
-        }
+        if (event.target == modal) modal.style.display = "none";
     }
     function loadModal(id) {
         if (id != '') {
@@ -115,7 +111,7 @@
         data = $.csv.toObjects(text);
         for (var i = 0; i < data.length; i++) {
             var github_html = '';
-            if (data[i].GITHUB !== " " && data[i].GITHUB !== "") github_html = '<br><div class="fa fa-github"></div>Github';
+            if (data[i].GITHUB !== " " && data[i].GITHUB !== "") github_html = '<br><div class="fa fa-github"></div>Open Source!';
             $("#experience").append($.parseHTML(
                 '<div class="item">' +
                     '<a href="#' + data[i].ID + '" class="card">' +

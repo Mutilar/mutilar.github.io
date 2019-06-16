@@ -1,5 +1,4 @@
 <html>
-
 <head>
     <title>Brian Hungerman</title>
     <meta name="description" content="My website: brianhungerman.com. View for resume, portfolio, etc.">
@@ -16,7 +15,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="main.css" />
 </head>
-
 <body>
     <div class="header">
         <div class="profile">
@@ -49,10 +47,8 @@
             <li class="tab"><a href="contact.html">Reach out!</a></li>
         </ul>
     </nav>
-
     <div class="item">
         <div class="card">
-            <div class="date">June 12, 2019</div>
             <h1><a href="contact.html">Speed Date</a></h1>
             <div class="content">
                 <p>
@@ -67,31 +63,5 @@
         <div style="padding:1em" class="calendar">...</div>
         <script>GitHubCalendar(".calendar", "mutilar", { responsive: true });</script>
     </div>
-    <script type="text/javascript">
-        function updateStream() {
-            var element = document.getElementById("stream");
-            if (element) {
-                var rect = element.getBoundingClientRect();
-                var threshold = 0;
-                if (rect.bottom > threshold && (window.innerHeight - rect.top) > threshold) {
-                    var url = element.getAttribute("title");
-                    var xmlHttp = new XMLHttpRequest();
-                    xmlHttp.open("GET", url, true);
-                    xmlHttp.onreadystatechange = function () {
-                        if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
-                            element.insertAdjacentHTML('beforebegin', xmlHttp.responseText);
-                            element.parentNode.removeChild(element);
-                            updateStream();
-                        }
-                    };
-                    xmlHttp.send(null);
-                }
-            }
-        }
-        updateStream();
-        window.addEventListener('scroll', function (e) {
-            updateStream();
-        });
-    </script>
 </body>
 </html>

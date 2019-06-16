@@ -15,8 +15,8 @@
     <link rel="fluid-icon" type="image/jpeg" href="images/brian.jpg">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="main.css" />
+    <link rel="stylesheet" href="assets/css/modal.css" />
 </head>
-
 <body>
     <div class="header">
         <div class="profile">
@@ -49,97 +49,73 @@
             <li class="tab"><a href="contact.html">Reach out!</a></li>
         </ul>
     </nav>
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <img id="modal-image" class="image" style="width:40%; float:left" src="/images/microsoft.jpg" />
+            <div style="width:60%; float:left;">
+                <h1 id="modal-name" style="margin:1em 0em 0em 0em;"></h1>
+                <h2 id="modal-title" style="margin:2em 0em 3em 0em;"></h2>
+            </div>
+            <p id="modal-biography" style="margin:3em;"></p>
+        </div>
+    </div>
     <div id = "games">
         <div class="item" >
             <div class="card">
                 <h1><a href="games.html">How I Express Myself Creatively</a></h1>
                 <div class="content">
                     <p>
-                            <div style="text-align:left">From hands-on applications of graph theory and data structures...</div> <br>
-                            <div style="text-align:center">...to tinkering with finite state machines and model view controllers...</div><br> 
-                            <div style="text-align:right">...to understanding challenges in big data processing, rendering, and visualization.</div><br>
-                            Game programming offers unique coding challenges that are directly translatable into other computer science fields. Here are some of my favorite creations. Click any to play and learn more.
+                        <div style="text-align:left">From hands-on applications of graph theory and data structures...</div> <br>
+                        <div style="text-align:center">...to tinkering with finite state machines and model view controllers...</div><br> 
+                        <div style="text-align:right">...to understanding challenges in big data processing, rendering, and visualization.</div><br>
+                        Game programming offers unique coding challenges that are directly translatable into other computer science fields. Here are some of my favorite creations. Click any to play and learn more.
                     </p>
                 </div>
             </div>
         </div>
     </div>
-    <script type="text/javascript">
-        function updateStream() {
-            var element = document.getElementById("stream");
-            if (element) {
-                var rect = element.getBoundingClientRect();
-                var threshold = 0;
-                if (rect.bottom > threshold && (window.innerHeight - rect.top) > threshold) {
-                    var url = element.getAttribute("title");
-                    var xmlHttp = new XMLHttpRequest();
-                    xmlHttp.open("GET", url, true);
-                    xmlHttp.onreadystatechange = function () {
-                        if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
-                            element.insertAdjacentHTML('beforebegin', xmlHttp.responseText);
-                            element.parentNode.removeChild(element);
-                            updateStream();
-                        }
-                    };
-                    xmlHttp.send(null);
-                }
-            }
-        }
-        updateStream();
-        window.addEventListener('scroll', function (e) {
-            updateStream();
-        });
-    </script>
-    
-  
 </body>
 <script src="./assets/js/jquery.min.js"></script>
 <script src="./assets/js/jquery.csv.min.js"></script>
 <script>
-        // var data;
-        // var flag = "";
-        // var modal = document.getElementById('modal');
-        // var span = document.getElementsByClassName("close")[0];
-        // span.onclick = function () {
-        //     modal.style.display = "none";
-        // }
-        // window.onclick = function (event) {
-        //     if (event.target == modal) {
-        //         modal.style.display = "none";
-        //     }
-        // }
-        // function loadModal(id) {
-        //     if (id != '') {
-        //         modal.style.display = "block";
-        //         var logo = document.getElementById('modal-image');
-        //         logo.src = '/images/' + id + '.jpg';
-        //         var name = document.getElementById('modal-name');
-        //         name.innerHTML = getInfo(id).NAME;
-        //         var title = document.getElementById('modal-title');
-        //         title.innerHTML = getInfo(id).TITLE;
-        //         var biography = document.getElementById('modal-biography');
-        //         biography.innerHTML = getInfo(id).TEXT;
-        //     }
-        // }
-        // function getInfo(id) {
-        //     for (var i = 0; i < data.length; i++) {
-        //         if (data[i].ID == id) {
-        //             return data[i];
-        //         }
-        //     }
-        // }
-        $(function () {
-            // $(window).on('hashchange', function (event) {
-            //     loadModal(window.location.hash.substring(1));
-            // });
-            $.get("/games.csv").then(function (text, status, xhr) {
-                data = $.csv.toObjects(text);
-                for (var i = 0; i < data.length; i++) {
-                        $("#games").append(
-                            $.parseHTML(
-                                '<div class="item">' +
+    var data;
+    var flag = "";
+    var modal = document.getElementById('modal');
+    var span = document.getElementsByClassName("close")[0];
+    span.onclick = function () {
+        modal.style.display = "none";
+    }
+    window.onclick = function (event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+    function loadModal(id) {
+        if (id != '') {
+            modal.style.display = "block";
+            document.getElementById('modal-image').src = '/images/' + id + '.jpg';
+            document.getElementById('modal-name').innerHTML = getInfo(id).NAME;
+            document.getElementById('modal-title').innerHTML = getInfo(id).TITLE;
+            document.getElementById('modal-biography').innerHTML = getInfo(id).TEXT;
+        }
+    }
+    function getInfo(id) {
+        for (var i = 0; i < data.length; i++) if (data[i].ID == id) return data[i];
+    }
+    $(function () {
+        $(window).on('hashchange', function (event) {
+            loadModal(window.location.hash.substring(1));
+        });
+        $.get("/games.csv").then(function (text, status, xhr) {
+            data = $.csv.toObjects(text);
+            for (var i = 0; i < data.length; i++) {
+                var github_html = '';
+                if (data[i].GITHUB !== " " && data[i].GITHUB !== "") github_html = '<br><div class="fa fa-github"></div>Open Source!';
+                $("#games").append($.parseHTML(
+                    '<div class="item">' +
                         '<a href="#' + data[i].ID + '" class="card">' +
-                            '<div class="date"><div class="fa fa-calendar"></div>' + data[i].DATE + '<br><div class="fa fa-map-marker"></div>' + data[i].LOCATION + '</div>' +
+                            '<div class="date"><div class="fa fa-calendar"></div>' + data[i].DATE + '<br><div class="fa fa-map-marker"></div>' + data[i].LOCATION + github_html + '</div>' +
                             '<div class="logo"><img src="images/' + data[i].ID + '.jpg" width="200" height="74" /></div>' +
                             '<h1>' + data[i].NAME + '</h1>' + 
                             '<div class="content">' +
@@ -152,5 +128,5 @@
             }
         });
     });
-    </script>
+</script>
 </html>
