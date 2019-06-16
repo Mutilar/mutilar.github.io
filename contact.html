@@ -1,5 +1,4 @@
 <html>
-
 <head>
     <title>Brian Hungerman</title>
     <meta name="description" content="My website: brianhungerman.com. View for resume, portfolio, etc.">
@@ -16,12 +15,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="main.css" />
 </head>
-
 <body>
     <div class="header">
         <div class="profile">
-            <a class="portrait" href="https://minimal-developer.netlify.com/"><img src="images/brian.jpg"></a>
-            <div class="name"><a href="https://minimal-developer.netlify.com/">Brian Hungerman</a></div>
+            <a class="portrait" href="https://github.com/Mutilar"><img src="images/brian.jpg"></a>
+            <div class="name">Brian Hungerman</div>
             <div class="blurb">
                     I'm a <strong>Software Engineer</strong> interested in <strong><a href="https://en.wikipedia.org/wiki/Graph_theory">Graph
                     Theory</a></strong> and <strong><a href="https://en.wikipedia.org/wiki/Gamification">Gamification</a></strong>.
@@ -49,47 +47,15 @@
             <li class="tab"><a class="active" href="contact.html">Reach out!</a></li>
         </ul>
     </nav>
-
     <div class="item">
         <div class="card">
-            <div class="date">June 12, 2019</div>
             <h1><a href="contact.html">Let's keep this going!</a></h1>
             <div class="content">
                 <p>
-                    I love any opportunity to connect, learn from others, and build a community.
-
-
+                    I love any opportunity to connect, learn from others, and build communities.
                 </p>
             </div>
         </div>
-
     </div>
-
-    <script type="text/javascript">
-        function updateStream() {
-            var element = document.getElementById("stream");
-            if (element) {
-                var rect = element.getBoundingClientRect();
-                var threshold = 0;
-                if (rect.bottom > threshold && (window.innerHeight - rect.top) > threshold) {
-                    var url = element.getAttribute("title");
-                    var xmlHttp = new XMLHttpRequest();
-                    xmlHttp.open("GET", url, true);
-                    xmlHttp.onreadystatechange = function () {
-                        if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
-                            element.insertAdjacentHTML('beforebegin', xmlHttp.responseText);
-                            element.parentNode.removeChild(element);
-                            updateStream();
-                        }
-                    };
-                    xmlHttp.send(null);
-                }
-            }
-        }
-        updateStream();
-        window.addEventListener('scroll', function (e) {
-            updateStream();
-        });
-    </script>
 </body>
 </html>
