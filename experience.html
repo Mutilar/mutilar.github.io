@@ -1,5 +1,4 @@
 <html>
-
 <head>
     <title>Brian Hungerman</title>
     <meta name="description" content="My website: brianhungerman.com. View for resume, portfolio, etc.">
@@ -17,7 +16,6 @@
     <link rel="stylesheet" href="main.css" />
     <link rel="stylesheet" href="assets/css/modal.css" />
 </head>
-
 <body>
     <div class="header">
         <div class="profile">
@@ -55,8 +53,8 @@
             <span class="close">&times;</span>
             <img id="modal-image" class="image" style="width:40%; float:left" src="/images/microsoft.jpg" />
             <div style="width:60%; float:left;">
-                <h3 id="modal-name" style="margin:1em 0em 0em 0em;"></h3>
-                <h4 id="modal-title" style="margin:2em 0em 3em 0em;"></h4>
+                <h1 id="modal-name" style="margin:1em 0em 0em 0em;"></h1>
+                <h2 id="modal-title" style="margin:2em 0em 3em 0em;"></h2>
             </div>
             <p id="modal-biography" style="margin:3em;"></p>
         </div>
@@ -86,33 +84,28 @@
     var flag = "";
     var modal = document.getElementById('modal');
     var span = document.getElementsByClassName("close")[0];
+
     span.onclick = function () {
         modal.style.display = "none";
+        window.location.hash = "#";
     }
     window.onclick = function (event) {
         if (event.target == modal) {
             modal.style.display = "none";
+            window.location.hash = "#";
         }
     }
     function loadModal(id) {
         if (id != '') {
             modal.style.display = "block";
-            var logo = document.getElementById('modal-image');
-            logo.src = '/images/' + id + '.jpg';
-            var name = document.getElementById('modal-name');
-            name.innerHTML = getInfo(id).NAME;
-            var title = document.getElementById('modal-title');
-            title.innerHTML = getInfo(id).TITLE;
-            var biography = document.getElementById('modal-biography');
-            biography.innerHTML = getInfo(id).TEXT;
+            document.getElementById('modal-image').src = '/images/' + id + '.jpg';
+            document.getElementById('modal-name').innerHTML = getInfo(id).NAME;
+            document.getElementById('modal-title').innerHTML = getInfo(id).TITLE;
+            document.getElementById('modal-biography').innerHTML = getInfo(id).TEXT;
         }
     }
     function getInfo(id) {
-        for (var i = 0; i < data.length; i++) {
-            if (data[i].ID == id) {
-                return data[i];
-            }
-        }
+        for (var i = 0; i < data.length; i++) if (data[i].ID == id) return data[i];
     }
     $(function () {
     $(window).on('hashchange', function (event) {
@@ -121,10 +114,12 @@
     $.get("/experience.csv").then(function (text, status, xhr) {
         data = $.csv.toObjects(text);
         for (var i = 0; i < data.length; i++) {
+            var github_html = '';
+            if (data[i].GITHUB !== " " && data[i].GITHUB !== "") github_html = '<br><div class="fa fa-github"></div>Github';
             $("#experience").append($.parseHTML(
                 '<div class="item">' +
                     '<a href="#' + data[i].ID + '" class="card">' +
-                        '<div class="date"><div class="fa fa-calendar"></div>' + data[i].DATE + '<br><div class="fa fa-map-marker"></div>' + data[i].LOCATION + '</div>' +
+                        '<div class="date"><div class="fa fa-calendar"></div>' + data[i].DATE + '<br><div class="fa fa-map-marker"></div>' + data[i].LOCATION + github_html + '</div>' +
                         '<div class="logo"><img src="images/' + data[i].ID + '.jpg" width="200" height="74" /></div>' +
                         '<h1>' + data[i].NAME + '</h1>' + 
                         '<div class="content">' +
