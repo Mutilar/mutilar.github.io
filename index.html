@@ -67,7 +67,7 @@
     </div>
     <div class="item">
         <div class="card">
-            <h1><a href="contact.html">Speed Date</a></h1>
+            <h1><a href="#contact">Speed Date</a></h1>
             <div class="content">
                 <p>
                     A software engineer with a desire to achieve and a passion for mentorship, <br>Brian’s personable flair and can-do attitude allow him to tackle any challenge.
@@ -77,13 +77,13 @@
             <br>
             <hr>
             <br>
-            <h1><a href="experience.html">Ongoing Projects</a></h1>
+            <h1><a href="https://github.com/bitnaughts">Project Showcase: <strong>BitNaughts</strong></a></h1>
             <div class="content">
-                <p>
-                    A software engineer with a desire to achieve and a passion for mentorship, <br>Brian’s personable flair and can-do attitude allow him to tackle any challenge.
-                </p>
+            <p>
+                BitNaughts is an open-source game-in-the-makings, building towards our vision of a perfect bullet-hell sci-fi coding MMORPG. Interested in what we are trying to do? Want to talk about ideas or collaborate on code or art? Feel free to connect! 
+            </p>
             </div>
-            <div class="more"><a href="#contact">... want to keep the conversation going?</a></div>
+            <div class="more"><a href="https://github.com/bitnaughts">Check it out!</a></div>
         </div>
         <br>
         <!-- <link rel="stylesheet" href="https://unpkg.com/github-calendar@latest/dist/github-calendar-responsive.css" /> -->
@@ -102,7 +102,7 @@
     var boxes = document.getElementsByClassName("day");
     var count = 0;
     setInterval(function() {
-        count += 1
+        count += .5
         for (var i = 0; i < boxes.length; i++) {
             if (boxes[i].getAttribute("fill") == "#ffffff")
                 continue;
