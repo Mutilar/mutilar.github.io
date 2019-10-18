@@ -27,7 +27,7 @@
                     Theory</a></strong> and <strong><a href="https://en.wikipedia.org/wiki/Gamification">Gamification</a></strong>.
             </div>
             <div class="bio">
-                Software Engineering Intern <br><strong><a target="_blank" href="http://www.github.com/azure" title="Azure">@azure</a> <a target="_blank" href="http://www.github.com/microsoft" title="Microsoft">@microsoft</a></strong><br>
+                Software Engineer <strong><a target="_blank" href="http://www.github.com/azure" title="Azure">@azure</a></strong><br>
                 Researching <strong><a target="_blank" href="http://www.github.com/vicelab" title="VICE Lab">@vicelab</a></strong><br>
                 Developing <strong><a target="_blank" href="http://www.github.com/bitnaughts" title="BitNaughts">@bitnaughts</a></strong>
             </div>
@@ -74,6 +74,16 @@
                 </p>
             </div>
             <div class="more"><a href="#contact">... want to keep the conversation going?</a></div>
+            <br>
+            <hr>
+            <br>
+            <h1><a href="experience.html">Ongoing Projects</a></h1>
+            <div class="content">
+                <p>
+                    A software engineer with a desire to achieve and a passion for mentorship, <br>Brian’s personable flair and can-do attitude allow him to tackle any challenge.
+                </p>
+            </div>
+            <div class="more"><a href="#contact">... want to keep the conversation going?</a></div>
         </div>
         <br>
         <!-- <link rel="stylesheet" href="https://unpkg.com/github-calendar@latest/dist/github-calendar-responsive.css" /> -->
@@ -88,6 +98,44 @@
     var flag = "";
     var modal = document.getElementById('modal');
     var span = document.getElementsByClassName("close")[0];
+
+    var boxes = document.getElementsByClassName("day");
+    var count = 0;
+    setInterval(function() {
+        count += 1
+        for (var i = 0; i < boxes.length; i++) {
+            if (boxes[i].getAttribute("fill") == "#ffffff")
+                continue;
+            if (boxes[i].getAttribute("fill") == "#ebedf0") {
+                boxes[i].setAttribute("fill", "#ffffff")
+                continue;
+            }
+            boxes[i].setAttribute (
+                "fill", 
+                makeColorGradient(
+                    .3,.3,.3,0,2,4,
+                    200,
+                    120,
+                    (  (parseInt(boxes[i].getAttribute("x")) + 38 + count) % 52   ) * .40,
+                    Math.sqrt(parseInt(boxes[i].getAttribute("data-count"))) / 4
+                )
+            );
+        }
+    }, 100);
+
+    // Shout-out to https://krazydad.com/tutorials/makecolors.php
+    function makeColorGradient(frequency1, frequency2, frequency3, phase1, phase2, phase3, center, width, index, intensity)
+    {
+        return RGB2Color (
+        /*r*/ Math.ceil((Math.sin(frequency1*index + phase1) * width + center)/intensity),
+        /*g*/ Math.ceil((Math.sin(frequency2*index + phase2) * width + center)/intensity),
+        /*b*/ Math.ceil((Math.sin(frequency3*index + phase3) * width + center)/intensity) 
+        );
+    }
+    function RGB2Color(r,g,b)
+    {
+        return 'rgb(' + Math.round(r) + ',' + Math.round(g) + ',' + Math.round(b) + ')';
+    }
 
     span.onclick = function () {
         modal.style.display = "none";
