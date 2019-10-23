@@ -1,4 +1,5 @@
 <html>
+
 <head>
     <title>Brian Hungerman</title>
     <meta name="description" content="My website: brianhungerman.com. View for resume, portfolio, etc.">
@@ -17,14 +18,15 @@
     <link rel="stylesheet" href="modal.css" />
     <link rel="stylesheet" href="calendar.css" />
 </head>
+
 <body>
     <div class="header">
         <div class="profile">
             <a class="portrait" href="https://github.com/Mutilar"><img src="images/brian.jpg"></a>
             <div class="name">Brian Hungerman</div>
             <div class="blurb">
-                    I'm a <strong>Software Engineer</strong> interested in <strong><a href="https://en.wikipedia.org/wiki/Graph_theory">Graph
-                    Theory</a></strong> and <strong><a href="https://en.wikipedia.org/wiki/Gamification">Gamification</a></strong>.
+                I'm a <strong>Software Engineer</strong> interested in <strong><a href="https://en.wikipedia.org/wiki/Graph_theory">Graph
+                        Theory</a></strong> and <strong><a href="https://en.wikipedia.org/wiki/Gamification">Gamification</a></strong>.
             </div>
             <div class="bio">
                 Software Engineer <strong><a target="_blank" href="http://www.github.com/azure" title="Azure">@azure</a></strong><br>
@@ -63,14 +65,15 @@
                     <a target="_blank" href="mailto:brianhungerman@gmail.com" class="large-icon fa fa-envelope"></a>
                 </div>
             </div>
-        </div> 
+        </div>
     </div>
     <div class="item">
         <div class="card">
             <h1><a href="#contact">Speed Date</a></h1>
             <div class="content">
                 <p>
-                    A software engineer with a desire to achieve and a passion for mentorship, <br>Brian’s personable flair and can-do attitude allow him to tackle any challenge.
+                    A software engineer with a desire to achieve and a passion for mentorship, <br>Brian’s personable
+                    flair and can-do attitude allow him to tackle any challenge.
                 </p>
             </div>
             <div class="more"><a href="#contact">... want to keep the conversation going?</a></div>
@@ -79,9 +82,11 @@
             <br>
             <h1><a href="https://github.com/bitnaughts">Project Showcase: <strong>BitNaughts</strong></a></h1>
             <div class="content">
-            <p>
-                BitNaughts is an open-source game-in-the-makings, building towards our vision of a perfect bullet-hell sci-fi coding MMORPG. Interested in what we are trying to do? Want to talk about ideas or collaborate on code or art? Feel free to connect! 
-            </p>
+                <p>
+                    BitNaughts is an open-source game-in-the-makings, building towards our vision of a perfect
+                    bullet-hell sci-fi coding MMORPG. Interested in what we are trying to do? Want to talk about ideas
+                    or collaborate on code or art? Feel free to connect!
+                </p>
             </div>
             <div class="more"><a href="https://github.com/bitnaughts">Check it out!</a></div>
         </div>
@@ -101,22 +106,21 @@
 
     var boxes = document.getElementsByClassName("day");
     var count = 0;
-    setInterval(function() {
+    setInterval(function () {
         count += .5
         for (var i = 0; i < boxes.length; i++) {
-            if (boxes[i].getAttribute("fill") == "#ffffff")
-                continue;
+            if (boxes[i].getAttribute("fill") == "#ffffff") continue;
             if (boxes[i].getAttribute("fill") == "#ebedf0") {
                 boxes[i].setAttribute("fill", "#ffffff")
                 continue;
             }
-            boxes[i].setAttribute (
-                "fill", 
+            boxes[i].setAttribute(
+                "fill",
                 makeColorGradient(
-                    .3,.3,.3,0,2,4,
+                    .3, .3, .3, 0, 2, 4,
                     200,
                     120,
-                    (  (parseInt(boxes[i].getAttribute("x")) + 38 + count) % 52   ) * .40,
+                    ((parseInt(boxes[i].getAttribute("x")) + (parseInt(boxes[i].getAttribute("y") / ((Math.sin(count / 20)) * 10))) + 38 + count) % 52) * .40,
                     Math.sqrt(parseInt(boxes[i].getAttribute("data-count"))) / 4
                 )
             );
@@ -124,16 +128,14 @@
     }, 100);
 
     // Shout-out to https://krazydad.com/tutorials/makecolors.php
-    function makeColorGradient(frequency1, frequency2, frequency3, phase1, phase2, phase3, center, width, index, intensity)
-    {
-        return RGB2Color (
-        /*r*/ Math.ceil((Math.sin(frequency1*index + phase1) * width + center)/intensity),
-        /*g*/ Math.ceil((Math.sin(frequency2*index + phase2) * width + center)/intensity),
-        /*b*/ Math.ceil((Math.sin(frequency3*index + phase3) * width + center)/intensity) 
+    function makeColorGradient(frequency1, frequency2, frequency3, phase1, phase2, phase3, center, width, index, intensity) {
+        return RGB2Color(
+        /*r*/ Math.ceil((Math.sin(frequency1 * index + phase1) * width + center) / intensity),
+        /*g*/ Math.ceil((Math.sin(frequency2 * index + phase2) * width + center) / intensity),
+        /*b*/ Math.ceil((Math.sin(frequency3 * index + phase3) * width + center) / intensity)
         );
     }
-    function RGB2Color(r,g,b)
-    {
+    function RGB2Color(r, g, b) {
         return 'rgb(' + Math.round(r) + ',' + Math.round(g) + ',' + Math.round(b) + ')';
     }
 
@@ -154,4 +156,5 @@
         });
     });
 </script>
+
 </html>
