@@ -1,5 +1,4 @@
 <html>
-
 <head>
     <title>Brian Hungerman</title>
     <meta name="description" content="My website: brianhungerman.com. View for resume, portfolio, etc.">
@@ -17,7 +16,6 @@
     <link rel="stylesheet" href="main.css" />
     <link rel="stylesheet" href="modal.css" />
 </head>
-
 <body>
     <div class="header">
         <div class="profile">
@@ -44,8 +42,8 @@
         <ul class="tabs" id="tabs">
             <li class="tab"><a href="index.html">Home</a></li>
             <li class="tab"><a href="experience.html">Experience</a></li>
-            <li class="tab"><a class="active" href="projects.html">Projects</a></li>
-            <li class="tab"><a href="hackathons.html">Hacks</a></li>
+            <li class="tab"><a href="projects.html">Projects</a></li>
+            <li class="tab"><a class="active" href="hackathons.html">Hacks</a></li>
             <li class="tab"><a href="games.html">Games</a></li>
         </ul>
     </nav>
@@ -60,21 +58,21 @@
             <p id="modal-biography"></p>
         </div>
     </div>
-    <div id="projects">
-        <div class="item">
+    <div id = "hackathons">
+        <div class="item" >
             <div class="card">
-                <h1><a href="projects.html">What Problems I've Tackled</a></h1>
+                <h1><a href="hackathons.html">What I've Cobbled Together</a></h1>
                 <div class="content">
                     <p>
-                        <div style="text-align:left">From empowering those with asthma with real-time air quality data...</div> <br>
-                        <div style="text-align:center">...to leveraging big data to promote sustainability initiatives...</div><br>
-                        <div style="text-align:right">...to providing an intuitive learning environment for young programmers,</div><br>
-                        The intersection computer science and entrepreneurship is a fascinating blend of creativity, pitching, and coding, and it is an environment I absolutely thrive in.
+                        <div style="text-align:left">From using augmented reality to visualize the missing link from farm to table...</div><br>
+                        <div style="text-align:center">...to an autonomous, room-mapping robotic tank for first responders called SRIRACHA...</div><br> 
+                        <div style="text-align:right">...to optical character recognition on nutrition labels as a FitBit for your stomach,</div><br>
+                        I've traveled up and down California competing in hackathons. I love to be in these competitive, entrepenuerial environments, honing my skills, and exploring new technologies.
                     </p>
                 </div>
             </div>
             <br>
-            <img style="width:100%" src="images/projects-banner.jpg" alt="" />
+            <img style="width:100%" src="images/hackathon-banner.jpg" alt="" />
         </div>
     </div>
 </body>
@@ -85,6 +83,7 @@
     var flag = "";
     var modal = document.getElementById('modal');
     var span = document.getElementsByClassName("close")[0];
+
     span.onclick = function () {
         modal.style.display = "none";
     }
@@ -107,12 +106,12 @@
         $(window).on('hashchange', function (event) {
             loadModal(window.location.hash.substring(1));
         });
-        $.get("/projects.csv").then(function (text, status, xhr) {
+        $.get("/hackathons.csv").then(function (text, status, xhr) {
             data = $.csv.toObjects(text);
             for (var i = 0; i < data.length; i++) {
                 var github_html = '';
                 if (data[i].GITHUB !== " " && data[i].GITHUB !== "") github_html = '<br><div class="fa fa-github"></div>Open Source!';
-                $("#projects").append($.parseHTML(
+                $("#hackathons").append($.parseHTML(
                     '<div class="item">' +
                         '<a href="#' + data[i].ID + '" class="card">' +
                             '<div class="date"><div class="fa fa-calendar"></div>' + data[i].DATE + '<br><div class="fa fa-map-marker"></div>&nbsp;' + data[i].LOCATION + github_html + '</div>' +
