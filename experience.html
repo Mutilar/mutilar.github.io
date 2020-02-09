@@ -114,11 +114,11 @@
             $("#experience").append($.parseHTML(
                 '<div class="item">' +
                     '<a href="#' + data[i].ID + '" class="card">' +
-                        '<div class="date"><div class="fa fa-calendar"></div>' + data[i].DATE + '<br><div class="fa fa-map-marker"></div>&nbsp;' + data[i].LOCATION + github_html + '</div>' +
+                        '<div class="date"><div class="fa fa-calendar"></div>' + data[i].DATE.replace(";","\n") + '<br><div class="fa fa-map-marker"></div>&nbsp;' + data[i].LOCATION + github_html + '</div>' +
                         '<div class="logo"><img src="images/' + data[i].ID + '.jpg" width="200" height="74" /></div>' +
                         '<h1>' + data[i].NAME + '</h1>' + 
                         '<div class="content">' +
-                            '<p>' + data[i].TITLE + '</p>' + 
+                            '<p>' + data[i].TITLE.replace(";","\n") + '</p>' + 
                             '<i>' + data[i].MOTTO + '</i>' + 
                         '</div>' +
                     '</a>' +
