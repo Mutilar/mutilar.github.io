@@ -211,10 +211,10 @@
         }
 
         .card .border {
-            /* position: relative;
-            border-radius: 3px;
+            position: relative;
+            border-radius: 0px;
             box-sizing: border-box;
-            box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.1); */
+            box-shadow: 0 0px 0px 0 rgba(0, 0, 0, 0.1);
         }
 
         .card .border:after {
