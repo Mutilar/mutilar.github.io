@@ -21,13 +21,13 @@
         <div class="profile">
             <a class="portrait" href="https://github.com/Mutilar"><img src="images/brian.jpg"></a>
             <div class="name">Brian Hungerman</div>
-            <div class="blurb">
-                    I'm a <strong>Software Engineer</strong> interested in <strong><a href="https://en.wikipedia.org/wiki/Graph_theory">Graph
-                    Theory</a></strong> and <strong><a href="https://en.wikipedia.org/wiki/Gamification">Gamification</a></strong>.
+            <div class="blurb">I'm a <strong>Software Engineer</strong> interested in 
+                <strong><a href="https://en.wikipedia.org/wiki/Graph_theory">Graph Theory</a></strong> and 
+                <strong><a href="https://en.wikipedia.org/wiki/Gamification">Gamification</a></strong>.
             </div>
-            <div class="bio">
-                Software Engineer <strong><a target="_blank" href="http://www.github.com/azure" title="Azure">@azure</a></strong><br>
-                Developing <strong><a target="_blank" href="http://www.github.com/bitnaughts" title="BitNaughts">@bitnaughts</a></strong>
+            <div class="bio"> 
+                Working <strong><a target="_blank" href="http://www.github.com/azure" title="Azure">@AzureML</a></strong><br>
+                Hacking <strong><a target="_blank" href="http://www.github.com/bitnaughts" title="BitNaughts">@BitNaughts</a></strong>
             </div>
             <div class="links">
                 <a target="_blank" href="https://www.linkedin.com/in/brian-hungerman/" class="large-icon fa fa-linkedin"></a>
@@ -48,12 +48,12 @@
     </nav>
     <div id="modal" class="modal card">
         <div class="modal-content item">
-            <span class="close">&times;</span>
             <img id="modal-image" class="image" style="width:100%; float:left" src="/images/microsoft.jpg" />
             <div style="width:100%; float:left; text-align: center">
                 <h1 id="modal-name"></h1>
                 <h2 id="modal-title" style="margin:1em 0em 1em 0em;"></h2>
             </div>
+            <span class="close">&times;</span>
             <p id="modal-biography"></p>
         </div>
     </div>
@@ -71,7 +71,7 @@
                 </div>
             </div>  
             <br>
-            <img style="width:100%" src="images/experience-banner.jpg" alt="" />
+            <!-- <img style="width:100%" src="images/experience-banner.jpg" alt="" /> -->
         </div>
     </div>
 </body>
@@ -113,11 +113,11 @@
             $("#experience").append($.parseHTML(
                 '<div class="item">' +
                     '<a href="#' + data[i].ID + '" class="card">' +
-                        '<div class="date"><div class="fa fa-calendar"></div>' + data[i].DATE.replace("~","\n") + '<br><div class="fa fa-map-marker"></div>&nbsp;' + data[i].LOCATION + github_html + '</div>' +
+                        '<div class="date"><div class="fa fa-calendar"></div>' + data[i].DATE + '<br><div class="fa fa-map-marker"></div>&nbsp;' + data[i].LOCATION + github_html + '</div>' +
                         '<div class="logo"><img src="images/' + data[i].ID + '.jpg" width="200" height="74" /></div>' +
                         '<h1>' + data[i].NAME + '</h1>' + 
                         '<div class="content">' +
-                            '<p>' + data[i].TITLE.replace("~","\n") + '</p>' + 
+                            '<p>' + data[i].TITLE + '</p>' + 
                             '<i>' + data[i].MOTTO + '</i>' + 
                         '</div>' +
                     '</a>' +
