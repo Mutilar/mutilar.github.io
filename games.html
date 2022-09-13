@@ -33,6 +33,7 @@
                 <a target="_blank" href="https://www.linkedin.com/in/brian-hungerman/" class="large-icon fa fa-linkedin"></a>
                 <a target="_blank" href="https://www.facebook.com/BrianMHungerman" class="large-icon fa fa-facebook"></a>
                 <a target="_blank" href="https://github.com/Mutilar" class="large-icon fa fa-github"></a>
+                <a target="_blank" href="https://twitter.com/BrianHungerman" class="large-icon fa fa-twitter"></a>
                 <a target="_blank" href="mailto:brianhungerman@gmail.com" class="large-icon fa fa-envelope"></a>
             </div>
         </div>
@@ -51,7 +52,7 @@
             <img id="modal-image" class="image" style="width:100%; float:left" src="/images/microsoft.jpg" />
             <div style="width:100%; float:left; text-align: center">
                 <h1 id="modal-name"></h1>
-                <h2 id="modal-title" style="margin:1em 0em 1em 0em;"></h2>
+                <!-- <h2 id="modal-title" style="margin:1em 0em 1em 0em;"></h2> -->
             </div>
             <span class="close">&times;</span>
             <p id="modal-biography"></p>
@@ -95,7 +96,7 @@
             modal.style.display = "block";
             document.getElementById('modal-image').src = '/images/' + id + '.jpg';
             document.getElementById('modal-name').innerHTML = getInfo(id).NAME;
-            document.getElementById('modal-title').innerHTML = getInfo(id).TITLE;
+            // document.getElementById('modal-title').innerHTML = getInfo(id).TITLE;
             document.getElementById('modal-biography').innerHTML = getInfo(id).TEXT;
         }
     }
