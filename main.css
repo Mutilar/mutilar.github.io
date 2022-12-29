@@ -10,7 +10,7 @@
             max-width: 980px;
             margin: 96px auto 96px auto;
             padding: 0 40px 0 40px;
-            background-color: #ffffff;
+            background-color: #111111;
         }
 
         a, u {
@@ -35,8 +35,7 @@
             float: left;
             display: block;
             box-sizing: border-box;
-            color: #333333;
-            color: #24292e;
+            color: #ffffff;
             line-height: 1.5;
             font-size: 14px;
         }
@@ -84,14 +83,14 @@
             font-size: 26px;
             font-weight: 600;
             line-height: 30px;
-            color: #24292e;
+            color: #ffffff;
             box-sizing: border-box;
             padding: 246px 0 16px 0;
         }
 
         .header .profile .bio {
             font-size: 14px;
-            color: #6a737d;
+            color: #ffffff;
             line-height: 1.5;
             margin-top: 24px;
             display: block;
@@ -171,7 +170,7 @@
         }
 
         .navigation .tab a {
-            color: #586069;
+            color: #ffffff;
             padding: 20px 20px 21px 20px;
             border-bottom: 2px solid transparent;
             text-decoration: none;
@@ -182,7 +181,7 @@
         }
 
         .navigation .tab a.active {
-            color: #24292e;
+            color: #ff0000;
             border-bottom-color: #e36209;
         }
 
@@ -201,7 +200,7 @@
             padding: 24px;
             border-radius: 3px;
             border: 1px solid #d1d5da;
-            color: #24292e;
+            color: #ffffff;
         }
 
         .card .logo {
@@ -247,7 +246,7 @@
             font-weight: bold;
             font-size: 20px;
             line-height: 1.25;
-            color: #24292e;
+            color: #ffffff;
             margin: 16px 0 16px 0;
         }
 
