@@ -46,6 +46,7 @@
         .header a:active {
             color: inherit;
             text-decoration: none;
+            display: inline;
         }
 
         .header a:hover {
@@ -90,7 +91,7 @@
 
         .header .profile .bio {
             font-size: 14px;
-            color: #ffffff;
+            color: #111111;
             line-height: 1.5;
             margin-top: 24px;
             display: block;
