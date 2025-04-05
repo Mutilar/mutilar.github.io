@@ -1,3 +1,3 @@
 # 🐧 Brian Hungerman
 
-An HTML5UP template that is dynamically populated via a light-weight jQuery CMS that loads data from a CSV file.
+A website built off of [Lutzroeder's Minimal Template](https://github.com/lutzroeder/minimal), dynamically populated via a light-weight jQuery CMS that loads data from CSV files.
