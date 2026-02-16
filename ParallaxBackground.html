@@ -1,0 +1,438 @@
+<!-- Copyright (c) Microsoft Corporation. All rights reserved. -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Parallax Background</title>
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    overflow: hidden;
+    background: #1B1F2B;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    color: #fff;
+  }
+
+  /* ─── Layers ─────────────────────────────────────────────────── */
+  #parallax-root {
+    position: fixed;
+    inset: 0;
+  }
+
+  canvas#orbCanvas,
+  canvas#glintCanvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  #content-layer {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  /* ─── Controls ───────────────────────────────────────────────── */
+  #controls {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    display: flex;
+    gap: 16px;
+    pointer-events: auto;
+  }
+
+  #controls button {
+    padding: 10px 22px;
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 12px;
+    background: rgba(255,255,255,0.08);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    color: #fff;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.3s, border-color 0.3s;
+    user-select: none;
+  }
+  #controls button:hover {
+    background: rgba(255,255,255,0.16);
+    border-color: rgba(255,255,255,0.45);
+  }
+  #controls button.active {
+    background: rgba(255,255,255,0.22);
+    border-color: rgba(255,255,255,0.6);
+  }
+</style>
+</head>
+<body>
+
+<div id="parallax-root">
+  <!-- Orb mesh-gradient layer -->
+  <canvas id="orbCanvas"></canvas>
+  <!-- Glint sweep layer -->
+  <canvas id="glintCanvas"></canvas>
+  <!-- Content slot -->
+  <div id="content-layer"></div>
+</div>
+
+<!-- Toggle buttons for attention / locked states -->
+<div id="controls">
+  <button id="btnAttention">Toggle Attention</button>
+  <button id="btnLocked">Toggle Locked</button>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+//  Mochi ParallaxBackground — faithful HTML/CSS/JS port
+//  Matches the Compose/Canvas implementation 1-to-1:
+//    • 4 Microsoft-brand orbs with coprime Lissajous drift
+//    • Breathing radius pulse
+//    • Attention mode (orbs focus inward, glow brighter, 2× speed)
+//    • Confinement mode (orbs squeeze to bottom half — stubbed)
+//    • Center bloom
+//    • 4 glint sweep bands with independent coprime periods
+// ═══════════════════════════════════════════════════════════════
+
+(() => {
+  "use strict";
+
+  // ── State ──────────────────────────────────────────────────
+  let isAtAttention = false;
+  let isLocked = false;
+  let scrollOffset = 0;
+
+  // Animated values (smoothly lerp toward targets)
+  let attention = 0;       // 0..1
+  let confinement = 0;     // 0..1  (stubbed to 0 like the Kotlin)
+
+  // ── Microsoft brand palette ────────────────────────────────
+  const MS_RED    = [242, 80, 34];
+  const MS_GREEN  = [127, 186, 0];
+  const MS_BLUE   = [0, 164, 239];
+  const MS_YELLOW = [255, 185, 0];
+  const BASE_BG   = [27, 31, 43]; // #1B1F2B
+
+  // ── Canvas refs ────────────────────────────────────────────
+  const orbCanvas   = document.getElementById("orbCanvas");
+  const glintCanvas = document.getElementById("glintCanvas");
+  const orbCtx      = orbCanvas.getContext("2d");
+  const glintCtx    = glintCanvas.getContext("2d");
+
+  function resize() {
+    const dpr = window.devicePixelRatio || 1;
+    for (const c of [orbCanvas, glintCanvas]) {
+      c.width  = window.innerWidth  * dpr;
+      c.height = window.innerHeight * dpr;
+      c.getContext("2d").setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+  }
+  window.addEventListener("resize", resize);
+  resize();
+
+  // ── Easing: cubic-bezier(0.4, 0, 0.2, 1) = FastOutSlowIn ─
+  // For animation oscillators we use sine-based easing which
+  // naturally reverses (matches Compose tween + Reverse mode).
+  // t ∈ [0,1] → eased value in [0,1]
+  function easeInOutSine(t) {
+    return 0.5 - 0.5 * Math.cos(Math.PI * t);
+  }
+
+  // ── Oscillator: ping-pong value between `from` and `to`
+  //    over `periodMs` with sine easing (matches Compose
+  //    infiniteRepeatable + tween + RepeatMode.Reverse).
+  function oscillate(timeMs, periodMs, from, to) {
+    // Each full cycle = 2× periodMs (forward + reverse)
+    const phase = (timeMs % (periodMs * 2)) / periodMs;
+    // phase 0→1 = forward, 1→2 = reverse
+    const t = phase <= 1 ? phase : 2 - phase;
+    return from + (to - from) * easeInOutSine(t);
+  }
+
+  // ── Sweep oscillator (RepeatMode.Restart = sawtooth + ease)
+  function sweep(timeMs, periodMs, from, to) {
+    const t = (timeMs % periodMs) / periodMs;
+    return from + (to - from) * easeInOutSine(t);
+  }
+
+  // ── Lerp helper ────────────────────────────────────────────
+  function lerp(a, b, t) { return a + (b - a) * t; }
+  function clamp01(v) { return Math.max(0, Math.min(1, v)); }
+
+  // ── Radial gradient helper ─────────────────────────────────
+  // Draws a circle filled with a multi-stop radial gradient.
+  function drawRadialOrb(ctx, cx, cy, radius, color, alphaStops) {
+    const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, radius);
+    alphaStops.forEach(([stop, alpha]) => {
+      grad.addColorStop(stop, `rgba(${color[0]},${color[1]},${color[2]},${alpha})`);
+    });
+    ctx.fillStyle = grad;
+    ctx.beginPath();
+    ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  // ── AttentionX / ConfineY — match the Kotlin helpers ───────
+  function attentionX(natural, att) {
+    const focused = 0.125 + natural * 0.75;
+    return natural + (focused - natural) * att;
+  }
+
+  function confineY(natural, conf, att) {
+    const confined = 0.50 + natural * 0.45;
+    const afterConfine = natural + (confined - natural) * conf;
+    const focused = 0.125 + afterConfine * 0.75;
+    return afterConfine + (focused - afterConfine) * att;
+  }
+
+  // ══════════════════════════════════════════════════════════════
+  //  ORB LAYER
+  // ══════════════════════════════════════════════════════════════
+  function drawOrbs(now) {
+    const w = window.innerWidth;
+    const h = window.innerHeight;
+    const att = attention;
+    const conf = confinement;
+
+    // ── Drift oscillators (coprime periods, matches Kotlin) ──
+    // Slow
+    const dX1S = oscillate(now, 11000, 0, 1);
+    const dX2S = oscillate(now, 13000, 1, 0);
+    const dX3S = oscillate(now, 17000, 0.2, 0.8);
+    const dX4S = oscillate(now, 19000, 0.7, 0.3);
+    const dY1S = oscillate(now, 14000, 0, 1);
+    const dY2S = oscillate(now, 16000, 1, 0);
+    const dY3S = oscillate(now, 21000, 0.3, 0.7);
+    const dY4S = oscillate(now, 23000, 0.6, 0.4);
+
+    // Fast (2× speed — half durations)
+    const dX1F = oscillate(now, 5500, 0, 1);
+    const dX2F = oscillate(now, 6500, 1, 0);
+    const dX3F = oscillate(now, 8500, 0.2, 0.8);
+    const dX4F = oscillate(now, 9500, 0.7, 0.3);
+    const dY1F = oscillate(now, 7000, 0, 1);
+    const dY2F = oscillate(now, 8000, 1, 0);
+    const dY3F = oscillate(now, 10500, 0.3, 0.7);
+    const dY4F = oscillate(now, 11500, 0.6, 0.4);
+
+    // Blend slow ↔ fast by attention
+    const dX1 = lerp(dX1S, dX1F, att);
+    const dX2 = lerp(dX2S, dX2F, att);
+    const dX3 = lerp(dX3S, dX3F, att);
+    const dX4 = lerp(dX4S, dX4F, att);
+    const dY1 = lerp(dY1S, dY1F, att);
+    const dY2 = lerp(dY2S, dY2F, att);
+    const dY3 = lerp(dY3S, dY3F, att);
+    const dY4 = lerp(dY4S, dY4F, att);
+
+    // ── Breathing oscillators ────────────────────────────────
+    const b1S = oscillate(now, 6000, 0, 1);
+    const b2S = oscillate(now, 7000, 1, 0);
+    const b3S = oscillate(now, 8000, 0.3, 0.7);
+    const b4S = oscillate(now, 5000, 0.7, 0.3);
+    const b1F = oscillate(now, 3000, 0, 1);
+    const b2F = oscillate(now, 3500, 1, 0);
+    const b3F = oscillate(now, 4000, 0.3, 0.7);
+    const b4F = oscillate(now, 2500, 0.7, 0.3);
+    const b1 = lerp(b1S, b1F, att);
+    const b2 = lerp(b2S, b2F, att);
+    const b3 = lerp(b3S, b3F, att);
+    const b4 = lerp(b4S, b4F, att);
+
+    // ── Orb centers ──────────────────────────────────────────
+    const cRedX  = w * attentionX(0.15 + dX1 * 0.20, att);
+    const cRedY  = h * confineY(0.12 + dY1 * 0.18, conf, att) - scrollOffset * 0.02;
+    const cGrnX  = w * attentionX(0.65 + dX2 * 0.20, att);
+    const cGrnY  = h * confineY(0.15 + dY2 * 0.18, conf, att) - scrollOffset * 0.03;
+    const cBluX  = w * attentionX(0.15 + dX3 * 0.22, att);
+    const cBluY  = h * confineY(0.62 + dY3 * 0.20, conf, att) - scrollOffset * 0.015;
+    const cYelX  = w * attentionX(0.60 + dX4 * 0.22, att);
+    const cYelY  = h * confineY(0.55 + dY4 * 0.20, conf, att) - scrollOffset * 0.025;
+
+    // ── Radius scale + alpha brightness ──────────────────────
+    const radiusScale = (1 - conf * 0.15) * (1 + att * 0.25);
+    const alphaBright = 1 + att * 1; // 1.0 → 2.0
+
+    const radRed = w * (0.66 + b1 * 0.08) * radiusScale;
+    const radGrn = w * (0.60 + b2 * 0.08) * radiusScale;
+    const radBlu = w * (0.62 + b3 * 0.08) * radiusScale;
+    const radYel = w * (0.56 + b4 * 0.08) * radiusScale;
+
+    // ── Draw ─────────────────────────────────────────────────
+    orbCtx.clearRect(0, 0, w, h);
+
+    // Base fill
+    orbCtx.fillStyle = `rgb(${BASE_BG[0]},${BASE_BG[1]},${BASE_BG[2]})`;
+    orbCtx.fillRect(0, 0, w, h);
+
+    // Red orb — top-left home
+    drawRadialOrb(orbCtx, cRedX, cRedY, radRed, MS_RED, [
+      [0.00, clamp01(0.42 * alphaBright)],
+      [0.33, clamp01(0.22 * alphaBright)],
+      [0.66, clamp01(0.07 * alphaBright)],
+      [1.00, 0],
+    ]);
+
+    // Green orb — top-right home
+    drawRadialOrb(orbCtx, cGrnX, cGrnY, radGrn, MS_GREEN, [
+      [0.00, clamp01(0.38 * alphaBright)],
+      [0.33, clamp01(0.18 * alphaBright)],
+      [0.66, clamp01(0.06 * alphaBright)],
+      [1.00, 0],
+    ]);
+
+    // Blue orb — bottom-left home
+    drawRadialOrb(orbCtx, cBluX, cBluY, radBlu, MS_BLUE, [
+      [0.00, clamp01(0.40 * alphaBright)],
+      [0.33, clamp01(0.20 * alphaBright)],
+      [0.66, clamp01(0.06 * alphaBright)],
+      [1.00, 0],
+    ]);
+
+    // Yellow orb — bottom-right home
+    drawRadialOrb(orbCtx, cYelX, cYelY, radYel, MS_YELLOW, [
+      [0.00, clamp01(0.38 * alphaBright)],
+      [0.33, clamp01(0.17 * alphaBright)],
+      [0.66, clamp01(0.05 * alphaBright)],
+      [1.00, 0],
+    ]);
+
+    // Center bloom
+    const bloomX = w * attentionX(0.5, att);
+    const bloomY = h * confineY(0.42, conf, att);
+    const bloomR = w * 0.45 * radiusScale;
+    drawRadialOrb(orbCtx, bloomX, bloomY, bloomR, [255, 255, 255], [
+      [0.00, clamp01(0.07 * alphaBright)],
+      [0.50, clamp01(0.02 * alphaBright)],
+      [1.00, 0],
+    ]);
+  }
+
+  // ══════════════════════════════════════════════════════════════
+  //  GLINT LAYER
+  // ══════════════════════════════════════════════════════════════
+  function drawGlints(now) {
+    const w = window.innerWidth;
+    const h = window.innerHeight;
+    const diag = Math.sqrt(w * w + h * h);
+    const frontAngle = -25;  // degrees
+    const backAngle  = -17;
+
+    // ── Sweep positions (coprime periods, sawtooth + ease) ───
+    // Front bands: left → right
+    const sw2 = sweep(now, 23750, -0.4, 1.4);
+    const sw3 = sweep(now, 21250, -0.4, 1.4);
+    // Back bands: right → left
+    const sw4 = sweep(now, 16250, 1.4, -0.4);
+    const sw5 = sweep(now, 13750, 1.4, -0.4);
+
+    // ── Breathing alphas ─────────────────────────────────────
+    const a2 = oscillate(now, 11250, 0.015, 0.04);
+    const a3 = oscillate(now, 13750, 0.01, 0.035);
+    const a4 = oscillate(now, 16250, 0.015, 0.04);
+    const a5 = oscillate(now, 20000, 0.01, 0.03);
+
+    // Convert sweep progress to pixel X
+    function sweepToX(progress) {
+      return -diag * 0.4 + progress * (w + diag * 0.8);
+    }
+
+    // Draw a single soft band (rotated rectangle with horizontal gradient)
+    function drawSoftBand(ctx, centerX, halfWidth, peak, angleDeg) {
+      ctx.save();
+      ctx.translate(w / 2, h / 2);
+      ctx.rotate(angleDeg * Math.PI / 180);
+      ctx.translate(-w / 2, -h / 2);
+
+      const left  = centerX - halfWidth;
+      const right = centerX + halfWidth;
+      const grad  = ctx.createLinearGradient(left, 0, right, 0);
+
+      // 9-stop soft band matching the Kotlin colorStops
+      grad.addColorStop(0.00, `rgba(255,255,255,0)`);
+      grad.addColorStop(0.15, `rgba(255,255,255,${peak * 0.05})`);
+      grad.addColorStop(0.30, `rgba(255,255,255,${peak * 0.25})`);
+      grad.addColorStop(0.42, `rgba(255,255,255,${peak * 0.6})`);
+      grad.addColorStop(0.50, `rgba(255,255,255,${peak})`);
+      grad.addColorStop(0.58, `rgba(255,255,255,${peak * 0.6})`);
+      grad.addColorStop(0.70, `rgba(255,255,255,${peak * 0.25})`);
+      grad.addColorStop(0.85, `rgba(255,255,255,${peak * 0.05})`);
+      grad.addColorStop(1.00, `rgba(255,255,255,0)`);
+
+      ctx.fillStyle = grad;
+      ctx.fillRect(left, -diag * 0.5, halfWidth * 2, diag * 2);
+      ctx.restore();
+    }
+
+    glintCtx.clearRect(0, 0, w, h);
+
+    // Front group: 2 bands
+    drawSoftBand(glintCtx, sweepToX(sw2), w * 0.12, a2 * 0.7, frontAngle);
+    drawSoftBand(glintCtx, sweepToX(sw3), w * 0.08, a3 * 0.5, frontAngle);
+
+    // Back group: 2 bands, counter-sweep
+    drawSoftBand(glintCtx, sweepToX(sw4), w * 0.18, a4 * 0.6, backAngle);
+    drawSoftBand(glintCtx, sweepToX(sw5), w * 0.10, a5 * 0.4, backAngle);
+  }
+
+  // ══════════════════════════════════════════════════════════════
+  //  ANIMATION LOOP
+  // ══════════════════════════════════════════════════════════════
+  let lastTime = 0;
+
+  function frame(timestamp) {
+    const dt = lastTime ? (timestamp - lastTime) / 1000 : 0.016;
+    lastTime = timestamp;
+
+    // Smooth-step attention toward target (matches 500ms tween)
+    const attTarget = isAtAttention ? 1 : 0;
+    const attSpeed = 1 / 0.5; // 500ms
+    if (attention < attTarget) attention = Math.min(attention + dt * attSpeed, attTarget);
+    else if (attention > attTarget) attention = Math.max(attention - dt * attSpeed, attTarget);
+
+    // Smooth-step confinement (stubbed to 0 like Kotlin, but wiring preserved)
+    const confTarget = 0; // was: isLocked ? 1 : 0
+    const confSpeedUp = 1 / 0.5;   // 500ms
+    const confSpeedDn = 1 / 1.0;   // 1000ms
+    if (confinement < confTarget) confinement = Math.min(confinement + dt * confSpeedUp, confTarget);
+    else if (confinement > confTarget) confinement = Math.max(confinement - dt * confSpeedDn, confTarget);
+
+    drawOrbs(timestamp);
+    drawGlints(timestamp);
+
+    requestAnimationFrame(frame);
+  }
+
+  requestAnimationFrame(frame);
+
+  // ── Controls ───────────────────────────────────────────────
+  const btnAtt  = document.getElementById("btnAttention");
+  const btnLock = document.getElementById("btnLocked");
+
+  btnAtt.addEventListener("click", () => {
+    isAtAttention = !isAtAttention;
+    btnAtt.classList.toggle("active", isAtAttention);
+  });
+  btnLock.addEventListener("click", () => {
+    isLocked = !isLocked;
+    btnLock.classList.toggle("active", isLocked);
+  });
+
+  // Scroll offset via wheel (parallax)
+  window.addEventListener("wheel", (e) => {
+    scrollOffset += e.deltaY * 0.5;
+  });
+
+})();
+</script>
+</body>
+</html>
