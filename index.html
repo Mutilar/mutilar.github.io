@@ -98,6 +98,37 @@ hr {
   align-items: center;
   justify-content: center;
   padding: 120px 24px 80px;
+  flex-direction: column;
+}
+
+/* ── Scroll-down hint ──────────────────────────────────────── */
+.scroll-hint {
+  position: absolute;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  cursor: default;
+  user-select: none;
+  transition: opacity 0.4s ease;
+}
+
+.scroll-hint .scroll-arrow {
+  font-size: 20px;
+  animation: bounce-y 1.8s ease-in-out infinite;
+}
+
+@keyframes bounce-y {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(10px); }
 }
 
 .parallax-window-gap {
@@ -940,6 +971,10 @@ hr {
           <a target="_blank" href="https://open.spotify.com/user/12143746238" title="Spotify"><i class="fa fa-spotify"></i></a>
         </div>
       </div>
+    </div>
+    <div class="scroll-hint">
+      <span>Scroll down</span>
+      <span class="scroll-arrow">&#x25BE;</span>
     </div>
   </div>
 
