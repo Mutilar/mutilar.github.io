@@ -119,16 +119,16 @@ hr {
   cursor: default;
   user-select: none;
   transition: opacity 0.4s ease;
+  animation: bounce-y 1.8s ease-in-out infinite;
 }
 
 .scroll-hint .scroll-arrow {
   font-size: 20px;
-  animation: bounce-y 1.8s ease-in-out infinite;
 }
 
 @keyframes bounce-y {
-  0%, 100% { transform: translateY(0); }
-  50%      { transform: translateY(10px); }
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50%      { transform: translateX(-50%) translateY(10px); }
 }
 
 .parallax-window-gap {
@@ -172,6 +172,16 @@ hr {
   backdrop-filter: blur(24px) saturate(1.4);
   -webkit-backdrop-filter: blur(24px) saturate(1.4);
   border-bottom: 1px solid rgba(255, 255, 255, 0.33);
+  overflow-x: auto;
+  overflow-y: hidden;
+  flex-wrap: nowrap;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;          /* Firefox */
+  -ms-overflow-style: none;       /* IE/Edge */
+}
+
+.glass-nav::-webkit-scrollbar {
+  display: none;                  /* Chrome / Safari */
 }
 
 .glass-nav a {
@@ -182,6 +192,7 @@ hr {
   color: rgba(255, 255, 255, 0.7);
   transition: all 0.3s ease;
   letter-spacing: 0.3px;
+  flex-shrink: 0;
 }
 
 .glass-nav a:hover,
@@ -202,10 +213,11 @@ hr {
    RADIO PLAYER — NAV BAR CONTROLS
    ═══════════════════════════════════════════════════════════════ */
 .radio-player {
-  position: absolute;
+  position: fixed;
   right: 16px;
-  top: 50%;
-  transform: translateY(-50%);
+  top: 0;
+  height: 50px;  /* match nav bar height */
+  z-index: 101;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -391,13 +403,28 @@ hr {
 }
 
 @media (max-width: 768px) {
-  .radio-player { gap: 4px; padding-left: 8px; }
-  .radio-song { display: none; }
-  .radio-vol-slider { width: 36px; }
+  .radio-player {
+    top: auto;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: auto;
+    justify-content: center;
+    gap: 10px;
+    padding: 10px 16px;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(24px) saturate(1.4);
+    -webkit-backdrop-filter: blur(24px) saturate(1.4);
+    border-top: 1px solid rgba(255, 255, 255, 0.33);
+  }
+  .radio-song { display: flex; max-width: 120px; }
+  .radio-vol-slider { width: 50px; }
+  /* Add bottom padding to body so content isn't hidden behind bottom bar */
+  #page-content { padding-bottom: 60px; }
 }
 
 @media (max-width: 520px) {
-  .radio-volume { display: none; }
+  .radio-vol-slider { width: 36px; }
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -447,7 +474,7 @@ hr {
 .section-heading {
   font-size: 32px;
   font-weight: 700;
-  margin-top: 50px;
+  margin-top: 0;
   margin-bottom: 0px;
   letter-spacing: -0.3px;
 }
@@ -484,6 +511,38 @@ hr {
   color: rgba(100, 180, 255, 0.9);
   text-decoration: underline;
   text-underline-offset: 2px;
+}
+
+/* ── Section Badge — floated bottom-right link pill ──────── */
+.section-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-left: auto;
+  padding: 6px 14px 6px 11px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  color: rgba(255, 255, 255, 0.75);
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  text-decoration: none !important;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.section-badge:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.35);
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.15);
+}
+
+.section-badge i {
+  font-size: 14px;
+  opacity: 0.85;
 }
 
 .section-intro {
@@ -859,7 +918,7 @@ hr {
    RESPONSIVE
    ═══════════════════════════════════════════════════════════════ */
 @media (max-width: 768px) {
-  .glass-nav { gap: 2px; padding: 10px 8px; flex-wrap: wrap; }
+  .glass-nav { gap: 2px; padding: 10px 8px; justify-content: flex-start; mask-image: linear-gradient(to right, transparent 0%, black 16px, black calc(100% - 16px), transparent 100%); -webkit-mask-image: linear-gradient(to right, transparent 0%, black 16px, black calc(100% - 16px), transparent 100%); }
   .glass-nav a { padding: 6px 12px; font-size: 13px; }
   .hero-card { padding: 36px 24px; flex-direction: column; gap: 20px; }
   .hero-text { text-align: center; }
@@ -880,8 +939,23 @@ hr {
 
 @media (max-width: 420px) {
   .glass-nav a { padding: 5px 8px; font-size: 12px; }
-  .hero-name { font-size: 24px; }
+  .hero-card { padding: 28px 16px; gap: 16px; }
+  .hero-name { font-size: 24px; margin-bottom: 8px; }
+  .hero-tagline { font-size: 18px; line-height: 1.5; }
+  .hero-portrait { width: 96px; height: 96px; border-width: 2px; }
+  .hero-links a { width: 40px; height: 40px; font-size: 17px; border-radius: 11px; }
+  .hero-links { gap: 6px; }
+  .hero-bio { font-size: 13px; margin-bottom: 20px; }
   .section-heading { font-size: 22px; }
+  .band-content { padding: 48px 8px; }
+  .glass-tile { padding: 16px 14px; border-radius: 16px; }
+  .entry-card .entry-logo { width: 40px; height: 40px; }
+  .entry-info .entry-name { font-size: 15px; }
+  .entry-info .entry-title { font-size: 12px; }
+  .scroll-hint { bottom: 20px; font-size: 11px; }
+  .parallax-window-hero { padding: 100px 16px 60px; }
+  .parallax-window-gap { height: 10vh; min-height: 60px; }
+  .modal-card { padding: 16px 14px; }
 }
 </style>
 </head>
@@ -910,39 +984,40 @@ hr {
   <a href="#hackathons-band">Hacks</a>
   <a href="#games-band">Games</a>
 
-  <!-- Radio Player -->
-  <div class="radio-player" id="radioPlayer">
-    <div class="radio-eq" id="radioEq">
-      <div class="radio-eq-bar" style="height:2px"></div>
-      <div class="radio-eq-bar" style="height:2px"></div>
-      <div class="radio-eq-bar" style="height:2px"></div>
-      <div class="radio-eq-bar" style="height:2px"></div>
-      <div class="radio-eq-bar" style="height:2px"></div>
-      <div class="radio-eq-bar" style="height:2px"></div>
-      <div class="radio-eq-bar" style="height:2px"></div>
-      <div class="radio-eq-bar" style="height:2px"></div>
-      <div class="radio-eq-bar" style="height:2px"></div>
-      <div class="radio-eq-bar" style="height:2px"></div>
-      <div class="radio-eq-bar" style="height:2px"></div>
-      <div class="radio-eq-bar" style="height:2px"></div>
-      <div class="radio-eq-bar" style="height:2px"></div>
-      <div class="radio-eq-bar" style="height:2px"></div>
-      <div class="radio-eq-bar" style="height:2px"></div>
-    </div>
-    <div class="radio-song">
-      <span class="radio-song-title" id="radioTitle">Radio</span>
-    </div>
-    <div class="radio-controls">
-      <button class="radio-btn" id="radioPrev" title="Previous"><i class="fa fa-step-backward"></i></button>
-      <button class="radio-btn radio-btn-play" id="radioPlayPause" title="Play"><i class="fa fa-play" id="radioPlayIcon"></i></button>
-      <button class="radio-btn" id="radioNext" title="Next"><i class="fa fa-step-forward"></i></button>
-    </div>
-    <div class="radio-volume">
-      <button class="radio-vol-btn" id="radioMute" title="Mute"><i class="fa fa-volume-up" id="radioVolIcon"></i></button>
-      <input type="range" class="radio-vol-slider" id="radioVolume" min="0" max="100" value="30">
-    </div>
-  </div>
 </nav>
+
+<!-- Radio Player (outside nav so position:fixed works on mobile) -->
+<div class="radio-player" id="radioPlayer">
+  <div class="radio-eq" id="radioEq">
+    <div class="radio-eq-bar" style="height:2px"></div>
+    <div class="radio-eq-bar" style="height:2px"></div>
+    <div class="radio-eq-bar" style="height:2px"></div>
+    <div class="radio-eq-bar" style="height:2px"></div>
+    <div class="radio-eq-bar" style="height:2px"></div>
+    <div class="radio-eq-bar" style="height:2px"></div>
+    <div class="radio-eq-bar" style="height:2px"></div>
+    <div class="radio-eq-bar" style="height:2px"></div>
+    <div class="radio-eq-bar" style="height:2px"></div>
+    <div class="radio-eq-bar" style="height:2px"></div>
+    <div class="radio-eq-bar" style="height:2px"></div>
+    <div class="radio-eq-bar" style="height:2px"></div>
+    <div class="radio-eq-bar" style="height:2px"></div>
+    <div class="radio-eq-bar" style="height:2px"></div>
+    <div class="radio-eq-bar" style="height:2px"></div>
+  </div>
+  <div class="radio-song">
+    <span class="radio-song-title" id="radioTitle">Radio</span>
+  </div>
+  <div class="radio-controls">
+    <button class="radio-btn" id="radioPrev" title="Previous"><i class="fa fa-step-backward"></i></button>
+    <button class="radio-btn radio-btn-play" id="radioPlayPause" title="Play"><i class="fa fa-play" id="radioPlayIcon"></i></button>
+    <button class="radio-btn" id="radioNext" title="Next"><i class="fa fa-step-forward"></i></button>
+  </div>
+  <div class="radio-volume">
+    <button class="radio-vol-btn" id="radioMute" title="Mute"><i class="fa fa-volume-up" id="radioVolIcon"></i></button>
+    <input type="range" class="radio-vol-slider" id="radioVolume" min="0" max="100" value="30">
+  </div>
+</div>
 
 <!-- ═══════════════════════════════════════════════════════════════
      PAGE CONTENT — alternating windows & opaque bands
@@ -980,8 +1055,9 @@ hr {
 
   <!-- ███ BAND 1: Marp header — opaque ███ -->
   <div class="opaque-band" id="marp-band">
-    <div class="band-content" style="padding:12px 12px;">
+    <div class="band-content" style="padding:12px 12px;display:flex;align-items:center;">
       <h2 class="section-heading reveal" style="margin-bottom:0;">🤖 Marp</h2>
+      <a class="section-badge" href="https://github.com/Mutilar/Marp" target="_blank"><i class="fa fa-github"></i> Mutilar/Marp</a>
     </div>
   </div>
 
@@ -991,10 +1067,10 @@ hr {
       <div class="glass-tile reveal section-intro" style="margin-bottom:32px;">
         <img class="section-intro-img" src="images/marp.png" alt="Marp" loading="lazy">
         <div class="section-blurb">
-          <div class="step step-left">From prototyping a Raspberry Pi 5 robot brain with real-time sensor fusion...</div>
-          <div class="step step-center">...to building a Valve Steamdeck controller interface with custom shaders...</div>
-          <div class="step step-right">...to competing head-to-head in Microsoft's company-wide Hackathon 2026,</div>
-          <div class="step-summary">Marp is a robotics platform that bridges hardware tinkering and game engine design. <a href="https://github.com/Mutilar/Marp" target="_blank">github.com/Mutilar/Marp</a></div>
+          <div class="step step-left">From retrofiting a decades-old robot with modern circuitry...</div>
+          <div class="step step-center">...to reimaging the control interface via a Valve Steamdeck...</div>
+          <div class="step step-right">...to enabling new A.I. experiences on a robotics platform,</div>
+          <div class="step-summary">Marp is a robotics test-bed that bridges my electronics experiences from FRC Robotics with my U.X. expertise.</div>
         </div>
       </div>
       <div class="card-grid card-grid-wide">
@@ -1027,10 +1103,7 @@ hr {
       </div>
       <div style="margin-top:32px;">
         <div class="glass-tile reveal" style="padding:0;overflow:hidden;">
-          <div style="padding:16px 24px 12px;font-size:15px;font-weight:600;color:rgba(255,255,255,0.85);">🤖 Marp Gamepad — Demo</div>
-          <div style="text-align:center;padding:0 0 8px;">
-            <img src="https://github.com/Mutilar/MarpGamepad/raw/main/images/marp.gif" alt="Marp Gamepad Demo" style="width:100%;max-width:846px;border-radius:0 0 19px 19px;" loading="lazy">
-          </div>
+          <img src="https://github.com/Mutilar/MarpGamepad/raw/main/images/marp.gif" alt="Marp Gamepad Demo" style="width:100%;border-radius:19px;display:block;" loading="lazy">
         </div>
       </div>
     </div>
@@ -1038,8 +1111,9 @@ hr {
 
   <!-- ███ BAND 2: BitNaughts header — opaque ███ -->
   <div class="opaque-band" id="bitnaughts-band">
-    <div class="band-content" style="padding:12px 12px;">
+    <div class="band-content" style="padding:12px 12px;display:flex;align-items:center;">
       <h2 class="section-heading reveal" style="margin-bottom:0;">☄ BitNaughts</h2>
+      <a class="section-badge" href="https://github.com/bitnaughts" target="_blank"><i class="fa fa-github"></i> bitnaughts</a>
     </div>
   </div>
 
@@ -1049,10 +1123,10 @@ hr {
       <div class="glass-tile reveal section-intro" style="margin-bottom:32px;">
         <img class="section-intro-img" src="images/bitnaughts-poster.png" alt="BitNaughts" loading="lazy">
         <div class="section-blurb">
-          <div class="step step-left">From designing a programming language that teaches code through spaceship combat...</div>
-          <div class="step step-center">...to pitching at four consecutive Microsoft Hackathons with live demos...</div>
-          <div class="step step-right">...to open-sourcing an educational game engine built on Unity and C#,</div>
-          <div class="step-summary">BitNaughts is code gamified — an educational programming video-game where players write real code to command their ships. <a href="https://github.com/bitnaughts" target="_blank">github.com/bitnaughts</a></div>
+          <div class="step step-left">From integrating <a href="#projects-band">Iterate's</a> interpreter into a gamified environment...</div>
+          <div class="step step-center">...to pitching at four consecutive Microsoft Hackathons, getting iterative feedback from live demos...</div>
+          <div class="step step-right">...to open-sourcing an educational game engine built in Unity and C#,</div>
+          <div class="step-summary">now you can learn the power of code! BitNaughts is an educational programming video-game; it's code gamified!</div>
         </div>
       </div>
       <div class="card-grid card-grid-wide">
@@ -1091,8 +1165,9 @@ hr {
 
   <!-- ███ BAND 3: Work ███ -->
   <div class="opaque-band" id="work-band">
-    <div class="band-content" style="padding:12px 12px;">
+    <div class="band-content" style="padding:12px 12px;display:flex;align-items:center;">
       <h2 class="section-heading reveal" style="margin-bottom:0;">👨‍💻 Work</h2>
+      <a class="section-badge" href="https://www.linkedin.com/in/brian-hungerman/" target="_blank"><i class="fa fa-linkedin"></i> brian-hungerman</a>
     </div>
   </div>
 
@@ -1114,8 +1189,9 @@ hr {
 
   <!-- ███ BAND 4: Projects ███ -->
   <div class="opaque-band" id="projects-band">
-    <div class="band-content" style="padding:12px 12px;">
+    <div class="band-content" style="padding:12px 12px;display:flex;align-items:center;">
       <h2 class="section-heading reveal" style="margin-bottom:0;">🛠️ Projects</h2>
+      <a class="section-badge" href="https://github.com/Mutilar" target="_blank"><i class="fa fa-github"></i> Mutilar</a>
     </div>
   </div>
 
@@ -1137,8 +1213,9 @@ hr {
 
   <!-- ███ BAND 5: Hackathons ███ -->
   <div class="opaque-band" id="hackathons-band">
-    <div class="band-content" style="padding:12px 12px;">
+    <div class="band-content" style="padding:12px 12px;display:flex;align-items:center;">
       <h2 class="section-heading reveal" style="margin-bottom:0;">⛏️ Hacks</h2>
+      <a class="section-badge" href="https://devpost.com/BrianHungerman" target="_blank"><i class="fa fa-trophy"></i> BrianHungerman</a>
     </div>
   </div>
 
@@ -1151,7 +1228,7 @@ hr {
           <div class="step step-left">From using augmented reality to visualize the missing link from farm to table...</div>
           <div class="step step-center">...to an autonomous, room-mapping robotic tank for first responders called SRIRACHA...</div>
           <div class="step step-right">...to optical character recognition on nutrition labels as a FitBit for your stomach,</div>
-          <div class="step-summary">I've traveled up and down California competing in hackathons. <a href="https://devpost.com/BrianHungerman" target="_blank">devpost.com/BrianHungerman</a></div>
+          <div class="step-summary">I've traveled up and down California competing in hackathons.</div>
         </div>
       </div>
       <div class="card-grid" id="hackathons-grid"></div>
@@ -1160,8 +1237,9 @@ hr {
 
   <!-- ███ BAND 6: Games ███ -->
   <div class="opaque-band" id="games-band">
-    <div class="band-content" style="padding:12px 12px;">
+    <div class="band-content" style="padding:12px 12px;display:flex;align-items:center;">
       <h2 class="section-heading reveal" style="margin-bottom:0;">🎮 Games</h2>
+      <a class="section-badge" href="https://github.com/Mutilar" target="_blank"><i class="fa fa-gamepad"></i> Mutilar</a>
     </div>
   </div>
 
@@ -1525,6 +1603,18 @@ hr {
 })();
 
 // ═══════════════════════════════════════════════════════════════
+//  SCROLL-HINT FADE-OUT
+// ═══════════════════════════════════════════════════════════════
+(() => {
+  const hint = document.querySelector(".scroll-hint");
+  if (!hint) return;
+  window.addEventListener("scroll", () => {
+    hint.style.opacity = window.scrollY > 80 ? "0" : "1";
+    hint.style.pointerEvents = window.scrollY > 80 ? "none" : "auto";
+  }, { passive: true });
+})();
+
+// ═══════════════════════════════════════════════════════════════
 //  ACTIVE NAV HIGHLIGHT
 // ═══════════════════════════════════════════════════════════════
 (() => {
@@ -1532,6 +1622,8 @@ hr {
   // Build list of only the sections that nav links point to
   const sectionIds = Array.from(navLinks).map(a => a.getAttribute("href").substring(1));
   const sections = sectionIds.map(id => document.getElementById(id)).filter(Boolean);
+
+  let prevActive = null;
 
   function updateActive() {
     let current = sectionIds[0]; // default to "home"
@@ -1541,8 +1633,13 @@ hr {
     });
     navLinks.forEach(a => {
       const href = a.getAttribute("href").substring(1);
-      a.classList.toggle("active", href === current);
+      const isActive = href === current;
+      a.classList.toggle("active", isActive);
+      if (isActive && current !== prevActive) {
+        a.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+      }
     });
+    prevActive = current;
   }
 
   window.addEventListener("scroll", updateActive, { passive: true });
