@@ -1,4 +1,4 @@
-ID,NAME,TITLE,DATE,LOCATION,GITHUB,MOTTO,TEXT
-breeze,💨 Breeze,Keysight IoT Challenge,May 2019,"Merced, California",https://github.com/plebeiathon/Breeze,"Promoting Air Quality Awareness should be a Breeze",tbd
-ozone,🗠 Ozone,Innovate to Grow,May 2018,"Merced, California",https://github.com/SSites/Ozone,"Providing access to sustainability initiatives in an interactive, hands-on manner",tbd
-iterate,ℹ Iterate,CITRIS Mobile App Challenge,May 2017,"Merced, California",https://github.com/Mutilar/iterate,"The Rosetta Stone of Programming, taking the practical knowledge of Java and combining it with the ease of use of Scratch",tbd
+ID,NAME,TITLE,DATE,LOCATION,GITHUB,MOTTO,WIN,TEXT
+breeze,💨 Breeze,Keysight IoT Challenge,May 2019,"Merced, California",https://github.com/plebeiathon/Breeze,"Promoting Air Quality Awareness should be a Breeze",,tbd
+ozone,🗠 Ozone,Innovate to Grow,May 2018,"Merced, California",https://github.com/SSites/Ozone,"Providing access to sustainability initiatives in an interactive, hands-on manner",,tbd
+iterate,ℹ Iterate,Mobile App Challenge,May 2017,"Merced, California",https://github.com/Mutilar/iterate,"The Rosetta Stone of Programming, taking the practical knowledge of Java and combining it with the ease of use of Scratch","$5,000 Grand Prize",tbd

@@ -116,9 +116,11 @@
                     '<a href="#' + data[i].ID + '" class="card">' +
                         '<div class="date"><div class="fa fa-calendar"></div>' + data[i].DATE + '<br><div class="fa fa-map-marker"></div>&nbsp;' + data[i].LOCATION + github_html + '</div>' +
                         '<div class="logo"><img src="images/' + data[i].ID + '.png" width="200" height="74" /></div>' +
-                        '<h1>' + data[i].NAME + '</h1>' + 
+                        '<div class="card-header">' +
+                            '<h1>' + data[i].NAME + '</h1>' + 
+                            '<span class="badge">' + data[i].TITLE + '</span>' +
+                        '</div>' +
                         '<div class="content">' +
-                            '<p>' + data[i].TITLE + '</p>' + 
                             '<i>' + data[i].MOTTO + '</i>' + 
                         '</div>' +
                     '</a>' +

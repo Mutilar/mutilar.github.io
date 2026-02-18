@@ -699,8 +699,17 @@ hr {
 .entry-card .entry-header {
   display: flex;
   align-items: flex-start;
-  gap: 18px;
+  gap: 8px;
   margin-bottom: 14px;
+}
+
+.entry-card .entry-badges {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  margin-left: auto;
+  flex-shrink: 0;
 }
 
 .entry-card .entry-logo {
@@ -712,9 +721,21 @@ hr {
   padding: 6px;
   flex-shrink: 0;
   border: 1px solid rgba(255, 255, 255, 0.1);
+  display: none;
 }
 
-.entry-card .entry-info { flex: 1; min-width: 0; }
+.entry-card .entry-info {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.entry-card-compact .entry-name {
+  font-size: 28px !important;
+}
+
+.entry-card-compact .entry-meta {
+  display: none !important;
+}
 
 .entry-card .entry-name {
   font-size: 18px;
@@ -724,17 +745,25 @@ hr {
 }
 
 .entry-card .entry-title {
-  font-size: 13px;
-  color: rgba(255, 255, 255, 0.55);
-  margin-bottom: 4px;
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: 14px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  color: rgba(255, 255, 255, 0.65);
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  white-space: nowrap;
 }
 
 .entry-card .entry-meta {
   font-size: 12px;
   color: rgba(255, 255, 255, 0.4);
   display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
+  flex-direction: column;
+  gap: 2px;
 }
 
 .entry-card .entry-meta .fa {
@@ -767,6 +796,21 @@ hr {
 .entry-card .entry-github:hover {
   background: rgba(130, 200, 255, 0.15);
   color: #fff;
+}
+
+.entry-card .entry-win {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  color: rgba(255, 215, 0, 0.9);
+  padding: 4px 10px;
+  border-radius: 10px;
+  background: rgba(255, 215, 0, 0.1);
+  border: 1px solid rgba(255, 215, 0, 0.3);
+  white-space: nowrap;
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -986,7 +1030,7 @@ hr {
      ═══════════════════════════════════════════════════════════════ -->
 <nav class="glass-nav" id="mainNav">
   <a href="#home" class="active">Home</a>
-  <a href="#marp-band">Marp</a>
+  <a href="#marp-band">MARP</a>
   <a href="#bitnaughts-band">BitNaughts</a>
   <a href="#work-band">Work</a>
   <a href="#projects-band">Projects</a>
@@ -1065,7 +1109,7 @@ hr {
   <!-- ███ BAND 1: Marp header — opaque ███ -->
   <div class="opaque-band" id="marp-band">
     <div class="band-content band-header">
-      <h2 class="section-heading reveal" style="margin-bottom:0;">🤖 Marp</h2>
+      <h2 class="section-heading reveal" style="margin-bottom:0;">🤖 MARP</h2>
       <a class="section-badge" href="https://github.com/Mutilar/Marp" target="_blank"><i class="fa fa-github"></i> Mutilar/Marp</a>
     </div>
   </div>
@@ -1082,34 +1126,7 @@ hr {
           <div class="step-summary">Marp is a robotics test-bed that bridges my electronics experiences from FRC Robotics with my U.X. expertise.</div>
         </div>
       </div>
-      <div class="card-grid card-grid-wide">
-        <div class="glass-tile entry-card reveal">
-          <div class="entry-header">
-            <div style="width:64px;height:64px;border-radius:14px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;font-size:32px;flex-shrink:0;">🧠</div>
-            <div class="entry-info">
-              <div class="entry-name">marp.pi</div>
-              <div class="entry-title">Robot Computer ⚡ Raspberry Pi 5</div>
-              <div class="entry-meta">
-                <span><i class="fa fa-code"></i>Python</span>
-              </div>
-            </div>
-          </div>
-          <a href="https://github.com/Mutilar/MarpPi" target="_blank" class="entry-github"><i class="fa fa-github"></i> Open Source</a>
-        </div>
-        <div class="glass-tile entry-card reveal">
-          <div class="entry-header">
-            <div style="width:64px;height:64px;border-radius:14px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;font-size:32px;flex-shrink:0;">🎮</div>
-            <div class="entry-info">
-              <div class="entry-name">marp.gamepad</div>
-              <div class="entry-title">Robot Controller ⚡ Valve Steamdeck</div>
-              <div class="entry-meta">
-                <span><i class="fa fa-code"></i>ShaderLab</span>
-              </div>
-            </div>
-          </div>
-          <a href="https://github.com/Mutilar/MarpGamepad" target="_blank" class="entry-github"><i class="fa fa-github"></i> Open Source</a>
-        </div>
-      </div>
+      <div class="card-grid card-grid-wide" id="marp-grid"></div>
       <div style="margin-top:32px;">
         <div class="glass-tile reveal" style="padding:0;overflow:hidden;">
           <img src="https://github.com/Mutilar/MarpGamepad/raw/main/images/marp.gif" alt="Marp Gamepad Demo" style="width:100%;border-radius:19px;display:block;" loading="lazy">
@@ -1164,6 +1181,7 @@ hr {
           </div>
         </div>
       </div>
+      <div class="card-grid card-grid-wide" id="bitnaughts-grid" style="margin-top:32px;"></div>
       <div style="margin-top:32px;">
         <div class="glass-tile reveal" style="padding:0;overflow:hidden;">
           <img src="https://raw.githubusercontent.com/bitnaughts/.github/main/images/bn-2.jpg" alt="BitNaughts Ship" style="width:100%;border-radius:19px;display:block;" loading="lazy">
@@ -1695,22 +1713,27 @@ function buildEntryCard(item, dataset, opts) {
   const hasLocation = item.LOCATION && item.LOCATION.trim();
   const hasMotto = item.MOTTO && item.MOTTO.trim();
   const hasTitle = item.TITLE && item.TITLE.trim();
+  const hasWin = item.WIN && item.WIN.trim();
   const imgExt = opts.imgExt || ".png";
   const modalImgExt = opts.modalImgExt || ".jpg";
 
   const card = document.createElement("div");
   card.className = "glass-tile glass-tile-clickable entry-card reveal";
+  if (!item.DATE && !hasLocation) card.classList.add("entry-card-compact");
   card.innerHTML = `
     <div class="entry-header">
       <img class="entry-logo" src="images/${item.ID}${imgExt}" alt="${item.NAME}" onerror="this.style.display='none'">
       <div class="entry-info">
         <div class="entry-name">${item.NAME}</div>
-        ${hasTitle ? `<div class="entry-title">${item.TITLE}</div>` : ""}
         <div class="entry-meta">
           ${item.DATE ? `<span><i class="fa fa-calendar"></i>${item.DATE}</span>` : ""}
           ${hasLocation ? `<span><i class="fa fa-map-marker"></i>${item.LOCATION}</span>` : ""}
         </div>
       </div>
+      ${(hasTitle || hasWin) ? `<div class="entry-badges">
+        ${hasTitle ? item.TITLE.split(',').map(t => `<div class="entry-title">${t.trim()}</div>`).join('') : ""}
+        ${hasWin ? `<div class="entry-win"><i class="fa fa-trophy"></i> ${item.WIN}</div>` : ""}
+      </div>` : ""}
     </div>
     ${hasMotto ? `<div class="entry-motto">"${item.MOTTO}"</div>` : ""}
     ${hasGithub ? `<a href="${item.GITHUB}" target="_blank" class="entry-github" onclick="event.stopPropagation();"><i class="fa fa-github"></i> Open Source</a>` : ""}
@@ -1720,25 +1743,37 @@ function buildEntryCard(item, dataset, opts) {
   return card;
 }
 
-$.get("work.csv").then(function(t) {
+$.get("marp.csv?v=" + Date.now()).then(function(t) {
+  const d = $.csv.toObjects(t); modalState.marp = d;
+  const g = document.getElementById("marp-grid");
+  d.forEach(i => g.appendChild(buildEntryCard(i, "marp", {imgExt:".png",modalImgExt:".png"})));
+});
+
+$.get("bitnaughts.csv?v=" + Date.now()).then(function(t) {
+  const d = $.csv.toObjects(t); modalState.bitnaughts = d;
+  const g = document.getElementById("bitnaughts-grid");
+  d.forEach(i => g.appendChild(buildEntryCard(i, "bitnaughts", {imgExt:".png",modalImgExt:".png"})));
+});
+
+$.get("work.csv?v=" + Date.now()).then(function(t) {
   const d = $.csv.toObjects(t); modalState.work = d;
   const g = document.getElementById("work-grid");
   d.forEach(i => g.appendChild(buildEntryCard(i, "work", {imgExt:".png",modalImgExt:".jpg"})));
 });
 
-$.get("projects.csv").then(function(t) {
+$.get("projects.csv?v=" + Date.now()).then(function(t) {
   const d = $.csv.toObjects(t); modalState.projects = d;
   const g = document.getElementById("projects-grid");
   d.forEach(i => g.appendChild(buildEntryCard(i, "projects", {imgExt:".png",modalImgExt:".jpg"})));
 });
 
-$.get("hackathons.csv").then(function(t) {
+$.get("hackathons.csv?v=" + Date.now()).then(function(t) {
   const d = $.csv.toObjects(t); modalState.hackathons = d;
   const g = document.getElementById("hackathons-grid");
   d.forEach(i => g.appendChild(buildEntryCard(i, "hackathons", {imgExt:".png",modalImgExt:".jpg"})));
 });
 
-$.get("games.csv").then(function(t) {
+$.get("games.csv?v=" + Date.now()).then(function(t) {
   const d = $.csv.toObjects(t); modalState.games = d;
   const g = document.getElementById("games-grid");
   d.forEach(i => g.appendChild(buildEntryCard(i, "games", {imgExt:".png",modalImgExt:".png"})));
