@@ -10,7 +10,7 @@ Bleachbone Verge,"Land","images/card_art/Bleachbone_Verge/Bleachbone_Verge_dft_2
 Bloodghast,"Creature","images/card_art/Bloodghast/Bloodghast_dft_337_4560bd1f.png"
 Bloodline Keeper // Lord of Lineage,"Creature","images/card_art/Bloodline_Keeper_Lord_of_Lineage/Bloodline_Keeper_Lord_of_Lineage_inr_327_b8a289a6_front.png"
 Bloodvial Purveyor,"Creature","images/card_art/Bloodvial_Purveyor/Bloodvial_Purveyor_dbl_365_58996f26.png"
-Bolas's Citadel,"Artifact",
+Bolas's Citadel,"Artifact","images/card_art/Bolas's_Citadel/war-79-bolas-s-citadel.png"
 Brightclimb Pathway // Grimclimb Pathway,"Land","images/card_art/Brightclimb_Pathway_Grimclimb_Pathway/Brightclimb_Pathway_Grimclimb_Pathway_plst_ZNR-259_6a91d75c_front.png"
 Butcher of Malakir,"Creature","images/card_art/Butcher_of_Malakir/Butcher_of_Malakir_c14_138_35055620.png"
 Call the Bloodline,"Enchantment","images/card_art/Call_the_Bloodline/Call_the_Bloodline_f16_12_00c77bdd.png"
@@ -22,13 +22,13 @@ Charismatic Conqueror,"Creature","images/card_art/Charismatic_Conqueror/Charisma
 "Clavileño, First of the Blessed","Creature","images/card_art/Clavileño,_First_of_the_Blessed/Clavileño,_First_of_the_Blessed_lcc_122_5d6a2741.png"
 Command Tower,"Land","images/card_art/Command_Tower/Command_Tower_40k_270_7cf39d35.png"
 Concealed Courtyard,"Land","images/card_art/Concealed_Courtyard/Concealed_Courtyard_kld_245_c8769e97.png"
-Contamination,"Enchantment",
+Contamination,"Enchantment","images/card_art/Contamination/usg-123-contamination.png"
 Cordial Vampire,"Creature","images/card_art/Cordial_Vampire/Cordial_Vampire_j21_306_62a3e06b.png"
 Damn,"Sorcery","images/card_art/Damn/Damn_aa2_8_9241dc90.png"
 Dark Ritual,"Instant","images/card_art/Dark_Ritual/Dark_Ritual_2ed_99_c4d24ff3.png"
 Demonic Tutor,"Sorcery","images/card_art/Demonic_Tutor/Demonic_Tutor_2ed_105_c8d5d6a5.png"
 Dictate of Erebos,"Enchantment","images/card_art/Dictate_of_Erebos/Dictate_of_Erebos_jou_65_9f06db70.png"
-Dusk Legion Dreadnought,"Artifact",
+Dusk Legion Dreadnought,"Artifact","images/card_art/Dusk_Legion_Dreadnought/xln-236-dusk-legion-dreadnought (1).png"
 "Edgar, Charmed Groom // Edgar Markov's Coffin","Creature,Artifact","images/card_art/Edgar,_Charmed_Groom_Edgar_Markov's_Coffin/Edgar,_Charmed_Groom_Edgar_Markov's_Coffin_dbl_503_78f57a41_front.png"
 "Elenda, the Dusk Rose","Creature","images/card_art/Elenda,_the_Dusk_Rose/Elenda,_the_Dusk_Rose_2x2_207_25e34147.png"
 Elenda's Hierophant,"Creature","images/card_art/Elenda's_Hierophant/Elenda's_Hierophant_lcc_39_763ff418.png"
@@ -37,7 +37,7 @@ Entomb,"Instant","images/card_art/Entomb/Entomb_dmr_304_750820a5.png"
 "Erebos, God of the Dead","Creature,Enchantment","images/card_art/Erebos,_God_of_the_Dead/Erebos,_God_of_the_Dead_pio_291_8e9b9d9e.png"
 Fell the Profane // Fell Mire,"Instant,Land","images/card_art/Fell_the_Profane_Fell_Mire/Fell_the_Profane_Fell_Mire_mh3_244_a3cb782d_front.png"
 Fetid Heath,"Land","images/card_art/Fetid_Heath/Fetid_Heath_2xm_316_713d95ae.png"
-Flare of Malice,"Instant",
+Flare of Malice,"Instant","images/card_art/Flare_of_Malice/mh3-95-flare-of-malice.png"
 Glass-Cast Heart,"Artifact","images/card_art/Glass-Cast_Heart/Glass-Cast_Heart_lcc_199_f36a4054.png"
 Godless Shrine,"Land","images/card_art/Godless_Shrine/Godless_Shrine_clu_276_e221e498.png"
 Grim Tutor,"Sorcery","images/card_art/Grim_Tutor/Grim_Tutor_m21_103_928558ab.png"
@@ -49,7 +49,7 @@ Jet Medallion,"Artifact","images/card_art/Jet_Medallion/Jet_Medallion_c14_243_7f
 Knight of the Ebon Legion,"Creature","images/card_art/Knight_of_the_Ebon_Legion/Knight_of_the_Ebon_Legion_m20_105_29425426.png"
 Legion Lieutenant,"Creature","images/card_art/Legion_Lieutenant/Legion_Lieutenant_lcc_275_85c6bd7d.png"
 "Legion's Landing // Adanto, the First Fort","Enchantment,Land","images/card_art/Legion's_Landing_Adanto,_the_First_Fort/Legion's_Landing_Adanto,_the_First_Fort_plst_XLN-22_14a41e7e_front.png"
-Lifeline,"Artifact",
+Lifeline,"Artifact","images/card_art/Lifeline/usg-299-lifeline.png"
 Luminous Broodmoth,"Creature","images/card_art/Luminous_Broodmoth/Luminous_Broodmoth_blc_144_c5a4b212.png"
 Malakir Rebirth // Malakir Mire,"Instant,Land","images/card_art/Malakir_Rebirth_Malakir_Mire/Malakir_Rebirth_Malakir_Mire_znr_111_609d3ecf_front.png"
 March of the Canonized,"Enchantment","images/card_art/March_of_the_Canonized/March_of_the_Canonized_lcc_41_843ff967.png"
