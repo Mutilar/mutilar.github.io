@@ -30,14 +30,14 @@
      ═══════════════════════════════════════════════════════════════ -->
 <nav class="glass-nav" id="mainNav">
   <a href="#home" class="active">Home</a>
-  <a href="#marp-band">MARP</a>
-  <a href="#bitnaughts-band">BitNaughts</a>
-  <a href="#mtg-band">MTG</a>
-  <a href="#work-band">Work</a>
-  <a href="#education-band">Education</a>
-  <a href="#projects-band">Projects</a>
-  <a href="#hackathons-band">Hacks</a>
-  <a href="#games-band">Games</a>
+  <a href="#marp">MARP</a>
+  <a href="#bitnaughts">BitNaughts</a>
+  <a href="#mtg">MTG</a>
+  <a href="#work">Work</a>
+  <a href="#education">Education</a>
+  <a href="#projects">Projects</a>
+  <a href="#hackathons">Hacks</a>
+  <a href="#games">Games</a>
 
 </nav>
 
@@ -109,7 +109,7 @@
   </div>
 
   <!-- ███ BAND 1: Marp header — opaque ███ -->
-  <div class="opaque-band" id="marp-band">
+  <div class="opaque-band" id="marp">
     <div class="band-content band-header">
       <h2 class="section-heading reveal" style="margin-bottom:0;">🤖 MARP</h2>
       <a class="section-badge" href="https://github.com/Mutilar/Marp" target="_blank"><i class="fa fa-github"></i> Mutilar/Marp</a>
@@ -138,7 +138,7 @@
   </div>
 
   <!-- ███ BAND 2: BitNaughts header — opaque ███ -->
-  <div class="opaque-band" id="bitnaughts-band">
+  <div class="opaque-band" id="bitnaughts">
     <div class="band-content band-header">
       <h2 class="section-heading reveal" style="margin-bottom:0;">☄ BitNaughts</h2>
       <a class="section-badge" href="https://github.com/bitnaughts" target="_blank"><i class="fa fa-github"></i> bitnaughts</a>
@@ -151,7 +151,7 @@
       <div class="glass-tile reveal section-intro" style="margin-bottom:32px;">
         <img class="section-intro-img" src="images/bitnaughts-poster.png" alt="BitNaughts" loading="lazy">
         <div class="section-blurb">
-          <div class="step step-left">From integrating <a href="#projects-band">Iterate's</a> interpreter into a gamified environment...</div>
+          <div class="step step-left">From integrating <a href="#projects">Iterate's</a> interpreter into a gamified environment...</div>
           <div class="step step-center">...to pitching at four consecutive Microsoft Hackathons, getting iterative feedback from live demos...</div>
           <div class="step step-right">...to open-sourcing an educational game engine built in Unity and C#;</div>
           <div class="step-summary">BitNaughts isn't just an educational programming video-game: it's code gamified!</div>
@@ -193,9 +193,9 @@
   </div>
 
   <!-- ███ BAND: MTG ███ -->
-  <div class="opaque-band" id="mtg-band">
+  <div class="opaque-band" id="mtg">
     <div class="band-content band-header">
-      <h2 class="section-heading reveal" style="margin-bottom:0;">🃏 MTG</h2>
+      <h2 class="section-heading reveal" style="margin-bottom:0;">🪄 Magic: the Gathering</h2>
       <a class="section-badge" href="https://archidekt.com/u/Mutilar" target="_blank"><i class="fa fa-external-link"></i> archidekt/Mutilar</a>
     </div>
   </div>
@@ -219,24 +219,19 @@
             <iframe src="https://www.youtube.com/embed/0_k_snZ1DYk?showinfo=0&controls=1&modestbranding=1" title="Dusk Rose Codex" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
           </div>
         </div>
-        <div class="glass-tile video-card reveal">
-          <div class="video-label">🃏 Dusk Rose Codex (3:26)</div>
+        <div class="glass-tile video-card reveal" style="cursor:pointer;" onclick="openPdfModal()">
+          <div class="video-label">📖 Dusk Rose Codex</div>
           <div class="video-wrap">
-            <iframe src="https://www.youtube.com/embed/0_k_snZ1DYk?showinfo=0&controls=1&modestbranding=1" title="Dusk Rose Codex" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+            <img src="images/bible.jpg" alt="Dusk Rose Codex" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" loading="lazy">
           </div>
         </div>
       </div>
       <div class="card-grid card-grid-wide" id="mtg-grid"></div>
-      <div style="margin-top:32px;">
-        <div class="glass-tile reveal" style="padding:0;overflow:hidden;cursor:pointer;" onclick="openPdfModal()">
-          <img src="images/bible.jpg" alt="Dusk Rose Codex" style="width:100%;border-radius:19px;display:block;" loading="lazy">
-        </div>
-      </div>
     </div>
   </div>
 
   <!-- ███ BAND 3: Work ███ -->
-  <div class="opaque-band" id="work-band">
+  <div class="opaque-band" id="work">
     <div class="band-content band-header">
       <h2 class="section-heading reveal" style="margin-bottom:0;">👨‍💻 Work</h2>
       <a class="section-badge" href="https://www.linkedin.com/in/brian-hungerman/" target="_blank"><i class="fa fa-linkedin"></i> brian-hungerman</a>
@@ -260,7 +255,7 @@
   </div>
 
   <!-- ███ BAND 3.5: Education ███ -->
-  <div class="opaque-band" id="education-band">
+  <div class="opaque-band" id="education">
     <div class="band-content band-header">
       <h2 class="section-heading reveal" style="margin-bottom:0;">🎓 Education</h2>
       <span class="section-badge"><i class="fa fa-graduation-cap"></i> Magna cum laude (GPA 3.74)</span>
@@ -284,7 +279,7 @@
   </div>
 
   <!-- ███ BAND 4: Projects ███ -->
-  <div class="opaque-band" id="projects-band">
+  <div class="opaque-band" id="projects">
     <div class="band-content band-header">
       <h2 class="section-heading reveal" style="margin-bottom:0;">🛠️ Projects</h2>
       <a class="section-badge" href="https://github.com/Mutilar" target="_blank"><i class="fa fa-github"></i> Mutilar</a>
@@ -322,7 +317,7 @@
   </div>
 
   <!-- ███ BAND 5: Hackathons ███ -->
-  <div class="opaque-band" id="hackathons-band">
+  <div class="opaque-band" id="hackathons">
     <div class="band-content band-header">
       <h2 class="section-heading reveal" style="margin-bottom:0;">⛏️ Hacks</h2>
       <a class="section-badge" href="https://devpost.com/BrianHungerman" target="_blank"><i class="fa fa-trophy"></i> BrianHungerman</a>
@@ -360,7 +355,7 @@
   </div>
 
   <!-- ███ BAND 6: Games ███ -->
-  <div class="opaque-band" id="games-band">
+  <div class="opaque-band" id="games">
     <div class="band-content band-header">
       <h2 class="section-heading reveal" style="margin-bottom:0;">🎮 Games</h2>
       <a class="section-badge" href="https://github.com/Mutilar" target="_blank"><i class="fa fa-gamepad"></i> Mutilar</a>
@@ -386,7 +381,7 @@
   <!-- ███ BAND 6: FOOTER ███ -->
   <div class="opaque-band" id="footer-band">
     <div class="band-content band-header">
-      <h2 class="section-heading reveal" style="margin-bottom:0;">✨ Cheers</h2>
+      <h2 class="section-heading reveal" style="margin-bottom:0;">🍻 Cheers</h2>
     </div>
   </div>
 
