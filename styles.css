@@ -1454,15 +1454,21 @@ hr {
   .pdf-modal-header h2 { font-size: 18px; }
 
   .deck-hero {
-    flex-direction: column;
-    text-align: center;
+    flex-direction: row;
+    text-align: left;
+    gap: 14px;
     margin: -20px -18px 24px;
     padding: 20px 18px 16px;
     top: -20px;
   }
 
-  .deck-hero-img { width: 160px; }
-  .deck-hero-name { font-size: 22px; }
+  .deck-hero-img { width: 120px; }
+  .deck-hero-name { font-size: 18px; }
+  .deck-hero-motto { font-size: 12px; margin-bottom: 8px; }
+  .deck-hero-link { position: static; margin-top: 6px; font-size: 11px; padding: 4px 10px; }
+  .deck-body { font-size: 12px; margin-top: 8px; }
+  .deck-body p { margin: 4px 0; }
+  .deck-body p ~ p { display: none; }
   .deck-carousel-wrap { min-height: 310px; }
   .deck-carousel { width: 200px; height: 280px; }
   .deck-card { width: 200px; height: 280px; }
@@ -1496,5 +1502,9 @@ hr {
   .parallax-window-hero { padding: 100px 16px 60px; }
   .parallax-window-gap { height: 10vh; min-height: 60px; }
   .modal-card { padding: 16px 14px; }
-  .deck-hero { margin: -16px -14px 24px; padding: 16px 14px 12px; top: -16px; border-radius: 16px 16px 0 0; }
+  .deck-hero { margin: -16px -14px 24px; padding: 16px 14px 12px; top: -16px; border-radius: 16px 16px 0 0; gap: 10px; }
+  .deck-hero-img { width: 100px; }
+  .deck-hero-name { font-size: 16px; }
+  .deck-hero-motto { font-size: 11px; }
+  .deck-body { font-size: 11px; }
 }
