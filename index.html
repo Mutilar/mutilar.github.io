@@ -955,6 +955,13 @@ hr {
 /* ═══════════════════════════════════════════════════════════════
    MTG DECK MODAL
    ═══════════════════════════════════════════════════════════════ */
+.deck-modal-card .modal-close {
+  position: absolute;
+  top: 16px;
+  right: 20px;
+  z-index: 25;
+}
+
 .deck-modal-card {
   max-width: 880px;
 }
@@ -1054,6 +1061,16 @@ hr {
   gap: 20px;
   align-items: flex-start;
   margin-bottom: 24px;
+  position: sticky;
+  top: -28px;
+  z-index: 15;
+  background: rgba(15, 15, 25, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  margin: -28px -32px 24px;
+  padding: 28px 32px 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px 20px 0 0;
 }
 
 .deck-hero-img {
@@ -1074,10 +1091,7 @@ hr {
   font-size: 28px;
   font-weight: 800;
   margin: 0 0 8px;
-  background: linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.7) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: #fff;
 }
 
 .deck-hero-motto {
@@ -1088,12 +1102,24 @@ hr {
   line-height: 1.5;
 }
 
+.deck-hero-bracket {
+  font-size: 14px;
+  font-style: italic;
+  color: rgba(255, 255, 255, 0.55);
+  margin: 12px 0 0;
+  line-height: 1.5;
+}
+
 .deck-hero-link {
+  position: absolute;
+  top: 30px;
+  right: 80px;
   display: inline-flex;
   align-items: center;
   gap: 6px;
   font-size: 12px;
   color: rgba(130, 200, 255, 0.8);
+  -webkit-text-fill-color: rgba(130, 200, 255, 0.8);
   padding: 5px 14px;
   border-radius: 10px;
   background: rgba(130, 200, 255, 0.1);
@@ -1101,9 +1127,16 @@ hr {
   transition: all 0.3s;
 }
 
+.deck-hero-link *,
+.deck-hero-link *::before {
+  color: inherit !important;
+  -webkit-text-fill-color: inherit !important;
+}
+
 .deck-hero-link:hover {
   background: rgba(130, 200, 255, 0.2);
   color: #fff;
+  -webkit-text-fill-color: #fff;
 }
 
 /* Per-type section */
@@ -1114,6 +1147,7 @@ hr {
 .deck-section-heading {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
   margin-bottom: 12px;
   padding-bottom: 8px;
@@ -1121,11 +1155,11 @@ hr {
 }
 
 .deck-section-icon {
-  font-size: 18px;
+  font-size: 22px;
 }
 
 .deck-section-label {
-  font-size: 15px;
+  font-size: 19px;
   font-weight: 700;
   color: rgba(255, 255, 255, 0.85);
 }
@@ -1271,7 +1305,7 @@ hr {
   font-size: 24px;
   cursor: pointer;
   transition: all 0.3s;
-  z-index: 20;
+  z-index: 10;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1330,6 +1364,9 @@ hr {
   .deck-hero {
     flex-direction: column;
     text-align: center;
+    margin: -20px -18px 24px;
+    padding: 20px 18px 16px;
+    top: -20px;
   }
   .deck-hero-img {
     width: 160px;
@@ -1427,6 +1464,7 @@ hr {
   .glass-tile { padding: 20px 18px; }
   .entry-card .entry-logo { width: 48px; height: 48px; }
   .modal-card { padding: 20px 18px; }
+  .deck-hero { margin: -20px -18px 24px; padding: 20px 18px 16px; top: -20px; }
   .parallax-window-gap { height: 15vh; min-height: 100px; }
 }
 
@@ -1449,6 +1487,7 @@ hr {
   .parallax-window-hero { padding: 100px 16px 60px; }
   .parallax-window-gap { height: 10vh; min-height: 60px; }
   .modal-card { padding: 16px 14px; }
+  .deck-hero { margin: -16px -14px 24px; padding: 16px 14px 12px; top: -16px; border-radius: 16px 16px 0 0; }
 }
 </style>
 </head>
@@ -1831,16 +1870,17 @@ hr {
      ═══════════════════════════════════════════════════════════════ -->
 <div class="modal-overlay" id="deck-modal">
   <div class="glass-tile modal-card deck-modal-card" style="position:relative;">
-    <button class="modal-close" id="deckModalClose">&times;</button>
 
     <!-- Commander hero -->
     <div class="deck-hero">
+      <button class="modal-close" id="deckModalClose">&times;</button>
       <img class="deck-hero-img" id="deck-hero-img" src="" alt="" />
       <div class="deck-hero-info">
         <h2 class="deck-hero-name" id="deck-hero-name"></h2>
         <p class="deck-hero-motto" id="deck-hero-motto"></p>
         <a class="deck-hero-link" id="deck-hero-link" href="#" target="_blank"><i class="fa fa-external-link"></i> Archidekt</a>
         <div class="modal-body deck-body" id="deck-body"></div>
+        <!-- <p class="deck-hero-bracket" id="deck-hero-bracket"></p> -->
       </div>
     </div>
 
@@ -2248,7 +2288,7 @@ const pdfModalClose = document.getElementById("pdfModalClose");
 const pdfIframe = document.getElementById("pdf-iframe");
 
 function openPdfModal() {
-  pdfIframe.src = "bible.pdf";
+  pdfIframe.src = "pdfviewer.html?file=bible.pdf";
   pdfModal.classList.add("open");
   document.body.style.overflow = "hidden";
 }
@@ -2271,7 +2311,7 @@ pdfModal.addEventListener("click", e => { if (e.target === pdfModal) closePdfMod
 
   // Type icons
   const typeIcons = {
-    Planeswalker: "🌟", Creature: "🐉", Artifact: "⚙️",
+    Planeswalker: "🌟", Creature: "🧛", Artifact: "⚙️",
     Enchantment: "✨", Instant: "⚡", Sorcery: "🔮",
     Land: "🏔️", Token: "🪙"
   };
@@ -2347,6 +2387,7 @@ pdfModal.addEventListener("click", e => { if (e.target === pdfModal) closePdfMod
 
     document.getElementById("deck-hero-name").textContent = (item.NAME || "").replace(/<br\s*\/?>/gi, " ");
     document.getElementById("deck-hero-motto").textContent = item.MOTTO || "";
+    // document.getElementById("deck-hero-bracket").textContent = item.BRACKET || "";
 
     const heroLink = document.getElementById("deck-hero-link");
     if (item.GITHUB && item.GITHUB.trim()) {
@@ -2393,7 +2434,6 @@ pdfModal.addEventListener("click", e => { if (e.target === pdfModal) closePdfMod
         '<div class="deck-section-heading">' +
           '<span class="deck-section-icon">' + (typeIcons[type] || "") + '</span>' +
           '<span class="deck-section-label">' + pluralize(type) + '</span>' +
-          '<span class="deck-section-count">' + group.length + '</span>' +
         '</div>';
 
       // Carousel wrap
@@ -2423,7 +2463,7 @@ pdfModal.addEventListener("click", e => { if (e.target === pdfModal) closePdfMod
       sectionsEl.appendChild(section);
 
       // State for this section
-      var state = { cards: group, index: 0, carouselEl: carousel, counterEl: counter };
+      var state = { cards: group, index: 0, carouselEl: carousel, counterEl: counter, prevBtn: prevBtn, nextBtn: nextBtn };
       sectionStates.push(state);
 
       // Hide nav controls for single-card sections
@@ -2466,10 +2506,14 @@ pdfModal.addEventListener("click", e => { if (e.target === pdfModal) closePdfMod
               // Navigate carousel to this card
               st.index = ci;
               updateSectionPositions(st);
-              // Scroll section into view
+              // Scroll section into view, accounting for sticky header
               var sectionEl = st.carouselEl.closest(".deck-section");
               if (sectionEl) {
-                sectionEl.scrollIntoView({ behavior: "smooth", block: "center" });
+                var modalCard = sectionEl.closest(".deck-modal-card");
+                var hero = modalCard.querySelector(".deck-hero");
+                var headerHeight = hero ? hero.offsetHeight : 0;
+                var sectionTop = sectionEl.offsetTop - headerHeight - 12;
+                modalCard.scrollTo({ top: sectionTop, behavior: "smooth" });
               }
               // Highlight pulse on the focused card
               var cardEls = st.carouselEl.querySelectorAll(".deck-card");
@@ -2496,6 +2540,9 @@ pdfModal.addEventListener("click", e => { if (e.target === pdfModal) closePdfMod
   function renderSectionCarousel(state) {
     var container = state.carouselEl;
     container.innerHTML = "";
+    // Hide arrows at boundaries on initial render
+    if (state.prevBtn) state.prevBtn.style.visibility = state.index <= 0 ? "hidden" : "";
+    if (state.nextBtn) state.nextBtn.style.visibility = state.index >= state.cards.length - 1 ? "hidden" : "";
 
     state.cards.forEach(function(card, i) {
       var el = document.createElement("div");
@@ -2526,6 +2573,9 @@ pdfModal.addEventListener("click", e => { if (e.target === pdfModal) closePdfMod
     cardEls.forEach(function(el, i) {
       el.setAttribute("data-pos", getPos(i, state.index));
     });
+    // Hide arrows at boundaries
+    if (state.prevBtn) state.prevBtn.style.visibility = state.index <= 0 ? "hidden" : "";
+    if (state.nextBtn) state.nextBtn.style.visibility = state.index >= state.cards.length - 1 ? "hidden" : "";
     updateSectionCounter(state);
   }
 
