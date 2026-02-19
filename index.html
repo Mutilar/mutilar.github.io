@@ -880,16 +880,39 @@ hr {
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
+.modal-header-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
 .modal-card .modal-title {
   font-size: 26px;
   font-weight: 800;
-  margin-bottom: 6px;
+  margin: 0;
 }
 
 .modal-card .modal-subtitle {
-  font-size: 15px;
-  color: rgba(255, 255, 255, 0.6);
-  margin-bottom: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-left: auto;
+}
+
+.modal-card .modal-subtitle .modal-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: 14px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  color: rgba(255, 255, 255, 0.65);
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  white-space: nowrap;
 }
 
 .modal-card .modal-body {
@@ -900,6 +923,8 @@ hr {
 
 .modal-card .modal-body ul { padding-left: 20px; margin: 8px 0; }
 .modal-card .modal-body li { margin-bottom: 8px; }
+.modal-card .modal-body h3 { margin-top: 20px; margin-bottom: 8px; }
+.modal-card .modal-body h3:first-child { margin-top: 0; }
 .modal-card .modal-body a {
   color: rgba(130, 200, 255, 0.9);
   text-decoration: underline;
@@ -916,16 +941,431 @@ hr {
   align-items: center;
   justify-content: center;
   border-radius: 12px;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(220, 50, 50, 0.85);
+  border: 1px solid rgba(255, 100, 100, 0.4);
   color: #fff;
   font-size: 22px;
   cursor: pointer;
   transition: all 0.3s;
-  z-index: 10;
+  z-index: 20;
 }
 
-.modal-close:hover { background: rgba(255, 255, 255, 0.2); }
+.modal-close:hover { background: rgba(255, 60, 60, 1); }
+
+/* ═══════════════════════════════════════════════════════════════
+   MTG DECK MODAL
+   ═══════════════════════════════════════════════════════════════ */
+.deck-modal-card {
+  max-width: 880px;
+}
+
+#deck-sections {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 16px;
+}
+
+/* Smaller carousels for two-column layout */
+#deck-sections .deck-carousel-wrap {
+  min-height: 280px;
+}
+
+#deck-sections .deck-carousel {
+  width: 180px;
+  height: 252px;
+}
+
+#deck-sections .deck-card {
+  width: 180px;
+  height: 252px;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   PDF VIEWER MODAL
+   ═══════════════════════════════════════════════════════════════ */
+.pdf-modal-card {
+  max-width: 960px;
+  width: 95vw;
+  height: 90vh;
+  overflow-y: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.pdf-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 16px;
+  padding-right: 52px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 16px;
+}
+
+.pdf-modal-header h2 {
+  font-size: 22px;
+  font-weight: 800;
+  margin: 0;
+}
+
+.pdf-modal-header a {
+  color: rgba(130, 200, 255, 0.9);
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  transition: all 0.25s;
+}
+
+.pdf-modal-header a:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.pdf-embed-wrap {
+  flex: 1;
+  min-height: 0;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: #111;
+}
+
+.pdf-embed-wrap iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+}
+
+@media (max-width: 600px) {
+  .pdf-modal-card { max-height: 88vh; width: 98vw; }
+  .pdf-modal-header h2 { font-size: 18px; }
+}
+
+/* Commander hero section */
+.deck-hero {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  margin-bottom: 24px;
+}
+
+.deck-hero-img {
+  width: 200px;
+  height: auto;
+  border-radius: 12px;
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  flex-shrink: 0;
+}
+
+.deck-hero-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.deck-hero-name {
+  font-size: 28px;
+  font-weight: 800;
+  margin: 0 0 8px;
+  background: linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.7) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.deck-hero-motto {
+  font-size: 14px;
+  font-style: italic;
+  color: rgba(255, 255, 255, 0.55);
+  margin: 0 0 12px;
+  line-height: 1.5;
+}
+
+.deck-hero-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: rgba(130, 200, 255, 0.8);
+  padding: 5px 14px;
+  border-radius: 10px;
+  background: rgba(130, 200, 255, 0.1);
+  border: 1px solid rgba(130, 200, 255, 0.2);
+  transition: all 0.3s;
+}
+
+.deck-hero-link:hover {
+  background: rgba(130, 200, 255, 0.2);
+  color: #fff;
+}
+
+/* Per-type section */
+.deck-section {
+  margin-bottom: 28px;
+}
+
+.deck-section-heading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.deck-section-icon {
+  font-size: 18px;
+}
+
+.deck-section-label {
+  font-size: 15px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.deck-section-count {
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255, 215, 0, 0.9);
+  margin-left: 4px;
+}
+
+/* Carousel wrapper (per section) */
+.deck-carousel-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 370px;
+  margin-bottom: 8px;
+  user-select: none;
+}
+
+/* Card stack container */
+.deck-carousel {
+  position: relative;
+  width: 250px;
+  height: 350px;
+  perspective: 900px;
+}
+
+/* Individual card in the stack */
+.deck-card {
+  position: absolute;
+  width: 250px;
+  height: 350px;
+  border-radius: 14px;
+  overflow: hidden;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+              opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 0.4s;
+  cursor: pointer;
+  transform-origin: center center;
+  backface-visibility: hidden;
+}
+
+.deck-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 14px;
+  border: 2px solid rgba(255, 255, 255, 0.15);
+}
+
+/* Focused (front) card */
+.deck-card[data-pos="0"] {
+  z-index: 10;
+  transform: translateX(0) scale(1);
+  opacity: 1;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5);
+}
+
+/* Cards behind — stacked to the right */
+.deck-card[data-pos="1"] {
+  z-index: 9;
+  transform: translateX(30px) scale(0.94);
+  opacity: 0.7;
+}
+
+.deck-card[data-pos="2"] {
+  z-index: 8;
+  transform: translateX(55px) scale(0.88);
+  opacity: 0.45;
+}
+
+.deck-card[data-pos="3"] {
+  z-index: 7;
+  transform: translateX(75px) scale(0.82);
+  opacity: 0.25;
+}
+
+/* Cards further back — hidden */
+.deck-card[data-pos="hidden"] {
+  z-index: 1;
+  transform: translateX(90px) scale(0.78);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Cards behind — stacked to the left (already seen) */
+.deck-card[data-pos="-1"] {
+  z-index: 9;
+  transform: translateX(-30px) scale(0.94);
+  opacity: 0.7;
+}
+
+.deck-card[data-pos="-2"] {
+  z-index: 8;
+  transform: translateX(-55px) scale(0.88);
+  opacity: 0.45;
+}
+
+.deck-card[data-pos="-hidden"] {
+  z-index: 1;
+  transform: translateX(-90px) scale(0.78);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Card name tooltip on hover */
+.deck-card-name {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 8px 10px;
+  background: linear-gradient(transparent, rgba(0,0,0,0.85));
+  color: #fff;
+  font-size: 11px;
+  font-weight: 600;
+  text-align: center;
+  border-radius: 0 0 12px 12px;
+  opacity: 0;
+  transition: opacity 0.25s;
+  pointer-events: none;
+}
+
+.deck-card[data-pos="0"]:hover .deck-card-name {
+  opacity: 1;
+}
+
+/* Carousel nav buttons */
+.deck-carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 24px;
+  cursor: pointer;
+  transition: all 0.3s;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.deck-carousel-btn:hover {
+  background: rgba(255, 255, 255, 0.18);
+  color: #fff;
+}
+
+.deck-prev { left: 0; }
+.deck-next { right: 0; }
+
+/* Card counter */
+.deck-carousel-counter {
+  text-align: center;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.4);
+  margin-bottom: 4px;
+  letter-spacing: 1px;
+}
+
+/* Card-name links in body text */
+.deck-body a[data-card-link] {
+  color: rgba(130, 200, 255, 0.9);
+  cursor: pointer;
+  text-decoration: none;
+  border-bottom: 1px dotted rgba(130, 200, 255, 0.4);
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.deck-body a[data-card-link]:hover {
+  color: #fff;
+  border-bottom-color: rgba(255, 255, 255, 0.6);
+}
+
+/* Highlight pulse when a card is anchored */
+@keyframes card-anchor-pulse {
+  0%   { box-shadow: 0 0 0 0 rgba(130, 200, 255, 0.7); }
+  40%  { box-shadow: 0 0 20px 8px rgba(130, 200, 255, 0.5); }
+  100% { box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5); }
+}
+
+.deck-card.card-anchored {
+  animation: card-anchor-pulse 1.2s ease-out;
+}
+
+/* Deck body text */
+.deck-body {
+  margin-top: 14px;
+  padding-top: 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  .deck-hero {
+    flex-direction: column;
+    text-align: center;
+  }
+  .deck-hero-img {
+    width: 160px;
+  }
+  .deck-hero-name {
+    font-size: 22px;
+  }
+  .deck-carousel-wrap {
+    min-height: 310px;
+  }
+  .deck-carousel {
+    width: 200px;
+    height: 280px;
+  }
+  .deck-card {
+    width: 200px;
+    height: 280px;
+  }
+  .deck-modal-card {
+    max-width: 100%;
+  }
+  #deck-sections {
+    grid-template-columns: 1fr;
+  }
+  #deck-sections .deck-carousel-wrap {
+    min-height: 310px;
+  }
+  #deck-sections .deck-carousel {
+    width: 200px;
+    height: 280px;
+  }
+  #deck-sections .deck-card {
+    width: 200px;
+    height: 280px;
+  }
+}
 
 /* ═══════════════════════════════════════════════════════════════
    FOOTER
@@ -1034,6 +1474,7 @@ hr {
   <a href="#bitnaughts-band">BitNaughts</a>
   <a href="#mtg-band">MTG</a>
   <a href="#work-band">Work</a>
+  <a href="#education-band">Education</a>
   <a href="#projects-band">Projects</a>
   <a href="#hackathons-band">Hacks</a>
   <a href="#games-band">Games</a>
@@ -1205,19 +1646,17 @@ hr {
       <div class="glass-tile reveal section-intro" style="margin-bottom:32px;">
         <img class="section-intro-img" src="images/mtg.jpg" alt="MTG" loading="lazy">
         <div class="section-blurb">
-          <div class="step step-left">Two primordial gods: Order &amp; Chaos, and three factions emerge: Faithful, Greedy &amp; Defiant...</div>
-          <div class="step step-center">...except Faith does not Save, Wealth does not Protect &amp; Rebellion does not Free...</div>
-          <div class="step step-right">...for Mortality is merely a Door, not a Wall.</div>
-          <div class="step-summary">The <em>Dusk Rose Codex</em> transforms Magic: The Gathering into satirical Vorthos scripture, bound by hand with crimson thread.</div>
+          <div class="step step-left">Two primordial gods: <em>Order</em> &amp; <em>Chaos</em>, and three factions emerge: <em>Faithful</em>, <em>Greedy</em> &amp; <em>Defiant</em>...</div>
+          <div class="step step-center">...except <em>Faith</em> does not <em>Save</em>, <em>Wealth</em> does not <em>Protect</em> &amp; <em>Rebellion</em> does not <em>Free</em>...</div>
+          <div class="step step-right">...for <em>Mortality</em> is merely a <em>Door</em>, not a <em>Wall</em>.</div>
+          <div class="step-summary">The <em>Dusk Rose Codex</em> transforms <em>Magic: The Gathering</em> into satirical <em>Vorthos</em> scripture, bound by hand in crimson thread.</div>
         </div>
       </div>
       <div class="card-grid card-grid-wide" id="mtg-grid"></div>
       <div style="margin-top:32px;">
-        <a href="bible.pdf" target="_blank" style="display:block;text-decoration:none;">
-          <div class="glass-tile reveal" style="padding:0;overflow:hidden;cursor:pointer;">
-            <img src="images/bible.jpg" alt="Dusk Rose Codex" style="width:100%;border-radius:19px;display:block;" loading="lazy">
-          </div>
-        </a>
+        <div class="glass-tile reveal" style="padding:0;overflow:hidden;cursor:pointer;" onclick="openPdfModal()">
+          <img src="images/bible.jpg" alt="Dusk Rose Codex" style="width:100%;border-radius:19px;display:block;" loading="lazy">
+        </div>
       </div>
     </div>
   </div>
@@ -1246,6 +1685,30 @@ hr {
     </div>
   </div>
 
+  <!-- ███ BAND 3.5: Education ███ -->
+  <div class="opaque-band" id="education-band">
+    <div class="band-content band-header">
+      <h2 class="section-heading reveal" style="margin-bottom:0;">🎓 Education</h2>
+      <a class="section-badge" href="https://github.com/Mutilar" target="_blank"><i class="fa fa-github"></i> Mutilar</a>
+    </div>
+  </div>
+
+  <!-- ▓▓▓ PARALLAX: Education content ▓▓▓ -->
+  <div class="parallax-window" data-attention="0" style="padding:40px 24px 80px;">
+    <div style="max-width:1100px;margin:0 auto;">
+      <div class="glass-tile reveal section-intro" style="margin-bottom:32px;">
+        <img class="section-intro-img" src="images/brian.jpg" alt="Education" loading="lazy">
+        <div class="section-blurb">
+          <div class="step step-left">From discrete mathematics and data structures laying the groundwork...</div>
+          <div class="step step-center">...to algorithms, networks, and databases building the toolkit...</div>
+          <div class="step step-right">...to robotics, software engineering, and computer organization tying it all together,</div>
+          <div class="step-summary">Coursework from UC Merced's Computer Science & Engineering program, archived on GitHub with code from every lab, homework, and project.</div>
+        </div>
+      </div>
+      <div class="card-grid" id="education-grid"></div>
+    </div>
+  </div>
+
   <!-- ███ BAND 4: Projects ███ -->
   <div class="opaque-band" id="projects-band">
     <div class="band-content band-header">
@@ -1255,7 +1718,7 @@ hr {
   </div>
 
   <!-- ▓▓▓ PARALLAX: Projects content ▓▓▓ -->
-  <div class="parallax-window" data-attention="0" style="padding:40px 24px 80px;">
+  <div class="parallax-window" data-attention="1" style="padding:40px 24px 80px;">
     <div style="max-width:1100px;margin:0 auto;">
       <div class="glass-tile reveal section-intro" style="margin-bottom:32px;">
         <img class="section-intro-img" src="images/brian2.png" alt="Projects" loading="lazy">
@@ -1279,7 +1742,7 @@ hr {
   </div>
 
   <!-- ▓▓▓ PARALLAX: Hackathons content ▓▓▓ -->
-  <div class="parallax-window" data-attention="1" style="padding:40px 24px 80px;">
+  <div class="parallax-window" data-attention="0" style="padding:40px 24px 80px;">
     <div style="max-width:1100px;margin:0 auto;">
       <div class="glass-tile reveal section-intro" style="margin-bottom:32px;">
         <img class="section-intro-img" src="images/game-banner-lan.jpg" alt="Hackathons" loading="lazy">
@@ -1303,7 +1766,7 @@ hr {
   </div>
 
   <!-- ▓▓▓ PARALLAX: Games content ▓▓▓ -->
-  <div class="parallax-window" data-attention="0" style="padding:40px 24px 80px;">
+  <div class="parallax-window" data-attention="1" style="padding:40px 24px 80px;">
     <div style="max-width:1100px;margin:0 auto;">
       <div class="glass-tile reveal section-intro" style="margin-bottom:32px;">
         <img class="section-intro-img" src="images/game-banner.jpg" alt="Games" loading="lazy">
@@ -1326,7 +1789,7 @@ hr {
   </div>
 
   <!-- ▓▓▓ WINDOW 7: final rest bg peek + connect ▓▓▓ -->
-  <div class="parallax-window parallax-window-gap" data-attention="1" style="display:flex;align-items:center;justify-content:center;min-height:50vh;max-height:none;">
+  <div class="parallax-window parallax-window-gap" data-attention="0" style="display:flex;align-items:center;justify-content:center;min-height:50vh;max-height:none;">
     <div class="glass-tile reveal" style="text-align:center; max-width:560px; width:100%; margin:0 24px;">
       <h2 style="font-size:26px; font-weight:700; margin-bottom:12px;">Something caught your eye?</h2>
       <p style="font-size:15px; color:rgba(255,255,255,0.6); margin-bottom:24px;">
@@ -1355,9 +1818,50 @@ hr {
   <div class="glass-tile modal-card" style="position:relative;">
     <button class="modal-close" id="modalClose">&times;</button>
     <img class="modal-img" id="modal-image" src="" alt="" />
-    <h2 class="modal-title" id="modal-name"></h2>
-    <p class="modal-subtitle" id="modal-title"></p>
+    <div class="modal-header-row">
+      <h2 class="modal-title" id="modal-name"></h2>
+      <p class="modal-subtitle" id="modal-title"></p>
+    </div>
     <div class="modal-body" id="modal-biography"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     MTG DECK MODAL
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="modal-overlay" id="deck-modal">
+  <div class="glass-tile modal-card deck-modal-card" style="position:relative;">
+    <button class="modal-close" id="deckModalClose">&times;</button>
+
+    <!-- Commander hero -->
+    <div class="deck-hero">
+      <img class="deck-hero-img" id="deck-hero-img" src="" alt="" />
+      <div class="deck-hero-info">
+        <h2 class="deck-hero-name" id="deck-hero-name"></h2>
+        <p class="deck-hero-motto" id="deck-hero-motto"></p>
+        <a class="deck-hero-link" id="deck-hero-link" href="#" target="_blank"><i class="fa fa-external-link"></i> Archidekt</a>
+        <div class="modal-body deck-body" id="deck-body"></div>
+      </div>
+    </div>
+
+    <!-- Per-type card sections (populated by JS) -->
+    <div id="deck-sections"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     PDF VIEWER MODAL
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="modal-overlay" id="pdf-modal">
+  <div class="glass-tile modal-card pdf-modal-card" style="position:relative;">
+    <button class="modal-close" id="pdfModalClose">&times;</button>
+    <div class="pdf-modal-header">
+      <h2>📖 Dusk Rose Codex</h2>
+      <a href="bible.pdf" target="_blank"><i class="fa fa-external-link"></i> Open in new tab</a>
+    </div>
+    <div class="pdf-embed-wrap">
+      <iframe id="pdf-iframe" src="" title="Dusk Rose Codex PDF"></iframe>
+    </div>
   </div>
 </div>
 
@@ -1706,7 +2210,7 @@ hr {
 // ═══════════════════════════════════════════════════════════════
 //  MODAL SYSTEM
 // ═══════════════════════════════════════════════════════════════
-const modalState = { work: null, projects: null, hackathons: null, games: null };
+const modalState = { work: null, education: null, projects: null, hackathons: null, games: null };
 const modal = document.getElementById("modal");
 const modalClose = document.getElementById("modalClose");
 
@@ -1717,8 +2221,9 @@ function openModal(dataset, id, imgExt) {
   if (!item) return;
   document.getElementById("modal-image").src = "images/" + id + (imgExt || ".jpg");
   document.getElementById("modal-image").alt = item.NAME || "";
-  document.getElementById("modal-name").textContent = item.NAME || "";
-  document.getElementById("modal-title").textContent = item.TITLE || item.MOTTO || "";
+  document.getElementById("modal-name").textContent = (item.NAME || "").replace(/<br\s*\/?>/gi, " ");
+  const titleStr = item.TITLE || item.MOTTO || "";
+  document.getElementById("modal-title").innerHTML = titleStr.split(',').map(t => t.trim()).filter(Boolean).map(t => `<span class="modal-badge">${t}</span>`).join('');
   document.getElementById("modal-biography").innerHTML = item.TEXT && item.TEXT !== "tbd"
     ? item.TEXT
     : "<p style='color:rgba(255,255,255,0.5);font-style:italic;'>Details coming soon…</p>";
@@ -1733,7 +2238,301 @@ function closeModal() {
 
 modalClose.addEventListener("click", closeModal);
 modal.addEventListener("click", e => { if (e.target === modal) closeModal(); });
-document.addEventListener("keydown", e => { if (e.key === "Escape") closeModal(); });
+document.addEventListener("keydown", e => { if (e.key === "Escape") { closeModal(); closePdfModal(); } });
+
+// ═══════════════════════════════════════════════════════════════
+//  PDF VIEWER MODAL
+// ═══════════════════════════════════════════════════════════════
+const pdfModal = document.getElementById("pdf-modal");
+const pdfModalClose = document.getElementById("pdfModalClose");
+const pdfIframe = document.getElementById("pdf-iframe");
+
+function openPdfModal() {
+  pdfIframe.src = "bible.pdf";
+  pdfModal.classList.add("open");
+  document.body.style.overflow = "hidden";
+}
+
+function closePdfModal() {
+  pdfModal.classList.remove("open");
+  pdfIframe.src = "";
+  document.body.style.overflow = "";
+}
+
+pdfModalClose.addEventListener("click", closePdfModal);
+pdfModal.addEventListener("click", e => { if (e.target === pdfModal) closePdfModal(); });
+
+// ═══════════════════════════════════════════════════════════════
+//  MTG DECK MODAL SYSTEM
+// ═══════════════════════════════════════════════════════════════
+(() => {
+  const deckModal = document.getElementById("deck-modal");
+  const deckModalClose = document.getElementById("deckModalClose");
+
+  // Type icons
+  const typeIcons = {
+    Planeswalker: "🌟", Creature: "🐉", Artifact: "⚙️",
+    Enchantment: "✨", Instant: "⚡", Sorcery: "🔮",
+    Land: "🏔️", Token: "🪙"
+  };
+
+  const typeOrder = ["Planeswalker", "Creature", "Artifact", "Enchantment", "Instant", "Sorcery", "Land", "Token"];
+
+  // Each section gets its own carousel state
+  let sectionStates = [];  // [{cards:[], index:0, carouselEl, counterEl}]
+  let deckCache = {};
+
+  function closeDeckModal() {
+    deckModal.classList.remove("open");
+    document.body.style.overflow = "";
+  }
+
+  deckModalClose.addEventListener("click", closeDeckModal);
+  deckModal.addEventListener("click", function(e) { if (e.target === deckModal) closeDeckModal(); });
+  document.addEventListener("keydown", function(e) { if (e.key === "Escape") closeDeckModal(); });
+
+  window.openDeckModal = function(item) {
+    const deckFile = item.DECK.trim();
+    if (deckCache[deckFile]) {
+      renderDeckModal(item, deckCache[deckFile]);
+    } else {
+      $.get(deckFile + "?v=" + Date.now()).then(function(csvText) {
+        const cards = $.csv.toObjects(csvText);
+        deckCache[deckFile] = cards;
+        renderDeckModal(item, cards);
+      });
+    }
+  };
+
+  function pluralize(type) {
+    return type === "Sorcery" ? "Sorceries" : type + "s";
+  }
+
+  function getArtSrc(card) {
+    return card.art && card.art.trim()
+      ? card.art
+      : "https://api.scryfall.com/cards/named?format=image&version=normal&exact=" + encodeURIComponent((card["card name"] || "").split(" // ")[0]);
+  }
+
+  function getPos(index, focus) {
+    var diff = index - focus;
+    if (diff === 0) return "0";
+    if (diff === 1) return "1";
+    if (diff === 2) return "2";
+    if (diff === 3) return "3";
+    if (diff > 3) return "hidden";
+    if (diff === -1) return "-1";
+    if (diff === -2) return "-2";
+    if (diff < -2) return "-hidden";
+    return "hidden";
+  }
+
+  function renderDeckModal(item, cards) {
+    // Commander image
+    const commanderName = (item.TITLE || "").replace(/:/g, ",");
+    const commanderCard = cards.find(function(c) {
+      const name = c["card name"] || "";
+      return name.toLowerCase().includes(commanderName.toLowerCase()) ||
+             commanderName.toLowerCase().includes(name.split(" // ")[0].toLowerCase());
+    });
+
+    const heroImg = document.getElementById("deck-hero-img");
+    if (commanderCard && commanderCard.art && commanderCard.art.trim()) {
+      heroImg.src = commanderCard.art;
+    } else {
+      // Scryfall fallback for commander art
+      var cmdName = commanderCard ? (commanderCard["card name"] || "").split(" // ")[0] : (item.TITLE || "");
+      heroImg.src = "https://api.scryfall.com/cards/named?format=image&version=normal&exact=" + encodeURIComponent(cmdName);
+    }
+
+    document.getElementById("deck-hero-name").textContent = (item.NAME || "").replace(/<br\s*\/?>/gi, " ");
+    document.getElementById("deck-hero-motto").textContent = item.MOTTO || "";
+
+    const heroLink = document.getElementById("deck-hero-link");
+    if (item.GITHUB && item.GITHUB.trim()) {
+      heroLink.href = item.GITHUB;
+      heroLink.style.display = "";
+    } else {
+      heroLink.style.display = "none";
+    }
+
+    // Group cards by type (excluding commander)
+    var typeGroups = {};
+    typeOrder.forEach(function(t) { typeGroups[t] = []; });
+    cards.forEach(function(c) {
+      if (c === commanderCard) return; // commander shown in hero, skip
+      var types = (c.types || "").split(",").map(function(t) { return t.trim(); }).filter(Boolean);
+      var seen = {};
+      types.forEach(function(t) {
+        if (!seen[t] && typeGroups[t]) { seen[t] = true; typeGroups[t].push(c); }
+      });
+    });
+
+    // Build per-type sections
+    const sectionsEl = document.getElementById("deck-sections");
+    sectionsEl.innerHTML = "";
+    sectionStates = [];
+
+    typeOrder.forEach(function(type) {
+      var group = typeGroups[type];
+      if (group.length === 0) return;
+
+      // Sort: cards with art first, then alphabetical
+      group.sort(function(a, b) {
+        var aHas = a.art && a.art.trim() ? 0 : 1;
+        var bHas = b.art && b.art.trim() ? 0 : 1;
+        if (aHas !== bHas) return aHas - bHas;
+        return (a["card name"] || "").localeCompare(b["card name"] || "");
+      });
+
+      var section = document.createElement("div");
+      section.className = "deck-section";
+
+      // Heading
+      section.innerHTML =
+        '<div class="deck-section-heading">' +
+          '<span class="deck-section-icon">' + (typeIcons[type] || "") + '</span>' +
+          '<span class="deck-section-label">' + pluralize(type) + '</span>' +
+          '<span class="deck-section-count">' + group.length + '</span>' +
+        '</div>';
+
+      // Carousel wrap
+      var wrap = document.createElement("div");
+      wrap.className = "deck-carousel-wrap";
+
+      var prevBtn = document.createElement("button");
+      prevBtn.className = "deck-carousel-btn deck-prev";
+      prevBtn.textContent = "\u2039";
+
+      var nextBtn = document.createElement("button");
+      nextBtn.className = "deck-carousel-btn deck-next";
+      nextBtn.textContent = "\u203A";
+
+      var carousel = document.createElement("div");
+      carousel.className = "deck-carousel";
+
+      wrap.appendChild(prevBtn);
+      wrap.appendChild(carousel);
+      wrap.appendChild(nextBtn);
+      section.appendChild(wrap);
+
+      var counter = document.createElement("div");
+      counter.className = "deck-carousel-counter";
+      section.appendChild(counter);
+
+      sectionsEl.appendChild(section);
+
+      // State for this section
+      var state = { cards: group, index: 0, carouselEl: carousel, counterEl: counter };
+      sectionStates.push(state);
+
+      // Hide nav controls for single-card sections
+      if (group.length <= 1) {
+        prevBtn.style.display = "none";
+        nextBtn.style.display = "none";
+        counter.style.display = "none";
+      }
+
+      // Render cards into carousel
+      renderSectionCarousel(state);
+
+      // Wire prev/next
+      (function(st) {
+        prevBtn.addEventListener("click", function() {
+          if (st.index > 0) { st.index--; updateSectionPositions(st); }
+        });
+        nextBtn.addEventListener("click", function() {
+          if (st.index < st.cards.length - 1) { st.index++; updateSectionPositions(st); }
+        });
+      })(state);
+    });
+
+    // Body text
+    var bodyEl = document.getElementById("deck-body");
+    bodyEl.innerHTML = item.TEXT && item.TEXT !== "tbd"
+      ? item.TEXT
+      : "<p style='color:rgba(255,255,255,0.5);font-style:italic;'>Details coming soon…</p>";
+
+    // Wire up card-name links to navigate carousel
+    bodyEl.querySelectorAll("a[data-card-link]").forEach(function(link) {
+      link.addEventListener("click", function(e) {
+        e.preventDefault();
+        var target = link.getAttribute("data-card-link").toLowerCase();
+        for (var si = 0; si < sectionStates.length; si++) {
+          var st = sectionStates[si];
+          for (var ci = 0; ci < st.cards.length; ci++) {
+            var name = (st.cards[ci]["card name"] || "").toLowerCase();
+            if (name === target || name.indexOf(target) !== -1 || target.indexOf(name.split(" // ")[0]) !== -1) {
+              // Navigate carousel to this card
+              st.index = ci;
+              updateSectionPositions(st);
+              // Scroll section into view
+              var sectionEl = st.carouselEl.closest(".deck-section");
+              if (sectionEl) {
+                sectionEl.scrollIntoView({ behavior: "smooth", block: "center" });
+              }
+              // Highlight pulse on the focused card
+              var cardEls = st.carouselEl.querySelectorAll(".deck-card");
+              var focusedCard = cardEls[ci];
+              if (focusedCard) {
+                focusedCard.classList.remove("card-anchored");
+                void focusedCard.offsetWidth; // reflow to restart animation
+                focusedCard.classList.add("card-anchored");
+                focusedCard.addEventListener("animationend", function() {
+                  focusedCard.classList.remove("card-anchored");
+                }, { once: true });
+              }
+              return;
+            }
+          }
+        }
+      });
+    });
+
+    deckModal.classList.add("open");
+    document.body.style.overflow = "hidden";
+  }
+
+  function renderSectionCarousel(state) {
+    var container = state.carouselEl;
+    container.innerHTML = "";
+
+    state.cards.forEach(function(card, i) {
+      var el = document.createElement("div");
+      el.className = "deck-card";
+      el.setAttribute("data-pos", getPos(i, state.index));
+
+      el.innerHTML = '<img src="' + getArtSrc(card) + '" alt="' + (card["card name"] || "") + '" loading="lazy" />' +
+        '<div class="deck-card-name">' + (card["card name"] || "") + '</div>';
+
+      (function(st, idx) {
+        el.addEventListener("click", function() {
+          var clickPos = getPos(idx, st.index);
+          if (clickPos !== "0" && clickPos !== "hidden" && clickPos !== "-hidden") {
+            st.index = idx;
+            updateSectionPositions(st);
+          }
+        });
+      })(state, i);
+
+      container.appendChild(el);
+    });
+
+    updateSectionCounter(state);
+  }
+
+  function updateSectionPositions(state) {
+    var cardEls = state.carouselEl.querySelectorAll(".deck-card");
+    cardEls.forEach(function(el, i) {
+      el.setAttribute("data-pos", getPos(i, state.index));
+    });
+    updateSectionCounter(state);
+  }
+
+  function updateSectionCounter(state) {
+    state.counterEl.textContent = (state.index + 1) + " / " + state.cards.length;
+  }
+})();
 
 // ═══════════════════════════════════════════════════════════════
 //  CSV DATA LOADING
@@ -1788,13 +2587,31 @@ $.get("bitnaughts.csv?v=" + Date.now()).then(function(t) {
 $.get("mtg.csv?v=" + Date.now()).then(function(t) {
   const d = $.csv.toObjects(t); modalState.mtg = d;
   const g = document.getElementById("mtg-grid");
-  d.forEach(i => g.appendChild(buildEntryCard(i, "mtg", {imgExt:".png",modalImgExt:".png"})));
+  d.forEach(function(i) {
+    const card = buildEntryCard(i, "mtg", {imgExt:".png",modalImgExt:".png"});
+    // Override click: if deck CSV exists, open deck modal instead
+    if (i.DECK && i.DECK.trim()) {
+      // Remove old click listener by cloning
+      const newCard = card.cloneNode(true);
+      if (window._revealObserver) window._revealObserver.observe(newCard);
+      newCard.addEventListener("click", function() { openDeckModal(i); });
+      g.appendChild(newCard);
+    } else {
+      g.appendChild(card);
+    }
+  });
 });
 
 $.get("work.csv?v=" + Date.now()).then(function(t) {
   const d = $.csv.toObjects(t); modalState.work = d;
   const g = document.getElementById("work-grid");
   d.forEach(i => g.appendChild(buildEntryCard(i, "work", {imgExt:".png",modalImgExt:".jpg"})));
+});
+
+$.get("education.csv?v=" + Date.now()).then(function(t) {
+  const d = $.csv.toObjects(t); modalState.education = d;
+  const g = document.getElementById("education-grid");
+  d.forEach(i => g.appendChild(buildEntryCard(i, "education", {imgExt:".png",modalImgExt:".png"})));
 });
 
 $.get("projects.csv?v=" + Date.now()).then(function(t) {

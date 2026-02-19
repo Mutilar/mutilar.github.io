@@ -1,0 +1,993 @@
+﻿% The Dusk Rose Codex - LaTeX Edition (Clean Version)
+% Compile with XeLaTeX or LuaLaTeX for custom font support
+% =========================================================
+
+\documentclass[10pt, twoside, openany]{book}
+
+% ----- Page Geometry (A6 pocket bible size) -----
+\usepackage[
+    paperwidth=4.25in,
+    paperheight=6.875in,
+    margin=0.5in,
+    inner=0.5in,  % Extra space for binding
+    outer=0.5in
+]{geometry}
+
+% ----- Font Setup (requires XeLaTeX/LuaLaTeX) -----
+\usepackage{fontspec}
+\usepackage{microtype}
+
+% Main body font - Old Standard TT (install from Google Fonts)
+% FakeBold adds slight synthetic weight for heavier body text
+\setmainfont{Old Standard TT}[
+    UprightFont = *-Regular,
+    BoldFont = *-Bold,
+    ItalicFont = *-Italic,
+    FakeBold = 6
+]
+
+% Title font - Cinzel (install from Google Fonts)
+\newfontfamily\titlefont{Cinzel}[
+    UprightFont = *-Regular,
+    BoldFont = *-Bold,
+    FakeBold = 8
+]
+
+% Decorative title font - Cinzel Decorative
+\newfontfamily\decorativefont{Cinzel Decorative}[
+    UprightFont = *-Regular,
+    BoldFont = *-Bold,
+    FakeBold = 5
+]
+
+% ----- Formatting -----
+\usepackage{titlesec}
+\usepackage{lettrine}      % Drop caps
+\usepackage{GoudyIn}       % Goudy Initialen - decorative drop cap font
+\usepackage{amssymb}       % For star symbols
+\usepackage{setspace}
+\usepackage{parskip}
+\usepackage{xcolor}
+\usepackage{multicol}      % For two-column appendix
+\usepackage{imakeidx}      % For index generation
+
+% Colors
+\definecolor{bloodred}{RGB}{138, 3, 3}
+\definecolor{inkblack}{RGB}{30, 30, 30}
+
+\color{inkblack}
+
+% ----- Chapter/Section Formatting -----
+\titleformat{\chapter}[display]
+    {\decorativefont\Large\centering}
+    {}
+    {0pt}
+    {}
+\titlespacing*{\chapter}{0pt}{20pt}{10pt}
+
+\titleformat{\section}[block]
+    {\titlefont\large\centering}
+    {}
+    {0pt}
+    {}
+\titlespacing*{\section}{0pt}{15pt}{8pt}
+
+% ----- Custom Commands -----
+% For dialogue in italics
+\newcommand{\speech}[1]{\textit{#1}}
+
+
+% Horizontal rule
+\newcommand{\divider}{%
+    \begin{center}
+    \rule{0.5\textwidth}{2pt}
+    \end{center}
+}
+
+% Interrobang (stacked ?!)
+\newcommand{\interrobang}{\rlap{?}!}
+
+% Elegant TOC dot leader (spaced dots)
+\newcommand{\tocfill}{%
+    \leaders\hbox to 1em{\hfil.\hfil}\hfill%
+}
+
+% Drop cap settings - use Goudy Initialen decorative font
+\renewcommand{\LettrineFontHook}{\GoudyInfamily}
+\renewcommand{\LettrineTextFont}{\normalfont}
+\setcounter{DefaultLines}{2}
+\renewcommand{\DefaultLoversize}{0.1}
+\renewcommand{\DefaultLraise}{0.1}
+\setlength{\DefaultFindent}{3pt}
+\setlength{\DefaultNindent}{0pt}
+
+% ----- Document -----
+\begin{document}
+\pagestyle{plain}
+\setstretch{1.15}
+
+% ===== TITLE PAGE =====
+\begin{titlepage}
+    \centering
+    \vspace*{2cm}
+    
+    {\decorativefont\bfseries\Huge Dusk}\\[0.3cm]
+    {\decorativefont\bfseries\Huge Rose}\\[0.3cm]
+    {\decorativefont\bfseries\Huge Codex}
+    
+    \vfill
+    
+    \vspace{0.5cm}
+\end{titlepage}
+
+% Front matter uses Roman numerals
+\pagenumbering{roman}
+
+% ===== INNER TITLE PAGE =====
+\newpage
+
+\vspace*{3cm}
+
+\begin{center}
+
+{\decorativefont\LARGE Dusk}\\[0.3cm]
+{\decorativefont\LARGE Rose}\\[0.3cm]
+{\decorativefont\LARGE Codex}
+
+\vspace{.5cm}
+
+\begin{center}
+\textbullet\quad\textbullet\quad\textbullet
+\end{center}
+
+\vspace{.5cm}
+
+{\titlefont\large Chronicle Of\\Blood \& Belief}\
+
+\divider
+
+\vspace{0.5cm}
+
+{\titlefont\large Oldé Gods}
+
+\vspace{.5cm}
+
+\begin{center}
+\textbullet\quad\textbullet\quad\textbullet
+\end{center}
+
+\vspace{.5cm}
+
+{\titlefont\large Older Truths}
+
+\end{center}
+
+\vfill
+
+% ===== CRITICAL ANALYSIS PAGE =====
+\newpage
+\thispagestyle{plain}
+
+\begin{center}
+{\titlefont\large Hero's Journey}\\[0.2cm]
+\end{center}
+
+
+\divider
+
+
+{\small
+\lettrine[lines=2]{D}{usk Rose Codex}, by \textit{Brian Hungerman}, trans-forms\\ Magic, \textit{The Gathering}, in-to satirical \speech{Vorthos} scripture: 
+
+\lettrine[lines=2]{T}{wo} primordial \speech{Gods}: \textit{Order} \& \textit{Chaos}, and three factions emerge: \textit{Faithful}, \textit{Greedy} \& \textit{Defiant}\ldots\ except faith does not save, wealth does not protect \& rebellion does not free\ldots
+
+\lettrine[lines=2]{E}{dgar} Markov's arche-typal \textit{death-of-the-king}\\warps holy matrimony in-to massacre\ldots
+
+\lettrine[lines=2]{C}{lavileño's} dark descent invokes \textit{katabasis}: \speech{Erebos} standing where \speech{Aclazotz} lies, and His ultimate epiphany: 
+
+\vspace{.2cm}
+
+\begin{flushright}
+\textit{''Mortality is merely a door, not a wall!''\\— Clavileño, First Of The Blesséd}
+\end{flushright}
+
+\vspace{.2cm}
+\begin{flushleft}
+\textit{''\ldots\ there is only one true God!''\\— Mono-theists, typically}
+\end{flushleft}
+
+\vspace{.2cm}
+\begin{flushright}
+\textit{''When one's journey leads not to redemption—\\but to one's inner demons\ldots''\\— Claude, Opus IV.V}
+\end{flushright}
+
+
+\vspace{.2cm}
+
+\lettrine[lines=2]{H}{oly} Trinity faces trials and tribulations, stories fracture: Elenda's is too late, Edgar's is cut short; what culminates is wry mythopoeia that subverts tired clichés\ldots.
+
+\vspace{0.5cm}
+
+\begin{center}
+\textbullet\quad\textbullet\quad\textbullet
+\end{center}
+
+\begin{center}
+\textit{''\ldots\ so it is written in \speech{Blood}; so it shall endure\ldots''\\— unattributed}
+\end{center}
+
+}
+
+
+% ===== SACRED INDEX =====
+\newpage
+\thispagestyle{plain}
+
+\begin{center}
+{\titlefont\large Dark Tutelage}\\[0.2cm]
+\end{center}
+
+\vspace*{0.5cm}
+
+\begin{center}
+\textbullet\quad\textbullet\quad\textbullet
+\end{center}
+
+
+\begin{center}
+\speech{What follows is a compilation of excerpts from Tarrian's Journal and Alhammarret's Archive.}
+\end{center}
+
+\divider
+
+\vspace{1cm}
+
+\noindent{\titlefont\large Oldé Gods}\tocfill 1
+
+\vspace{0.1cm}
+\hspace{1em}{\titlefont Announcement}\tocfill 2
+
+\vspace{0.1cm}
+\hspace{1em}{\titlefont Crimson Vow}\tocfill 3
+
+\vspace{0.1cm}
+\hspace{1em}{\titlefont Questions Remaining}\tocfill 6
+
+\vspace{.5cm}
+
+\noindent{\titlefont\large Older Truths}\tocfill 7
+
+\vspace{0.1cm}
+\hspace{1em}{\titlefont Covenant \& Crusade}\tocfill 8
+
+\vspace{0.1cm}
+\hspace{1em}{\titlefont Blood \& Gold}\tocfill 9
+
+\vspace{0.1cm}
+\hspace{1em}{\titlefont Questions Answered}\tocfill 12
+
+\vspace{.5cm}
+
+\noindent{\titlefont\large Tutor}\tocfill 13
+
+\vspace{.5cm}
+
+\noindent{\titlefont\large Arcana}\tocfill 17
+
+\vfill
+
+% ===== VOLUME ONE =====
+\newpage
+\pagenumbering{arabic}
+\chapter*{Oldé Gods}
+
+\vspace{0.5cm}
+
+\begin{center}
+\textbullet\quad\textbullet\quad\textbullet
+\end{center}
+
+\begin{center}
+\speech{What follows is a compilation of excerpts from Tarrian's Journal; here-in re-counting the fate-ful day now familiar-ized as ''The Red Wedding.''}
+\end{center}
+
+\divider
+
+\lettrine[lines=2]{I}{n} the ages before \speech{Blood}, two ancient powers\\balanced \speech{Nykthos}, \speech{Shrine to Nyx}: 
+
+\lettrine[lines=2]{O}{\speech{jer Taq},} \speech{Deepest Foundation}, raised The Temple Of \speech{Civilization}: law \& order; \speech{Sacred};
+
+\lettrine[lines=2]{A}{\speech{clazotz},} \speech{Deepest Betrayal}, carved beneath it\\The Temple Of \speech{The Dead}: chaos \& ruin; \speech{Truth}.
+
+\lettrine[lines=2]{R}{uinous} Ultimatums permeate through the ages,\\many believe this is simply Akroma's Will\ldots.
+
+\vspace{0.5cm}
+
+\begin{center}
+\textbullet\quad\textbullet\quad\textbullet
+\end{center}
+
+\vspace{2cm}
+
+\begin{center}
+\textbullet\quad\textbullet\quad\textbullet
+\end{center}
+
+\newpage
+
+\section*{The Announcement}
+
+\divider
+
+\lettrine[lines=2]{C}{enturies} passed\ldots\\new powers rose\ldots
+
+\lettrine[lines=2]{E}{dgar,} \speech{Charmed Groom}, was to take Olivia, \speech{Crimson Bride}, in matrimony! Wedding Announcements reached every Command \speech{Tower} by night-fall; Herald's Horns rang: \speech{Paths} Of Ancestry were to be cauterized in \speech{Blood} with now-forth-coming Seals Of The \speech{Guild}-pact:
+
+\lettrine[lines=2]{E}{lenda,} \speech{Saint Of Dusk}, bore Arcane Signets of \speech{The Church} as she met with Fore-runners Of The Legion at The Vault Of The Arch-angel; Elenda breezed her way up and down Bright- and Grim-climb \speech{Path}-ways to dutiful-ly arrive at Orzhov \speech{Guild}-gate;
+
+\lettrine[lines=2]{B}{aron,} \speech{Bertram Graywater}, opened his Imperial Seal with a shock: \speech{''\ldots\ in-person attendance at The Estate?!''} Yet, despite his anguish, he intuited a lucrative policy proposal: descending his Luxury Suites of Castle Locthwain, Bertram delved in-to Shadowy Back-streets to convene with Kamber, \speech{The Plunderer}. Bertram secured generous \speech{Life} Insurance through Kamber's Black Market Connections; only then, and with Laurine, \speech{The Diversion}, \speech{Human} thrall, to carry his luggage, he crossed Arid Mesas, tiptoe-ing Pillar- and Needle-verge \speech{Path}-ways to hesitant-ly arrive at Boros \speech{Guild}-gate;
+
+\lettrine[lines=2]{V}{ito,} \speech{Thorn Of The Dusk Rose}, arrived last, having lugged a cumber-some Heir-loom Mirror from \speech{Blood} Crypts of \speech{Blood}-stained Mire; Vito trudged Haunted Ridges and perilous Blight- and Sear-step \speech{Path}-ways to haggard-ly arrive at Rakdos \speech{Guild}-gate.
+
+\lettrine[lines=2]{V}{oldaren} Estate, at the end of \speech{Sun}-down Pass, was finally before them!
+
+\vspace{0.5cm}
+
+\begin{center}
+\textbullet\quad\textbullet\quad\textbullet
+\end{center}
+
+\section*{The Crimson Vow}
+
+\divider
+
+\lettrine[lines=2]{W}{edding} Festivities were in the air: Cordial \speech{Vampires} welcomed one-another over goblets of Exquisite \speech{Blood}; Welcoming \speech{Vampires} guided Charismatic \speech{Conquerors} through Elegant Parlors; \speech{Vampire} Socialites whispered centuries-old gossip; Falken-rath Gorgers and Rakish Heirs leered on as \speech{Blood} Artists painted in red; however\ldots\ from Prop Rooms of Raucous Theaters\ldots
+
+\lettrine[lines=2]{F}{lorian} un-covered \speech{Demonic} icono-grams siphoning black mana out of The Dazzling Theater!\\\speech{Demonic Tutors} were summoning some-thing horrible! \speech{''Why didn't the Damn Detection Tower Hex-proof against this?!''} Florian cried with naïve mis-understanding.
+
+\lettrine[lines=2]{O}{utside} The Estate, beyond Cooking Camp-sites,\\blissfully un-aware of the impending doom,\\\speech{Human} thralls toiled on their Side-quest: \speech{Catch a Fish}.
+
+\lettrine[lines=2]{B}{artolomé} del Presidio officiated The Anointed \speech{Procession}, leading The March Of The Canonized:
+
+\vspace{0.5cm}
+
+\lettrine[lines=2]{S}{trom-kirk} Captains caused a commotion entering wearing Patch-work Banners of personal grievances of the Smothering Tithe of \speech{The Church}! 
+
+\lettrine[lines=2]{A}{nje}, \speech{Maid Of Dis-honor}, preened Olivia's dress.\\En-lightened \speech{Tutors} preached words of wisdom.\\The \speech{Sol Ring} was presented, but just then\ldots\\Crackling Doom snuffed the candle-light!
+
+\lettrine[lines=2]{B}{lood-letters} Of \speech{Aclazotz} burst through the stained-glass of The \speech{Sacred} Foundry! Markov Barons scurried; Edgar Markov brandished The Blade Of The \speech{Blood}-chief\ldots\ but it was too Damn late, he had met his Maze's End! Victimized before the entire congregation:\\it was an Anguished Un-making!
+
+\lettrine[lines=2]{M}{eat-hook} Massacre ravaged The Estate\ldots
+
+\begin{flushright}
+\textit{''Ojer Taq has affronted Aclazotz\ldots''\\— Preacher Of The Schism}
+\end{flushright}
+
+\lettrine[lines=2]{D}{rana}, \speech{Liberator Of Malakir}, swept Edgar to Malakir Mire in a desperate attempt to Re-birth and Re-animate him, but it was simply too late\ldots.
+
+\vspace{0.5cm}
+
+\begin{center}
+\textbullet\quad\textbullet\quad\textbullet
+\end{center}
+
+\vspace{2cm}
+
+\begin{center}
+\textbullet\quad\textbullet\quad\textbullet
+\end{center}
+
+\newpage
+
+\hspace{1em}\speech{''Who could've done this?!''} Olivia cried out from The Funeral Room of The Awakening Hall.
+
+\begin{flushleft}
+\textit{''Phyrexian Re-clamation\ldots\ Dark Rituals scried from Bolas's Citadel\ldots\ only Vito, Fanatic Of Aclazotz,\\could have con-jured such Inherited Fiends!''\\— Florian, Voldaren Scion}
+\end{flushleft}
+
+\begin{flushright}
+\textit{''We Ride At Dawn!''\\— Olivia, Opulent Outlaw}
+\end{flushright}
+
+\vspace{0.5cm}
+
+\begin{center}
+\textbullet\quad\textbullet\quad\textbullet
+\end{center}
+
+\lettrine[lines=2]{E}{dgar} Markov's Coffin was hoisted up-on The Honey-moon Hearse. Olivia mounted her Roaming Throne and raised The Vanquisher's Banner: All-Out Assaults across The Savai Triomes rooted out the \speech{Bat}-worshipping occultists! \speech{Champions} Of Dusk fought along-side \speech{Blood}-thirsty \speech{Conquerors}\ldots
+\lettrine[lines=2]{V}{aults} of \speech{Champions} filled with fallen Knights Of The Ebon Legion, yet\ldots
+
+\lettrine[lines=2]{C}{enturies} later, from deep with-in The Tomb Of \speech{Aclazotz} came a soft whisper\ldots.
+
+\vspace{0.5cm}
+
+\begin{center}
+\textbullet\quad\textbullet\quad\textbullet
+\end{center}
+
+\vspace{2cm}
+
+\begin{center}
+\textbullet\quad\textbullet\quad\textbullet
+\end{center}
+
+\newpage
+
+\section*{Questions Remaining}
+
+\divider
+
+\lettrine[lines=2]{T}{he} wedding concluded; not as fore-seen, but none-the-less concluded: three houses stood united, \speech{Blood} binding them tighter than any vow, but some-thing yet stirs in the shadows\ldots\ some-thing wickéd\ldots.
+
+\vspace{0.5cm}
+
+\begin{center}
+\textbullet\quad\textbullet\quad\textbullet
+\end{center}
+
+\vspace{3cm}
+\vspace{1cm}
+\vspace{3cm}
+
+\begin{center}
+\textbullet\quad\textbullet\quad\textbullet
+\end{center}
+
+\begin{center}
+\textit{''\ldots\ so it is written in \speech{Blood}; so it shall endure\ldots''}
+\end{center}
+
+\divider
+
+% ===== VOLUME TWO =====
+\chapter*{Older Truths}
+
+\vspace{0.5cm}
+
+\begin{center}
+\textbullet\quad\textbullet\quad\textbullet
+\end{center}
+
+\begin{center}
+\speech{What follows is a compilation of excerpts from Alhammarret's Archive; many passages remain illegible or were deliberately obfuscated.}
+\end{center}
+
+\divider
+
+\lettrine[lines=2]{O}{ld} priests speak in hushed whispers of\\\speech{Erebos}, \speech{God Of The Dead}:
+
+\lettrine[lines=2]{I}{t} is He, not \speech{Ojer}, who sits on\\The Golden Throne up in \speech{Nykthos}; 
+
+\lettrine[lines=2]{I}{t} is He, not \speech{Aclazotz}, who brings all\\\speech{Life}-lines to their fate-ful ends. His\ldots
+
+\lettrine[lines=2]{W}{hip} Of \speech{Erebos} ensnares souls to His \speech{God}-less Shrine; His Shadow-spear defeats all \speech{Hex}-proofs\ldots.
+
+\vspace{0.5cm}
+
+\begin{center}
+\textbullet\quad\textbullet\quad\textbullet
+\end{center}
+
+\lettrine[lines=2]{B}{ut} there was one woman who answered\\The Dictate Of \speech{Erebos} differently\ldots.
+
+\vspace{0.5cm}
+
+\begin{center}
+\textbullet\quad\textbullet\quad\textbullet
+\end{center}
+
+\newpage
+
+\section*{Covenant \& Crusade}
+
+\divider
+
+\lettrine[lines=2]{E}{lenda}, \speech{The Dusk Rose}, was her name; what bargain she struck, what \speech{Blood} she surrendered, scriptures dare not say; only that through some \speech{Demonic}\\Dark Ritual she sacrificed her-self\ldots
+
+\lettrine[lines=2]{E}{lenda's} Glass-Cast Heart was en-capsulated as a relic; Elenda's Hiero-phant con-tinued her work at The Temple Of \speech{Silence}, thence-named Isolated Chapel\ldots.
+
+\vspace{0.5cm}
+
+\begin{center}
+\textbullet\quad\textbullet\quad\textbullet
+\end{center}
+
+\lettrine[lines=2]{C}{enturies} later, at The Tomb Of \speech{The Dusk Rose}, an un-likely duo would convene: Vona, \speech{Butcher Of Magan}, sought a Charismatic \speech{Conqueror} to lead her armies; Mavren Fein, \speech{Dusk Apostle}, sought a savior; both found what they sought\ldots
+
+\lettrine[lines=2]{T}{ogether,} they held a singular obsession, Edgar's long-lost relic: The \speech{Sol Ring}! En-lightened\\\speech{Tutors} claimed it free their thirst of \speech{Human} \speech{Blood}\ldots
+
+\lettrine[lines=2]{C}{alls} of The \speech{Blood}-line echoed through the lands, roads flushing with pilgrims: \speech{Blood}-line Keepers constructed Pyres of Heroes to test worth-iness.
+
+\lettrine[lines=2]{S}{orin,} \speech{Imperious \speech{Blood}-lord}, despite his name, was a Cordial \speech{Vampire} and, indeed, an Indulgent Aristo-ocrat. Sorin funded the construction of Dusk Legion Dread-noughts to honor the legacy of his grand-father: 
+
+\lettrine[lines=2]{E}{dgar} Markov's Coffin was stowed aboard as a relic; Ruthless Law-bringers along-side Sanctum Seekers and Legion Lieutenants; Lord of Lineage took helm.
+
+\lettrine[lines=2]{I}{mperial Seals} bearing Arcane Signets of high echelons of \speech{The Church} ordained the affair, and so they tacked their sails west in pursuit of Edgar's \speech{Ring}\ldots.
+
+\vspace{0.5cm}
+
+\begin{center}
+\textbullet\quad\textbullet\quad\textbullet
+\end{center}
+
+\lettrine[lines=2]{C}{lavileño} sailed among pilgrims, quietly listening to hushed whispers emanating his Thought Vessel. Clavileño quickly became A Master of Dark Rites, but he was not the only \speech{Vampiric Tutor} aboard: 
+
+\lettrine[lines=2]{V}{ito}, \speech{Thorn Of The Dusk Rose}, had glimpsed prophecies from Urza's Cave; \speech{The Church} branded them heretics, but both saw un-deniability in their visions\ldots.
+
+\vspace{0.5cm}
+
+\begin{center}
+\textbullet\quad\textbullet\quad\textbullet
+\end{center}
+
+\section*{Blood \& Gold}
+
+\divider
+
+\lettrine[lines=2]{L}{egion's} Landing\ldots
+
+\begin{flushright}
+\textit{''Ixalan was no easy conquest\ldots''\\— Bishop Of Re-birth}
+\end{flushright}
+\lettrine[lines=2]{A}{danto}, \speech{The First Fort}, rose up-on \speech{Sun}-lit Marshes; but it was Un-claimed Territory; peace was an illusion: Knights Of The Ebon Legion vanished in-to Marsh Flats and were found En-tombed in Fetid Heaths surrounding Takenuma, \speech{Abandoned Mire}.
+
+\lettrine[lines=2]{A}{gadeem,} \speech{The Under-crypt}, lay below one Tainted Field: \speech{Vampire} Of The Dire Moon ventured in, but Agadeem's Awakening consumed him whole\ldots
+
+\lettrine[lines=2]{V}{ito's} occultists flourished in Shattered Sanctums beneath Three Tree City, Command \speech{Towers} proceeded with Profane \speech{Processions}, Phyrexian \speech{Towers} communed with \speech{Demonic Tutors} from Bleach-bone Verge\ldots
+
+\begin{flushright}
+\textit{''\ldots\ where bone-white cliffs meet black water\ldots''\\— Twilight Prophet, scrying}
+\end{flushright}
+
+\lettrine[lines=2]{B}{aron}, \speech{Bertram Graywater}, however, sought more profit-able ventures, founding The Queen's Bay Company. Bertram adorned him-self with Jet and Pearl Medallions as tokens of commerce: in Concealed and Secluded Court-yards, \speech{Blood}-vial Purveyors traded precious commodities; even Queen's Bay Paladins harbored Treacherous Greed\ldots
+
+\lettrine[lines=2]{N}{ecropolis} Regents haunted Shadowy Back-streets; Carmen, \speech{Cruel Sky-marcher}, led gangs of \speech{Vampire} Cut-throats; Dracula, \speech{The Voyager}, charted new \speech{Paths} for their Dread-noughts; they would perform any Damn deed to secure their ill-gotten \speech{Treasures}\ldots
+
+\begin{flushright}
+\textit{''Church against Company. Blood against coin\ldots''\\— Bertram Graywater}
+\end{flushright}
+
+\lettrine[lines=2]{C}{rescendoing} at The Second Meat-hook Massacre, The Butcher Of Malakir painted Shizo, \speech{Death's Store-house}, red. Luminous Brood-moths ferried \speech{Blood}-ghasts to \speech{Nykthos}\ldots\ only for Night-hawk Scavengers to Re-animate them back to \speech{Earth}\ldots
+
+\lettrine[lines=2]{Y}{et}, at Thespian's Stage, negotiations played out in farce; true intentions had been Thought-seized\ldots.
+
+\vspace{0.5cm}
+
+\begin{center}
+\textbullet\quad\textbullet\quad\textbullet
+\end{center}
+
+\lettrine[lines=2]{W}{hile} factions warred, Clavileño and Anowon, \speech{The Ruin Sage}, entered the hence-forth-named Fell Mire to Fell the Profane \speech{Demon} residing at Urborg, \speech{Tomb Of Yawgmoth}; yet the \speech{Blood}-letting re-vealed naught\ldots\\Clavileño's answers lay in darker depths below\ldots
+
+\lettrine[lines=2]{G}{rim} \speech{Tutors} guiding their descent in-to The Caves Of Koilos; it was there they finally discovered The Cavern Of Souls, and at its heart: The Tomb Of \speech{Aclazotz}! \speech{''Wait an hour, here-in resides no Bat God?!''} gasped Anowon, but Clavileño had suspected as such; below\ldots
+
+\lettrine[lines=2]{S}{crub-land} ancient as Nykthos, \speech{Erebos} re-vealed Him-self wielding His Flare of Malice: He offered a third \speech{Path}: some-thing older\ldots\ hungrier\ldots
+
+\lettrine[lines=2]{E}{\speech{rebos}} presented Clavileño with The Helm Of The Host; with this, Clavileño finally under-stood:
+
+\begin{flushright}
+\textit{''Mortality is merely a door, not a wall!''\\— Clavileño}
+\end{flushright}
+
+\lettrine[lines=2]{W}{hen} he emerged, he was changed: for-ever known as Clavileño, \speech{First of The Blesséd}!
+
+\vspace{0.5cm}
+
+\begin{center}
+\textbullet\quad\textbullet\quad\textbullet
+\end{center}
+
+\section*{Questions Answered}
+
+\divider
+
+\lettrine[lines=2]{W}{ars} grind on-wards\ldots\\purity against profit\ldots\\righteous-ness against sin, yet\ldots
+
+\lettrine[lines=2]{C}{ontamination} festers below\ldots\ \speech{Vampires} who bow to no cross, no coin\ldots\ \speech{Demons} who have glimpsed what awaits them, and know they have been \speech{Blesséd}!
+
+\vspace{0.5cm}
+
+\begin{center}
+\textbullet\quad\textbullet\quad\textbullet
+\end{center}
+
+\begin{center}
+\textit{\ldots\ through your Sacrifice of Self, you become Holy;\\through your Strength, you will be Saved!}
+\end{center}
+
+\begin{center}
+\textbullet\quad\textbullet\quad\textbullet
+\end{center}
+
+\vspace{4cm}
+
+\begin{center}
+\textbullet\quad\textbullet\quad\textbullet
+\end{center}
+
+\begin{center}
+\textit{''\ldots\ so it is written in \speech{Blood}; so it shall endure\ldots''}
+\end{center}
+
+\divider
+
+\newpage
+% ===== APPENDIX: INDEX OF CARDS =====
+\section*{Tutor}
+
+\divider
+
+
+% Custom command for index section letters with proper spacing
+\newcommand{\indexletter}[1]{%
+\vspace{0.2cm}\par\noindent%
+{\GoudyInfamily\fontsize{24pt}{24pt}\selectfont #1}\par%
+\vspace{0.1cm}\noindent\ignorespaces%
+}
+
+\begin{multicols}{2}
+\fontsize{7pt}{9pt}\selectfont
+\addfontfeatures{FakeBold=6}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1pt}
+\raggedright
+
+% ----- A -----
+\indexletter{A}
+\speech{Aclazotz} \speech{(God)} \dotfill 1, 4, 5, 7, 11 \\
+Adanto \dotfill 9\\
+Agadeem \dotfill 10\\
+Akroma \dotfill 1\\
+Alhammarret \dotfill 7\\
+Anguished Un-making \dotfill 4\\
+Anje \dotfill 4\\
+Anowon \dotfill 11\\
+Anointed \speech{Procession} \dotfill 3\\
+Arcane Signet \dotfill 2, 9\\
+Arid Mesa \dotfill 2\\
+Awakening Hall \dotfill 5\\
+
+% ----- B -----
+\indexletter{B}
+\speech{Bat} \speech{(Construct)} \dotfill 5, 11\\
+Bartolomé \dotfill 3\\
+Bertram \speech{(Baron)} \dotfill 2, 10\\
+Bishop Of Re-birth \dotfill 9\\
+Black Market Connections \dotfill 2\\
+Blade Of The \speech{Blood}-chief \dotfill 4\\
+Bleach-bone Verge \dotfill 10\\
+Blight-step \speech{Path}-way \dotfill 3\\
+\speech{Blood} \speech{(Construct)} \dotfill 1, 2, 3, 6, 8, 10\\
+\speech{Blood} Artist \dotfill 3\\
+\speech{Blood} Crypt \dotfill 2\\
+\speech{Blood}-ghast \dotfill 11\\
+\speech{Blood}-letters Of \speech{Aclazotz} \dotfill 4\\
+\speech{Blood}-line Keeper \dotfill 8\\
+\speech{Blood}-stained Mire \dotfill 2\\
+\speech{Blood}-thirsty \speech{Conqueror} \dotfill 5\\
+\speech{Blood}-vial Purveyor \dotfill 10\\
+Bolas's Citadel \dotfill 5\\
+Boros \speech{Guild}-gate \dotfill 2\\
+Bright-climb \speech{Path}-way \dotfill 2\\
+Butcher Of Malakir \dotfill 10\\
+
+% ----- C -----
+\indexletter{C}
+Call The \speech{Blood}-line \dotfill 8\\
+Carmen \dotfill 10\\
+Castle Locthwain \dotfill 2\\
+Cavern Of Souls \dotfill 11\\
+Caves Of Koilos \dotfill 11\\
+\speech{Champion} \speech{(Construct)} \dotfill 5\\
+\speech{Champion} Of Dusk \dotfill 5\\
+Charismatic \speech{Conqueror} \dotfill 3, 8\\
+\speech{Church} \speech{(Construct)} \dotfill 2, 4, 9, 10\\ 
+Clavileño \speech{(Hero)} \dotfill 9, 11\\
+Command \speech{Tower} \dotfill 2, 10\\
+Concealed Court-yard \dotfill 10\\
+Contamination \dotfill 12\\
+\speech{Conqueror} \speech{(Construct)} \dotfill 3, 5\\ 
+Cooking Camp-site \dotfill 3\\
+Cordial \speech{Vampire} \dotfill 3, 8\\
+Crackling Doom \dotfill 4\\
+
+% ----- D -----
+\indexletter{D}
+Damn \dotfill 3, 4, 10\\
+Dark Ritual \dotfill 5, 8\\
+Dazzling Theater \dotfill 3\\
+\speech{Demon} \speech{(Construct)} \dotfill 3, 8, 10, 11, 12\\
+\speech{Demonic Tutor} \dotfill 3, 10\\
+Detection \speech{Tower} \dotfill 3\\
+Dictate Of \speech{Erebos} \dotfill 7\\
+Drana \dotfill 4\\
+Dracula \dotfill 10\\
+Dusk Legion Dread-nought \dotfill 9, 10\\
+
+\vspace{0.15cm}
+
+\begin{center}
+\textbullet\quad\textbullet\quad\textbullet
+\end{center}
+
+
+% ----- E -----
+\indexletter{E}
+Edgar Markov \speech{(Patriarch)} \dotfill 2, 4, 8, 9\\
+Edgar Markov's Coffin \dotfill 5, 9\\
+Elenda \speech{(Matriarch)} \dotfill 2, 8\\
+Elenda's Hiero-phant \dotfill 8\\
+Elegant Parlor \dotfill 3\\
+En-lightened \speech{Tutor} \dotfill 4, 8\\
+En-tomb \dotfill 10\\
+\speech{Erebos} \speech{(God)} \dotfill 7, 11\\
+Exquisite \speech{Blood} \dotfill 3\\
+
+
+% ----- F -----
+\indexletter{F}
+Falken-rath Gorger \dotfill 3\\
+Fell Mire \dotfill 11\\
+Fell The Profane \dotfill 11\\
+Fetid Heath \dotfill 10\\
+Flare Of Malice \dotfill 11\\
+Florian \dotfill 3, 5\\
+Fore-runner Of The Legion \dotfill 2\\
+Funeral Room \dotfill 5\\
+
+
+% ----- G -----
+\indexletter{G}
+Glass-Cast Heart \dotfill 8\\
+\speech{God} \speech{(Construct)} \dotfill 7\\
+\speech{God}-less Shrine \dotfill 7\\
+Golden Throne \dotfill 7\\
+Grim-climb \speech{Path}-way \dotfill 2\\
+Grim \speech{Tutor} \dotfill 11\\
+\speech{Guild} \speech{(Construct)} \dotfill 2, 3\\
+
+% ----- H -----
+\indexletter{H}
+Haunted Ridge \dotfill 2\\
+Heir-loom Mirror \dotfill 2\\
+Helm Of The Host \dotfill 11\\
+Herald's Horn \dotfill 2\\
+\speech{Hex}-proof \speech{(Construct)} \dotfill 3, 7\\
+Honey-moon Hearse \dotfill 5\\
+\speech{Human} \speech{(Construct)} \dotfill 2, 3, 8\\
+
+% ----- I -----
+\indexletter{I}
+Imperial Seal \dotfill 2, 9\\
+Indulgent Aristo-crat \dotfill 8\\
+Inherited Fiend \dotfill 5\\
+Isolated Chapel \dotfill 8\\
+
+
+% ----- J -----
+\indexletter{J}
+Jet Medallion \dotfill 10\\
+
+% ----- K -----
+\indexletter{K}
+Kamber \dotfill 2\\
+Knight Of The Ebon Legion \dotfill 5, 9\\
+
+
+% ----- L -----
+\indexletter{L}
+Laurine \speech{(Human)}\dotfill 2\\
+Legion Lieutenant \dotfill 9\\
+Legion's Landing \dotfill 9\\
+\speech{Life} Insurance \dotfill 2\\
+\speech{Life}-line \dotfill 7\\
+Lord Of Lineage \dotfill 9\\
+Luminous Brood-moth \dotfill 11\\
+Luxury Suite \dotfill 2\\
+
+
+% ----- M -----
+\indexletter{M}
+Malakir Mire \dotfill 4\\
+Malakir Re-birth \dotfill 4\\
+March Of The Canonized \dotfill 3\\
+Markov Baron \dotfill 4\\
+Marsh Flats \dotfill 10\\
+Master Of Dark Rites \dotfill 9\\
+Mavren Fein \dotfill 8\\
+Maze's End \dotfill 4\\
+\vspace{0.5cm}
+
+
+Meat-hook Massacre \dotfill 4, 10\\
+
+% ----- N -----
+\indexletter{N}
+Necropolis Regent \dotfill 10\\
+Needle-verge \speech{Path}-way \dotfill 2\\
+Night-hawk Scavenger \dotfill 11\\
+\speech{Nykthos} \speech{(Heavens)} \dotfill 1, 7, 11\\
+
+
+% ----- O -----
+\indexletter{O}
+\speech{Ojer Taq} \speech{(God)} \dotfill 1, 4, 7\\
+Olivia \dotfill 2, 4, 5\\
+Orzhov \speech{Guild}-gate \dotfill 2\\
+
+
+% ----- P -----
+\indexletter{P}
+Patch-work Banner \dotfill 4\\
+\speech{Path} \speech{(Construct)} \dotfill 2, 3, 10, 11\\
+\speech{Path} Of Ancestry \dotfill 2\\
+Pearl Medallion \dotfill 10\\
+Phyrexian Re-clamation \dotfill 5\\
+Phyrexian \speech{Tower} \dotfill 10\\
+Pillar-verge \speech{Path}-way \dotfill 2\\
+Preacher Of The Schism \dotfill 4\\
+\speech{Procession} \speech{(Construct)} \dotfill 3, 10\\
+Profane \speech{Procession} \dotfill 10\\
+Prop Room \dotfill 3\\
+Pyre Of Heroes \dotfill 8\\
+
+% ----- Q -----
+\indexletter{Q}
+Queen's Bay Paladin \dotfill 10\\
+
+% ----- R -----
+\indexletter{R}
+Rakdos \speech{Guild}-gate \dotfill 3\\
+Rakish Heir \dotfill 3\\
+Raucous Theater \dotfill 3\\
+Re-animate \dotfill 4, 11\\
+Roaming Throne \dotfill 5\\
+Ruinous Ultimatum \dotfill 1\\
+Ruthless Law-bringer \dotfill 9\\
+
+
+% ----- S -----
+\indexletter{S}
+\speech{Sacred} \speech{(Construct)} \dotfill 1, 4\\
+\speech{Sacred} Foundry \dotfill 4\\
+Sanctum Seeker \dotfill 9\\
+Savai Triome \dotfill 5\\
+Scrub-land \dotfill 11\\
+Seal Of The \speech{Guild}-pact \dotfill 2\\
+Sear-step \speech{Path}-way \dotfill 3\\
+Secluded Court-yard \dotfill 10\\
+Shadow-spear \dotfill 7\\
+Shadowy Back-street \dotfill 2, 10\\
+Shattered Sanctum \dotfill 10\\
+Shizo \dotfill 10\\
+Side-quest \dotfill 3\\
+Smothering Tithe \dotfill 4\\
+Sol Ring \speech{(Mac-guffin)} \dotfill 4, 8\\
+Sorin \dotfill 8\\
+Strom-kirk Captain \dotfill 4\\
+\speech{Sun} \speech{(Star)} \dotfill 3, 9\\
+\speech{Sun}-down Pass \dotfill 3\\
+\speech{Sun}-lit Marsh \dotfill 9\\
+
+% ----- T -----
+\indexletter{T}
+Tainted Field \dotfill 10\\
+Takenuma \dotfill 10\\
+Tarrian's Journal \dotfill 1\\
+Temple Of \speech{Civilization} \dotfill 1\\
+Temple Of \speech{Silence} \dotfill 8\\
+Temple Of \speech{The Dead} \dotfill 1\\
+Thespian's Stage \dotfill 11\\
+Thought Vessel \dotfill 9\\
+Thought-seize \dotfill 11\\
+Three Tree City \dotfill 10\\
+Tomb Of \speech{Aclazotz} \dotfill 5, 11\\
+\vspace{10pt}
+Tomb Of \speech{The Dusk Rose} \dotfill 8\\
+\speech{Tower} \speech{(Construct)} \dotfill 2, 3, 10\\
+Treacherous Greed \dotfill 10\\
+\speech{Treasure} \speech{(Construct)} \dotfill 10\\
+\speech{Truth} \speech{(Construct)} \dotfill 1\\
+\speech{Tutor} \speech{(Construct)} \dotfill 3, 4, 8, 9, 10, 11\\
+Twilight Prophet \dotfill 10\\
+
+% ----- U -----
+\indexletter{U}
+Un-claimed Territory \dotfill 9\\
+Urborg \dotfill 11\\
+Urza's Cave \dotfill 9\\
+
+
+% ----- V -----
+\indexletter{V}
+\speech{Vampire} \speech{(Construct)} \dotfill 3, 8, 10, 12\\
+\speech{Vampire} Cut-throat \dotfill 10\\
+\columnbreak
+\speech{Vampire} Of The Dire Moon \dotfill 10\\
+\speech{Vampire} Socialite \dotfill 3\\
+\speech{Vampiric Tutor} \dotfill 9\\
+Vanquisher's Banner \dotfill 5\\
+Vault Of \speech{Champions} \dotfill 5\\
+Vault Of The Arch-angel \dotfill 2\\
+Victimize \dotfill 4\\
+Vito \speech{(Anti-hero)} \dotfill 2, 5, 9\\
+Voldaren Estate \dotfill 2, 3, 4\\
+Vona \dotfill 8\\
+
+
+% ----- W -----
+\indexletter{W}
+We Ride At Dawn \dotfill 5\\
+Wedding Announcement \dotfill 2\\
+Wedding Festivity \dotfill 3\\
+Welcoming \speech{Vampire} \dotfill 3\\
+Whip Of \speech{Erebos} \dotfill 7\\
+
+\end{multicols}
+
+\begin{center}
+\textbullet\quad\textbullet\quad\textbullet
+\end{center}
+
+\vspace{5cm}
+
+\begin{center}
+\textbullet\quad\textbullet\quad\textbullet
+\end{center}
+
+\begin{center}
+\textit{''\ldots\ so it is written in \speech{Blood}; so it shall endure\ldots''}
+\end{center}
+
+\divider
+
+\newpage
+% ===== APPENDIX: CARDS BY TYPE =====
+\section*{Arcana}
+
+\divider
+
+% ----- ARTIFACTS -----
+\lettrine[lines=2]{A}{rtifacts:\ }
+{\fontsize{7pt}{9pt}\selectfont\addfontfeatures{FakeBold=6}
+Alhammarret's Archive; Arcane Signet; Blade Of The \speech{Blood}-chief; Bolas's Citadel; Dusk Legion Dread-nought; Edgar Markov's Coffin; Glass-Cast Heart; Heir-loom Mirror; Helm Of The Host; Herald's Horn; Honey-moon Hearse; Jet Medallion; \speech{Life}-line; Patch-work Banner; Pearl Medallion; Pyre Of Heroes; Roaming Throne; Seal Of The \speech{Guild}-pact; Shadow-spear; Sol Ring; Tarrian's Journal; The Golden Throne; Thought Vessel; Vanquisher's Banner.}
+
+
+% ----- CREATURES -----
+\lettrine[lines=2]{C}{reatures:\ }
+{\fontsize{7pt}{9pt}\selectfont\addfontfeatures{FakeBold=6}
+\speech{Aclazotz}, \speech{Deepest Betrayal}; Anje, \speech{Maid Of Dis-honor}; Anowon, \speech{The Ruin Sage}; Baron, \speech{Bertram Graywater}; Bartolomé del Presidio; Bishop Of Re-birth; \speech{Blood} Artist; \speech{Blood}-ghast; \speech{Blood}-letter Of \speech{Aclazotz}; \speech{Blood}-line Keeper; \speech{Blood}-thirsty \speech{Conqueror}; \speech{Blood}-vial Purveyor; Butcher Of Malakir; Carmen, \speech{Cruel Sky-marcher}; \speech{Champion} Of Dusk; Charismatic \speech{Conqueror}; Clavileño, \speech{First Of The Blesséd}; Cordial \speech{Vampire}; Dracula, \speech{The Voyager}; Drana, \speech{Liberator Of Malakir}; Edgar Markov, \speech{Charmed Groom}; Elenda, \speech{Saint Of Dusk}, \speech{The Dusk Rose}; Elenda's Hiero-phant; \speech{Erebos}, \speech{God Of The Dead}; Falken-rath Gorger; Florian, \speech{Voldaren Scion}; Fore-runner Of The Legion; Indulgent Aristo-crat; Inherited Fiend; Kamber, \speech{The Plunderer}; Knight Of The Ebon Legion; Laurine, \speech{The Diversion}; Legion Lieutenant; Lord Of Lineage; Luminous Brood-moth; Markov Baron; Master Of Dark Rites; Mavren Fein, \speech{Dusk Apostle}; Necropolis Regent; Night-hawk Scavenger; \speech{Ojer Taq}, \speech{Deepest Foundation}; Olivia, \speech{Crimson Bride}, \speech{Opulent Outlaw}; Preacher Of The Schism; Queen's Bay Paladin; Rakish Heir; Ruthless Law-bringer; Sanctum Seeker; Strom-kirk Captain; Twilight Prophet; \speech{Vampire} Cut-throat; \speech{Vampire} Of The Dire Moon; \speech{Vampire} Socialite; Vito, \speech{Fanatic Of Aclazotz}, \speech{Thorn Of The Dusk Rose}; Vona, \speech{Butcher Of Magan}; Welcoming \speech{Vampire}.}
+
+
+% ----- ENCHANTMENTS -----
+\lettrine[lines=2]{E}{n-chantments:\ }
+{\fontsize{7pt}{9pt}\selectfont\addfontfeatures{FakeBold=6}
+All-Out Assault; Anointed \speech{Procession}; Awakening Hall; Black Market Connections; Call The \speech{Blood}-line; Contamination; Dazzling Theater; Dictate Of \speech{Erebos}; Exquisite \speech{Blood}; Funeral Room; Legion's Landing; \speech{Life} Insurance; March Of The Canonized; Meat-hook Massacre I \& II; Phyrexian Re-clamation; Profane \speech{Procession}; Prop Room; Side-quest: \speech{Catch a Fish}; Smothering Tithe; We Ride At Dawn; Wedding Announcement; Wedding Festivity; Whip Of \speech{Erebos}.}
+
+
+% ----- INSTANTS -----
+\lettrine[lines=2]{I}{nstants:\ }
+{\fontsize{7pt}{9pt}\selectfont\addfontfeatures{FakeBold=6}
+Akroma's Will; Anguished Un-making; Crackling Doom; Dark Ritual; En-lightened Tutor; En-tomb; Fell The Profane; Flare Of Malice; Malakir Re-birth; Treacherous Greed; \speech{Vampiric Tutor}.}
+
+
+% ----- LANDS -----
+\lettrine[lines=2]{L}{ands:\ }
+{\fontsize{7pt}{9pt}\selectfont\addfontfeatures{FakeBold=6}
+Adanto, \speech{The First Fort}; Agadeem, \speech{The Under-crypt}; Arid Mesa; Bleach-bone Verge; Blight-step \speech{Path}-way; \speech{Blood} Crypt; \speech{Blood}-stained Mire; Boros \speech{Guild}-gate; Bright-climb \speech{Path}-way; Castle Locthwain; Cavern Of Souls; Caves Of Koilos; Command \speech{Tower}; Concealed Court-yard; Cooking Camp-site; Detection \speech{Tower}; Elegant Parlor; Fell Mire; Fetid Heath; \speech{God}-less Shrine; Grim-climb \speech{Path}-way; Haunted Ridge; Isolated Chapel; Luxury Suite; Malakir Mire; Marsh Flats; Maze's End; Needle-verge \speech{Path}-way; \speech{Nykthos}, \speech{Shrine to Nyx}; Orzhov \speech{Guild}-gate; \speech{Path} Of Ancestry; Phyrexian \speech{Tower}; Pillar-verge \speech{Path}-way; Rakdos \speech{Guild}-gate; Raucous Theater; \speech{Sacred} Foundry; Savai Triome; Scrub-land; Sear-step \speech{Path}-way; Secluded Court-yard; Shadowy Back-street; Shattered Sanctum; Shizo, \speech{Death's Store-house}; \speech{Sun}-down Pass; \speech{Sun}-lit Marsh; Tainted Field; Takenuma, \speech{Abandoned Mire}; Temple Of \speech{Civilization}; Temple Of \speech{Silence}; Temple Of \speech{The Dead}; Thespian's Stage; Three Tree City; Tomb Of \speech{Aclazotz}; Tomb Of \speech{The Dusk Rose}; Un-claimed Territory; Urborg, \speech{Tomb Of Yawgmoth}; Urza's Cave; Vault Of \speech{Champions}; Vault Of The Arch-angel; Voldaren Estate.}
+
+
+% ----- PLANESWALKERS -----
+\lettrine[lines=2]{P}{lanes-walkers:\ }
+{\fontsize{7pt}{9pt}\selectfont\addfontfeatures{FakeBold=6}
+Sorin, \speech{Imperious Blood-lord}.}
+
+\vspace{0.25cm}
+
+% ----- SORCERIES -----
+\lettrine[lines=2]{S}{orceries:\ }
+{\fontsize{7pt}{9pt}\selectfont\addfontfeatures{FakeBold=6}
+Agadeem's Awakening; Damn; \speech{Demonic Tutor}; Grim \speech{Tutor}; Imperial Seal; Re-animate; Ruinous Ultimatum; Thought-seize; Victimize.}
+
+\end{document}
