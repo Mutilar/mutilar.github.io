@@ -1,10 +1,8 @@
 # 🐧 Brian Hungerman
 
-**Senior Software Engineer** · Incubating **A.I. U.X.** with **Microsoft Applied Sciences**
+**Senior Software Engineer** incubating **A.I. U.X.** with **Microsoft Applied Sciences**
 
-A glassmorphic portfolio site with parallax canvas backgrounds, CSV-driven content, and an ambient radio player — all hosted on GitHub Pages.
-
-[🌐 mutilar.github.io](https://mutilar.github.io) · [LinkedIn](https://www.linkedin.com/in/brian-hungerman/) · [GitHub](https://github.com/Mutilar) · [Blog](https://codefied.substack.com/)
+[🌐 mutilar.github.io](https://mutilar.github.io) · [LinkedIn](https://www.linkedin.com/in/brian-hungerman/) · [GitHub](https://github.com/Mutilar)
 
 ---
 
