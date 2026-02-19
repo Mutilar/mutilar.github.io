@@ -112,9 +112,7 @@ pdfModal.addEventListener("click", e => { if (e.target === pdfModal) closePdfMod
   }
 
   function getArtSrc(card) {
-    return card.art && card.art.trim()
-      ? card.art
-      : "https://api.scryfall.com/cards/named?format=image&version=normal&exact=" + encodeURIComponent((card["card name"] || "").split(" // ")[0]);
+    return card.art && card.art.trim() ? card.art : "";
   }
 
   function getPos(index, focus) {
@@ -143,8 +141,7 @@ pdfModal.addEventListener("click", e => { if (e.target === pdfModal) closePdfMod
     if (commanderCard && commanderCard.art && commanderCard.art.trim()) {
       heroImg.src = commanderCard.art;
     } else {
-      const cmdName = commanderCard ? (commanderCard["card name"] || "").split(" // ")[0] : (item.TITLE || "");
-      heroImg.src = "https://api.scryfall.com/cards/named?format=image&version=normal&exact=" + encodeURIComponent(cmdName);
+      heroImg.src = "";
     }
 
     document.getElementById("deck-hero-name").textContent = (item.NAME || "").replace(/<br\s*\/?>/gi, " ");
