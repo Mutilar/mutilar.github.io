@@ -28,9 +28,17 @@ function openModal(dataset, id, imgExt) {
     : '';
   document.getElementById("modal-title").innerHTML = titleBadges + winBadge;
 
-  document.getElementById("modal-biography").innerHTML = item.TEXT && item.TEXT !== "tbd"
+  const hasPlay = item.PLAY && item.PLAY.trim();
+  const isExternal = hasPlay && item.PLAY.trim().startsWith('http');
+  const playBtn = hasPlay
+    ? (isExternal
+      ? `<div style="margin-bottom:16px;"><a href="${item.PLAY.trim()}" target="_blank" class="modal-play-btn"><i class="fa fa-gamepad"></i> Play ${(item.NAME || '').replace(/<[^>]*>/g, '')}</a></div>`
+      : `<div style="margin-bottom:16px;"><a href="#" class="modal-play-btn" onclick="event.preventDefault(); closeModal(); openGameModal('${item.PLAY.trim()}', '${(item.NAME || '').replace(/'/g, "\\'")}', ${item.PLAY_W || 960}, ${item.PLAY_H || 600})"><i class="fa fa-gamepad"></i> Play ${(item.NAME || '').replace(/<[^>]*>/g, '')}</a></div>`)
+    : '';
+
+  document.getElementById("modal-biography").innerHTML = playBtn + (item.TEXT && item.TEXT !== "tbd"
     ? item.TEXT
-    : "<p style='color:rgba(255,255,255,0.5);font-style:italic;'>Details coming soon…</p>";
+    : "<p style='color:rgba(255,255,255,0.5);font-style:italic;'>Details coming soon…</p>");
 
   modal.classList.add("open");
   document.body.style.overflow = "hidden";
@@ -43,7 +51,13 @@ function closeModal() {
 
 modalClose.addEventListener("click", closeModal);
 modal.addEventListener("click", e => { if (e.target === modal) closeModal(); });
-document.addEventListener("keydown", e => { if (e.key === "Escape") { closeModal(); closePdfModal(); } });
+document.addEventListener("keydown", e => { if (e.key === "Escape") { closeModal(); closePdfModal(); closeGameModal(); } });
+
+// Close modal when clicking an in-page anchor link (e.g. #games)
+modal.addEventListener("click", function (e) {
+  const link = e.target.closest("a[href^='#']");
+  if (link) closeModal();
+});
 
 // ═══════════════════════════════════════════════════════════════
 //  PDF VIEWER MODAL
@@ -66,6 +80,73 @@ function closePdfModal() {
 
 pdfModalClose.addEventListener("click", closePdfModal);
 pdfModal.addEventListener("click", e => { if (e.target === pdfModal) closePdfModal(); });
+
+// ═══════════════════════════════════════════════════════════════
+//  GAME PLAYER MODAL
+// ═══════════════════════════════════════════════════════════════
+const gameModal = document.getElementById("game-modal");
+const gameModalClose = document.getElementById("gameModalClose");
+const gameIframe = document.getElementById("game-iframe");
+
+let gameResizeHandler = null;
+
+function openGameModal(url, title, nativeW, nativeH) {
+  nativeW = nativeW || 960;
+  nativeH = nativeH || 600;
+
+  document.getElementById("game-modal-title").innerHTML = '<i class="fa fa-gamepad"></i> ' + (title || 'Play');
+  document.getElementById("game-modal-link").href = url;
+
+  // Set iframe to native game resolution
+  gameIframe.style.width = nativeW + 'px';
+  gameIframe.style.height = nativeH + 'px';
+
+  gameModal.classList.add("open");
+  document.body.style.overflow = "hidden";
+
+  function fitIframe() {
+    const wrap = document.querySelector('.game-embed-wrap');
+    if (!wrap) return;
+    const wrapW = wrap.clientWidth;
+    const wrapH = wrap.clientHeight;
+    const sx = wrapW / nativeW;
+    const sy = wrapH / nativeH;
+    const s = Math.min(sx, sy);
+    gameIframe.style.transformOrigin = '0 0';
+    gameIframe.style.transform = 'scale(' + s + ')';
+    // Center within the wrap
+    const scaledW = nativeW * s;
+    const scaledH = nativeH * s;
+    gameIframe.style.left = ((wrapW - scaledW) / 2) + 'px';
+    gameIframe.style.top = ((wrapH - scaledH) / 2) + 'px';
+  }
+
+  // Fit after modal opens and layout settles
+  requestAnimationFrame(() => { fitIframe(); });
+  setTimeout(fitIframe, 50);
+
+  if (gameResizeHandler) window.removeEventListener('resize', gameResizeHandler);
+  gameResizeHandler = fitIframe;
+  window.addEventListener('resize', fitIframe);
+
+  // Load src after layout is computed
+  gameIframe.src = url;
+}
+
+function closeGameModal() {
+  gameModal.classList.remove("open");
+  gameIframe.src = "";
+  gameIframe.style.transform = '';
+  gameIframe.style.width = '';
+  gameIframe.style.height = '';
+  gameIframe.style.left = '';
+  gameIframe.style.top = '';
+  if (gameResizeHandler) { window.removeEventListener('resize', gameResizeHandler); gameResizeHandler = null; }
+  document.body.style.overflow = "";
+}
+
+gameModalClose.addEventListener("click", closeGameModal);
+gameModal.addEventListener("click", e => { if (e.target === gameModal) closeGameModal(); });
 
 // ═══════════════════════════════════════════════════════════════
 //  MTG DECK MODAL SYSTEM

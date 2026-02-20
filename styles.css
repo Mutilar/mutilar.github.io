@@ -766,6 +766,37 @@ hr {
   white-space: nowrap;
 }
 
+.entry-card .entry-play {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  color: rgba(100, 255, 140, 0.95);
+  padding: 5px 12px;
+  border-radius: 10px;
+  background: rgba(100, 255, 140, 0.12);
+  border: 1px solid rgba(100, 255, 140, 0.35);
+  white-space: nowrap;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s;
+  animation: play-pulse 2s ease-in-out infinite;
+}
+
+.entry-card .entry-play:hover {
+  background: rgba(100, 255, 140, 0.25);
+  color: #fff;
+  border-color: rgba(100, 255, 140, 0.6);
+  transform: scale(1.05);
+}
+
+@keyframes play-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(100, 255, 140, 0.3); }
+  50% { box-shadow: 0 0 8px 2px rgba(100, 255, 140, 0.15); }
+}
+
 /* ═══════════════════════════════════════════════════════════════
    VIDEO CARDS
    ═══════════════════════════════════════════════════════════════ */
@@ -1044,6 +1075,97 @@ hr {
   height: 100%;
   border: 0;
   display: block;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   GAME PLAYER MODAL
+   ═══════════════════════════════════════════════════════════════ */
+.game-modal-card {
+  max-width: 1100px;
+  width: 95vw;
+  height: 90vh;
+  overflow-y: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.game-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 16px;
+  padding-right: 52px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 16px;
+}
+
+.game-modal-header h2 {
+  font-size: 22px;
+  font-weight: 800;
+  margin: 0;
+  color: rgba(100, 255, 140, 0.95);
+}
+
+.game-modal-header a {
+  color: rgba(130, 200, 255, 0.9);
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  transition: all 0.25s;
+}
+
+.game-modal-header a:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.game-embed-wrap {
+  flex: 1;
+  min-height: 0;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: #000;
+  position: relative;
+}
+
+.game-embed-wrap iframe {
+  border: 0;
+  display: block;
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.modal-play-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 700;
+  color: rgba(100, 255, 140, 0.95);
+  padding: 10px 20px;
+  border-radius: 12px;
+  background: rgba(100, 255, 140, 0.12);
+  border: 1px solid rgba(100, 255, 140, 0.35);
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s;
+  animation: play-pulse 2s ease-in-out infinite;
+}
+
+.modal-play-btn:hover {
+  background: rgba(100, 255, 140, 0.25);
+  color: #fff;
+  border-color: rgba(100, 255, 140, 0.6);
+  transform: scale(1.03);
 }
 
 /* Commander hero section */
@@ -1451,6 +1573,8 @@ hr {
 
 @media (max-width: 600px) {
   .pdf-modal-card { max-height: 88vh; width: 98vw; }
+  .game-modal-card { max-height: 88vh; width: 98vw; }
+  .game-modal-header h2 { font-size: 18px; }
   .pdf-modal-header h2 { font-size: 18px; }
 
   .deck-hero {

@@ -7,6 +7,7 @@ function buildEntryCard(item, dataset, opts) {
   const hasMotto = item.MOTTO && item.MOTTO.trim();
   const hasTitle = item.TITLE && item.TITLE.trim();
   const hasWin = item.WIN && item.WIN.trim();
+  const hasPlay = item.PLAY && item.PLAY.trim();
   const imgExt = opts.imgExt || ".png";
   const modalImgExt = opts.modalImgExt || ".jpg";
 
@@ -24,7 +25,8 @@ function buildEntryCard(item, dataset, opts) {
           ${hasLocation ? `<span><i class="fa fa-map-marker"></i>${item.LOCATION}</span>` : ""}
         </div>
       </div>
-      ${(hasTitle || hasWin) ? `<div class="entry-badges">
+      ${(hasTitle || hasWin || hasPlay) ? `<div class="entry-badges">
+        ${hasPlay ? (item.PLAY.trim().startsWith('http') ? `<a href="${item.PLAY.trim()}" target="_blank" class="entry-play" onclick="event.stopPropagation();"><i class="fa fa-gamepad"></i> Play me!</a>` : `<a href="#" class="entry-play" onclick="event.preventDefault(); event.stopPropagation(); openGameModal('${item.PLAY.trim()}', '${(item.NAME || '').replace(/'/g, "\\'")}', ${item.PLAY_W || 960}, ${item.PLAY_H || 600})"><i class="fa fa-gamepad"></i> Play me!</a>`) : ""}
         ${hasTitle ? item.TITLE.split(',').map(t => `<div class="entry-title">${t.trim()}</div>`).join('') : ""}
         ${hasWin ? `<div class="entry-win"><i class="fa fa-trophy"></i> ${item.WIN}</div>` : ""}
       </div>` : ""}
