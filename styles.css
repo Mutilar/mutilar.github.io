@@ -764,6 +764,7 @@ hr {
   background: rgba(255, 215, 0, 0.1);
   border: 1px solid rgba(255, 215, 0, 0.3);
   white-space: nowrap;
+  animation: win-pulse 2s ease-in-out infinite;
 }
 
 .entry-card .entry-play {
@@ -773,28 +774,46 @@ hr {
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.3px;
-  color: rgba(100, 255, 140, 0.95);
+  color: rgba(255, 215, 0, 0.9);
   padding: 5px 12px;
   border-radius: 10px;
-  background: rgba(100, 255, 140, 0.12);
-  border: 1px solid rgba(100, 255, 140, 0.35);
+  background: rgba(255, 215, 0, 0.1);
+  border: 1px solid rgba(255, 215, 0, 0.3);
   white-space: nowrap;
   text-decoration: none;
   cursor: pointer;
   transition: all 0.3s;
-  animation: play-pulse 2s ease-in-out infinite;
+  animation: win-pulse 2s ease-in-out infinite;
 }
 
 .entry-card .entry-play:hover {
-  background: rgba(100, 255, 140, 0.25);
+  background: rgba(255, 215, 0, 0.25);
   color: #fff;
-  border-color: rgba(100, 255, 140, 0.6);
+  border-color: rgba(255, 215, 0, 0.6);
   transform: scale(1.05);
 }
 
 @keyframes play-pulse {
   0%, 100% { box-shadow: 0 0 0 0 rgba(100, 255, 140, 0.3); }
   50% { box-shadow: 0 0 8px 2px rgba(100, 255, 140, 0.15); }
+}
+
+@keyframes win-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.3); }
+  50% { box-shadow: 0 0 8px 2px rgba(255, 215, 0, 0.15); }
+}
+
+.entry-card .entry-title-highlight {
+  color: rgba(255, 215, 0, 0.9);
+  background: rgba(255, 215, 0, 0.1);
+  border: 1px solid rgba(255, 215, 0, 0.3);
+  font-weight: 700;
+  animation: win-pulse 2s ease-in-out infinite;
+}
+
+@keyframes title-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.3); }
+  50% { box-shadow: 0 0 8px 2px rgba(255, 215, 0, 0.15); }
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -938,6 +957,33 @@ hr {
   background: rgba(255, 215, 0, 0.1);
   border: 1px solid rgba(255, 215, 0, 0.3);
   white-space: nowrap;
+  animation: win-pulse 2s ease-in-out infinite;
+}
+
+.modal-card .modal-subtitle .modal-play-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 12px;
+  border-radius: 14px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  color: rgba(255, 215, 0, 0.9);
+  background: rgba(255, 215, 0, 0.1);
+  border: 1px solid rgba(255, 215, 0, 0.3);
+  white-space: nowrap;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s;
+  animation: win-pulse 2s ease-in-out infinite;
+}
+
+.modal-card .modal-subtitle .modal-play-badge:hover {
+  background: rgba(255, 215, 0, 0.25);
+  color: #fff;
+  border-color: rgba(255, 215, 0, 0.6);
+  transform: scale(1.05);
 }
 
 .modal-card .modal-body {
@@ -1103,7 +1149,7 @@ hr {
   font-size: 22px;
   font-weight: 800;
   margin: 0;
-  color: rgba(100, 255, 140, 0.95);
+  color: rgba(255, 215, 0, 0.9);
 }
 
 .game-modal-header a {
@@ -1142,30 +1188,6 @@ hr {
   position: absolute;
   top: 0;
   left: 0;
-}
-
-.modal-play-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 14px;
-  font-weight: 700;
-  color: rgba(100, 255, 140, 0.95);
-  padding: 10px 20px;
-  border-radius: 12px;
-  background: rgba(100, 255, 140, 0.12);
-  border: 1px solid rgba(100, 255, 140, 0.35);
-  text-decoration: none;
-  cursor: pointer;
-  transition: all 0.3s;
-  animation: play-pulse 2s ease-in-out infinite;
-}
-
-.modal-play-btn:hover {
-  background: rgba(100, 255, 140, 0.25);
-  color: #fff;
-  border-color: rgba(100, 255, 140, 0.6);
-  transform: scale(1.03);
 }
 
 /* Commander hero section */

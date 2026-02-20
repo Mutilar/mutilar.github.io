@@ -26,19 +26,19 @@ function openModal(dataset, id, imgExt) {
   const winBadge = item.WIN && item.WIN.trim()
     ? `<span class="modal-win-badge"><i class="fa fa-trophy"></i> ${item.WIN}</span>`
     : '';
-  document.getElementById("modal-title").innerHTML = titleBadges + winBadge;
 
   const hasPlay = item.PLAY && item.PLAY.trim();
   const isExternal = hasPlay && item.PLAY.trim().startsWith('http');
-  const playBtn = hasPlay
+  const playBadge = hasPlay
     ? (isExternal
-      ? `<div style="margin-bottom:16px;"><a href="${item.PLAY.trim()}" target="_blank" class="modal-play-btn"><i class="fa fa-gamepad"></i> Play ${(item.NAME || '').replace(/<[^>]*>/g, '')}</a></div>`
-      : `<div style="margin-bottom:16px;"><a href="#" class="modal-play-btn" onclick="event.preventDefault(); closeModal(); openGameModal('${item.PLAY.trim()}', '${(item.NAME || '').replace(/'/g, "\\'")}', ${item.PLAY_W || 960}, ${item.PLAY_H || 600})"><i class="fa fa-gamepad"></i> Play ${(item.NAME || '').replace(/<[^>]*>/g, '')}</a></div>`)
+      ? `<a href="${item.PLAY.trim()}" target="_blank" class="modal-play-badge" onclick="event.stopPropagation();"><i class="fa fa-gamepad"></i> Play me!</a>`
+      : `<a href="#" class="modal-play-badge" onclick="event.preventDefault(); event.stopPropagation(); closeModal(); openGameModal('${item.PLAY.trim()}', '${(item.NAME || '').replace(/'/g, "\\'")}', ${item.PLAY_W || 960}, ${item.PLAY_H || 600})"><i class="fa fa-gamepad"></i> Play me!</a>`)
     : '';
+  document.getElementById("modal-title").innerHTML = playBadge + titleBadges + winBadge;
 
-  document.getElementById("modal-biography").innerHTML = playBtn + (item.TEXT && item.TEXT !== "tbd"
+  document.getElementById("modal-biography").innerHTML = item.TEXT && item.TEXT !== "tbd"
     ? item.TEXT
-    : "<p style='color:rgba(255,255,255,0.5);font-style:italic;'>Details coming soon…</p>");
+    : "<p style='color:rgba(255,255,255,0.5);font-style:italic;'>Details coming soon…</p>";
 
   modal.classList.add("open");
   document.body.style.overflow = "hidden";
