@@ -42,13 +42,13 @@ function buildEntryCard(item, dataset, opts) {
 
 // ── Section data loaders ─────────────────────────────────────
 const sectionConfigs = [
-  { csv: "marp.csv",       dataset: "marp",       gridId: "marp-grid",       imgExt: ".png", modalImgExt: ".png" },
-  { csv: "bitnaughts.csv", dataset: "bitnaughts", gridId: "bitnaughts-grid", imgExt: ".png", modalImgExt: ".png" },
-  { csv: "work.csv",       dataset: "work",       gridId: "work-grid",       imgExt: ".png", modalImgExt: ".jpg" },
-  { csv: "education.csv",  dataset: "education",  gridId: "education-grid",  imgExt: ".png", modalImgExt: ".png" },
-  { csv: "projects.csv",   dataset: "projects",   gridId: "projects-grid",   imgExt: ".png", modalImgExt: ".jpg" },
-  { csv: "hackathons.csv", dataset: "hackathons", gridId: "hackathons-grid", imgExt: ".png", modalImgExt: ".jpg" },
-  { csv: "games.csv",      dataset: "games",      gridId: "games-grid",      imgExt: ".png", modalImgExt: ".png" },
+  { csv: "csv/marp.csv",       dataset: "marp",       gridId: "marp-grid",       imgExt: ".png", modalImgExt: ".png" },
+  { csv: "csv/bitnaughts.csv", dataset: "bitnaughts", gridId: "bitnaughts-grid", imgExt: ".png", modalImgExt: ".png" },
+  { csv: "csv/work.csv",       dataset: "work",       gridId: "work-grid",       imgExt: ".png", modalImgExt: ".jpg" },
+  { csv: "csv/education.csv",  dataset: "education",  gridId: "education-grid",  imgExt: ".png", modalImgExt: ".png" },
+  { csv: "csv/projects.csv",   dataset: "projects",   gridId: "projects-grid",   imgExt: ".png", modalImgExt: ".jpg" },
+  { csv: "csv/hackathons.csv", dataset: "hackathons", gridId: "hackathons-grid", imgExt: ".png", modalImgExt: ".jpg" },
+  { csv: "csv/games.csv",      dataset: "games",      gridId: "games-grid",      imgExt: ".png", modalImgExt: ".png" },
 ];
 
 sectionConfigs.forEach(({ csv, dataset, gridId, imgExt, modalImgExt }) => {
@@ -61,7 +61,7 @@ sectionConfigs.forEach(({ csv, dataset, gridId, imgExt, modalImgExt }) => {
 });
 
 // ── MTG (special: deck modal override) ───────────────────────
-$.get("mtg.csv?v=" + Date.now()).then(function (t) {
+$.get("csv/mtg.csv?v=" + Date.now()).then(function (t) {
   const d = $.csv.toObjects(t);
   modalState.mtg = d;
   const g = document.getElementById("mtg-grid");

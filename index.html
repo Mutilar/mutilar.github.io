@@ -7,10 +7,12 @@
 <meta name="description" content="Brian Hungerman — Software Engineer working in Graph Theory and Gamification. Portfolio, projects, hackathons, games.">
 <meta name="author" content="Brian Hungerman">
 <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
 <link rel="icon" type="image/jpeg" href="images/brian.jpg">
 <link rel="apple-touch-icon" type="image/jpeg" href="images/brian.jpg">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
 
@@ -473,10 +475,11 @@
     <button class="modal-close" id="pdfModalClose">&times;</button>
     <div class="pdf-modal-header">
       <h2>📖 Dusk Rose Codex</h2>
-      <a href="bible.pdf" target="_blank"><i class="fa fa-external-link"></i> Open in new tab</a>
+      <a href="bible/bible.pdf" target="_blank"><i class="fa fa-external-link"></i> Open in new tab</a>
     </div>
     <div class="pdf-embed-wrap">
-      <iframe id="pdf-iframe" src="" title="Dusk Rose Codex PDF"></iframe>
+      <div id="pdf-loading" style="display:none;position:absolute;inset:0;align-items:center;justify-content:center;color:#aaa;font-family:system-ui,sans-serif;font-size:15px;z-index:10;">Loading PDF…</div>
+      <div id="pdf-viewer"></div>
     </div>
   </div>
 </div>
@@ -505,6 +508,7 @@
 <script src="js/parallax.js"></script>
 <script src="js/scroll.js"></script>
 <script src="js/modals.js"></script>
+<script src="js/pdfviewer.js"></script>
 <script src="js/data.js"></script>
 <script src="js/radio.js"></script>
 

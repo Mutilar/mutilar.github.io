@@ -64,18 +64,17 @@ modal.addEventListener("click", function (e) {
 // ═══════════════════════════════════════════════════════════════
 const pdfModal = document.getElementById("pdf-modal");
 const pdfModalClose = document.getElementById("pdfModalClose");
-const pdfIframe = document.getElementById("pdf-iframe");
 
 function openPdfModal() {
-  pdfIframe.src = "pdfviewer.html?file=bible.pdf";
   pdfModal.classList.add("open");
   document.body.style.overflow = "hidden";
+  renderPdfInline("bible/bible.pdf");
 }
 
 function closePdfModal() {
   pdfModal.classList.remove("open");
-  pdfIframe.src = "";
   document.body.style.overflow = "";
+  clearPdfViewer();
 }
 
 pdfModalClose.addEventListener("click", closePdfModal);
