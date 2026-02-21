@@ -25,6 +25,25 @@
 })();
 
 // ═══════════════════════════════════════════════════════════════
+//  BRAND LABEL — show after scrolling past Home
+// ═══════════════════════════════════════════════════════════════
+(() => {
+  const navBrand = document.getElementById("navBrand");
+  const radioBrand = document.getElementById("radioBrand");
+  const hero = document.getElementById("home");
+  if (!hero) return;
+
+  function updateBrand() {
+    const pastHome = window.scrollY > hero.offsetTop + hero.offsetHeight - 80;
+    if (navBrand) navBrand.classList.toggle("visible", pastHome);
+    if (radioBrand) radioBrand.classList.toggle("visible", pastHome);
+  }
+
+  window.addEventListener("scroll", updateBrand, { passive: true });
+  updateBrand();
+})();
+
+// ═══════════════════════════════════════════════════════════════
 //  ACTIVE NAV HIGHLIGHT
 // ═══════════════════════════════════════════════════════════════
 (() => {

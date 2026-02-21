@@ -167,7 +167,72 @@ hr {
   display: none;
 }
 
-.glass-nav a {
+.nav-brand {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.85);
+  white-space: nowrap;
+  letter-spacing: 0.3px;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  pointer-events: none;
+  padding: 5px 12px 5px 8px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  display: inline-flex;
+  align-items: center;
+  line-height: 1;
+}
+
+.nav-brand .brand-icon {
+  font-size: 1.5em;
+  vertical-align: -0.05em;
+  margin-right: 2px;
+}
+
+.nav-brand.visible {
+  opacity: 1;
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.radio-brand {
+  display: none;
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.85);
+  white-space: nowrap;
+  flex-shrink: 0;
+  letter-spacing: 0.3px;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  pointer-events: none;
+  padding: 4px 10px 4px 7px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  align-items: center;
+  line-height: 1;
+}
+
+.radio-brand .brand-icon {
+  font-size: 1.5em;
+  vertical-align: -0.05em;
+  margin-right: 2px;
+}
+
+.radio-brand.visible {
+  opacity: 1;
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.glass-nav a:not(.nav-brand) {
   padding: 8px 18px;
   border-radius: 12px;
   font-size: 14px;
@@ -178,13 +243,13 @@ hr {
   flex-shrink: 0;
 }
 
-.glass-nav a:hover,
-.glass-nav a.active {
+.glass-nav a:not(.nav-brand):hover,
+.glass-nav a:not(.nav-brand).active {
   color: #fff;
   background: rgba(255, 255, 255, 0.12);
 }
 
-.glass-nav a.active {
+.glass-nav a:not(.nav-brand).active {
   background: rgba(255, 255, 255, 0.18);
   box-shadow: 0 0 12px rgba(255, 255, 255, 0.25),
               0 0 28px rgba(255, 255, 255, 0.10),
@@ -1570,6 +1635,12 @@ hr {
   .radio-vol-slider { width: 40px; }
 }
 
+.radio-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 @media (max-width: 768px) {
   .radio-player {
     top: auto;
@@ -1577,7 +1648,7 @@ hr {
     left: 0;
     right: 0;
     height: auto;
-    justify-content: center;
+    justify-content: space-between;
     gap: 10px;
     padding: 10px 16px;
     background: rgba(0, 0, 0, 0.5);
@@ -1585,6 +1656,9 @@ hr {
     -webkit-backdrop-filter: blur(24px) saturate(1.4);
     border-top: 1px solid rgba(255, 255, 255, 0.33);
   }
+
+  .nav-brand { display: none; }
+  .radio-brand { display: inline-flex; }
 
   .radio-song { display: flex; max-width: 120px; }
   .radio-vol-slider { width: 50px; }

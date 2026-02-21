@@ -31,6 +31,7 @@
      NAVIGATION
      ═══════════════════════════════════════════════════════════════ -->
 <nav class="glass-nav" id="mainNav">
+  <a href="#home" class="nav-brand" id="navBrand"><span class="brand-icon">🐧</span> Brian Hungerman</a>
   <a href="#home" class="active">Home</a>
   <a href="#marp">MARP</a>
   <a href="#bitnaughts">BitNaughts</a>
@@ -45,6 +46,8 @@
 
 <!-- Radio Player (outside nav so position:fixed works on mobile) -->
 <div class="radio-player" id="radioPlayer">
+  <a href="#home" class="radio-brand" id="radioBrand"><span class="brand-icon">🐧</span> <strong>Brian Hungerman</strong></a>
+  <div class="radio-group">
   <div class="radio-eq" id="radioEq">
     <div class="radio-eq-bar" style="height:2px"></div>
     <div class="radio-eq-bar" style="height:2px"></div>
@@ -73,6 +76,7 @@
   <div class="radio-volume">
     <button class="radio-vol-btn" id="radioMute" title="Mute"><i class="fa fa-volume-up" id="radioVolIcon"></i></button>
     <input type="range" class="radio-vol-slider" id="radioVolume" min="0" max="100" value="30">
+  </div>
   </div>
 </div>
 
