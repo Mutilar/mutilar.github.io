@@ -933,6 +933,44 @@ hr {
 }
 
 /* ═══════════════════════════════════════════════════════════════
+   CARD ACTION BADGES  (Watch Me / Dive Deeper)
+   ═══════════════════════════════════════════════════════════════ */
+.card-action-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: 14px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  order: 10;
+  color: #fff;
+  background: rgba(255, 215, 0, 0.18);
+  border: 1px solid rgba(255, 215, 0, 0.45);
+  box-shadow: 0 0 6px rgba(255, 215, 0, 0.25), inset 0 0 4px rgba(255, 215, 0, 0.08);
+  animation: badgePulse 2.5s ease-in-out infinite;
+}
+
+.card-action-badge.badge-dive {
+  background: rgba(130, 200, 255, 0.15);
+  border: 1px solid rgba(130, 200, 255, 0.45);
+  box-shadow: 0 0 6px rgba(130, 200, 255, 0.3), inset 0 0 4px rgba(130, 200, 255, 0.08);
+  animation: badgePulseDive 2.5s ease-in-out infinite;
+}
+
+@keyframes badgePulse {
+  0%, 100% { box-shadow: 0 0 6px rgba(255, 215, 0, 0.25), inset 0 0 4px rgba(255, 215, 0, 0.08); }
+  50%      { box-shadow: 0 0 14px rgba(255, 215, 0, 0.5), inset 0 0 6px rgba(255, 215, 0, 0.15); }
+}
+
+@keyframes badgePulseDive {
+  0%, 100% { box-shadow: 0 0 6px rgba(130, 200, 255, 0.3), inset 0 0 4px rgba(130, 200, 255, 0.08); }
+  50%      { box-shadow: 0 0 14px rgba(130, 200, 255, 0.55), inset 0 0 6px rgba(130, 200, 255, 0.15); }
+}
+
+/* ═══════════════════════════════════════════════════════════════
    MODAL OVERLAY
    ═══════════════════════════════════════════════════════════════ */
 .modal-overlay {
@@ -1277,6 +1315,93 @@ hr {
   position: absolute;
   top: 0;
   left: 0;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   MARP DIAGRAM MODAL
+   ═══════════════════════════════════════════════════════════════ */
+.marp-modal-card {
+  max-width: 1100px;
+  width: 95vw;
+  max-height: none;
+  overflow-y: visible;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+}
+
+#marp-modal {
+  align-items: flex-start;
+  padding: 40px 12px;
+}
+
+#marp-modal.open {
+  display: flex;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #555 transparent;
+}
+
+#marp-modal::-webkit-scrollbar { width: 8px; }
+#marp-modal::-webkit-scrollbar-track { background: transparent; }
+#marp-modal::-webkit-scrollbar-thumb { background: #555; border-radius: 4px; }
+
+.marp-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 16px;
+  padding-right: 52px;
+}
+
+.marp-modal-header .modal-close {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  position: fixed;
+  z-index: 210;
+}
+
+.marp-modal-header h2 {
+  font-size: 22px;
+  font-weight: 800;
+  margin: 0;
+}
+
+.marp-modal-header a {
+  color: rgba(130, 200, 255, 0.9);
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  transition: all 0.25s;
+}
+
+.marp-modal-header a:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.marp-diagram-wrap {
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: #1a1a1a;
+  text-align: center;
+}
+
+.marp-diagram-wrap img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 10px;
 }
 
 /* Commander hero section */
@@ -1694,8 +1819,10 @@ hr {
 @media (max-width: 600px) {
   .pdf-modal-card { max-height: 88vh; width: 98vw; }
   .game-modal-card { max-height: 88vh; width: 98vw; }
+  .marp-modal-card { width: 98vw; }
   .game-modal-header h2 { font-size: 18px; }
   .pdf-modal-header h2 { font-size: 18px; }
+  .marp-modal-header h2 { font-size: 18px; }
 
   .deck-hero {
     flex-direction: row;

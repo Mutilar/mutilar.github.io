@@ -9,8 +9,8 @@
 <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
 <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
-<link rel="icon" type="image/jpeg" href="images/brian.jpg">
-<link rel="apple-touch-icon" type="image/jpeg" href="images/brian.jpg">
+<link rel="icon" type="image/png" href="images/brian.png">
+<link rel="apple-touch-icon" type="image/png" href="images/brian.png">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="css/styles.css">
 </head>
@@ -89,7 +89,7 @@
   <div class="parallax-window parallax-window-hero" id="home" data-attention="1">
     <div class="glass-tile hero-card reveal">
       <a href="https://github.com/Mutilar" target="_blank">
-        <img class="hero-portrait" src="images/brian.jpg" alt="Brian Hungerman">
+        <img class="hero-portrait" src="images/brian.png" alt="Brian Hungerman">
       </a>
       <div class="hero-text">
         <h1 class="hero-name">Brian Hungerman</h1>
@@ -136,15 +136,15 @@
       </div>
       <div class="card-grid card-grid-wide" style="margin-bottom:32px;">
         <div class="glass-tile video-card reveal">
-          <div class="video-label">🎮 MARP U.X.<span class="year-badge">2025</span></div>
+          <div class="video-label">🎮 MARP U.X.<span class="card-action-badge">👀 Watch Me</span><span class="year-badge">2025</span></div>
           <div class="video-wrap">
-            <img src="https://github.com/Mutilar/MarpGamepad/raw/main/images/marp.gif" alt="Marp Gamepad Demo" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" loading="lazy">
+            <img src="images/marp.gif" alt="Marp Gamepad Demo" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" loading="lazy">
           </div>
         </div>
-        <div class="glass-tile video-card reveal">
-          <div class="video-label">🧮 MARP Wiring Diagram<span class="year-badge">2025</span></div>
+        <div class="glass-tile video-card reveal" style="cursor:pointer;" onclick="openMarpModal()">
+          <div class="video-label">🧮 MARP Wiring Diagram<span class="card-action-badge badge-dive">🔍 Dive Deeper</span><span class="year-badge">2025</span></div>
           <div class="video-wrap">
-            <img src="https://github.com/Mutilar/mutilar.github.io/raw/master/images/marp-diagram.png" alt="Marp Gamepad Demo" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" loading="lazy">
+            <img src="images/marp-diagram.png" alt="Marp Wiring Diagram" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" loading="lazy">
           </div>
         </div>
       </div>
@@ -174,25 +174,25 @@
       </div>
       <div class="card-grid card-grid-wide">
         <div class="glass-tile video-card reveal">
-          <div class="video-label">🎥 Microsoft Hackathon (3:00)<span class="year-badge">2023</span></div>
+          <div class="video-label">🎥 Microsoft Hackathon (3:00)<span class="card-action-badge">👀 Watch Me</span><span class="year-badge">2023</span></div>
           <div class="video-wrap">
             <iframe src="https://www.youtube.com/embed/V7oA7aGZlSE?showinfo=0&controls=1&modestbranding=1" title="Hackathon 23 Pitch" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
           </div>
         </div>
         <div class="glass-tile video-card reveal">
-          <div class="video-label">🎥 Microsoft Hackathon (1:33)<span class="year-badge">2022</span></div>
+          <div class="video-label">🎥 Microsoft Hackathon (1:33)<span class="card-action-badge">👀 Watch Me</span><span class="year-badge">2022</span></div>
           <div class="video-wrap">
             <iframe src="https://www.youtube.com/embed/0ftAfiPsyds?showinfo=0&controls=1&modestbranding=1" title="Hackathon 22 Pitch" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
           </div>
         </div>
         <div class="glass-tile video-card reveal">
-          <div class="video-label">🎥 Microsoft Hackathon (2:18)<span class="year-badge">2021</span></div>
+          <div class="video-label">🎥 Microsoft Hackathon (2:18)<span class="card-action-badge">👀 Watch Me</span><span class="year-badge">2021</span></div>
           <div class="video-wrap">
             <iframe src="https://www.youtube.com/embed/-gN4dHWMkSI?showinfo=0&controls=1&modestbranding=1" title="Hackathon 21 Pitch" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
           </div>
         </div>
         <div class="glass-tile video-card reveal">
-          <div class="video-label">🎥 Microsoft Hackathon (2:12)<span class="year-badge">2020</span></div>
+          <div class="video-label">🎥 Microsoft Hackathon (2:12)<span class="card-action-badge">👀 Watch Me</span><span class="year-badge">2020</span></div>
           <div class="video-wrap">
             <iframe src="https://www.youtube.com/embed/kQaZFAu65z4?showinfo=0&controls=1&modestbranding=1" title="Hackathon 20 Pitch" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
           </div>
@@ -200,15 +200,15 @@
       </div>
       <div class="card-grid card-grid-wide" style="margin-top:32px;margin-bottom:32px;">
         <div class="glass-tile video-card reveal">
-          <div class="video-label">☄ BitNaughts U.X.<span class="year-badge">2023</span></div>
+          <div class="video-label">☄ BitNaughts U.X.<span class="card-action-badge">👀 Watch Me</span><span class="year-badge">2023</span></div>
           <div class="video-wrap">
-            <img src="https://raw.githubusercontent.com/bitnaughts/.github/main/images/bn-2.jpg" alt="BitNaughts Ship" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" loading="lazy">
+            <img src="images/bn-2.png" alt="BitNaughts Ship" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" loading="lazy">
           </div>
         </div>
         <div class="glass-tile video-card reveal">
-          <div class="video-label">☄ BitNaughts U.X.<span class="year-badge">2020</span></div>
+          <div class="video-label">☄ BitNaughts U.X.<span class="card-action-badge">👀 Watch Me</span><span class="year-badge">2020</span></div>
           <div class="video-wrap">
-            <img src="https://github.com/Mutilar/mutilar.github.io/raw/master/images/bndemo.gif" alt="BitNaughts Demo" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" loading="lazy">
+            <img src="images/bndemo.gif" alt="BitNaughts Demo" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" loading="lazy">
           </div>
         </div>
       </div>
@@ -228,7 +228,7 @@
   <div class="parallax-window" data-attention="0" style="padding:40px 24px 80px;">
     <div style="max-width:1100px;margin:0 auto;">
       <div class="glass-tile reveal section-intro" style="margin-bottom:32px;">
-        <img class="section-intro-img" src="images/mtg.jpg" alt="MTG" loading="lazy">
+        <img class="section-intro-img" src="images/mtg.png" alt="MTG" loading="lazy">
         <div class="section-blurb">
           <div class="step step-left">Two primordial gods: <em>Order</em> &amp; <em>Chaos</em>, and three factions emerge: <em>Faithful</em>, <em>Greedy</em> &amp; <em>Defiant</em>...</div>
           <div class="step step-center">...except <em>Faith</em> does not <em>Save</em>, <em>Wealth</em> does not <em>Protect</em> &amp; <em>Rebellion</em> does not <em>Free</em>...</div>
@@ -238,15 +238,15 @@
       </div>
       <div class="card-grid card-grid-wide" style="margin-bottom:32px;">
         <div class="glass-tile video-card reveal">
-          <div class="video-label">🎥 Dusk Rose Codex (3:26)<span class="year-badge">2025</span></div>
+          <div class="video-label">🎥 Dusk Rose Codex (3:26)<span class="card-action-badge">👀 Watch Me</span><span class="year-badge">2025</span></div>
           <div class="video-wrap">
             <iframe src="https://www.youtube.com/embed/0_k_snZ1DYk?showinfo=0&controls=1&modestbranding=1" title="Dusk Rose Codex" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
           </div>
         </div>
         <div class="glass-tile video-card reveal" style="cursor:pointer;" onclick="openPdfModal()">
-          <div class="video-label">📖 Dusk Rose Codex<span class="year-badge">2025</span></div>
+          <div class="video-label">📖 Dusk Rose Codex<span class="card-action-badge badge-dive">🔍 Dive Deeper</span><span class="year-badge">2025</span></div>
           <div class="video-wrap">
-            <img src="images/bible.jpg" alt="Dusk Rose Codex" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" loading="lazy">
+            <img src="images/bible.png" alt="Dusk Rose Codex" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" loading="lazy">
           </div>
         </div>
       </div>
@@ -324,13 +324,13 @@
       </div>
       <div class="card-grid card-grid-wide" style="margin-bottom:32px;">
         <div class="glass-tile video-card reveal">
-          <div class="video-label">🏃 MotleyMoves U.X.<span class="year-badge">2019</span></div>
+          <div class="video-label">🏃 MotleyMoves U.X.<span class="card-action-badge">👀 Watch Me</span><span class="year-badge">2019</span></div>
           <div class="video-wrap">
-            <img src="images/motleymovesdemo.jpg" alt="MotleyMoves Demo" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" loading="lazy">
+            <img src="images/motleymovesdemo.png" alt="MotleyMoves Demo" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" loading="lazy">
           </div>
         </div>
         <div class="glass-tile video-card reveal">
-          <div class="video-label">🎥 AMAX ESD (2:55)<span class="year-badge">2015</span></div>
+          <div class="video-label">🎥 AMAX ESD (2:55)<span class="card-action-badge">👀 Watch Me</span><span class="year-badge">2015</span></div>
           <div class="video-wrap">
             <iframe src="https://www.youtube.com/embed/5hGkIXoP2AI" title="AMAX ESD" style="position:absolute;inset:0;width:100%;height:100%;border:none;" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
           </div>
@@ -352,7 +352,7 @@
   <div class="parallax-window" data-attention="0" style="padding:40px 24px 80px;">
     <div style="max-width:1100px;margin:0 auto;">
       <div class="glass-tile reveal section-intro" style="margin-bottom:32px;">
-        <img class="section-intro-img" src="images/game-banner-lan.jpg" alt="Hackathons" loading="lazy">
+        <img class="section-intro-img" src="images/game-banner-lan.png" alt="Hackathons" loading="lazy">
         <div class="section-blurb">
           <div class="step step-left">From using augmented reality to visualize the missing link from farm to table...</div>
           <div class="step step-center">...to an autonomous, room-mapping robotic tank for first responders called SRIRACHA...</div>
@@ -362,15 +362,15 @@
       </div>
       <div class="card-grid card-grid-wide" style="margin-bottom:32px;">
         <div class="glass-tile video-card reveal">
-          <div class="video-label">🎥 Blindsight Demo (1:44)<span class="year-badge">2018</span></div>
+          <div class="video-label">🎥 Blindsight Demo (1:44)<span class="card-action-badge">👀 Watch Me</span><span class="year-badge">2018</span></div>
           <div class="video-wrap">
             <iframe src="https://www.youtube.com/embed/PapgFHyC6_k?showinfo=0&controls=1&modestbranding=1" title="Blindsight Demo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
           </div>
         </div>
         <div class="glass-tile video-card reveal">
-          <div class="video-label">🧪 ChemisTRY U.X.<span class="year-badge">2019</span></div>
+          <div class="video-label">🧪 ChemisTRY U.X.<span class="card-action-badge">👀 Watch Me</span><span class="year-badge">2019</span></div>
           <div class="video-wrap">
-            <img src="images/chemistry-demo.jpg" alt="ChemisTRY Demo" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" loading="lazy">
+            <img src="images/chemistry-demo.png" alt="ChemisTRY Demo" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" loading="lazy">
           </div>
         </div>
       </div>
@@ -390,7 +390,7 @@
   <div class="parallax-window" data-attention="1" style="padding:40px 24px 80px;">
     <div style="max-width:1100px;margin:0 auto;">
       <div class="glass-tile reveal section-intro" style="margin-bottom:32px;">
-        <img class="section-intro-img" src="images/game-banner.jpg" alt="Games" loading="lazy">
+        <img class="section-intro-img" src="images/game-banner.png" alt="Games" loading="lazy">
         <div class="section-blurb">
           <div class="step step-left">From hands-on applications of graph theory and data structures...</div>
           <div class="step step-center">...to tinkering with finite state machines and model view controllers...</div>
@@ -500,6 +500,22 @@
     </div>
     <div class="game-embed-wrap">
       <iframe id="game-iframe" src="" title="Game" allowfullscreen scrolling="no"></iframe>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     MARP DIAGRAM MODAL
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="modal-overlay" id="marp-modal">
+  <div class="glass-tile modal-card marp-modal-card" style="position:relative;">
+    <div class="marp-modal-header">
+      <button class="modal-close" id="marpModalClose">&times;</button>
+      <h2>🧮 MARP Wiring Diagram</h2>
+      <a href="https://github.com/Mutilar/Marp" target="_blank"><i class="fa fa-github"></i> Mutilar/Marp</a>
+    </div>
+    <div class="marp-diagram-wrap">
+      <img id="marp-diagram-img" src="images/marp-high-level-diagram.png" alt="MARP High-Level Wiring Diagram" loading="lazy">
     </div>
   </div>
 </div>

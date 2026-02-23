@@ -9,7 +9,7 @@ function buildEntryCard(item, dataset, opts) {
   const hasWin = item.WIN && item.WIN.trim();
   const hasPlay = item.PLAY && item.PLAY.trim();
   const imgExt = opts.imgExt || ".png";
-  const modalImgExt = opts.modalImgExt || ".jpg";
+  const modalImgExt = opts.modalImgExt || ".png";
 
   const card = document.createElement("div");
   card.className = "glass-tile glass-tile-clickable entry-card reveal";
@@ -44,10 +44,10 @@ function buildEntryCard(item, dataset, opts) {
 const sectionConfigs = [
   { csv: "csv/marp.csv",       dataset: "marp",       gridId: "marp-grid",       imgExt: ".png", modalImgExt: ".png" },
   { csv: "csv/bitnaughts.csv", dataset: "bitnaughts", gridId: "bitnaughts-grid", imgExt: ".png", modalImgExt: ".png" },
-  { csv: "csv/work.csv",       dataset: "work",       gridId: "work-grid",       imgExt: ".png", modalImgExt: ".jpg" },
+  { csv: "csv/work.csv",       dataset: "work",       gridId: "work-grid",       imgExt: ".png", modalImgExt: ".png" },
   { csv: "csv/education.csv",  dataset: "education",  gridId: "education-grid",  imgExt: ".png", modalImgExt: ".png" },
-  { csv: "csv/projects.csv",   dataset: "projects",   gridId: "projects-grid",   imgExt: ".png", modalImgExt: ".jpg" },
-  { csv: "csv/hackathons.csv", dataset: "hackathons", gridId: "hackathons-grid", imgExt: ".png", modalImgExt: ".jpg" },
+  { csv: "csv/projects.csv",   dataset: "projects",   gridId: "projects-grid",   imgExt: ".png", modalImgExt: ".png" },
+  { csv: "csv/hackathons.csv", dataset: "hackathons", gridId: "hackathons-grid", imgExt: ".png", modalImgExt: ".png" },
   { csv: "csv/games.csv",      dataset: "games",      gridId: "games-grid",      imgExt: ".png", modalImgExt: ".png" },
 ];
 

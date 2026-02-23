@@ -15,7 +15,7 @@ function openModal(dataset, id, imgExt) {
   modalImg.style.display = "none";
   modalImg.onload = function () { this.style.display = ""; };
   modalImg.onerror = function () { this.style.display = "none"; };
-  modalImg.src = "images/" + id + (imgExt || ".jpg");
+  modalImg.src = "images/" + id + (imgExt || ".png");
   modalImg.alt = item.NAME || "";
 
   document.getElementById("modal-name").textContent = (item.NAME || "").replace(/<br\s*\/?>/gi, " ");
@@ -51,7 +51,26 @@ function closeModal() {
 
 modalClose.addEventListener("click", closeModal);
 modal.addEventListener("click", e => { if (e.target === modal) closeModal(); });
-document.addEventListener("keydown", e => { if (e.key === "Escape") { closeModal(); closePdfModal(); closeGameModal(); } });
+document.addEventListener("keydown", e => { if (e.key === "Escape") { closeModal(); closePdfModal(); closeGameModal(); closeMarpModal(); } });
+
+// ═══════════════════════════════════════════════════════════════
+//  MARP DIAGRAM MODAL
+// ═══════════════════════════════════════════════════════════════
+const marpModal = document.getElementById("marp-modal");
+const marpModalClose = document.getElementById("marpModalClose");
+
+function openMarpModal() {
+  marpModal.classList.add("open");
+  document.body.style.overflow = "hidden";
+}
+
+function closeMarpModal() {
+  marpModal.classList.remove("open");
+  document.body.style.overflow = "";
+}
+
+marpModalClose.addEventListener("click", closeMarpModal);
+marpModal.addEventListener("click", e => { if (e.target === marpModal) closeMarpModal(); });
 
 // Close modal when clicking an in-page anchor link (e.g. #games)
 modal.addEventListener("click", function (e) {
