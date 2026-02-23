@@ -324,7 +324,7 @@
       </div>
       <div class="card-grid card-grid-wide" style="margin-bottom:32px;">
         <div class="glass-tile video-card reveal">
-          <div class="video-label">🏃 MotleyMoves U.X.<span class="year-badge">2019</span></div>
+          <div class="video-label">📱 Iterate U.X.<span class="year-badge">2017</span></div>
           <div class="video-wrap">
             <img src="images/motleymovesdemo.png" alt="MotleyMoves Demo" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" loading="lazy">
           </div>
@@ -516,6 +516,99 @@
     </div>
     <div class="marp-diagram-wrap">
       <img id="marp-diagram-img" src="images/marp-high-level-diagram.png" alt="MARP High-Level Wiring Diagram" loading="lazy">
+    </div>
+
+    <!-- BOM (Bill of Materials) -->
+    <div class="marp-bom" id="marp-bom">
+
+      <h4>🖥️ Control &amp; Compute</h4>
+      <table>
+        <thead><tr><th>Component</th><th>Role</th><th>Voltage</th><th>Amperage</th><th>Wattage</th><th>Dimensions</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td><a href="https://www.xbox.com/en-US/accessories/controllers/elite-wireless-controller-series-2" target="_blank">Controller</a></td><td>Operator input</td><td>5 V</td><td>≤1.5 A</td><td>≤7.5 W</td><td>Gamepad form factor</td><td>Wired or wireless dual joysticks, triggers, and action buttons.</td></tr>
+          <tr><td><a href="https://store.steampowered.com/steamdeck" target="_blank">Handheld Console</a></td><td>Operator input/output</td><td>5–20 V (USB-C PD)</td><td>≤3.0 A</td><td>≤45 W</td><td>11.7″ × 4.6″ × 1.9″</td><td>Wireless dual joysticks, triggers, and action buttons with real-time video stream and diagnostics.</td></tr>
+          <tr><td><a href="https://www.raspberrypi.com/products/raspberry-pi-5/" target="_blank">Raspberry Pi 5</a></td><td>Onboard coordination &amp; processing</td><td>5 V</td><td>≤5.4 A</td><td>≤27 W</td><td>3.35″ × 2.20″ × 0.71″</td><td>Wi-Fi / Bluetooth / USB; CSI/DSI; 16 GB RAM, 64 GB SD.</td></tr>
+        </tbody>
+      </table>
+
+      <h4>⚙️ Locomotion</h4>
+      <table>
+        <thead><tr><th>Component</th><th>Voltage</th><th>Amperage</th><th>Wattage</th><th>Dimensions</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td><a href="https://www.nidec-advancedmotor.com/en/digital/pdf/KH56Q.pdf" target="_blank">Left wheel</a></td><td>24 V</td><td>2.5 A</td><td>60 W</td><td>2.20″</td><td>KH56 Stepper Motor</td></tr>
+          <tr><td><a href="https://www.nidec-advancedmotor.com/en/digital/pdf/KH56Q.pdf" target="_blank">Right wheel</a></td><td>24 V</td><td>2.5 A</td><td>60 W</td><td>2.20″</td><td>KH56 Stepper Motor</td></tr>
+          <tr><td><a href="https://www.makerguides.com/tb6600-stepper-motor-driver-arduino-tutorial/" target="_blank">Drivers</a></td><td>24 V</td><td>≤2.5 A</td><td>≤120 W</td><td>3.4″ × 1.8″ × 1.3″</td><td>TB6600 × 4 (two on wheels, two reserved for turret axes).</td></tr>
+        </tbody>
+      </table>
+
+      <h4>🦾 Actuation</h4>
+      <table>
+        <thead><tr><th>Component</th><th>Voltage</th><th>Amperage</th><th>Wattage</th><th>Dimensions</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td><a href="https://product.minebeamitsumi.com/en/product/category/rotary/steppingmotor/pm/PMStandardtype.html" target="_blank">Head pan</a></td><td>12 V</td><td>1.0 A</td><td>12 W</td><td>Ø2.17″ × 0.98″</td><td>M55SP-3NK Stepper Motor (stocked on <a href="https://www.radwell.com/Buy/MITSUMI/MITSUMI/M55SP-2NK" target="_blank">Radwell</a>)</td></tr>
+          <tr><td><a href="https://product.minebeamitsumi.com/en/product/category/rotary/steppingmotor/pm/PMStandardtype.html" target="_blank">Head tilt</a></td><td>12 V</td><td>1.0 A</td><td>12 W</td><td>Ø2.17″ × 0.98″</td><td>M55SP-3NK Stepper Motor (stocked on <a href="https://www.radwell.com/Buy/MITSUMI/MITSUMI/M55SP-2NK" target="_blank">Radwell</a>)</td></tr>
+          <tr><td><a href="https://www.makerguides.com/tb6600-stepper-motor-driver-arduino-tutorial/" target="_blank">Drivers (shared TB6600 bank)</a></td><td>24 V</td><td>≤2.5 A</td><td>≤120 W</td><td>3.4″ × 1.8″ × 1.3″</td><td>Same TB6600 stack as wheels; pan/tilt channels limit current for 12 V coils.</td></tr>
+          <tr><td>Shutter motor driver</td><td>TBD</td><td>TBD</td><td>TBD</td><td>TBD</td><td>H-bridge driver; 5 V logic with 12 V motor rail; commanded directly by the Pi.</td></tr>
+          <tr><td>Shutter motor</td><td>TBD</td><td>TBD</td><td>TBD</td><td>TBD</td><td>Motorized projector shutter (non-stepper); homed via limit switch.</td></tr>
+        </tbody>
+      </table>
+
+      <h4>🔋 Power &amp; Electronics</h4>
+      <table>
+        <thead><tr><th>Component</th><th>Voltage</th><th>Amperage</th><th>Wattage</th><th>Dimensions</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td><a href="https://www.aegisbattery.com/collections/24v-lithium-batteries/products/aegis-24v-10ah-lithium-ion-battery-pack-nmc-24v-lithium-battery" target="_blank">Lithium Battery</a></td><td>24 V</td><td>5 A (cont.), 10 A (peak)</td><td>240 Wh</td><td>5.8″ × 3.2″ × 2.8″</td><td>10 Ah NMC pack (≈240 Wh capacity).</td></tr>
+          <tr><td><a href="https://www.aegisbattery.com/collections/lithium-battery-meters-instruments/products/high-precision-battery-200a-watt-meter-and-power-analyzer" target="_blank">Battery Meter</a></td><td>24 V</td><td>≤0.5 A</td><td>≤1.2 W</td><td>85 × 42 × 25 mm</td><td>Inline 200 A analyzer (voltage, amps, watts).</td></tr>
+          <tr><td><a href="https://www.amazon.com/dp/B0C9Q3RT7Z" target="_blank">USB-C Meter (×2)</a></td><td>5 V</td><td>≤0.1 A</td><td>≤0.25 W</td><td>36.7 × 23.7 × 7.8 mm</td><td>Inline USB-C analyzer (voltage, amps, watts).</td></tr>
+          <tr><td><a href="https://www.aegisbattery.com/collections/adapters/products/anderson-to-ring-terminal-adapter" target="_blank">Anderson PP45 → ring adapter</a></td><td>24 V</td><td>20 A</td><td>480 W</td><td>M10 ring</td><td>Quick battery-to-system interface.</td></tr>
+          <tr><td><a href="https://www.amazon.com/gp/product/B095Z2F5F7" target="_blank">Circuit Breaker</a></td><td>24 V</td><td>30 A</td><td>720 W</td><td>1.73″ × 1.93″ × 2.91″</td><td>Main battery protection.</td></tr>
+          <tr><td><a href="https://www.amazon.com/dp/B0CKXPNBB2" target="_blank">Safety Switch</a></td><td>24 V</td><td>16 A</td><td>384 W</td><td>4.88″ × 2.24″ × 2.09″</td><td>Manual 24 V disconnect.</td></tr>
+          <tr><td><a href="https://www.amazon.com/gp/product/B0F4NJK6MZ" target="_blank">Fuse Block</a></td><td>24 V</td><td>5–20 A (per branch)</td><td>≤640 W (agg.)</td><td>3.66″ × 1.77″ × 4.88″</td><td>Six-position low-voltage distribution.</td></tr>
+          <tr><td><a href="https://www.amazon.com/gp/product/B07V6X6L89" target="_blank">12 V Converter</a></td><td>24→12 V</td><td>10 A</td><td>120 W</td><td>2.04″ × 1.88″ × 0.74″</td><td>DC-DC buck for 12 V peripherals.</td></tr>
+          <tr><td><a href="https://www.amazon.com/dp/B0BLSGDVHF" target="_blank">5 V Converter</a></td><td>24→5 V</td><td>15 A</td><td>75 W</td><td>0.71″ × 1.26″ × 0.71″</td><td>DC-DC buck for logic and compute loads.</td></tr>
+          <tr><td><a href="https://www.amazon.com/dp/B08P3YXXPG" target="_blank">USB-C PD adapter</a></td><td>12/24→5–20 V</td><td>≤3 A (PD)</td><td>45 W</td><td>TBD</td><td>USB-C PD plus USB-A QC3.0 module (5.5 × 2.1 mm input) for projector/compute power.</td></tr>
+          <tr><td><a href="https://www.amazon.com/dp/B0CRVVWL4Y" target="_blank">Waterproof USB-C buck (×2)</a></td><td>12/24→5 V</td><td>5 A</td><td>25 W</td><td>TBD (potted)</td><td>Epoxy-potted USB-C step-down pair for Pi 5 or peripheral loads.</td></tr>
+        </tbody>
+      </table>
+
+      <h4>🔌 Cabling &amp; Interconnects</h4>
+      <table>
+        <thead><tr><th>Item</th><th>Purpose</th><th>Length</th><th>Rating</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td><a href="https://www.amazon.com/dp/B0CL4HS7W7" target="_blank">USB-C short cables (×2)</a></td><td>Power jumpers between DC buck outputs and Pi/projector</td><td>6″</td><td>USB-C PD / 60 W</td><td>Braided C-to-C leads sized for tight enclosures; keeps USB-C PD adapters tidy.</td></tr>
+          <tr><td><a href="https://www.amazon.com/dp/B08J8BJQLB" target="_blank">PowerBear HDMI cable</a></td><td>Pi-to-projector video link</td><td>0.5 ft</td><td>4K @ 60 Hz</td><td>Short, braided HDMI interconnect to limit slack near the projector mount.</td></tr>
+        </tbody>
+      </table>
+
+      <h4>📡 Sensors &amp; Outputs</h4>
+
+      <h5>📏 Distance &amp; Environment</h5>
+      <table>
+        <thead><tr><th>Sensor</th><th>Range / Resolution</th><th>Coverage</th><th>Voltage</th><th>Amperage</th><th>Wattage</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td>Ultrasonic pair (×2 sets)</td><td>Short-range (TBD)</td><td>Front/Rear or side (TBD)</td><td>5 V</td><td>≤0.015 A</td><td>≤0.075 W</td><td>Use overlapping fields to reduce blind spots; polled directly from the Pi over GPIO/I²C.</td></tr>
+          <tr><td><a href="https://global.sharp/products/device/lineup/data/pdf/datasheet/gp2y0a02yk_e.pdf" target="_blank">Sharp GP2Y0A02 (×~10)</a></td><td>20–150 cm / analog voltage</td><td>Perimeter via multi-sensor ring</td><td>4.5–5.5 V</td><td>≤0.033 A</td><td>≤0.17 W</td><td>Analog 0.4–2.8 V output into a Pi ADC front-end; add filtering and shielding for stable readings.</td></tr>
+        </tbody>
+      </table>
+
+      <h5>🔘 Contact &amp; Limit Sensing</h5>
+      <table>
+        <thead><tr><th>Component</th><th>Role</th><th>Voltage</th><th>Amperage</th><th>Wattage</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td>Pan home limit switch</td><td>Homing reference for head pan axis</td><td>5 V</td><td>≤0.02 A</td><td>≤0.1 W</td><td>Lands on a Pi GPIO with pull-up to define the zero position.</td></tr>
+          <tr><td>Shutter home limit switch</td><td>Homing reference for projector shutter</td><td>5 V</td><td>≤0.02 A</td><td>≤0.1 W</td><td>Confirms shutter closed position; debounced in Pi software.</td></tr>
+        </tbody>
+      </table>
+
+      <h5>👁️ Vision &amp; Interaction</h5>
+      <table>
+        <thead><tr><th>Component</th><th>Function</th><th>Coverage / Resolution</th><th>Voltage</th><th>Amperage</th><th>Wattage</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td><a href="https://www.amazon.com/dp/B0CWV1S7B4" target="_blank">Mini Projector</a></td><td>Visual output</td><td>720p (150 ANSI)</td><td>5–20 V (USB-C PD)</td><td>≤2.25 A</td><td>≤45 W</td><td>NEBULA Capsule Air; built-in 34 Wh battery; integrate 45 W USB-C PD or leverage internal pack.</td></tr>
+          <tr><td><a href="https://www.amazon.com/dp/B0C9PYCV9S" target="_blank">Camera</a></td><td>Vision input</td><td>12 MP, 75° FoV; autofocus</td><td>5 V</td><td>≤0.5 A</td><td>≤2.5 W</td><td>Arducam IMX708</td></tr>
+          <tr><td><a href="https://www.amazon.com/dp/B07LG5VF73" target="_blank">BTF-LIGHTING WS2815 LED strip</a></td><td>Face ring (eyes, mouth)</td><td>144 LEDs, individually addressable RGB</td><td>12 V</td><td>≤2.6 A (full white)</td><td>≤31.7 W</td><td>Upgraded WS2812B; dual-signal line; 5050 SMD; 12 V from Buck12 rail; data pin needs 3.3→5 V level-shift.</td></tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </div>

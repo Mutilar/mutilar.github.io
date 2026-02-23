@@ -1100,6 +1100,95 @@ hr {
 .modal-card .modal-body h3 { margin-top: 20px; margin-bottom: 8px; }
 .modal-card .modal-body h3:first-child { margin-top: 0; }
 
+.modal-card .modal-body blockquote {
+  position: relative;
+  margin: 20px 0;
+  padding: 24px 28px 20px 28px;
+  border: none;
+  border-left: 3px solid rgba(255, 215, 0, 0.4);
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.06) 0%, rgba(255, 255, 255, 0.02) 100%);
+  border-radius: 0 12px 12px 0;
+  font-style: italic;
+  color: rgba(255, 255, 255, 0.85);
+  line-height: 1.8;
+  font-size: 13.5px;
+}
+
+.modal-card .modal-body blockquote::before {
+  content: '\201C';
+  position: absolute;
+  top: 8px;
+  left: 10px;
+  font-size: 48px;
+  line-height: 1;
+  font-style: normal;
+  font-weight: 700;
+  color: rgba(255, 215, 0, 0.25);
+  pointer-events: none;
+}
+
+.modal-card .modal-body blockquote p {
+  margin: 0;
+  padding-left: 24px;
+  text-indent: 0;
+}
+
+.modal-card .modal-body blockquote cite {
+  display: block;
+  margin-top: 12px;
+  padding-left: 24px;
+  text-align: right;
+  font-style: normal;
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(255, 215, 0, 0.65);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.modal-card .modal-body blockquote cite::before {
+  content: '\2014\00a0';
+  color: rgba(255, 215, 0, 0.35);
+}
+
+.modal-card .modal-body blockquote + blockquote {
+  margin-top: 12px;
+}
+
+.modal-card .modal-body .modal-figure {
+  position: relative;
+  margin: 20px 0;
+  padding: 16px 16px 12px 16px;
+  border: none;
+  border-left: 3px solid rgba(130, 200, 255, 0.35);
+  background: linear-gradient(135deg, rgba(130, 200, 255, 0.06) 0%, rgba(255, 255, 255, 0.02) 100%);
+  border-radius: 0 12px 12px 0;
+}
+
+.modal-card .modal-body .modal-figure img {
+  width: 100%;
+  border-radius: 8px;
+  display: block;
+}
+
+.modal-card .modal-body .modal-figure figcaption {
+  display: block;
+  margin-top: 10px;
+  text-align: right;
+  font-style: normal;
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(130, 200, 255, 0.6);
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  line-height: 1.4;
+}
+
+.modal-card .modal-body .modal-figure figcaption::before {
+  content: '\2014\00a0';
+  color: rgba(130, 200, 255, 0.3);
+}
+
 .modal-card .modal-body a {
   color: rgba(130, 200, 255, 0.9);
   text-decoration: underline;
@@ -1216,7 +1305,7 @@ hr {
   border-radius: 10px;
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.08);
-  background: #1a1a1a;
+  /* background: #1a1a1a; */
   position: relative;
 }
 
@@ -1323,28 +1412,16 @@ hr {
 .marp-modal-card {
   max-width: 1100px;
   width: 95vw;
-  max-height: none;
-  overflow-y: visible;
-  display: flex;
-  flex-direction: column;
-  flex-shrink: 0;
-}
-
-#marp-modal {
-  align-items: flex-start;
-  padding: 40px 12px;
-}
-
-#marp-modal.open {
-  display: flex;
+  max-height: 90vh;
   overflow-y: auto;
+  display: block;
   scrollbar-width: thin;
   scrollbar-color: #555 transparent;
 }
 
-#marp-modal::-webkit-scrollbar { width: 8px; }
-#marp-modal::-webkit-scrollbar-track { background: transparent; }
-#marp-modal::-webkit-scrollbar-thumb { background: #555; border-radius: 4px; }
+.marp-modal-card::-webkit-scrollbar { width: 8px; }
+.marp-modal-card::-webkit-scrollbar-track { background: transparent; }
+.marp-modal-card::-webkit-scrollbar-thumb { background: #555; border-radius: 4px; }
 
 .marp-modal-header {
   display: flex;
@@ -1354,13 +1431,19 @@ hr {
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   margin-bottom: 16px;
   padding-right: 52px;
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  background: inherit;
+  margin: -28px -28px 16px;
+  padding: 28px 80px 16px 28px;
+  border-radius: 18px 18px 0 0;
 }
 
 .marp-modal-header .modal-close {
   position: absolute;
   top: 24px;
   right: 24px;
-  position: fixed;
   z-index: 210;
 }
 
@@ -1393,7 +1476,7 @@ hr {
   border-radius: 10px;
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.08);
-  background: #1a1a1a;
+  /* background: #1a1a1a; */
   text-align: center;
 }
 
@@ -1402,6 +1485,78 @@ hr {
   height: auto;
   display: block;
   border-radius: 10px;
+}
+
+/* MARP Bill of Materials */
+.marp-bom {
+  margin-top: 24px;
+}
+
+.marp-bom h3 {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0 0 16px;
+}
+
+.marp-bom h4 {
+  font-size: 15px;
+  font-weight: 700;
+  margin: 28px 0 10px;
+  color: rgba(255, 255, 255, 0.8);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 6px;
+}
+
+.marp-bom h4:first-of-type {
+  margin-top: 8px;
+}
+
+.marp-bom h5 {
+  font-size: 13px;
+  font-weight: 600;
+  margin: 20px 0 8px;
+  color: rgba(255, 255, 255, 0.55);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.marp-bom table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  margin-bottom: 8px;
+}
+
+.marp-bom thead th {
+  text-align: left;
+  padding: 8px 10px;
+  font-weight: 700;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: rgba(255, 255, 255, 0.45);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  white-space: nowrap;
+}
+
+.marp-bom tbody td {
+  padding: 8px 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.8);
+  vertical-align: top;
+}
+
+.marp-bom tbody tr:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.marp-bom a {
+  color: rgba(130, 200, 255, 0.9);
+  text-decoration: none;
+}
+
+.marp-bom a:hover {
+  text-decoration: underline;
 }
 
 /* Commander hero section */
@@ -1820,6 +1975,7 @@ hr {
   .pdf-modal-card { max-height: 88vh; width: 98vw; }
   .game-modal-card { max-height: 88vh; width: 98vw; }
   .marp-modal-card { width: 98vw; }
+  .marp-bom table { display: block; overflow-x: auto; white-space: nowrap; }
   .game-modal-header h2 { font-size: 18px; }
   .pdf-modal-header h2 { font-size: 18px; }
   .marp-modal-header h2 { font-size: 18px; }

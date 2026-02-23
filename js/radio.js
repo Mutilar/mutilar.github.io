@@ -192,36 +192,4 @@
 
   // Initialize first track
   loadTrack(0);
-
-  // Auto-play on first scroll down
-  let wantsAutoPlay = false;
-  let autoPlayDone = false;
-
-  function onFirstScroll() {
-    if (autoPlayDone) return;
-    if (window.scrollY > 50) {
-      wantsAutoPlay = true;
-      window.removeEventListener("scroll", onFirstScroll);
-      if (!isPlaying) {
-        play();
-        if (isPlaying) { autoPlayDone = true; return; }
-      }
-    }
-  }
-
-  function onFirstGesture() {
-    if (autoPlayDone) return;
-    if (wantsAutoPlay && !isPlaying) {
-      play();
-    }
-    autoPlayDone = true;
-    document.removeEventListener("click", onFirstGesture);
-    document.removeEventListener("touchstart", onFirstGesture);
-    document.removeEventListener("keydown", onFirstGesture);
-  }
-
-  window.addEventListener("scroll", onFirstScroll, { passive: true });
-  document.addEventListener("click", onFirstGesture, { once: false });
-  document.addEventListener("touchstart", onFirstGesture, { once: false });
-  document.addEventListener("keydown", onFirstGesture, { once: false });
 })();
