@@ -1431,13 +1431,6 @@ hr {
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   margin-bottom: 16px;
   padding-right: 52px;
-  position: sticky;
-  top: 0;
-  z-index: 5;
-  background: inherit;
-  margin: -28px -28px 16px;
-  padding: 28px 80px 16px 28px;
-  border-radius: 18px 18px 0 0;
 }
 
 .marp-modal-header .modal-close {
