@@ -42,6 +42,15 @@ function openModal(dataset, id, imgExt) {
 
   modal.classList.add("open");
   document.body.style.overflow = "hidden";
+  const card = modal.querySelector(".modal-card");
+  if (card) card.scrollTop = 0;
+}
+
+function navigateToModal(dataset, id, imgExt) {
+  closeModal();
+  const section = document.getElementById(dataset);
+  if (section) section.scrollIntoView({ behavior: 'smooth' });
+  setTimeout(() => openModal(dataset, id, imgExt), 100);
 }
 
 function closeModal() {
@@ -51,7 +60,7 @@ function closeModal() {
 
 modalClose.addEventListener("click", closeModal);
 modal.addEventListener("click", e => { if (e.target === modal) closeModal(); });
-document.addEventListener("keydown", e => { if (e.key === "Escape") { closeModal(); closePdfModal(); closeGameModal(); closeMarpModal(); closeBitnaughtsModal(); } });
+document.addEventListener("keydown", e => { if (e.key === "Escape") { closeModal(); closePdfModal(); closeGameModal(); closeMarpModal(); closeBitnaughtsModal(); closeBitnaughtsIphoneModal(); } });
 
 // ═══════════════════════════════════════════════════════════════
 //  MARP DIAGRAM MODAL
@@ -90,6 +99,25 @@ function closeBitnaughtsModal() {
 
 bitnaughtsModalClose.addEventListener("click", closeBitnaughtsModal);
 bitnaughtsModal.addEventListener("click", e => { if (e.target === bitnaughtsModal) closeBitnaughtsModal(); });
+
+// ═══════════════════════════════════════════════════════════════
+//  BITNAUGHTS iPHONE GALLERY MODAL
+// ═══════════════════════════════════════════════════════════════
+const bitnaughtsIphoneModal = document.getElementById("bitnaughts-iphone-modal");
+const bitnaughtsIphoneModalClose = document.getElementById("bitnaughtsIphoneModalClose");
+
+function openBitnaughtsIphoneModal() {
+  bitnaughtsIphoneModal.classList.add("open");
+  document.body.style.overflow = "hidden";
+}
+
+function closeBitnaughtsIphoneModal() {
+  bitnaughtsIphoneModal.classList.remove("open");
+  document.body.style.overflow = "";
+}
+
+bitnaughtsIphoneModalClose.addEventListener("click", closeBitnaughtsIphoneModal);
+bitnaughtsIphoneModal.addEventListener("click", e => { if (e.target === bitnaughtsIphoneModal) closeBitnaughtsIphoneModal(); });
 
 // Close modal when clicking an in-page anchor link (e.g. #games)
 modal.addEventListener("click", function (e) {

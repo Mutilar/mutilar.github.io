@@ -33,6 +33,7 @@
 <nav class="glass-nav" id="mainNav">
   <a href="#home" class="nav-brand" id="navBrand"><span class="brand-icon">🐧</span> Brian Hungerman</a>
   <a href="#home" class="active">Home</a>
+  <a href="#about">About</a>
   <a href="#marp">MARP</a>
   <a href="#bitnaughts">BitNaughts</a>
   <a href="#mtg">MTG</a>
@@ -114,6 +115,56 @@
     </div>
   </div>
 
+  <!-- ███ BAND 0: About Me header — opaque ███ -->
+  <div class="opaque-band" id="about">
+    <div class="band-content band-header">
+      <h2 class="section-heading reveal" style="margin-bottom:0;">👋 About Me</h2>
+      <a class="section-badge" href="https://www.linkedin.com/in/brian-hungerman/" target="_blank"><i class="fa fa-linkedin"></i> brian-hungerman</a>
+    </div>
+  </div>
+
+  <!-- ▓▓▓ PARALLAX: About Me content ▓▓▓ -->
+  <div class="parallax-window" data-attention="0" style="padding:40px 24px 80px;">
+    <div style="max-width:1100px;margin:0 auto;">
+      <div class="glass-tile reveal section-intro" style="margin-bottom:32px;">
+        <img class="section-intro-img" src="images/brian2.png" alt="Brian Hungerman" loading="lazy">
+        <div class="section-blurb">
+          <div class="step step-left">From retrofitting robots and building game engines...</div>
+          <div class="step step-center">...to deploying Azure ML endpoints serving 8 billion requests per day...</div>
+          <div class="step step-right">...to hand-binding satirical scripture in crimson thread;</div>
+          <div class="step-summary">I'm a <strong>Senior Software Engineer</strong> working with <strong>Microsoft Applied Sciences</strong> working on robotics & game design in my free time.</div>
+        </div>
+      </div>
+      <div class="card-grid card-grid-wide" style="margin-bottom:32px;">
+        <div class="glass-tile video-card reveal" style="cursor:pointer;" onclick="document.getElementById('marp').scrollIntoView({behavior:'smooth'}); openMarpModal();">
+          <div class="video-label">🧮 MARP Diagrams<span class="card-action-badge badge-dive">🔍 Dive Deeper</span><span class="year-badge">2025</span></div>
+          <div class="video-wrap">
+            <img src="images/marp-diagram.png" alt="Marp Wiring Diagram" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" loading="lazy">
+          </div>
+        </div>
+        <div class="glass-tile video-card reveal" style="cursor:pointer;" onclick="document.getElementById('bitnaughts').scrollIntoView({behavior:'smooth'}); openBitnaughtsIphoneModal();">
+          <div class="video-label">☄ BitNaughts U.X.<span class="card-action-badge badge-dive">🔍 Dive Deeper</span><span class="year-badge">2023</span></div>
+          <div class="video-wrap">
+            <img src="images/bn-2.png" alt="BitNaughts Ship" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" loading="lazy">
+          </div>
+        </div>
+        <div class="glass-tile video-card reveal" style="cursor:pointer;" onclick="document.getElementById('projects').scrollIntoView({behavior:'smooth'}); openModal('projects','iterate');">
+          <div class="video-label">📱 Iterate U.X.<span class="card-action-badge badge-dive">🔍 Dive Deeper</span><span class="year-badge">2017</span></div>
+          <div class="video-wrap">
+            <img src="images/iteratedemo.gif" alt="Iterate U.X." style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" loading="lazy">
+          </div>
+        </div>
+        <div class="glass-tile video-card reveal" style="cursor:pointer;" onclick="document.getElementById('mtg').scrollIntoView({behavior:'smooth'}); openPdfModal();">
+          <div class="video-label">📖 Dusk Rose Codex<span class="card-action-badge badge-dive">🔍 Dive Deeper</span><span class="year-badge">2025</span></div>
+          <div class="video-wrap">
+            <img src="images/bible.png" alt="Dusk Rose Codex" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" loading="lazy">
+          </div>
+        </div>
+      </div>
+      <div class="card-grid card-grid-wide" id="about-grid"></div>
+    </div>
+  </div>
+
   <!-- ███ BAND 1: Marp header — opaque ███ -->
   <div class="opaque-band" id="marp">
     <div class="band-content band-header">
@@ -123,7 +174,7 @@
   </div>
 
   <!-- ▓▓▓ PARALLAX: Marp content — rest bg shows through ▓▓▓ -->
-  <div class="parallax-window" data-attention="0" style="padding:40px 24px 80px;">
+  <div class="parallax-window" data-attention="1" style="padding:40px 24px 80px;">
     <div style="max-width:1100px;margin:0 auto;">
       <div class="glass-tile reveal section-intro" style="margin-bottom:32px;">
         <img class="section-intro-img" src="images/marp.png" alt="Marp" loading="lazy">
@@ -161,12 +212,12 @@
   </div>
 
   <!-- ▓▓▓ PARALLAX: BitNaughts content — rest bg shows through ▓▓▓ -->
-  <div class="parallax-window" data-attention="1" style="padding:40px 24px 80px;">
+  <div class="parallax-window" data-attention="0" style="padding:40px 24px 80px;">
     <div style="max-width:1100px;margin:0 auto;">
       <div class="glass-tile reveal section-intro" style="margin-bottom:32px;">
         <img class="section-intro-img" src="images/bitnaughts-poster.png" alt="BitNaughts" loading="lazy">
         <div class="section-blurb">
-          <div class="step step-left">From integrating <a href="#projects">Iterate's</a> interpreter into a gamified environment...</div>
+          <div class="step step-left">From integrating <a href="#projects" onclick="event.preventDefault(); navigateToModal('projects','iterate')">Iterate's</a> interpreter into a gamified environment...</div>
           <div class="step step-center">...to pitching at four consecutive Microsoft Hackathons, getting iterative feedback from live demos...</div>
           <div class="step step-right">...to open-sourcing an educational game engine built in Unity and C#;</div>
           <div class="step-summary"><em>BitNaughts</em> isn't just an educational programming video-game: it's code gamified!</div>
@@ -225,7 +276,7 @@
   </div>
 
   <!-- ▓▓▓ PARALLAX: MTG content ▓▓▓ -->
-  <div class="parallax-window" data-attention="0" style="padding:40px 24px 80px;">
+  <div class="parallax-window" data-attention="1" style="padding:40px 24px 80px;">
     <div style="max-width:1100px;margin:0 auto;">
       <div class="glass-tile reveal section-intro" style="margin-bottom:32px;">
         <img class="section-intro-img" src="images/mtg.png" alt="MTG" loading="lazy">
@@ -263,7 +314,7 @@
   </div>
 
   <!-- ▓▓▓ PARALLAX: Work content ▓▓▓ -->
-  <div class="parallax-window" data-attention="1" style="padding:40px 24px 80px;">
+  <div class="parallax-window" data-attention="0" style="padding:40px 24px 80px;">
     <div style="max-width:1100px;margin:0 auto;">
       <div class="glass-tile reveal section-intro" style="margin-bottom:32px;">
         <img class="section-intro-img" src="images/beers-with-the-viers.png" alt="Work" loading="lazy">
@@ -287,7 +338,7 @@
   </div>
 
   <!-- ▓▓▓ PARALLAX: Education content ▓▓▓ -->
-  <div class="parallax-window" data-attention="0" style="padding:40px 24px 80px;">
+  <div class="parallax-window" data-attention="1" style="padding:40px 24px 80px;">
     <div style="max-width:1100px;margin:0 auto;">
       <div class="glass-tile reveal section-intro" style="margin-bottom:32px;">
         <img class="section-intro-img" src="images/graduation.png" alt="Education" loading="lazy">
@@ -311,7 +362,7 @@
   </div>
 
   <!-- ▓▓▓ PARALLAX: Projects content ▓▓▓ -->
-  <div class="parallax-window" data-attention="1" style="padding:40px 24px 80px;">
+  <div class="parallax-window" data-attention="0" style="padding:40px 24px 80px;">
     <div style="max-width:1100px;margin:0 auto;">
       <div class="glass-tile reveal section-intro" style="margin-bottom:32px;">
         <img class="section-intro-img" src="images/brian2.png" alt="Projects" loading="lazy">
@@ -329,8 +380,8 @@
             <iframe src="https://www.youtube.com/embed/5hGkIXoP2AI" title="AMAX ESD" style="position:absolute;inset:0;width:100%;height:100%;border:none;" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
           </div>
         </div>
-        <div class="glass-tile video-card reveal">
-          <div class="video-label">📱 Iterate U.X.<span class="year-badge">2017</span></div>
+        <div class="glass-tile video-card reveal" style="cursor:pointer;" onclick="document.getElementById('projects').scrollIntoView({behavior:'smooth'}); openModal('projects','iterate');">
+          <div class="video-label">📱 Iterate U.X.<span class="card-action-badge badge-dive">🔍 Dive Deeper</span><span class="year-badge">2017</span></div>
           <div class="video-wrap">
             <img src="images/iteratedemo.gif" alt="Iterate U.X." style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" loading="lazy">
           </div>
@@ -349,7 +400,7 @@
   </div>
 
   <!-- ▓▓▓ PARALLAX: Hackathons content ▓▓▓ -->
-  <div class="parallax-window" data-attention="0" style="padding:40px 24px 80px;">
+  <div class="parallax-window" data-attention="1" style="padding:40px 24px 80px;">
     <div style="max-width:1100px;margin:0 auto;">
       <div class="glass-tile reveal section-intro" style="margin-bottom:32px;">
         <img class="section-intro-img" src="images/game-banner-lan.png" alt="Hackathons" loading="lazy">
@@ -367,8 +418,8 @@
             <iframe src="https://www.youtube.com/embed/PapgFHyC6_k?showinfo=0&controls=1&modestbranding=1" title="Blindsight Demo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
           </div>
         </div>
-        <div class="glass-tile video-card reveal">
-          <div class="video-label">🧪 ChemisTRY U.X.<span class="year-badge">2019</span></div>
+        <div class="glass-tile video-card reveal" style="cursor:pointer;" onclick="document.getElementById('hackathons').scrollIntoView({behavior:'smooth'}); openModal('hackathons','chemistry');">
+          <div class="video-label">🧪 ChemisTRY U.X.<span class="card-action-badge badge-dive">🔍 Dive Deeper</span><span class="year-badge">2019</span></div>
           <div class="video-wrap">
             <img src="images/chemistry-demo.png" alt="ChemisTRY Demo" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" loading="lazy">
           </div>
@@ -387,7 +438,7 @@
   </div>
 
   <!-- ▓▓▓ PARALLAX: Games content ▓▓▓ -->
-  <div class="parallax-window" data-attention="1" style="padding:40px 24px 80px;">
+  <div class="parallax-window" data-attention="0" style="padding:40px 24px 80px;">
     <div style="max-width:1100px;margin:0 auto;">
       <div class="glass-tile reveal section-intro" style="margin-bottom:32px;">
         <img class="section-intro-img" src="images/game-banner.png" alt="Games" loading="lazy">
@@ -405,6 +456,12 @@
             <iframe src="https://www.youtube.com/embed/CdIjw2bCvF0?showinfo=0&controls=1&modestbranding=1" title="Graviton Demo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
           </div>
         </div>
+        <div class="glass-tile video-card reveal" style="cursor:pointer;" onclick="document.getElementById('hackathons').scrollIntoView({behavior:'smooth'}); openModal('hackathons','seerauber');">
+          <div class="video-label">🧭 SeeRäuber<span class="card-action-badge badge-dive">🔍 Dive Deeper</span><span class="year-badge">2018</span></div>
+          <div class="video-wrap">
+            <img src="images/seerauber-ship.png" alt="SeeRäuber pirate ship" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" loading="lazy">
+          </div>
+        </div>
       </div>
       <div class="card-grid" id="games-grid"></div>
     </div>
@@ -418,7 +475,7 @@
   </div>
 
   <!-- ▓▓▓ WINDOW 7: final rest bg peek + connect ▓▓▓ -->
-  <div class="parallax-window parallax-window-gap" data-attention="0" style="display:flex;align-items:center;justify-content:center;min-height:50vh;max-height:none;">
+  <div class="parallax-window parallax-window-gap" data-attention="1" style="display:flex;align-items:center;justify-content:center;min-height:50vh;max-height:none;">
     <div class="glass-tile reveal" style="text-align:center; max-width:560px; width:100%; margin:0 24px;">
       <h2 style="font-size:26px; font-weight:700; margin-bottom:12px;">Something caught your eye?</h2>
       <p style="font-size:15px; color:rgba(255,255,255,0.6); margin-bottom:24px;">
@@ -534,6 +591,37 @@
       <div class="bitnaughts-gallery-item">
         <div class="bitnaughts-gallery-label">🎭 Color Palette Exploration</div>
         <img src="images/bn-colors.gif" alt="BitNaughts Colors" loading="lazy">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     BITNAUGHTS iPHONE GALLERY MODAL
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="modal-overlay" id="bitnaughts-iphone-modal">
+  <div class="glass-tile modal-card bitnaughts-modal-card" style="position:relative;">
+    <div class="bitnaughts-modal-header">
+      <button class="modal-close" id="bitnaughtsIphoneModalClose">&times;</button>
+      <h2>☄ BitNaughts — U.X. Design</h2>
+      <a href="https://github.com/bitnaughts" target="_blank"><i class="fa fa-github"></i> bitnaughts</a>
+    </div>
+    <div class="bitnaughts-gallery">
+      <div class="bitnaughts-gallery-item">
+        <div class="bitnaughts-gallery-label">📱 Ship Overview</div>
+        <img src="images/bitnaughtsiphone.png" alt="BitNaughts iPhone Ship Overview" loading="lazy">
+      </div>
+      <div class="bitnaughts-gallery-item">
+        <div class="bitnaughts-gallery-label">📱 Navigation U.X.</div>
+        <img src="images/bitnaughtsiphone2.png" alt="BitNaughts iPhone Navigation" loading="lazy">
+      </div>
+      <div class="bitnaughts-gallery-item">
+        <div class="bitnaughts-gallery-label">📱 Terminal U.X.</div>
+        <img src="images/bitnaughtsiphone3.png" alt="BitNaughts iPhone Terminal" loading="lazy">
+      </div>
+      <div class="bitnaughts-gallery-item">
+        <div class="bitnaughts-gallery-label">📱 Inventory U.X.</div>
+        <img src="images/bitnaughtsiphone4.png" alt="BitNaughts iPhone Inventory" loading="lazy">
       </div>
     </div>
   </div>
