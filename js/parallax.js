@@ -8,7 +8,25 @@
   const MS_GREEN  = [127, 186, 0];
   const MS_BLUE   = [0, 164, 239];
   const MS_YELLOW = [255, 185, 0];
+  const DEFAULT_PALETTE = [MS_RED, MS_GREEN, MS_BLUE, MS_YELLOW];
   const BASE_BG   = [27, 31, 43];
+
+  /** Parse a data-colors attribute into four [r,g,b] arrays.
+   *  Accepted format: "r,g,b; r,g,b; r,g,b; r,g,b"
+   *  Falls back to DEFAULT_PALETTE for any missing/invalid entries. */
+  function parsePalette(raw) {
+    if (!raw) return DEFAULT_PALETTE;
+    const parts = raw.split(";").map(s => {
+      const nums = s.trim().split(",").map(Number);
+      return nums.length === 3 && nums.every(n => !isNaN(n)) ? nums : null;
+    });
+    return [
+      parts[0] || DEFAULT_PALETTE[0],
+      parts[1] || DEFAULT_PALETTE[1],
+      parts[2] || DEFAULT_PALETTE[2],
+      parts[3] || DEFAULT_PALETTE[3],
+    ];
+  }
 
   // ── Canvas setup ───────────────────────────────────────────
   const cOrb   = document.getElementById("orbCanvas");
@@ -19,7 +37,8 @@
 
   const parallaxWindows = [...document.querySelectorAll(".parallax-window")].map(el => ({
     el,
-    attention: parseFloat(el.dataset.attention || "0")
+    attention: parseFloat(el.dataset.attention || "0"),
+    colors: parsePalette(el.dataset.colors)
   }));
 
   function resize() {
@@ -53,6 +72,8 @@
   function lerp(a, b, t) { return a + (b - a) * t; }
   function clamp01(v) { return Math.max(0, Math.min(1, v)); }
 
+  function isBlack(c) { return c[0] === 0 && c[1] === 0 && c[2] === 0; }
+
   function drawRadialOrb(ctx, cx, cy, radius, color, alphaStops) {
     const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, radius);
     alphaStops.forEach(([stop, alpha]) => {
@@ -76,8 +97,10 @@
     return afterConfine + (focused - afterConfine) * att;
   }
 
-  // ── Generic orb drawer (parameterized by attention level) ──
-  function drawOrbs(orbCtx, now, att, scrollOff) {
+  // ── Generic orb drawer (parameterized by attention level & colors) ──
+  function drawOrbs(orbCtx, now, att, scrollOff, palette) {
+    palette = palette || DEFAULT_PALETTE;
+    const c1 = palette[0], c2 = palette[1], c3 = palette[2], c4 = palette[3];
     const w = window.innerWidth;
     const h = window.innerHeight;
     const conf = 0;
@@ -135,7 +158,7 @@
     const cYelX = w * attentionX(0.60 + dX4 * 0.22, att);
     const cYelY = h * confineY(0.55 + dY4 * 0.20, conf, att) - scrollOff * 0.025;
 
-    const radiusScale = (1 - conf * 0.15) * (1 + att * 0.25);
+    const radiusScale = (1 - conf * 0.15) * (1 - att * 0.20);
     const alphaBright = 1 + att * 1;
 
     const radRed = w * (0.66 + b1 * 0.08) * radiusScale;
@@ -147,13 +170,17 @@
     orbCtx.fillStyle = `rgb(${BASE_BG[0]},${BASE_BG[1]},${BASE_BG[2]})`;
     orbCtx.fillRect(0, 0, w, h);
 
-    drawRadialOrb(orbCtx, cRedX, cRedY, radRed, MS_RED, [
+    if (!isBlack(c1))
+    drawRadialOrb(orbCtx, cRedX, cRedY, radRed, c1, [
       [0, clamp01(0.42 * alphaBright)], [0.33, clamp01(0.22 * alphaBright)], [0.66, clamp01(0.07 * alphaBright)], [1, 0]]);
-    drawRadialOrb(orbCtx, cGrnX, cGrnY, radGrn, MS_GREEN, [
+    if (!isBlack(c2))
+    drawRadialOrb(orbCtx, cGrnX, cGrnY, radGrn, c2, [
       [0, clamp01(0.38 * alphaBright)], [0.33, clamp01(0.18 * alphaBright)], [0.66, clamp01(0.06 * alphaBright)], [1, 0]]);
-    drawRadialOrb(orbCtx, cBluX, cBluY, radBlu, MS_BLUE, [
+    if (!isBlack(c3))
+    drawRadialOrb(orbCtx, cBluX, cBluY, radBlu, c3, [
       [0, clamp01(0.40 * alphaBright)], [0.33, clamp01(0.20 * alphaBright)], [0.66, clamp01(0.06 * alphaBright)], [1, 0]]);
-    drawRadialOrb(orbCtx, cYelX, cYelY, radYel, MS_YELLOW, [
+    if (!isBlack(c4))
+    drawRadialOrb(orbCtx, cYelX, cYelY, radYel, c4, [
       [0, clamp01(0.38 * alphaBright)], [0.33, clamp01(0.17 * alphaBright)], [0.66, clamp01(0.05 * alphaBright)], [1, 0]]);
 
     // Center bloom
@@ -220,7 +247,7 @@
       const top = Math.max(0, rect.top);
       const bottom = Math.min(vh, rect.bottom);
       if (bottom - top < 1) continue;
-      bands.push({ top, bottom, attention: pw.attention });
+      bands.push({ top, bottom, attention: pw.attention, colors: pw.colors });
     }
     return bands;
   }
@@ -232,19 +259,19 @@
     const scrollOff = window.scrollY * 0.3;
 
     // Pass 1: Draw rest state (attention=0) as the base layer
-    drawOrbs(ctxOrb, timestamp, 0, scrollOff);
+    drawOrbs(ctxOrb, timestamp, 0, scrollOff, DEFAULT_PALETTE);
     drawGlints(ctxGlint, timestamp);
 
     // Pass 2: For each visible attention window, clip & overdraw
     const bands = getVisibleWindows();
     for (const band of bands) {
-      if (band.attention <= 0) continue;
+      if (band.attention <= 0 && band.colors === DEFAULT_PALETTE) continue;
 
       ctxOrb.save();
       ctxOrb.beginPath();
       ctxOrb.rect(0, band.top, w, band.bottom - band.top);
       ctxOrb.clip();
-      drawOrbs(ctxOrb, timestamp, band.attention, scrollOff * 0.5);
+      drawOrbs(ctxOrb, timestamp, band.attention, scrollOff * 0.5, band.colors);
       ctxOrb.restore();
 
       ctxGlint.save();
