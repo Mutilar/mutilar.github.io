@@ -47,7 +47,7 @@
 
 <!-- Radio Player (outside nav so position:fixed works on mobile) -->
 <div class="radio-player" id="radioPlayer">
-  <a href="#home" class="radio-brand" id="radioBrand"><span class="brand-icon">🐧</span> <strong>Brian Hungerman</strong></a>
+  <a href="#home" class="radio-brand" id="radioBrand"><span class="brand-icon">🐧</span> <strong>Brian <span class="brand-surname">Hungerman</span></strong></a>
   <div class="radio-group">
   <div class="radio-eq" id="radioEq">
     <div class="radio-eq-bar" style="height:2px"></div>
@@ -110,8 +110,8 @@
       </div>
     </div>
     <div class="scroll-hint">
-      <span>Scroll down</span>
-      <span class="scroll-arrow">&#x25BE;</span>
+      <span>About Me</span>
+      <span class="scroll-arrow">👋</span>
     </div>
   </div>
 
@@ -129,11 +129,11 @@
       <div class="glass-tile reveal section-intro" style="margin-bottom:32px;">
         <img class="section-intro-img" src="images/brian2.png" alt="Brian Hungerman" loading="lazy">
         <div class="section-blurb">
-          <div class="step step-left">From tinkering on a home robot named MARP...</div>
-          <div class="step step-center">...to scaling Azure ML to 8 billion requests per day...</div>
-          <div class="step step-right">...to iteratively prototyping educational programming games;</div>
-          <div class="step-summary">I'm a <strong>Senior Software Engineer</strong> working with <strong>Microsoft Applied Sciences</strong> who loves <strong><a href="https://en.wikipedia.org/wiki/Graph_theory" target="_blank">Graph Theory</a></strong> & <strong><a href="https://en.wikipedia.org/wiki/Gamification" target="_blank">Gamification</a></strong>!</div>
-        </div>
+          <div class="step step-left">From tinkering on <strong><a href="#marp">MARP</a>: Home Robot</strong>...</div>
+          <div class="step step-center">...to scaling <strong><a href="#work" onclick="event.preventDefault(); navigateToModal('work','microsoft')">AzureML</a></strong> to <strong>billions of requests a day</strong>...</div>
+            <div class="step step-right">...to prototyping <strong><a href="#bitnaughts">BitNaughts</a>: Code Gamified</strong>;</div>
+            <div class="step-summary">I'm constantly learning new things, my favorite domains being <strong><a href="https://en.wikipedia.org/wiki/Graph_theory" target="_blank">Graph Theory</a></strong> & <strong><a href="https://en.wikipedia.org/wiki/Gamification" target="_blank">Gamification</a></strong>!</div>
+          </div>
       </div>
       <div class="card-grid card-grid-wide" style="margin-bottom:32px;">
         <div class="glass-tile video-card reveal" style="cursor:pointer;" onclick="document.getElementById('marp').scrollIntoView({behavior:'smooth'}); openMarpModal();">
@@ -142,26 +142,30 @@
             <img src="images/marp-diagram.png" alt="Marp Wiring Diagram" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" loading="lazy">
           </div>
         </div>
-        <div class="glass-tile video-card reveal" style="cursor:pointer;" onclick="document.getElementById('bitnaughts').scrollIntoView({behavior:'smooth'}); openBitnaughtsIphoneModal();">
-          <div class="video-label">☄ BitNaughts U.X.<span class="card-action-badge badge-dive">🔍 Check it out!</span><span class="year-badge">2023</span></div>
+        <div class="glass-tile video-card reveal" style="cursor:pointer;" onclick="document.getElementById('work').scrollIntoView({behavior:'smooth'}); navigateToModal('work','redtierobotics');">
+          <div class="video-label">🤖 Red Tie Robotics<span class="card-action-badge badge-dive">🔍 Check it out!</span><span class="year-badge">2015-2016</span></div>
           <div class="video-wrap">
-            <img src="images/bn-2.png" alt="BitNaughts Ship" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" loading="lazy">
+            <img src="images/redtie-robot.png" alt="Red Tie Robotics FRC 1458" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" loading="lazy">
           </div>
         </div>
         <div class="glass-tile video-card reveal" style="cursor:pointer;" onclick="document.getElementById('projects').scrollIntoView({behavior:'smooth'}); openModal('projects','iterate');">
-          <div class="video-label">ℹ Iterate U.X.<span class="card-action-badge badge-dive">🔍 Check it out!</span><span class="year-badge">2017</span></div>
+          <div class="video-label">ℹ Iterate<span class="card-action-badge badge-dive">🔍 Check it out!</span><span class="year-badge">2017</span></div>
           <div class="video-wrap">
             <img src="images/iteratedemo.gif" alt="Iterate U.X." style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" loading="lazy">
           </div>
         </div>
-        <div class="glass-tile video-card reveal" style="cursor:pointer;" onclick="document.getElementById('mtg').scrollIntoView({behavior:'smooth'}); openPdfModal();">
-          <div class="video-label">📖 Dusk Rose Codex<span class="card-action-badge badge-dive">🔍 Check it out!</span><span class="year-badge">2025</span></div>
+        <div class="glass-tile video-card reveal" style="cursor:pointer;" onclick="document.getElementById('bitnaughts').scrollIntoView({behavior:'smooth'}); openBitnaughtsIphoneModal();">
+          <div class="video-label">☄ BitNaughts<span class="card-action-badge badge-dive">🔍 Check it out!</span><span class="year-badge">2016-2026</span></div>
           <div class="video-wrap">
-            <img src="images/bible.png" alt="Dusk Rose Codex" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" loading="lazy">
+            <img src="images/bndemo.gif" alt="BitNaughts Demo" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" loading="lazy">
           </div>
         </div>
       </div>
       <div class="card-grid card-grid-wide" id="about-grid"></div>
+    </div>
+    <div class="scroll-hint">
+      <span>MARP</span>
+      <span class="scroll-arrow">🤖</span>
     </div>
   </div>
 
@@ -179,10 +183,10 @@
       <div class="glass-tile reveal section-intro" style="margin-bottom:32px;">
         <img class="section-intro-img" src="images/marp.png" alt="Marp" loading="lazy">
         <div class="section-blurb">
-          <div class="step step-left">From retrofiting a decades-old robot with modern circuitry...</div>
-          <div class="step step-center">...to reimaging the control interface via a game-pad...</div>
-          <div class="step step-right">...to flighting novel A.I. experiences on a robotics platform;</div>
-          <div class="step-summary"><em>MARP</em> is a robotics test-bed with deep personal meaning, bridging my FRC electronics experience with my A.I. & U.X. design skills.</div>
+          <div class="step step-left">From retrofiting a <strong>decades-old robot</strong> with a <strong><a href="#marp" onclick="event.preventDefault(); navigateToModal('marp','marppi')">Modern Brain</a></strong> via a <strong>Raspberry Pi 5</strong>...</div>
+          <div class="step step-center">...to reimagining the <strong><a href="#marp" onclick="event.preventDefault(); navigateToModal('marp','marpgamepad')">Control Interface</a></strong> via a <strong>Valve Steamdeck</strong>...</div>
+          <div class="step step-right">...bringing it to life with new <strong>Eyes</strong> (w/ <strong>IR Camera</strong>) &amp; <strong>Mouth</strong>;</div>
+          <div class="step-summary"><em>MARP</em> is a robotics test-bed that bridges my <strong><a href="#work" onclick="event.preventDefault(); navigateToModal('work','redtierobotics')">FRC experience</a></strong> with my design skills &amp; aesthetic!</div>
         </div>
       </div>
       <div class="card-grid card-grid-wide" style="margin-bottom:32px;">
@@ -201,6 +205,10 @@
       </div>
       <div class="card-grid card-grid-wide" id="marp-grid"></div>
     </div>
+    <div class="scroll-hint">
+      <span>BitNaughts</span>
+      <span class="scroll-arrow">☄</span>
+    </div>
   </div>
 
   <!-- ███ BAND 2: BitNaughts header — opaque ███ -->
@@ -217,10 +225,10 @@
       <div class="glass-tile reveal section-intro" style="margin-bottom:32px;">
         <img class="section-intro-img" src="images/bitnaughts-poster.png" alt="BitNaughts" loading="lazy">
         <div class="section-blurb">
-          <div class="step step-left">From integrating <a href="#projects" onclick="event.preventDefault(); navigateToModal('projects','iterate')">Iterate's</a> interpreter into a gamified environment...</div>
-          <div class="step step-center">...to pitching at four consecutive Microsoft Hackathons, getting iterative feedback from live demos...</div>
-          <div class="step step-right">...to open-sourcing an educational game engine built in Unity and C#;</div>
-          <div class="step-summary"><em>BitNaughts</em> isn't just an educational programming video-game: it's code gamified!</div>
+          <div class="step step-left">Transforming <strong><a href="#projects" onclick="event.preventDefault(); navigateToModal('projects','iterate')">Iterate</a></strong> into a new <strong><a href="#bitnaughts" onclick="event.preventDefault(); navigateToModal('bitnaughts','bitnaughts-unity')">Interpreter</a></strong> into a gamified environment...</div>
+          <div class="step step-center">...to pitching at four consecutive <strong><a href="https://hackathon.microsoft.com/" target="_blank">Microsoft Hackathons</a></strong>...</div>
+          <div class="step step-right">...to open-sourcing the whole stack from <strong><a href="#bitnaughts" onclick="event.preventDefault(); navigateToModal('bitnaughts','bitnaughts-unity')">Unity</a></strong> to <strong><a href="#bitnaughts" onclick="event.preventDefault(); navigateToModal('bitnaughts','bitnaughts-mainframe')">Azure</a></strong>;</div>
+          <div class="step-summary"><strong><a href="#bitnaughts" onclick="event.preventDefault(); navigateToModal('bitnaughts','bitnaughts')">BitNaughts</a></strong> isn't just an educational programming video-game: it's code gamified!</div>
         </div>
       </div>
       <div class="card-grid card-grid-wide">
@@ -249,21 +257,11 @@
           </div>
         </div>
       </div>
-      <div class="card-grid card-grid-wide" style="margin-top:32px;margin-bottom:32px;">
-        <div class="glass-tile video-card reveal">
-          <div class="video-label">☄ BitNaughts U.X.<span class="year-badge">2023</span></div>
-          <div class="video-wrap">
-            <img src="images/bn-2.png" alt="BitNaughts Ship" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" loading="lazy">
-          </div>
-        </div>
-        <div class="glass-tile video-card reveal" style="cursor:pointer;" onclick="openBitnaughtsModal()">
-          <div class="video-label">☄ BitNaughts U.X.<span class="card-action-badge badge-dive">🔍 Dive Deeper</span><span class="year-badge">2020</span></div>
-          <div class="video-wrap">
-            <img src="images/bndemo.gif" alt="BitNaughts Demo" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" loading="lazy">
-          </div>
-        </div>
-      </div>
       <div class="card-grid card-grid-wide" id="bitnaughts-grid" style="margin-top:32px;"></div>
+    </div>
+    <div class="scroll-hint">
+      <span>Magic: The Gathering</span>
+      <span class="scroll-arrow">🪄</span>
     </div>
   </div>
 
@@ -284,7 +282,7 @@
           <div class="step step-left">Two primordial gods: <em>Order</em> &amp; <em>Chaos</em>, and three factions emerge: <em>Faithful</em>, <em>Greedy</em> &amp; <em>Defiant</em>...</div>
           <div class="step step-center">...except <em>Faith</em> does not <em>Save</em>, <em>Wealth</em> does not <em>Protect</em> &amp; <em>Rebellion</em> does not <em>Free</em>...</div>
           <div class="step step-right">...what culminates is wry mythopoeia that subverts tired clichés;</div>
-          <div class="step-summary"><em>Dusk Rose Codex</em> transforms <em>Magic: The Gathering</em> into satirical <em>Vorthos</em> scripture, bound by hand in crimson thread.</div>
+          <div class="step-summary"><strong><a href="#" onclick="event.preventDefault(); openPdfModal()">Dusk Rose Codex</a></strong> transforms <strong><a href="https://en.wikipedia.org/wiki/Magic:_The_Gathering" target="_blank">Magic: The Gathering</a></strong> into satirical <strong><a href="https://mtg.fandom.com/wiki/Vorthos" target="_blank">Vorthos</a></strong> scripture, bound by hand in crimson thread!</div>
         </div>
       </div>
       <div class="card-grid card-grid-wide" style="margin-bottom:32px;">
@@ -303,6 +301,10 @@
       </div>
       <div class="card-grid card-grid-wide" id="mtg-grid"></div>
     </div>
+    <div class="scroll-hint">
+      <span>Work</span>
+      <span class="scroll-arrow">👨‍💻</span>
+    </div>
   </div>
 
   <!-- ███ BAND 3: Work ███ -->
@@ -319,13 +321,17 @@
       <div class="glass-tile reveal section-intro" style="margin-bottom:32px;">
         <img class="section-intro-img" src="images/beers-with-the-viers.png" alt="Work" loading="lazy">
         <div class="section-blurb">
-          <div class="step step-left">From building platforms to fight cancer with machine learning and big data...</div>
-          <div class="step step-center">...to teaching game design, coding, and robotics across the socioeconomic spectrum...</div>
-          <div class="step step-right">...to analysing hydrologic and ecosystemic implications of Central Valley agriculture;</div>
-          <div class="step-summary">I've had amazing opportunities to work at empowering companies, non-profits, and innovative research labs.</div>
+          <div class="step step-left">From building <strong><a href="#work" onclick="event.preventDefault(); navigateToModal('work','ventana')">platforms to fight cancer</a></strong> with <strong>machine learning</strong> &amp; <strong>big data</strong>...</div>
+          <div class="step step-center">...to teaching <strong><a href="#work" onclick="event.preventDefault(); navigateToModal('work','summerofgamedesign')">game design</a></strong>, <strong><a href="#work" onclick="event.preventDefault(); navigateToModal('work','learnbeat')">coding</a></strong>, and <strong><a href="#work" onclick="event.preventDefault(); navigateToModal('work','alamorobotics')">robotics</a></strong> across the <strong>socioeconomic spectrum</strong>...</div>
+          <div class="step step-right">...to analysing <strong><a href="#work" onclick="event.preventDefault(); navigateToModal('work','vicelab')">hydrologic &amp; ecosystemic implications</a></strong> of <strong>Central Valley agriculture</strong>;</div>
+          <div class="step-summary">I've had amazing opportunities to work at empowering companies, non-profits &amp; innovative research labs!</div>
         </div>
       </div>
       <div class="card-grid" id="work-grid"></div>
+    </div>
+    <div class="scroll-hint">
+      <span>Education</span>
+      <span class="scroll-arrow">🎓</span>
     </div>
   </div>
 
@@ -343,13 +349,17 @@
       <div class="glass-tile reveal section-intro" style="margin-bottom:32px;">
         <img class="section-intro-img" src="images/graduation.png" alt="Education" loading="lazy">
         <div class="section-blurb">
-          <div class="step step-left">From discrete mathematics and data structures laying the groundwork...</div>
-          <div class="step step-center">...to algorithms, networks, and databases building the toolkit...</div>
-          <div class="step step-right">...to robotics, software engineering, and computer organization tying it all together;</div>
-          <div class="step-summary">I've compiled every lab, assignment and project from my journey through UCM's Computer Science & Engineering program.</div>
+          <div class="step step-left">From <strong><a href="#education" onclick="event.preventDefault(); navigateToModal('education','cse015')">discrete mathematics</a></strong> &amp; <strong><a href="#education" onclick="event.preventDefault(); navigateToModal('education','cse030')">data structures</a></strong> laying the groundwork...</div>
+          <div class="step step-center">...to <strong><a href="#education" onclick="event.preventDefault(); navigateToModal('education','cse100')">algorithms</a></strong>, <strong><a href="#education" onclick="event.preventDefault(); navigateToModal('education','cse160')">networks</a></strong> &amp; <strong><a href="#education" onclick="event.preventDefault(); navigateToModal('education','cse111')">databases</a></strong> building the toolkit...</div>
+          <div class="step step-right">...to <strong><a href="#education" onclick="event.preventDefault(); navigateToModal('education','cse180')">robotics</a></strong>, <strong><a href="#education" onclick="event.preventDefault(); navigateToModal('education','cse120')">software engineering</a></strong> &amp; <strong><a href="#education" onclick="event.preventDefault(); navigateToModal('education','cse031')">computer organization</a></strong> tying it all together;</div>
+          <div class="step-summary">I've compiled every lab, assignment &amp; project from my journey through <strong><a href="https://engineering.ucmerced.edu/academics/CSE/computer-science-engineering" target="_blank">UCM's Computer Science &amp; Engineering</a></strong> program!</div>
         </div>
       </div>
       <div class="card-grid" id="education-grid"></div>
+    </div>
+    <div class="scroll-hint">
+      <span>Projects</span>
+      <span class="scroll-arrow">🛠️</span>
     </div>
   </div>
 
@@ -367,10 +377,10 @@
       <div class="glass-tile reveal section-intro" style="margin-bottom:32px;">
         <img class="section-intro-img" src="images/brian2.png" alt="Projects" loading="lazy">
         <div class="section-blurb">
-          <div class="step step-left">From empowering those with asthma with real-time air quality data...</div>
-          <div class="step step-center">...to leveraging big data to promote sustainability initiatives...</div>
-          <div class="step step-right">...to providing an intuitive learning environment for young programmers;</div>
-          <div class="step-summary">The intersection of computer science and entrepreneurship is a fascinating blend of creativity, pitching, and coding.</div>
+          <div class="step step-left">From empowering those with <strong>asthma</strong> with <strong><a href="#projects" onclick="event.preventDefault(); navigateToModal('projects','breeze')">real-time air quality data</a></strong>...</div>
+          <div class="step step-center">...to leveraging <strong>big data</strong> to promote <strong><a href="#projects" onclick="event.preventDefault(); navigateToModal('projects','ozone')">sustainability initiatives</a></strong>...</div>
+          <div class="step step-right">...to providing an <strong><a href="#projects" onclick="event.preventDefault(); navigateToModal('projects','iterate')">intuitive learning environment</a></strong> for new programmers;</div>
+          <div class="step-summary">The intersection of <strong>computer science</strong> &amp; <strong>entrepreneurship</strong> is a fascinating blend of creativity, pitching &amp; coding!</div>
         </div>
       </div>
       <div class="card-grid card-grid-wide" style="margin-bottom:32px;">
@@ -389,6 +399,10 @@
       </div>
       <div class="card-grid" id="projects-grid"></div>
     </div>
+    <div class="scroll-hint">
+      <span>Hacks</span>
+      <span class="scroll-arrow">⛏️</span>
+    </div>
   </div>
 
   <!-- ███ BAND 5: Hackathons ███ -->
@@ -405,10 +419,10 @@
       <div class="glass-tile reveal section-intro" style="margin-bottom:32px;">
         <img class="section-intro-img" src="images/game-banner-lan.png" alt="Hackathons" loading="lazy">
         <div class="section-blurb">
-          <div class="step step-left">From using augmented reality to visualize the missing link from farm to table...</div>
-          <div class="step step-center">...to an autonomous, room-mapping robotic tank for first responders called SRIRACHA...</div>
-          <div class="step step-right">...to optical character recognition on nutrition labels as a FitBit for your stomach;</div>
-          <div class="step-summary">I've traveled all of California competing in hackathons, collaborating with colleagues, and building teams of passionate engineers.</div>
+          <div class="step step-left">From AR to visualize the <strong>missing link</strong> from <strong><a href="#hackathons" onclick="event.preventDefault(); navigateToModal('hackathons','gist')">farm to table</a></strong>...</div>
+          <div class="step step-center">...to a semi-autonomous <strong>robotic tank</strong> called <strong><a href="#hackathons" onclick="event.preventDefault(); navigateToModal('hackathons','sriracha')">SRIRACHA</a></strong>...</div>
+          <div class="step step-right">...to OCR on <strong>nutrition labels</strong> as a <strong><a href="#hackathons" onclick="event.preventDefault(); navigateToModal('hackathons','digestquest')">FitBit for your stomach</a></strong>;</div>
+          <div class="step-summary">I've traveled all of <strong>California</strong> competing in hackathons, collaborating with colleagues &amp; building teams of passionate engineers!</div>
         </div>
       </div>
       <div class="card-grid card-grid-wide" style="margin-bottom:32px;">
@@ -427,6 +441,10 @@
       </div>
       <div class="card-grid" id="hackathons-grid"></div>
     </div>
+    <div class="scroll-hint">
+      <span>Games</span>
+      <span class="scroll-arrow">🎮</span>
+    </div>
   </div>
 
   <!-- ███ BAND 6: Games ███ -->
@@ -443,10 +461,10 @@
       <div class="glass-tile reveal section-intro" style="margin-bottom:32px;">
         <img class="section-intro-img" src="images/game-banner.png" alt="Games" loading="lazy">
         <div class="section-blurb">
-          <div class="step step-left">From hands-on applications of graph theory and data structures...</div>
-          <div class="step step-center">...to tinkering with finite state machines and model view controllers...</div>
-          <div class="step step-right">...to understanding challenges in big data processing, rendering, and visualization;</div>
-          <div class="step-summary">Game design offers unique coding challenges to solve, all while fostering creativity and intuitive U.X. design skills.</div>
+          <div class="step step-left">From hands-on applications of <strong>graph theory</strong> &amp; <strong>data structures</strong>...</div>
+          <div class="step step-center">...to tinkering with <strong>finite state machines</strong> &amp; <strong>model view controllers</strong>...</div>
+          <div class="step step-right">...to understanding challenges in <strong>big data processing</strong>, <strong>rendering</strong> &amp; <strong>visualization</strong>;</div>
+          <div class="step-summary">Game design offers unique coding challenges to solve, all while fostering creativity &amp; design skills!</div>
         </div>
       </div>
       <div class="card-grid card-grid-wide" style="margin-bottom:32px;">
@@ -465,6 +483,10 @@
       </div>
       <div class="card-grid" id="games-grid"></div>
     </div>
+    <div class="scroll-hint">
+      <span>Cheers</span>
+      <span class="scroll-arrow">🍻</span>
+    </div>
   </div>
 
   <!-- ███ BAND 6: FOOTER ███ -->
@@ -477,7 +499,7 @@
   <!-- ▓▓▓ WINDOW 7: final rest bg peek + connect ▓▓▓ -->
   <div class="parallax-window parallax-window-gap" data-attention="1" style="display:flex;align-items:center;justify-content:center;min-height:50vh;max-height:none;">
     <div class="glass-tile reveal" style="text-align:center; max-width:560px; width:100%; margin:0 24px;">
-      <h2 style="font-size:26px; font-weight:700; margin-bottom:12px;">Something caught your eye?</h2>
+      <h2 style="font-size:26px; font-weight:700; margin-bottom:12px;">Interested?</h2>
       <p style="font-size:15px; color:rgba(255,255,255,0.6); margin-bottom:24px;">
         I welcome opportunities to connect,<br>learn from others & share my expertise!
       </p>

@@ -40,22 +40,77 @@ function openModal(dataset, id, imgExt) {
     ? item.TEXT
     : "<p style='color:rgba(255,255,255,0.5);font-style:italic;'>Details coming soon…</p>";
 
+  // Glow the source tile
+  _applyGlow(dataset, id);
+
   modal.classList.add("open");
   document.body.style.overflow = "hidden";
   const card = modal.querySelector(".modal-card");
   if (card) card.scrollTop = 0;
 }
 
+// Track the currently-glowing tile so we can fade it out later
+let _glowingTile = null;
+
+function _applyGlow(dataset, id) {
+  // Clear any previous glow
+  if (_glowingTile) {
+    _glowingTile.classList.remove('tile-glow', 'tile-glow-fade');
+    _glowingTile = null;
+  }
+  // Find the tile in its native section grid first, fall back to any match
+  const gridId = dataset + '-grid';
+  const grid = document.getElementById(gridId);
+  const tile = grid
+    ? grid.querySelector(`[data-entry-id="${id}"]`)
+    : document.querySelector(`[data-entry-id="${id}"]`);
+  if (tile) {
+    tile.classList.add('tile-glow');
+    _glowingTile = tile;
+  }
+}
+
 function navigateToModal(dataset, id, imgExt) {
-  closeModal();
-  const section = document.getElementById(dataset);
-  if (section) section.scrollIntoView({ behavior: 'smooth' });
-  setTimeout(() => openModal(dataset, id, imgExt), 100);
+  // Close any open modal without triggering glow fade
+  modal.classList.remove("open");
+  document.body.style.overflow = "";
+  if (_glowingTile) {
+    _glowingTile.classList.remove('tile-glow', 'tile-glow-fade');
+    _glowingTile = null;
+  }
+
+  // Find the tile and scroll it into view
+  const gridId = dataset + '-grid';
+  const grid = document.getElementById(gridId);
+  const tile = grid
+    ? grid.querySelector(`[data-entry-id="${id}"]`)
+    : document.querySelector(`[data-entry-id="${id}"]`);
+
+  if (tile) {
+    tile.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  } else {
+    const section = document.getElementById(dataset);
+    if (section) section.scrollIntoView({ behavior: 'smooth' });
+  }
+
+  // openModal will handle the glow
+  setTimeout(() => openModal(dataset, id, imgExt), 600);
+}
+
+function _fadeOutGlow() {
+  if (_glowingTile) {
+    _glowingTile.classList.remove('tile-glow');
+    _glowingTile.classList.add('tile-glow-fade');
+    const el = _glowingTile;
+    _glowingTile = null;
+    setTimeout(() => el.classList.remove('tile-glow-fade'), 500);
+  }
 }
 
 function closeModal() {
   modal.classList.remove("open");
   document.body.style.overflow = "";
+  _fadeOutGlow();
 }
 
 modalClose.addEventListener("click", closeModal);

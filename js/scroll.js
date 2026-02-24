@@ -14,14 +14,32 @@
 
 // ═══════════════════════════════════════════════════════════════
 //  SCROLL-HINT FADE-OUT
+//  Each hint fades out as its parent parallax-window scrolls up
+//  so the hint is no longer near the viewport bottom.
 // ═══════════════════════════════════════════════════════════════
 (() => {
-  const hint = document.querySelector(".scroll-hint");
-  if (!hint) return;
-  window.addEventListener("scroll", () => {
-    hint.style.opacity = window.scrollY > 80 ? "0" : "1";
-    hint.style.pointerEvents = window.scrollY > 80 ? "none" : "auto";
-  }, { passive: true });
+  const hints = document.querySelectorAll(".scroll-hint");
+  if (!hints.length) return;
+
+  function updateHints() {
+    const vh = window.innerHeight;
+    hints.forEach(hint => {
+      const parent = hint.closest(".parallax-window");
+      if (!parent) return;
+      // Distance from the bottom of the parent to the bottom of the viewport
+      const parentBottom = parent.getBoundingClientRect().bottom;
+      // Fade zone: fully visible when parentBottom >= vh (hint at/below viewport bottom)
+      // fully hidden when parentBottom <= vh * 0.55 (scrolled well past)
+      const fadeStart = vh;
+      const fadeEnd   = vh * 0.55;
+      const t = Math.max(0, Math.min(1, (parentBottom - fadeEnd) / (fadeStart - fadeEnd)));
+      hint.style.opacity = t;
+      hint.style.pointerEvents = t < 0.1 ? "none" : "auto";
+    });
+  }
+
+  window.addEventListener("scroll", updateHints, { passive: true });
+  updateHints();
 })();
 
 // ═══════════════════════════════════════════════════════════════

@@ -13,6 +13,7 @@ function buildEntryCard(item, dataset, opts) {
 
   const card = document.createElement("div");
   card.className = "glass-tile glass-tile-clickable entry-card reveal";
+  card.setAttribute("data-entry-id", item.ID);
   if (!item.DATE && !hasLocation) card.classList.add("entry-card-compact");
 
   card.innerHTML = `
@@ -65,8 +66,8 @@ sectionConfigs.forEach(({ csv, dataset, gridId, imgExt, modalImgExt }) => {
 const aboutPicks = [
   { dataset: "work",     id: "microsoft" },
   { dataset: "projects", id: "azuremlops" },
+  { dataset: "work",     id: "redtierobotics" },
   { dataset: "projects", id: "amaxesd" },
-  { dataset: "games",    id: "voodoo" },
 ];
 let aboutBuilt = false;
 function buildAboutGrid() {
