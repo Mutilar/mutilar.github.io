@@ -142,7 +142,7 @@
           </div>
         </div>
         <div class="glass-tile video-card reveal" style="cursor:pointer;" onclick="openMarpModal()">
-          <div class="video-label">🧮 MARP Wiring Diagram<span class="card-action-badge badge-dive">🔍 Dive Deeper</span><span class="year-badge">2025</span></div>
+          <div class="video-label">🧮 MARP Diagrams<span class="card-action-badge badge-dive">🔍 Dive Deeper</span><span class="year-badge">2025</span></div>
           <div class="video-wrap">
             <img src="images/marp-diagram.png" alt="Marp Wiring Diagram" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" loading="lazy">
           </div>
@@ -205,8 +205,8 @@
             <img src="images/bn-2.png" alt="BitNaughts Ship" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" loading="lazy">
           </div>
         </div>
-        <div class="glass-tile video-card reveal">
-          <div class="video-label">☄ BitNaughts U.X.<span class="year-badge">2020</span></div>
+        <div class="glass-tile video-card reveal" style="cursor:pointer;" onclick="openBitnaughtsModal()">
+          <div class="video-label">☄ BitNaughts U.X.<span class="card-action-badge badge-dive">🔍 Dive Deeper</span><span class="year-badge">2020</span></div>
           <div class="video-wrap">
             <img src="images/bndemo.gif" alt="BitNaughts Demo" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" loading="lazy">
           </div>
@@ -504,6 +504,33 @@
   </div>
 </div>
 
+<!-- ════════════════R═══════════════════════════════════════════════
+     BITNAUGHTS GALLERY MODAL
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="modal-overlay" id="bitnaughts-modal">
+  <div class="glass-tile modal-card bitnaughts-modal-card" style="position:relative;">
+    <div class="bitnaughts-modal-header">
+      <button class="modal-close" id="bitnaughtsModalClose">&times;</button>
+      <h2>☄ BitNaughts — Early Iterations</h2>
+      <a href="https://github.com/bitnaughts" target="_blank"><i class="fa fa-github"></i> bitnaughts</a>
+    </div>
+    <div class="bitnaughts-gallery">
+      <div class="bitnaughts-gallery-item">
+        <div class="bitnaughts-gallery-label">🎨 3D Ship Design</div>
+        <img src="images/bn-3d.gif" alt="BitNaughts 3D Ship" loading="lazy">
+      </div>
+      <div class="bitnaughts-gallery-item">
+        <div class="bitnaughts-gallery-label">🖥️ UI Prototype</div>
+        <img src="images/bn-ui.gif" alt="BitNaughts UI" loading="lazy">
+      </div>
+      <div class="bitnaughts-gallery-item">
+        <div class="bitnaughts-gallery-label">🎭 Color Palette Exploration</div>
+        <img src="images/bn-colors.gif" alt="BitNaughts Colors" loading="lazy">
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- ═══════════════════════════════════════════════════════════════
      MARP DIAGRAM MODAL
      ═══════════════════════════════════════════════════════════════ -->
@@ -511,7 +538,7 @@
   <div class="glass-tile modal-card marp-modal-card" style="position:relative;">
     <div class="marp-modal-header">
       <button class="modal-close" id="marpModalClose">&times;</button>
-      <h2>🧮 MARP Wiring Diagram</h2>
+      <h2>🧮 MARP Diagrams</h2>
       <a href="https://github.com/Mutilar/Marp" target="_blank"><i class="fa fa-github"></i> Mutilar/Marp</a>
     </div>
     <div class="marp-diagram-wrap">

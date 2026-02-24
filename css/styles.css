@@ -1407,6 +1407,92 @@ hr {
 }
 
 /* ═══════════════════════════════════════════════════════════════
+   BITNAUGHTS GALLERY MODAL
+   ═══════════════════════════════════════════════════════════════ */
+.bitnaughts-modal-card {
+  max-width: 1100px;
+  width: 95vw;
+  max-height: 90vh;
+  overflow-y: auto;
+  display: block;
+  scrollbar-width: thin;
+  scrollbar-color: #555 transparent;
+}
+
+.bitnaughts-modal-card::-webkit-scrollbar { width: 8px; }
+.bitnaughts-modal-card::-webkit-scrollbar-track { background: transparent; }
+.bitnaughts-modal-card::-webkit-scrollbar-thumb { background: #555; border-radius: 4px; }
+
+.bitnaughts-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 16px;
+  padding-right: 52px;
+}
+
+.bitnaughts-modal-header .modal-close {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  z-index: 210;
+}
+
+.bitnaughts-modal-header h2 {
+  font-size: 22px;
+  font-weight: 800;
+  margin: 0;
+}
+
+.bitnaughts-modal-header a {
+  color: rgba(130, 200, 255, 0.9);
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  transition: all 0.25s;
+}
+
+.bitnaughts-modal-header a:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.bitnaughts-gallery {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.bitnaughts-gallery-item {
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.bitnaughts-gallery-label {
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.85);
+  background: rgba(0, 0, 0, 0.25);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.bitnaughts-gallery-item img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* ═══════════════════════════════════════════════════════════════
    MARP DIAGRAM MODAL
    ═══════════════════════════════════════════════════════════════ */
 .marp-modal-card {
@@ -1968,10 +2054,12 @@ hr {
   .pdf-modal-card { max-height: 88vh; width: 98vw; }
   .game-modal-card { max-height: 88vh; width: 98vw; }
   .marp-modal-card { width: 98vw; }
+  .bitnaughts-modal-card { width: 98vw; }
   .marp-bom table { display: block; overflow-x: auto; white-space: nowrap; }
   .game-modal-header h2 { font-size: 18px; }
   .pdf-modal-header h2 { font-size: 18px; }
   .marp-modal-header h2 { font-size: 18px; }
+  .bitnaughts-modal-header h2 { font-size: 18px; }
 
   .deck-hero {
     flex-direction: row;

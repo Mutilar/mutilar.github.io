@@ -51,7 +51,7 @@ function closeModal() {
 
 modalClose.addEventListener("click", closeModal);
 modal.addEventListener("click", e => { if (e.target === modal) closeModal(); });
-document.addEventListener("keydown", e => { if (e.key === "Escape") { closeModal(); closePdfModal(); closeGameModal(); closeMarpModal(); } });
+document.addEventListener("keydown", e => { if (e.key === "Escape") { closeModal(); closePdfModal(); closeGameModal(); closeMarpModal(); closeBitnaughtsModal(); } });
 
 // ═══════════════════════════════════════════════════════════════
 //  MARP DIAGRAM MODAL
@@ -71,6 +71,25 @@ function closeMarpModal() {
 
 marpModalClose.addEventListener("click", closeMarpModal);
 marpModal.addEventListener("click", e => { if (e.target === marpModal) closeMarpModal(); });
+
+// ═══════════════════════════════════════════════════════════════
+//  BITNAUGHTS GALLERY MODAL
+// ═══════════════════════════════════════════════════════════════
+const bitnaughtsModal = document.getElementById("bitnaughts-modal");
+const bitnaughtsModalClose = document.getElementById("bitnaughtsModalClose");
+
+function openBitnaughtsModal() {
+  bitnaughtsModal.classList.add("open");
+  document.body.style.overflow = "hidden";
+}
+
+function closeBitnaughtsModal() {
+  bitnaughtsModal.classList.remove("open");
+  document.body.style.overflow = "";
+}
+
+bitnaughtsModalClose.addEventListener("click", closeBitnaughtsModal);
+bitnaughtsModal.addEventListener("click", e => { if (e.target === bitnaughtsModal) closeBitnaughtsModal(); });
 
 // Close modal when clicking an in-page anchor link (e.g. #games)
 modal.addEventListener("click", function (e) {
