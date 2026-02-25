@@ -239,6 +239,20 @@ hr {
   cursor: pointer;
 }
 
+.radio-brand-slot {
+  display: none;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.radio-brand-slot .radio-brand,
+.radio-brand-slot .theme-toggle-radio {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
 .radio-brand {
   display: none;
   font-size: 12px;
@@ -599,6 +613,18 @@ hr {
 }
 
 /* ── Section Badge — floated bottom-right link pill ──────── */
+.section-badge-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.section-badge-group .section-badge {
+  margin-left: 0;
+}
+
 .section-badge {
   display: inline-flex;
   align-items: center;
@@ -628,6 +654,32 @@ hr {
 .section-badge i {
   font-size: 14px;
   opacity: 0.85;
+}
+
+.section-badge-glow {
+  color: rgba(255, 215, 0, 0.9);
+  background: rgba(255, 215, 0, 0.1);
+  border-color: rgba(255, 215, 0, 0.3);
+  animation: win-pulse 2s ease-in-out infinite;
+}
+
+.section-badge-glow:hover {
+  color: #fff;
+  background: rgba(255, 215, 0, 0.25);
+  border-color: rgba(255, 215, 0, 0.6);
+}
+
+html.light-mode .section-badge-glow {
+  color: rgba(160, 110, 0, 0.95);
+  background: rgba(180, 130, 0, 0.12);
+  border-color: rgba(160, 110, 0, 0.35);
+  animation: win-pulse-light 2s ease-in-out infinite;
+}
+
+html.light-mode .section-badge-glow:hover {
+  color: rgba(120, 80, 0, 1);
+  background: rgba(180, 130, 0, 0.22);
+  border-color: rgba(160, 110, 0, 0.55);
 }
 
 .section-intro {
@@ -775,6 +827,10 @@ hr {
 /* ═══════════════════════════════════════════════════════════════
    CONTENT CARDS
    ═══════════════════════════════════════════════════════════════ */
+.entry-card {
+  padding: 14px 14px;
+}
+
 .entry-card .entry-header {
   display: flex;
   align-items: flex-start;
@@ -951,8 +1007,8 @@ hr {
 }
 
 .video-card .video-label {
-  padding: 16px 24px 12px;
-  font-size: 15px;
+  padding: 10px 14px 8px;
+  font-size: 14px;
   font-weight: 600;
   color: rgba(255, 255, 255, 0.85);
   display: flex;
@@ -2307,11 +2363,11 @@ html.light-mode .card-action-badge.badge-dive {
 }
 
 .theme-toggle-radio:hover {
-  transform: scale(1.04);
+  transform: translateY(-50%) scale(1.04);
 }
 
 .theme-toggle-radio:active {
-  transform: scale(0.96);
+  transform: translateY(-50%) scale(0.96);
 }
 
 .theme-toggle-radio .theme-toggle-icon {
@@ -2564,12 +2620,11 @@ html.light-mode .footer-repo-btn:hover {
 }
 
 html.light-mode .glass-footer {
-  color: rgba(0, 0, 0, 0.3);
-  border-top-color: rgba(0, 0, 0, 0.08);
+  color: rgba(255, 255, 255, 0.3);
 }
 
 html.light-mode .glass-footer a {
-  color: rgba(0, 100, 200, 0.6);
+  color: rgba(130, 200, 255, 0.6);
 }
 
 /* ── Text & heading colors ────────────────────────────────── */
@@ -2647,7 +2702,7 @@ html.light-mode .section-blurb a {
 }
 
 html.light-mode .scroll-hint {
-  color: rgba(0, 0, 0, 0.35);
+  color: rgba(255, 255, 255, 0.55);
 }
 
 /* ── Section badges ───────────────────────────────────────── */
@@ -2938,6 +2993,7 @@ html.light-mode .outline-pill {
   .theme-toggle:not(.theme-toggle-radio) { display: none; }
   .theme-toggle-radio { display: flex; }
   .radio-brand { display: inline-flex; }
+  .radio-brand-slot { display: block; min-width: 110px; height: 30px; }
   .brand-surname { display: none; }
 
   .radio-song { display: flex; max-width: 120px; }
@@ -2965,6 +3021,7 @@ html.light-mode .outline-pill {
   .section-intro { flex-direction: column; text-align: center; }
   .section-intro-img { width: 80px; height: 80px; }
   .glass-tile { padding: 20px 18px; }
+  .glass-tile.video-card { padding: 0; }
   .entry-card .entry-logo { width: 48px; height: 48px; }
   .modal-card { padding: 20px 18px; }
   .deck-hero { margin: -20px -18px 24px; padding: 20px 18px 16px; top: -20px; }
@@ -3028,6 +3085,7 @@ html.light-mode .outline-pill {
   .section-heading { font-size: 22px; }
   .band-content { padding: 48px 8px; }
   .glass-tile { padding: 16px 14px; border-radius: 16px; }
+  .glass-tile.video-card { padding: 0; }
   .entry-card .entry-logo { width: 40px; height: 40px; }
   .entry-info .entry-name { font-size: 15px; }
   .entry-info .entry-title { font-size: 12px; }

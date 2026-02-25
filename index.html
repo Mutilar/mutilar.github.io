@@ -106,8 +106,10 @@
 
 <!-- Radio Player (outside nav so position:fixed works on mobile) -->
 <div class="radio-player" id="radioPlayer">
-  <a href="#home" class="radio-brand" id="radioBrand"><span class="brand-icon">🐧</span> <strong>Brian <span class="brand-surname">Hungerman</span></strong></a>
-  <button class="theme-toggle theme-toggle-radio" id="themeToggleRadio" title="Switch to light mode" aria-label="Switch to light mode" aria-pressed="false"><span class="theme-toggle-icon">🌙</span><span class="theme-toggle-label">Dark Mode</span></button>
+  <div class="radio-brand-slot">
+    <a href="#home" class="radio-brand" id="radioBrand"><span class="brand-icon">🐧</span> <strong>Brian <span class="brand-surname">Hungerman</span></strong></a>
+    <button class="theme-toggle theme-toggle-radio" id="themeToggleRadio" title="Switch to light mode" aria-label="Switch to light mode" aria-pressed="false"><span class="theme-toggle-icon">🌙</span><span class="theme-toggle-label">Dark Mode</span></button>
+  </div>
   <div class="radio-group">
   <div class="radio-eq" id="radioEq">
     <div class="radio-eq-bar" style="height:2px"></div>
@@ -179,7 +181,7 @@
   <div class="opaque-band" id="about">
     <div class="band-content band-header">
       <h2 class="section-heading reveal" style="margin-bottom:0;">👋 About Me</h2>
-      <a class="section-badge" href="https://www.linkedin.com/in/brian-hungerman/" target="_blank"><i class="fa fa-linkedin"></i> brian-hungerman</a>
+      <a class="section-badge" href="https://www.linkedin.com/in/brian-hungerman/" target="_blank"><i class="fa fa-linkedin"></i> LinkedIn</a>
     </div>
   </div>
 
@@ -275,7 +277,7 @@
   <div class="opaque-band" id="bitnaughts">
     <div class="band-content band-header">
       <h2 class="section-heading reveal" style="margin-bottom:0;">☄ BitNaughts</h2>
-      <a class="section-badge" href="https://github.com/bitnaughts" target="_blank"><i class="fa fa-github"></i> bitnaughts</a>
+      <a class="section-badge" href="https://github.com/bitnaughts" target="_blank"><i class="fa fa-github"></i> BitNaughts</a>
     </div>
   </div>
 
@@ -329,7 +331,7 @@
   <div class="opaque-band" id="mtg">
     <div class="band-content band-header">
       <h2 class="section-heading reveal" style="margin-bottom:0;">🪄 Magic: The Gathering</h2>
-      <a class="section-badge" href="https://archidekt.com/u/Mutilar" target="_blank"><i class="fa fa-external-link"></i> archidekt/Mutilar</a>
+      <a class="section-badge" href="https://archidekt.com/u/Mutilar" target="_blank"><i class="fa fa-clone"></i> Archidekt</a>
     </div>
   </div>
 
@@ -371,7 +373,7 @@
   <div class="opaque-band" id="work">
     <div class="band-content band-header">
       <h2 class="section-heading reveal" style="margin-bottom:0;">👨‍💻 Work</h2>
-      <a class="section-badge" href="https://www.linkedin.com/in/brian-hungerman/" target="_blank"><i class="fa fa-linkedin"></i> brian-hungerman</a>
+      <a class="section-badge" href="https://www.linkedin.com/in/brian-hungerman/" target="_blank"><i class="fa fa-linkedin"></i> LinkedIn</a>
     </div>
   </div>
 
@@ -399,7 +401,10 @@
   <div class="opaque-band" id="education">
     <div class="band-content band-header">
       <h2 class="section-heading reveal" style="margin-bottom:0;">🎓 Education</h2>
-      <span class="section-badge"><i class="fa fa-graduation-cap"></i> <em>Magna Cum Laude</em></span>
+      <div class="section-badge-group">
+        <a class="section-badge" href="https://www.ucmerced.edu/" target="_blank"><i class="fa fa-university"></i> University of California, Merced</a>
+        <span class="section-badge section-badge-glow"><i class="fa fa-graduation-cap"></i> <em>Magna Cum Laude</em></span>
+      </div>
     </div>
   </div>
 
@@ -469,7 +474,10 @@
   <div class="opaque-band" id="hackathons">
     <div class="band-content band-header">
       <h2 class="section-heading reveal" style="margin-bottom:0;">⛏️ Hacks</h2>
-      <a class="section-badge" href="https://devpost.com/BrianHungerman" target="_blank"><i class="fa fa-trophy"></i> BrianHungerman</a>
+      <div class="section-badge-group">
+        <a class="section-badge" href="https://github.com/plebeiathon" target="_blank"><i class="fa fa-github"></i> Plebeiathon</a>
+        <a class="section-badge section-badge-glow" href="https://devpost.com/BrianHungerman" target="_blank"><i class="fa fa-trophy"></i> DevPost</a>
+      </div>
     </div>
   </div>
 
@@ -553,14 +561,14 @@
   <div class="opaque-band" id="footer-band">
     <div class="band-content band-header">
       <h2 class="section-heading reveal" style="margin-bottom:0;">🍻 Cheers</h2>
-      <a class="section-badge" href="https://github.com/Mutilar/mutilar.github.io" target="_blank"><i class="fa fa-github"></i> mutilar.github.io</a>
+      <a class="section-badge" href="https://github.com/Mutilar/mutilar.github.io" target="_blank"><i class="fa fa-github"></i> Mutilar.github.io</a>
     </div>
   </div>
 
   <!-- ▓▓▓ WINDOW 7: rest bg peek + connect ▓▓▓ -->
   <div class="parallax-window parallax-window-gap" data-attention="1" style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:50vh;max-height:none;padding-bottom:24px;">
     <div class="glass-tile reveal" style="text-align:center; max-width:560px; width:100%; margin:0 24px;">
-      <h2 style="font-size:26px; font-weight:700; margin-bottom:12px;">Interested?</h2>
+      <h2 style="font-size:26px; font-weight:700; margin-bottom:12px;">👀 Interested?</h2>
       <p class="connect-subtitle" style="font-size:15px; margin-bottom:24px;">
         I welcome opportunities to connect,<br>learn from others &amp; share my expertise!
       </p>
@@ -590,7 +598,7 @@
           <div class="step step-left">From a <strong><a href="https://en.wikipedia.org/wiki/Coprime_integers" target="_blank">Coprime</a> parallax orb engine</strong> working away in the background...</div>
           <div class="step step-center">...to <strong><a href="https://aesthetics.fandom.com/wiki/Glassmorphism" target="_blank">Glassmorphic</a> tiles</strong> floating in the foreground...</div>
           <div class="step step-right">...to <strong><a href="https://www.papaparse.com/" target="_blank">CSV-driven</a> data</strong> powering it all;</div>
-          <div class="step-summary"><strong><a href="https://github.com/Mutilar/mutilar.github.io" target="_blank">Mutilar.github.io</a></strong> is yet another one of my 45 <strong>open-source</strong> projects on display here!</div>
+          <div class="step-summary"><strong><a href="https://github.com/Mutilar/mutilar.github.io" target="_blank">Mutilar.GitHub.io</a></strong> is yet another one of my 45 <strong>open-source</strong> projects on display here!</div>
         </div>
       </div>
 
@@ -602,9 +610,9 @@
         </div>
       </div>
       <div class="card-grid card-grid-wide" style="margin-bottom:32px;">
-        <div class="glass-tile video-card reveal">
-          <div class="video-label">🏗️ Architecture</div>
-          <div class="footer-detail-list" style="padding:0 24px 20px;">
+        <div class="glass-tile video-card reveal" style="cursor:pointer;" role="button" tabindex="0" aria-label="Open Architecture Diagrams" data-action="open" data-open="archModal">
+          <div class="video-label">🏗️ Architecture<span class="card-action-badge badge-dive">🔍 See More!</span></div>
+          <div class="footer-detail-list" style="padding:0 14px 14px;">
             <div class="footer-detail-item">
               <span class="footer-detail-icon"><i class="fa fa-database"></i></span>
               <div>
@@ -630,7 +638,7 @@
         </div>
         <a href="https://github.com/Mutilar/mutilar.github.io" target="_blank" class="glass-tile video-card reveal" style="cursor:pointer;text-decoration:none;color:inherit;" role="link" aria-label="Open Repository on GitHub">
           <div class="video-label">📂 Repository<span class="card-action-badge"><i class="fa fa-github"></i> GitHub</span></div>
-          <div class="footer-detail-list" style="padding:0 24px 20px;">
+          <div class="footer-detail-list" style="padding:0 14px 14px;">
             <div class="footer-detail-item">
               <span class="footer-detail-icon"><i class="fa fa-sitemap"></i></span>
               <div>
@@ -665,7 +673,7 @@
 
       <!-- Copyright -->
       <footer class="glass-footer">
-        <p>Brian Hungerman · <span id="footer-year"></span><br><a href="https://github.com/Mutilar/mutilar.github.io" target="_blank"><i class="fa fa-github"></i> mutilar.github.io</a></p>
+        <p>Brian Hungerman · <span id="footer-year"></span><br><a href="https://github.com/Mutilar/mutilar.github.io" target="_blank"><i class="fa fa-github"></i> Mutilar.GitHub.io</a></p>
       </footer>
 
     </div>
@@ -700,7 +708,7 @@
       <div class="deck-hero-info">
         <h2 class="deck-hero-name" id="deck-hero-name"></h2>
         <p class="deck-hero-motto" id="deck-hero-motto" style="display:none"></p>
-        <a class="deck-hero-link" id="deck-hero-link" href="#" target="_blank"><i class="fa fa-external-link"></i> Archidekt</a>
+        <a class="deck-hero-link" id="deck-hero-link" href="#" target="_blank"><i class="fa fa-clone"></i> Archidekt</a>
         <div class="modal-body deck-body" id="deck-body"></div>
         <!-- <p class="deck-hero-bracket" id="deck-hero-bracket"></p> -->
       </div>
@@ -810,7 +818,7 @@
     <div class="marp-modal-header">
       <button class="modal-close" id="archModalClose" aria-label="Close modal">&times;</button>
       <h2>🏗️ Site Architecture</h2>
-      <a href="https://github.com/Mutilar/mutilar.github.io" target="_blank"><i class="fa fa-github"></i> mutilar.github.io</a>
+      <a href="https://github.com/Mutilar/mutilar.github.io" target="_blank"><i class="fa fa-github"></i> Mutilar.GitHub.io</a>
     </div>
 
     <!-- Diagram placeholder — replace src with your actual architecture diagram -->
