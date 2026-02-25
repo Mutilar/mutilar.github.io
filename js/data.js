@@ -18,7 +18,6 @@ function buildEntryCard(item, dataset, opts) {
 
   card.innerHTML = `
     <div class="entry-header">
-      <img class="entry-logo" src="images/${item.ID}${imgExt}" alt="${item.NAME}" onerror="this.style.display='none'">
       <div class="entry-info">
         <div class="entry-name">${item.NAME}</div>
         <div class="entry-meta">
@@ -53,8 +52,12 @@ const sectionConfigs = [
 ];
 
 sectionConfigs.forEach(({ csv, dataset, gridId, imgExt, modalImgExt }) => {
-  $.get(csv + "?v=" + Date.now()).then(function (t) {
-    const d = $.csv.toObjects(t);
+  fetchCSV(csv + "?v=" + CACHE_VERSION).then(d => {
+    if (!d.length) {
+      const g = document.getElementById(gridId);
+      if (g) g.innerHTML = '<p style="color:rgba(255,255,255,0.5);font-style:italic;padding:16px;">Failed to load data. Please refresh.</p>';
+      return;
+    }
     modalState[dataset] = d;
     const g = document.getElementById(gridId);
     d.forEach(i => g.appendChild(buildEntryCard(i, dataset, { imgExt, modalImgExt })));
@@ -85,8 +88,7 @@ function buildAboutGrid() {
 }
 
 // ── MTG (special: deck modal override) ───────────────────────
-$.get("csv/mtg.csv?v=" + Date.now()).then(function (t) {
-  const d = $.csv.toObjects(t);
+fetchCSV("csv/mtg.csv?v=" + CACHE_VERSION).then(d => {
   modalState.mtg = d;
   const g = document.getElementById("mtg-grid");
   d.forEach(function (i) {
@@ -101,3 +103,71 @@ $.get("csv/mtg.csv?v=" + Date.now()).then(function (t) {
     }
   });
 });
+
+// ── MARP BOM (Bill of Materials) — deferred until modal opens ──
+let _bomLoaded = false;
+const _origOpenMarpModal = window.openMarpModal || openMarpModal;
+window.openMarpModal = function() {
+  _origOpenMarpModal();
+  if (_bomLoaded) return;
+  _bomLoaded = true;
+  const container = document.getElementById("marp-bom");
+  if (!container) return;
+  container.innerHTML = '<p style="color:rgba(255,255,255,0.5);font-style:italic;">Loading BOM…</p>';
+  fetch("csv/marp-bom.json?v=" + CACHE_VERSION).then(r => {
+    if (!r.ok) throw new Error(`HTTP ${r.status}`);
+    return r.json();
+  }).then(bom => {
+    container.innerHTML = "";
+    _buildBom(bom, container);
+  }).catch(err => {
+    console.error("[BOM]", err);
+    container.innerHTML = '<p style="color:rgba(255,200,200,0.7);font-style:italic;">Failed to load BOM. Please refresh.</p>';
+  });
+};
+
+function _buildBom(bom, container) {
+  function buildTable(columns, rows) {
+    const table = document.createElement("table");
+    const thead = document.createElement("thead");
+    const headerRow = document.createElement("tr");
+    columns.forEach(col => { const th = document.createElement("th"); th.textContent = col; headerRow.appendChild(th); });
+    thead.appendChild(headerRow);
+    table.appendChild(thead);
+
+    const tbody = document.createElement("tbody");
+    rows.forEach(row => {
+      const tr = document.createElement("tr");
+      columns.forEach(col => {
+        const td = document.createElement("td");
+        td.innerHTML = row[col] || "";
+        // Ensure any dynamically inserted images get loading="lazy"
+        td.querySelectorAll("img").forEach(img => { img.loading = "lazy"; });
+        tr.appendChild(td);
+      });
+      tbody.appendChild(tr);
+    });
+    table.appendChild(tbody);
+    return table;
+  }
+
+  bom.sections.forEach(section => {
+    if (section.subsections) {
+      const h4 = document.createElement("h4");
+      h4.textContent = section.icon + " " + section.title;
+      container.appendChild(h4);
+
+      section.subsections.forEach(sub => {
+        const h5 = document.createElement("h5");
+        h5.textContent = sub.icon + " " + sub.title;
+        container.appendChild(h5);
+        container.appendChild(buildTable(sub.columns, sub.rows));
+      });
+    } else {
+      const h4 = document.createElement("h4");
+      h4.textContent = section.icon + " " + section.title;
+      container.appendChild(h4);
+      container.appendChild(buildTable(section.columns, section.rows));
+    }
+  });
+}

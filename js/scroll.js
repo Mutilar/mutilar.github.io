@@ -29,9 +29,9 @@
       // Distance from the bottom of the parent to the bottom of the viewport
       const parentBottom = parent.getBoundingClientRect().bottom;
       // Fade zone: fully visible when parentBottom >= vh (hint at/below viewport bottom)
-      // fully hidden when parentBottom <= vh * 0.55 (scrolled well past)
+      // fully hidden when parentBottom <= 0 (scrolled entirely past)
       const fadeStart = vh;
-      const fadeEnd   = vh * 0.55;
+      const fadeEnd   = 0;
       const t = Math.max(0, Math.min(1, (parentBottom - fadeEnd) / (fadeStart - fadeEnd)));
       hint.style.opacity = t;
       hint.style.pointerEvents = t < 0.1 ? "none" : "auto";

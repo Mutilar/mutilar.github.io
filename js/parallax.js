@@ -282,8 +282,13 @@
       ctxGlint.restore();
     }
 
-    requestAnimationFrame(frame);
+    if (!document.hidden) requestAnimationFrame(frame);
   }
 
   requestAnimationFrame(frame);
+
+  // Resume animation when tab becomes visible again
+  document.addEventListener("visibilitychange", () => {
+    if (!document.hidden) requestAnimationFrame(frame);
+  });
 })();

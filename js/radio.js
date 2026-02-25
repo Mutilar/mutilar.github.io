@@ -64,6 +64,8 @@
       player.classList.add("playing");
       playIcon.className = "fa fa-pause";
       playBtn.title = "Pause";
+      playBtn.setAttribute("aria-label", "Pause");
+      playBtn.setAttribute("aria-pressed", "true");
       startEq();
     }).catch(() => {});
   }
@@ -74,6 +76,8 @@
     player.classList.remove("playing");
     playIcon.className = "fa fa-play";
     playBtn.title = "Play";
+    playBtn.setAttribute("aria-label", "Play");
+    playBtn.setAttribute("aria-pressed", "false");
     stopEq();
   }
 

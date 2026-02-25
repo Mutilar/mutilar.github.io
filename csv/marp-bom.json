@@ -1,0 +1,97 @@
+{
+  "sections": [
+    {
+      "icon": "🖥️",
+      "title": "Control & Compute",
+      "columns": ["Component", "Role", "Voltage", "Amperage", "Wattage", "Dimensions", "Notes"],
+      "rows": [
+        {"Component": "<a href='https://www.xbox.com/en-US/accessories/controllers/elite-wireless-controller-series-2' target='_blank'>Controller</a>", "Role": "Operator input", "Voltage": "5 V", "Amperage": "≤1.5 A", "Wattage": "≤7.5 W", "Dimensions": "Gamepad form factor", "Notes": "Wired or wireless dual joysticks, triggers, and action buttons."},
+        {"Component": "<a href='https://store.steampowered.com/steamdeck' target='_blank'>Handheld Console</a>", "Role": "Operator input/output", "Voltage": "5–20 V (USB-C PD)", "Amperage": "≤3.0 A", "Wattage": "≤45 W", "Dimensions": "11.7″ × 4.6″ × 1.9″", "Notes": "Wireless dual joysticks, triggers, and action buttons with real-time video stream and diagnostics."},
+        {"Component": "<a href='https://www.raspberrypi.com/products/raspberry-pi-5/' target='_blank'>Raspberry Pi 5</a>", "Role": "Onboard coordination & processing", "Voltage": "5 V", "Amperage": "≤5.4 A", "Wattage": "≤27 W", "Dimensions": "3.35″ × 2.20″ × 0.71″", "Notes": "Wi-Fi / Bluetooth / USB; CSI/DSI; 16 GB RAM, 64 GB SD."}
+      ]
+    },
+    {
+      "icon": "⚙️",
+      "title": "Locomotion",
+      "columns": ["Component", "Voltage", "Amperage", "Wattage", "Dimensions", "Notes"],
+      "rows": [
+        {"Component": "<a href='https://www.nidec-advancedmotor.com/en/digital/pdf/KH56Q.pdf' target='_blank'>Left wheel</a>", "Voltage": "24 V", "Amperage": "2.5 A", "Wattage": "60 W", "Dimensions": "2.20″", "Notes": "KH56 Stepper Motor"},
+        {"Component": "<a href='https://www.nidec-advancedmotor.com/en/digital/pdf/KH56Q.pdf' target='_blank'>Right wheel</a>", "Voltage": "24 V", "Amperage": "2.5 A", "Wattage": "60 W", "Dimensions": "2.20″", "Notes": "KH56 Stepper Motor"},
+        {"Component": "<a href='https://www.makerguides.com/tb6600-stepper-motor-driver-arduino-tutorial/' target='_blank'>Drivers</a>", "Voltage": "24 V", "Amperage": "≤2.5 A", "Wattage": "≤120 W", "Dimensions": "3.4″ × 1.8″ × 1.3″", "Notes": "TB6600 × 4 (two on wheels, two reserved for turret axes)."}
+      ]
+    },
+    {
+      "icon": "🦾",
+      "title": "Actuation",
+      "columns": ["Component", "Voltage", "Amperage", "Wattage", "Dimensions", "Notes"],
+      "rows": [
+        {"Component": "<a href='https://product.minebeamitsumi.com/en/product/category/rotary/steppingmotor/pm/PMStandardtype.html' target='_blank'>Head pan</a>", "Voltage": "12 V", "Amperage": "1.0 A", "Wattage": "12 W", "Dimensions": "Ø2.17″ × 0.98″", "Notes": "M55SP-3NK Stepper Motor (stocked on <a href='https://www.radwell.com/Buy/MITSUMI/MITSUMI/M55SP-2NK' target='_blank'>Radwell</a>)"},
+        {"Component": "<a href='https://product.minebeamitsumi.com/en/product/category/rotary/steppingmotor/pm/PMStandardtype.html' target='_blank'>Head tilt</a>", "Voltage": "12 V", "Amperage": "1.0 A", "Wattage": "12 W", "Dimensions": "Ø2.17″ × 0.98″", "Notes": "M55SP-3NK Stepper Motor (stocked on <a href='https://www.radwell.com/Buy/MITSUMI/MITSUMI/M55SP-2NK' target='_blank'>Radwell</a>)"},
+        {"Component": "<a href='https://www.makerguides.com/tb6600-stepper-motor-driver-arduino-tutorial/' target='_blank'>Drivers (shared TB6600 bank)</a>", "Voltage": "24 V", "Amperage": "≤2.5 A", "Wattage": "≤120 W", "Dimensions": "3.4″ × 1.8″ × 1.3″", "Notes": "Same TB6600 stack as wheels; pan/tilt channels limit current for 12 V coils."},
+        {"Component": "Shutter motor driver", "Voltage": "TBD", "Amperage": "TBD", "Wattage": "TBD", "Dimensions": "TBD", "Notes": "H-bridge driver; 5 V logic with 12 V motor rail; commanded directly by the Pi."},
+        {"Component": "Shutter motor", "Voltage": "TBD", "Amperage": "TBD", "Wattage": "TBD", "Dimensions": "TBD", "Notes": "Motorized projector shutter (non-stepper); homed via limit switch."}
+      ]
+    },
+    {
+      "icon": "🔋",
+      "title": "Power & Electronics",
+      "columns": ["Component", "Voltage", "Amperage", "Wattage", "Dimensions", "Notes"],
+      "rows": [
+        {"Component": "<a href='https://www.aegisbattery.com/collections/24v-lithium-batteries/products/aegis-24v-10ah-lithium-ion-battery-pack-nmc-24v-lithium-battery' target='_blank'>Lithium Battery</a>", "Voltage": "24 V", "Amperage": "5 A (cont.), 10 A (peak)", "Wattage": "240 Wh", "Dimensions": "5.8″ × 3.2″ × 2.8″", "Notes": "10 Ah NMC pack (≈240 Wh capacity)."},
+        {"Component": "<a href='https://www.aegisbattery.com/collections/lithium-battery-meters-instruments/products/high-precision-battery-200a-watt-meter-and-power-analyzer' target='_blank'>Battery Meter</a>", "Voltage": "24 V", "Amperage": "≤0.5 A", "Wattage": "≤1.2 W", "Dimensions": "85 × 42 × 25 mm", "Notes": "Inline 200 A analyzer (voltage, amps, watts)."},
+        {"Component": "<a href='https://www.amazon.com/dp/B0C9Q3RT7Z' target='_blank'>USB-C Meter (×2)</a>", "Voltage": "5 V", "Amperage": "≤0.1 A", "Wattage": "≤0.25 W", "Dimensions": "36.7 × 23.7 × 7.8 mm", "Notes": "Inline USB-C analyzer (voltage, amps, watts)."},
+        {"Component": "<a href='https://www.aegisbattery.com/collections/adapters/products/anderson-to-ring-terminal-adapter' target='_blank'>Anderson PP45 → ring adapter</a>", "Voltage": "24 V", "Amperage": "20 A", "Wattage": "480 W", "Dimensions": "M10 ring", "Notes": "Quick battery-to-system interface."},
+        {"Component": "<a href='https://www.amazon.com/gp/product/B095Z2F5F7' target='_blank'>Circuit Breaker</a>", "Voltage": "24 V", "Amperage": "30 A", "Wattage": "720 W", "Dimensions": "1.73″ × 1.93″ × 2.91″", "Notes": "Main battery protection."},
+        {"Component": "<a href='https://www.amazon.com/dp/B0CKXPNBB2' target='_blank'>Safety Switch</a>", "Voltage": "24 V", "Amperage": "16 A", "Wattage": "384 W", "Dimensions": "4.88″ × 2.24″ × 2.09″", "Notes": "Manual 24 V disconnect."},
+        {"Component": "<a href='https://www.amazon.com/gp/product/B0F4NJK6MZ' target='_blank'>Fuse Block</a>", "Voltage": "24 V", "Amperage": "5–20 A (per branch)", "Wattage": "≤640 W (agg.)", "Dimensions": "3.66″ × 1.77″ × 4.88″", "Notes": "Six-position low-voltage distribution."},
+        {"Component": "<a href='https://www.amazon.com/gp/product/B07V6X6L89' target='_blank'>12 V Converter</a>", "Voltage": "24→12 V", "Amperage": "10 A", "Wattage": "120 W", "Dimensions": "2.04″ × 1.88″ × 0.74″", "Notes": "DC-DC buck for 12 V peripherals."},
+        {"Component": "<a href='https://www.amazon.com/dp/B0BLSGDVHF' target='_blank'>5 V Converter</a>", "Voltage": "24→5 V", "Amperage": "15 A", "Wattage": "75 W", "Dimensions": "0.71″ × 1.26″ × 0.71″", "Notes": "DC-DC buck for logic and compute loads."},
+        {"Component": "<a href='https://www.amazon.com/dp/B08P3YXXPG' target='_blank'>USB-C PD adapter</a>", "Voltage": "12/24→5–20 V", "Amperage": "≤3 A (PD)", "Wattage": "45 W", "Dimensions": "TBD", "Notes": "USB-C PD plus USB-A QC3.0 module (5.5 × 2.1 mm input) for projector/compute power."},
+        {"Component": "<a href='https://www.amazon.com/dp/B0CRVVWL4Y' target='_blank'>Waterproof USB-C buck (×2)</a>", "Voltage": "12/24→5 V", "Amperage": "5 A", "Wattage": "25 W", "Dimensions": "TBD (potted)", "Notes": "Epoxy-potted USB-C step-down pair for Pi 5 or peripheral loads."}
+      ]
+    },
+    {
+      "icon": "🔌",
+      "title": "Cabling & Interconnects",
+      "columns": ["Item", "Purpose", "Length", "Rating", "Notes"],
+      "rows": [
+        {"Item": "<a href='https://www.amazon.com/dp/B0CL4HS7W7' target='_blank'>USB-C short cables (×2)</a>", "Purpose": "Power jumpers between DC buck outputs and Pi/projector", "Length": "6″", "Rating": "USB-C PD / 60 W", "Notes": "Braided C-to-C leads sized for tight enclosures; keeps USB-C PD adapters tidy."},
+        {"Item": "<a href='https://www.amazon.com/dp/B08J8BJQLB' target='_blank'>PowerBear HDMI cable</a>", "Purpose": "Pi-to-projector video link", "Length": "0.5 ft", "Rating": "4K @ 60 Hz", "Notes": "Short, braided HDMI interconnect to limit slack near the projector mount."}
+      ]
+    },
+    {
+      "icon": "📡",
+      "title": "Sensors & Outputs",
+      "subsections": [
+        {
+          "icon": "📏",
+          "title": "Distance & Environment",
+          "columns": ["Sensor", "Range / Resolution", "Coverage", "Voltage", "Amperage", "Wattage", "Notes"],
+          "rows": [
+            {"Sensor": "Ultrasonic pair (×2 sets)", "Range / Resolution": "Short-range (TBD)", "Coverage": "Front/Rear or side (TBD)", "Voltage": "5 V", "Amperage": "≤0.015 A", "Wattage": "≤0.075 W", "Notes": "Use overlapping fields to reduce blind spots; polled directly from the Pi over GPIO/I²C."},
+            {"Sensor": "<a href='https://global.sharp/products/device/lineup/data/pdf/datasheet/gp2y0a02yk_e.pdf' target='_blank'>Sharp GP2Y0A02 (×~10)</a>", "Range / Resolution": "20–150 cm / analog voltage", "Coverage": "Perimeter via multi-sensor ring", "Voltage": "4.5–5.5 V", "Amperage": "≤0.033 A", "Wattage": "≤0.17 W", "Notes": "Analog 0.4–2.8 V output into a Pi ADC front-end; add filtering and shielding for stable readings."}
+          ]
+        },
+        {
+          "icon": "🔘",
+          "title": "Contact & Limit Sensing",
+          "columns": ["Component", "Role", "Voltage", "Amperage", "Wattage", "Notes"],
+          "rows": [
+            {"Component": "Pan home limit switch", "Role": "Homing reference for head pan axis", "Voltage": "5 V", "Amperage": "≤0.02 A", "Wattage": "≤0.1 W", "Notes": "Lands on a Pi GPIO with pull-up to define the zero position."},
+            {"Component": "Shutter home limit switch", "Role": "Homing reference for projector shutter", "Voltage": "5 V", "Amperage": "≤0.02 A", "Wattage": "≤0.1 W", "Notes": "Confirms shutter closed position; debounced in Pi software."}
+          ]
+        },
+        {
+          "icon": "👁️",
+          "title": "Vision & Interaction",
+          "columns": ["Component", "Function", "Coverage / Resolution", "Voltage", "Amperage", "Wattage", "Notes"],
+          "rows": [
+            {"Component": "<a href='https://www.amazon.com/dp/B0CWV1S7B4' target='_blank'>Mini Projector</a>", "Function": "Visual output", "Coverage / Resolution": "720p (150 ANSI)", "Voltage": "5–20 V (USB-C PD)", "Amperage": "≤2.25 A", "Wattage": "≤45 W", "Notes": "NEBULA Capsule Air; built-in 34 Wh battery; integrate 45 W USB-C PD or leverage internal pack."},
+            {"Component": "<a href='https://www.amazon.com/dp/B0C9PYCV9S' target='_blank'>Camera</a>", "Function": "Vision input", "Coverage / Resolution": "12 MP, 75° FoV; autofocus", "Voltage": "5 V", "Amperage": "≤0.5 A", "Wattage": "≤2.5 W", "Notes": "Arducam IMX708"},
+            {"Component": "<a href='https://www.amazon.com/dp/B07LG5VF73' target='_blank'>BTF-LIGHTING WS2815 LED strip</a>", "Function": "Face ring (eyes, mouth)", "Coverage / Resolution": "144 LEDs, individually addressable RGB", "Voltage": "12 V", "Amperage": "≤2.6 A (full white)", "Wattage": "≤31.7 W", "Notes": "Upgraded WS2812B; dual-signal line; 5050 SMD; 12 V from Buck12 rail; data pin needs 3.3→5 V level-shift."}
+          ]
+        }
+      ]
+    }
+  ]
+}

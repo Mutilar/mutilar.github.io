@@ -1,7 +1,66 @@
+// ═════════════════════════════════════════════════════════════════
+//  CACHE VERSION & CSV HELPER (shared by modals.js & data.js)
+// ═════════════════════════════════════════════════════════════════
+const CACHE_VERSION = "2026.2";
+
+function fetchCSV(url) {
+  return fetch(url).then(r => {
+    if (!r.ok) throw new Error(`HTTP ${r.status} for ${url}`);
+    return r.text();
+  }).then(text =>
+    Papa.parse(text, { header: true, skipEmptyLines: true }).data
+  ).catch(err => {
+    console.error("[fetchCSV]", err);
+    return [];
+  });
+}
+
+// ═════════════════════════════════════════════════════════════════
+//  MODAL TOGGLE HELPER (with stack counter)
+// ═════════════════════════════════════════════════════════════════
+let _modalOpenCount = 0;
+
+function toggleModal(el, open) {
+  if (open) {
+    el.classList.add("open");
+    _modalOpenCount++;
+    document.body.style.overflow = "hidden";
+    // Move focus into the modal
+    const focusTarget = el.querySelector(".modal-close, button, [tabindex]");
+    if (focusTarget) requestAnimationFrame(() => focusTarget.focus());
+  } else {
+    if (!el.classList.contains("open")) return;
+    el.classList.remove("open");
+    _modalOpenCount = Math.max(0, _modalOpenCount - 1);
+    if (_modalOpenCount === 0) {
+      document.body.style.overflow = "";
+    }
+  }
+}
+
+// ── Focus trap: keep Tab cycling inside the topmost open modal ──
+function _trapFocus(e) {
+  if (e.key !== "Tab") return;
+  // Find the topmost open modal overlay
+  const openModals = document.querySelectorAll(".modal-overlay.open");
+  if (openModals.length === 0) return;
+  const topModal = openModals[openModals.length - 1];
+  const focusable = topModal.querySelectorAll('a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])');
+  if (focusable.length === 0) return;
+  const first = focusable[0];
+  const last = focusable[focusable.length - 1];
+  if (e.shiftKey) {
+    if (document.activeElement === first) { e.preventDefault(); last.focus(); }
+  } else {
+    if (document.activeElement === last) { e.preventDefault(); first.focus(); }
+  }
+}
+document.addEventListener("keydown", _trapFocus);
+
 // ═══════════════════════════════════════════════════════════════
 //  MODAL SYSTEM
 // ═══════════════════════════════════════════════════════════════
-const modalState = { work: null, education: null, projects: null, hackathons: null, games: null };
+const modalState = { work: null, education: null, projects: null, hackathons: null, games: null, marp: null, bitnaughts: null, mtg: null };
 const modal = document.getElementById("modal");
 const modalClose = document.getElementById("modalClose");
 
@@ -43,8 +102,7 @@ function openModal(dataset, id, imgExt) {
   // Glow the source tile
   _applyGlow(dataset, id);
 
-  modal.classList.add("open");
-  document.body.style.overflow = "hidden";
+  toggleModal(modal, true);
   const card = modal.querySelector(".modal-card");
   if (card) card.scrollTop = 0;
 }
@@ -72,8 +130,7 @@ function _applyGlow(dataset, id) {
 
 function navigateToModal(dataset, id, imgExt) {
   // Close any open modal without triggering glow fade
-  modal.classList.remove("open");
-  document.body.style.overflow = "";
+  toggleModal(modal, false);
   if (_glowingTile) {
     _glowingTile.classList.remove('tile-glow', 'tile-glow-fade');
     _glowingTile = null;
@@ -108,14 +165,72 @@ function _fadeOutGlow() {
 }
 
 function closeModal() {
-  modal.classList.remove("open");
-  document.body.style.overflow = "";
+  toggleModal(modal, false);
   _fadeOutGlow();
 }
 
 modalClose.addEventListener("click", closeModal);
 modal.addEventListener("click", e => { if (e.target === modal) closeModal(); });
-document.addEventListener("keydown", e => { if (e.key === "Escape") { closeModal(); closePdfModal(); closeGameModal(); closeMarpModal(); closeBitnaughtsModal(); closeBitnaughtsIphoneModal(); } });
+
+// Safe no-ops for modal close functions that may not be defined yet
+window.closeDeckModal = window.closeDeckModal || function() {};
+
+document.addEventListener("keydown", e => { if (e.key === "Escape") { closeModal(); closePdfModal(); closeGameModal(); closeMarpModal(); closeArchModal(); closeBitnaughtsModal(); closeBitnaughtsIphoneModal(); window.closeDeckModal(); } });
+
+// ── Footer year (safe alternative to document.write) ──
+const footerYear = document.getElementById("footer-year");
+if (footerYear) footerYear.textContent = new Date().getFullYear();
+
+// ── Video-card event delegation (replaces inline onclick/onkeydown) ──
+const _modalOpeners = {
+  marpModal: function() { openMarpModal(); },
+  pdfModal: function() { openPdfModal(); },
+  bitnaughtsIphoneModal: function() { openBitnaughtsIphoneModal(); },
+  archModal: function() { openArchModal(); },
+};
+
+document.addEventListener("click", function(e) {
+  const card = e.target.closest("[data-action]");
+  if (!card) return;
+  const action = card.dataset.action;
+  const scrollTo = card.dataset.scrollTo;
+  if (scrollTo) {
+    const el = document.getElementById(scrollTo);
+    if (el) el.scrollIntoView({ behavior: "smooth" });
+  }
+  if (action === "open" || action === "scroll-open") {
+    const opener = _modalOpeners[card.dataset.open];
+    if (opener) opener();
+  } else if (action === "scroll-navigate" || action === "navigate") {
+    navigateToModal(card.dataset.navigateDataset, card.dataset.navigateId);
+  } else if (action === "scroll-modal" || action === "modal") {
+    openModal(card.dataset.modalDataset, card.dataset.modalId);
+  }
+});
+
+document.addEventListener("keydown", function(e) {
+  if (e.key === "Enter" || e.key === " ") {
+    const card = e.target.closest("[data-action]");
+    if (card) { e.preventDefault(); card.click(); }
+  }
+});
+
+// ═══════════════════════════════════════════════════════════════
+//  SITE ARCHITECTURE MODAL
+// ═══════════════════════════════════════════════════════════════
+const archModal = document.getElementById("arch-modal");
+const archModalClose = document.getElementById("archModalClose");
+
+function openArchModal() {
+  toggleModal(archModal, true);
+}
+
+function closeArchModal() {
+  toggleModal(archModal, false);
+}
+
+archModalClose.addEventListener("click", closeArchModal);
+archModal.addEventListener("click", e => { if (e.target === archModal) closeArchModal(); });
 
 // ═══════════════════════════════════════════════════════════════
 //  MARP DIAGRAM MODAL
@@ -124,13 +239,11 @@ const marpModal = document.getElementById("marp-modal");
 const marpModalClose = document.getElementById("marpModalClose");
 
 function openMarpModal() {
-  marpModal.classList.add("open");
-  document.body.style.overflow = "hidden";
+  toggleModal(marpModal, true);
 }
 
 function closeMarpModal() {
-  marpModal.classList.remove("open");
-  document.body.style.overflow = "";
+  toggleModal(marpModal, false);
 }
 
 marpModalClose.addEventListener("click", closeMarpModal);
@@ -143,13 +256,11 @@ const bitnaughtsModal = document.getElementById("bitnaughts-modal");
 const bitnaughtsModalClose = document.getElementById("bitnaughtsModalClose");
 
 function openBitnaughtsModal() {
-  bitnaughtsModal.classList.add("open");
-  document.body.style.overflow = "hidden";
+  toggleModal(bitnaughtsModal, true);
 }
 
 function closeBitnaughtsModal() {
-  bitnaughtsModal.classList.remove("open");
-  document.body.style.overflow = "";
+  toggleModal(bitnaughtsModal, false);
 }
 
 bitnaughtsModalClose.addEventListener("click", closeBitnaughtsModal);
@@ -162,13 +273,11 @@ const bitnaughtsIphoneModal = document.getElementById("bitnaughts-iphone-modal")
 const bitnaughtsIphoneModalClose = document.getElementById("bitnaughtsIphoneModalClose");
 
 function openBitnaughtsIphoneModal() {
-  bitnaughtsIphoneModal.classList.add("open");
-  document.body.style.overflow = "hidden";
+  toggleModal(bitnaughtsIphoneModal, true);
 }
 
 function closeBitnaughtsIphoneModal() {
-  bitnaughtsIphoneModal.classList.remove("open");
-  document.body.style.overflow = "";
+  toggleModal(bitnaughtsIphoneModal, false);
 }
 
 bitnaughtsIphoneModalClose.addEventListener("click", closeBitnaughtsIphoneModal);
@@ -187,14 +296,12 @@ const pdfModal = document.getElementById("pdf-modal");
 const pdfModalClose = document.getElementById("pdfModalClose");
 
 function openPdfModal() {
-  pdfModal.classList.add("open");
-  document.body.style.overflow = "hidden";
+  toggleModal(pdfModal, true);
   renderPdfInline("bible/bible.pdf");
 }
 
 function closePdfModal() {
-  pdfModal.classList.remove("open");
-  document.body.style.overflow = "";
+  toggleModal(pdfModal, false);
   clearPdfViewer();
 }
 
@@ -221,8 +328,7 @@ function openGameModal(url, title, nativeW, nativeH) {
   gameIframe.style.width = nativeW + 'px';
   gameIframe.style.height = nativeH + 'px';
 
-  gameModal.classList.add("open");
-  document.body.style.overflow = "hidden";
+  toggleModal(gameModal, true);
 
   function fitIframe() {
     const wrap = document.querySelector('.game-embed-wrap');
@@ -254,7 +360,7 @@ function openGameModal(url, title, nativeW, nativeH) {
 }
 
 function closeGameModal() {
-  gameModal.classList.remove("open");
+  toggleModal(gameModal, false);
   gameIframe.src = "";
   gameIframe.style.transform = '';
   gameIframe.style.width = '';
@@ -262,7 +368,6 @@ function closeGameModal() {
   gameIframe.style.left = '';
   gameIframe.style.top = '';
   if (gameResizeHandler) { window.removeEventListener('resize', gameResizeHandler); gameResizeHandler = null; }
-  document.body.style.overflow = "";
 }
 
 gameModalClose.addEventListener("click", closeGameModal);
@@ -287,21 +392,20 @@ gameModal.addEventListener("click", e => { if (e.target === gameModal) closeGame
   let deckCache = {};
 
   function closeDeckModal() {
-    deckModal.classList.remove("open");
-    document.body.style.overflow = "";
+    toggleModal(deckModal, false);
   }
+  window.closeDeckModal = closeDeckModal;
 
   deckModalClose.addEventListener("click", closeDeckModal);
   deckModal.addEventListener("click", function (e) { if (e.target === deckModal) closeDeckModal(); });
-  document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeDeckModal(); });
+  // Note: Escape key handled by the global keydown listener above
 
   window.openDeckModal = function (item) {
     const deckFile = item.DECK.trim();
     if (deckCache[deckFile]) {
       renderDeckModal(item, deckCache[deckFile]);
     } else {
-      $.get(deckFile + "?v=" + Date.now()).then(function (csvText) {
-        const cards = $.csv.toObjects(csvText);
+      fetchCSV(deckFile + "?v=" + CACHE_VERSION).then(function (cards) {
         deckCache[deckFile] = cards;
         renderDeckModal(item, cards);
       });
@@ -486,8 +590,7 @@ gameModal.addEventListener("click", e => { if (e.target === gameModal) closeGame
       });
     });
 
-    deckModal.classList.add("open");
-    document.body.style.overflow = "hidden";
+    toggleModal(deckModal, true);
   }
 
   function renderSectionCarousel(state) {
