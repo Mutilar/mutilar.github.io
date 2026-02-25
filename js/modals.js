@@ -77,7 +77,7 @@ function openModal(dataset, id, imgExt) {
   modalImg.src = "images/" + id + (imgExt || ".png");
   modalImg.alt = item.NAME || "";
 
-  document.getElementById("modal-name").textContent = (item.NAME || "").replace(/<br\s*\/?>/gi, " ");
+  document.getElementById("modal-name").innerHTML = (item.NAME || "").replace(/<br\s*\/?>/gi, " ");
 
   const titleStr = item.TITLE || item.MOTTO || "";
   const titleBadges = titleStr.split(',').map(t => t.trim()).filter(Boolean)

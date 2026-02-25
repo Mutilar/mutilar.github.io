@@ -452,6 +452,20 @@ hr {
   color: rgba(255, 255, 255, 0.8);
 }
 
+.vol-muted {
+  position: relative;
+}
+.vol-muted::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 120%;
+  height: 1.5px;
+  background: currentColor;
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+
 .radio-vol-slider {
   -webkit-appearance: none;
   appearance: none;
@@ -461,11 +475,6 @@ hr {
   background: rgba(255, 255, 255, 0.15);
   outline: none;
   cursor: pointer;
-  transition: background 0.2s;
-}
-
-.radio-vol-slider:hover {
-  background: rgba(255, 255, 255, 0.25);
 }
 
 .radio-vol-slider::-webkit-slider-thumb {
@@ -1184,7 +1193,6 @@ html.light-mode .card-action-badge.badge-static {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
-  margin-left: auto;
 }
 
 .modal-card .modal-subtitle .modal-badge {
@@ -2524,7 +2532,7 @@ html.light-mode .radio-vol-btn:hover {
 }
 
 html.light-mode .radio-vol-slider {
-  background: rgba(0, 0, 0, 0.12);
+  /* background managed by JS for gradient fill */
 }
 
 html.light-mode .radio-vol-slider::-webkit-slider-thumb {

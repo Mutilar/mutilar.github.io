@@ -139,7 +139,10 @@
   }
 
   let barColors = computeBarColors();
-  document.addEventListener("theme-changed", () => { barColors = computeBarColors(); });
+  window.addEventListener("theme-changed", () => {
+    barColors = computeBarColors();
+    updateSliderGradient(audio.volume);
+  });
 
   function updateEq() {
     if (!analyser) return;
@@ -178,9 +181,40 @@
   function updateVolume(val) {
     audio.volume = val;
     if (gainNode) gainNode.gain.value = 1;
-    if (val === 0) volIcon.className = "fa fa-volume-off";
-    else if (val < 0.5) volIcon.className = "fa fa-volume-down";
-    else volIcon.className = "fa fa-volume-up";
+    if (val === 0) {
+      volIcon.className = "fa fa-volume-off vol-muted";
+    } else if (val <= 0.33) {
+      volIcon.className = "fa fa-volume-off";
+    } else if (val <= 0.66) {
+      volIcon.className = "fa fa-volume-down";
+    } else {
+      volIcon.className = "fa fa-volume-up";
+    }
+    updateSliderGradient(val);
+  }
+
+  function updateSliderGradient(val) {
+    const pct = (val * 100);
+    const track = isLightMode() ? "rgba(0,0,0,0.12)" : "rgba(255,255,255,0.15)";
+    if (pct <= 0) {
+      volSlider.style.background = track;
+      return;
+    }
+    // Build gradient with stops at full-width positions, hard-cut to track at fill point
+    const stops = [];
+    eqGradient.forEach((c, i) => {
+      const pos = (i / (eqGradient.length - 1)) * 100;
+      if (pos <= pct) {
+        const col = isLightMode() ? invertEqColor(c) : c;
+        stops.push(`rgb(${col[0]},${col[1]},${col[2]}) ${pos}%`);
+      }
+    });
+    // Interpolate the color at the exact fill point and hard-cut to track
+    const fillColor = eqBarColor(val);
+    const col = isLightMode() ? invertEqColor(fillColor) : fillColor;
+    stops.push(`rgb(${col[0]},${col[1]},${col[2]}) ${pct}%`);
+    stops.push(`${track} ${pct}%`);
+    volSlider.style.background = `linear-gradient(to right, ${stops.join(', ')})`;
   }
 
   function toggleMute() {
@@ -210,4 +244,5 @@
 
   // Initialize first track
   loadTrack(0);
+  updateSliderGradient(audio.volume);
 })();
