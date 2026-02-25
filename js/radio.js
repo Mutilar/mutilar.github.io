@@ -110,6 +110,13 @@
     [0, 164, 239]    // MS Blue
   ];
 
+  function isLightMode() {
+    return document.documentElement.classList.contains("light-mode");
+  }
+  function invertEqColor(c) {
+    return [255 - c[0], 255 - c[1], 255 - c[2]];
+  }
+
   function eqBarColor(t) {
     const seg = t * (eqGradient.length - 1);
     const i = Math.min(Math.floor(seg), eqGradient.length - 2);
@@ -122,10 +129,17 @@
     ];
   }
 
-  const barColors = [];
-  eqBars.forEach((bar, i) => {
-    barColors.push(eqBarColor(i / (eqBars.length - 1)));
-  });
+  function computeBarColors() {
+    const colors = [];
+    eqBars.forEach((bar, i) => {
+      const c = eqBarColor(i / (eqBars.length - 1));
+      colors.push(isLightMode() ? invertEqColor(c) : c);
+    });
+    return colors;
+  }
+
+  let barColors = computeBarColors();
+  document.addEventListener("theme-changed", () => { barColors = computeBarColors(); });
 
   function updateEq() {
     if (!analyser) return;

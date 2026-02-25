@@ -2,6 +2,15 @@
 //  SCROLL REVEAL
 // ═══════════════════════════════════════════════════════════════
 (() => {
+  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  if (prefersReducedMotion) {
+    // Skip scroll-reveal transitions — show everything immediately
+    document.querySelectorAll(".reveal").forEach(el => el.classList.add("visible"));
+    window._revealObserver = null;
+    return;
+  }
+
   const revealObserver = new IntersectionObserver((entries) => {
     entries.forEach(e => {
       if (e.isIntersecting) e.target.classList.add("visible");

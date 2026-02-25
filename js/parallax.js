@@ -9,7 +9,14 @@
   const MS_BLUE   = [0, 164, 239];
   const MS_YELLOW = [255, 185, 0];
   const DEFAULT_PALETTE = [MS_RED, MS_GREEN, MS_BLUE, MS_YELLOW];
-  const BASE_BG   = [27, 31, 43];
+  const BASE_BG_DARK  = [27, 31, 43];
+  const BASE_BG_LIGHT = [232, 236, 241];
+  let BASE_BG = document.documentElement.classList.contains("light-mode") ? BASE_BG_LIGHT : BASE_BG_DARK;
+
+  // Listen for theme changes from theme.js
+  window.addEventListener("theme-changed", (e) => {
+    BASE_BG = e.detail.light ? BASE_BG_LIGHT : BASE_BG_DARK;
+  });
 
   /** Parse a data-colors attribute into four [r,g,b] arrays.
    *  Accepted format: "r,g,b; r,g,b; r,g,b; r,g,b"
@@ -73,6 +80,14 @@
   function clamp01(v) { return Math.max(0, Math.min(1, v)); }
 
   function isBlack(c) { return c[0] === 0 && c[1] === 0 && c[2] === 0; }
+
+  /** Invert an [r,g,b] color (255 - channel). */
+  function invertColor(c) { return [255 - c[0], 255 - c[1], 255 - c[2]]; }
+
+  /** Return display color: inverted when light mode, original when dark. */
+  function themeColor(c) {
+    return document.documentElement.classList.contains("light-mode") ? invertColor(c) : c;
+  }
 
   function drawRadialOrb(ctx, cx, cy, radius, color, alphaStops) {
     const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, radius);
@@ -171,23 +186,23 @@
     orbCtx.fillRect(0, 0, w, h);
 
     if (!isBlack(c1))
-    drawRadialOrb(orbCtx, cRedX, cRedY, radRed, c1, [
+    drawRadialOrb(orbCtx, cRedX, cRedY, radRed, themeColor(c1), [
       [0, clamp01(0.42 * alphaBright)], [0.33, clamp01(0.22 * alphaBright)], [0.66, clamp01(0.07 * alphaBright)], [1, 0]]);
     if (!isBlack(c2))
-    drawRadialOrb(orbCtx, cGrnX, cGrnY, radGrn, c2, [
+    drawRadialOrb(orbCtx, cGrnX, cGrnY, radGrn, themeColor(c2), [
       [0, clamp01(0.38 * alphaBright)], [0.33, clamp01(0.18 * alphaBright)], [0.66, clamp01(0.06 * alphaBright)], [1, 0]]);
     if (!isBlack(c3))
-    drawRadialOrb(orbCtx, cBluX, cBluY, radBlu, c3, [
+    drawRadialOrb(orbCtx, cBluX, cBluY, radBlu, themeColor(c3), [
       [0, clamp01(0.40 * alphaBright)], [0.33, clamp01(0.20 * alphaBright)], [0.66, clamp01(0.06 * alphaBright)], [1, 0]]);
     if (!isBlack(c4))
-    drawRadialOrb(orbCtx, cYelX, cYelY, radYel, c4, [
+    drawRadialOrb(orbCtx, cYelX, cYelY, radYel, themeColor(c4), [
       [0, clamp01(0.38 * alphaBright)], [0.33, clamp01(0.17 * alphaBright)], [0.66, clamp01(0.05 * alphaBright)], [1, 0]]);
 
     // Center bloom
     const bloomX = w * attentionX(0.5, att);
     const bloomY = h * confineY(0.42, conf, att);
     const bloomR = w * 0.45 * radiusScale;
-    drawRadialOrb(orbCtx, bloomX, bloomY, bloomR, [255, 255, 255], [
+    drawRadialOrb(orbCtx, bloomX, bloomY, bloomR, themeColor([255, 255, 255]), [
       [0, clamp01(0.07 * alphaBright)], [0.5, clamp01(0.02 * alphaBright)], [1, 0]]);
   }
 
@@ -252,15 +267,27 @@
     return bands;
   }
 
+  // ── Reduced-motion preference ─────────────────────────────
+  const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+  let prefersReducedMotion = reducedMotionQuery.matches;
+
+  reducedMotionQuery.addEventListener("change", (e) => {
+    prefersReducedMotion = e.matches;
+    if (!prefersReducedMotion) requestAnimationFrame(frame);
+  });
+
   // ── Animation loop ─────────────────────────────────────────
   function frame(timestamp) {
     const w = window.innerWidth;
     const h = window.innerHeight;
     const scrollOff = window.scrollY * 0.3;
 
+    // When reduced motion is preferred, freeze at a fixed timestamp
+    const t = prefersReducedMotion ? 0 : timestamp;
+
     // Pass 1: Draw rest state (attention=0) as the base layer
-    drawOrbs(ctxOrb, timestamp, 0, scrollOff, DEFAULT_PALETTE);
-    drawGlints(ctxGlint, timestamp);
+    drawOrbs(ctxOrb, t, 0, scrollOff, DEFAULT_PALETTE);
+    drawGlints(ctxGlint, t);
 
     // Pass 2: For each visible attention window, clip & overdraw
     const bands = getVisibleWindows();
@@ -271,17 +298,19 @@
       ctxOrb.beginPath();
       ctxOrb.rect(0, band.top, w, band.bottom - band.top);
       ctxOrb.clip();
-      drawOrbs(ctxOrb, timestamp, band.attention, scrollOff * 0.5, band.colors);
+      drawOrbs(ctxOrb, t, band.attention, scrollOff * 0.5, band.colors);
       ctxOrb.restore();
 
       ctxGlint.save();
       ctxGlint.beginPath();
       ctxGlint.rect(0, band.top, w, band.bottom - band.top);
       ctxGlint.clip();
-      drawGlints(ctxGlint, timestamp);
+      drawGlints(ctxGlint, t);
       ctxGlint.restore();
     }
 
+    // Stop the loop when reduced motion is preferred (static frame)
+    if (prefersReducedMotion) return;
     if (!document.hidden) requestAnimationFrame(frame);
   }
 
@@ -289,6 +318,6 @@
 
   // Resume animation when tab becomes visible again
   document.addEventListener("visibilitychange", () => {
-    if (!document.hidden) requestAnimationFrame(frame);
+    if (!document.hidden && !prefersReducedMotion) requestAnimationFrame(frame);
   });
 })();

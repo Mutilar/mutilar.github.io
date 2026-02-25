@@ -34,6 +34,14 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/v4-shims.min.css">
 <link rel="stylesheet" href="css/styles.css">
+<script>
+  // Restore theme before first paint to prevent FOUC
+  (function() {
+    if (localStorage.getItem('theme-mode') === 'light') {
+      document.documentElement.classList.add('light-mode');
+    }
+  })();
+</script>
 </head>
 <body>
 
@@ -82,6 +90,7 @@
      ═══════════════════════════════════════════════════════════════ -->
 <nav class="glass-nav" id="mainNav">
   <a href="#home" class="nav-brand" id="navBrand"><span class="brand-icon">🐧</span> Brian Hungerman</a>
+  <button class="theme-toggle" id="themeToggle" title="Switch to light mode" aria-label="Switch to light mode" aria-pressed="false"><span class="theme-toggle-icon" id="themeIcon">🌙</span><span class="theme-toggle-label">Dark Mode</span></button>
   <a href="#home" class="active">Home</a>
   <a href="#about">About</a>
   <a href="#marp">MARP</a>
@@ -98,6 +107,7 @@
 <!-- Radio Player (outside nav so position:fixed works on mobile) -->
 <div class="radio-player" id="radioPlayer">
   <a href="#home" class="radio-brand" id="radioBrand"><span class="brand-icon">🐧</span> <strong>Brian <span class="brand-surname">Hungerman</span></strong></a>
+  <button class="theme-toggle theme-toggle-radio" id="themeToggleRadio" title="Switch to light mode" aria-label="Switch to light mode" aria-pressed="false"><span class="theme-toggle-icon">🌙</span><span class="theme-toggle-label">Dark Mode</span></button>
   <div class="radio-group">
   <div class="radio-eq" id="radioEq">
     <div class="radio-eq-bar" style="height:2px"></div>
@@ -189,7 +199,7 @@
         <div class="glass-tile video-card reveal" style="cursor:pointer;" role="button" tabindex="0" aria-label="See more about MARP" data-action="scroll-open" data-scroll-to="marp" data-open="marpModal">
           <div class="video-label">🤖 MARP<span class="card-action-badge badge-dive">🔍 See More!</span><span class="year-badge">2025</span></div>
           <div class="video-wrap">
-            <img src="images/marp-diagram.png" alt="Marp Wiring Diagram" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" loading="lazy">
+            <img class="theme-img" data-src-dark="images/marp-diagram.png" data-src-light="images/marp-diagram-light.png" src="images/marp-diagram.png" alt="Marp Wiring Diagram" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" loading="lazy">
           </div>
         </div>
         <div class="glass-tile video-card reveal" style="cursor:pointer;" role="button" tabindex="0" aria-label="See more about Red Tie Robotics" data-action="scroll-navigate" data-scroll-to="work" data-navigate-dataset="work" data-navigate-id="redtierobotics">
@@ -249,7 +259,7 @@
         <div class="glass-tile video-card reveal" style="cursor:pointer;" role="button" tabindex="0" aria-label="Open MARP Diagrams" data-action="open" data-open="marpModal">
           <div class="video-label">🧮 MARP Diagrams<span class="card-action-badge badge-dive">🔍 Dive Deeper</span><span class="year-badge">2025</span></div>
           <div class="video-wrap">
-            <img src="images/marp-diagram.png" alt="Marp Wiring Diagram" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" loading="lazy">
+            <img class="theme-img" data-src-dark="images/marp-diagram.png" data-src-light="images/marp-diagram-light.png" src="images/marp-diagram.png" alt="Marp Wiring Diagram" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" loading="lazy">
           </div>
         </div>
       </div>
@@ -551,7 +561,7 @@
   <div class="parallax-window parallax-window-gap" data-attention="1" style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:50vh;max-height:none;padding-bottom:24px;">
     <div class="glass-tile reveal" style="text-align:center; max-width:560px; width:100%; margin:0 24px;">
       <h2 style="font-size:26px; font-weight:700; margin-bottom:12px;">Interested?</h2>
-      <p style="font-size:15px; color:rgba(255,255,255,0.6); margin-bottom:24px;">
+      <p class="connect-subtitle" style="font-size:15px; margin-bottom:24px;">
         I welcome opportunities to connect,<br>learn from others &amp; share my expertise!
       </p>
       <div class="hero-links" style="justify-content:center;">
@@ -588,7 +598,7 @@
       <div class="glass-tile video-card reveal" style="cursor:pointer;margin-bottom:32px;" role="button" tabindex="0" aria-label="Open Architecture Diagrams" data-action="open" data-open="archModal">
         <div class="video-label">🧜‍♀️ Mermaid<span class="card-action-badge badge-dive">🔍 See More!</span><span class="year-badge">2026</span></div>
         <div class="video-wrap">
-          <img src="images/mutilar-architecture-preview.png" alt="Mutilar Architecture Preview" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" loading="lazy">
+          <img class="theme-img" data-src-dark="images/mutilar-architecture-preview.png" data-src-light="images/mutilar-architecture-preview-light.png" src="images/mutilar-architecture-preview.png" alt="Mutilar Architecture Preview" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" loading="lazy">
         </div>
       </div>
       <div class="card-grid card-grid-wide" style="margin-bottom:32px;">
@@ -805,7 +815,7 @@
 
     <!-- Diagram placeholder — replace src with your actual architecture diagram -->
     <div class="marp-diagram-wrap" style="margin-bottom:24px;">
-      <img id="arch-diagram-img" src="images/mutilar-architecture.png" alt="Site Architecture Diagram" loading="lazy" onerror="this.parentElement.style.display='none'">
+      <img id="arch-diagram-img" class="theme-img" data-src-dark="images/mutilar-architecture.png" data-src-light="images/mutilar-architecture-light.png" src="images/mutilar-architecture.png" alt="Site Architecture Diagram" loading="lazy" onerror="this.parentElement.style.display='none'">
     </div>
 
     <!-- Architecture details -->
@@ -895,7 +905,7 @@
       <a href="https://github.com/Mutilar/Marp" target="_blank"><i class="fa fa-github"></i> Mutilar/Marp</a>
     </div>
     <div class="marp-diagram-wrap">
-      <img id="marp-diagram-img" src="images/marp-high-level-diagram.png" alt="MARP High-Level Wiring Diagram" loading="lazy">
+      <img id="marp-diagram-img" class="theme-img" data-src-dark="images/marp-high-level-diagram.png" data-src-light="images/marp-high-level-diagram-light.png" src="images/marp-high-level-diagram.png" alt="MARP High-Level Wiring Diagram" loading="lazy">
     </div>
 
     <!-- BOM (Bill of Materials) — populated from csv/marp-bom.json -->
@@ -907,6 +917,7 @@
      SCRIPTS
      ═══════════════════════════════════════════════════════════════ -->
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+<script defer src="js/theme.js"></script>
 <script defer src="js/parallax.js"></script>
 <script defer src="js/scroll.js"></script>
 <script defer src="js/modals.js"></script>

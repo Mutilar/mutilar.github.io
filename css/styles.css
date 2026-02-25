@@ -1032,6 +1032,20 @@ hr {
   50%      { box-shadow: 0 0 14px rgba(130, 200, 255, 0.55), inset 0 0 6px rgba(130, 200, 255, 0.15); }
 }
 
+html.light-mode .card-action-badge {
+  color: rgba(160, 110, 0, 0.95);
+  background: rgba(180, 130, 0, 0.12);
+  border-color: rgba(160, 110, 0, 0.35);
+  box-shadow: 0 0 6px rgba(160, 110, 0, 0.15), inset 0 0 4px rgba(160, 110, 0, 0.05);
+}
+
+html.light-mode .card-action-badge.badge-dive {
+  color: rgba(0, 80, 160, 0.9);
+  background: rgba(0, 100, 180, 0.1);
+  border-color: rgba(0, 100, 180, 0.35);
+  box-shadow: 0 0 6px rgba(0, 100, 180, 0.15), inset 0 0 4px rgba(0, 100, 180, 0.05);
+}
+
 /* ═══════════════════════════════════════════════════════════════
    MODAL OVERLAY
    ═══════════════════════════════════════════════════════════════ */
@@ -2226,6 +2240,672 @@ hr {
 }
 
 /* ═══════════════════════════════════════════════════════════════
+   THEME TOGGLE BUTTON
+   ═══════════════════════════════════════════════════════════════ */
+.theme-toggle {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 34px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.08);
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 1;
+  padding: 0 10px 0 7px;
+  color: rgba(255, 255, 255, 0.85);
+  transition: opacity 0.35s ease, background 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+  z-index: 5;
+  opacity: 1;
+  white-space: nowrap;
+}
+
+.theme-toggle:hover {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.35);
+  transform: translateY(-50%) scale(1.04);
+}
+
+.theme-toggle:active {
+  transform: translateY(-50%) scale(0.96);
+}
+
+.theme-toggle-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  transition: opacity 250ms ease;
+}
+
+.theme-toggle-label {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  transition: opacity 250ms ease;
+}
+
+/* When scrolled past hero, hide the toggle and show the brand instead */
+.theme-toggle.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Mobile: radio-bar toggle */
+.theme-toggle-radio {
+  position: static;
+  transform: none;
+  flex-shrink: 0;
+  height: 30px;
+  font-size: 14px;
+  padding: 0 8px 0 6px;
+  display: none; /* shown via media query */
+}
+
+.theme-toggle-radio:hover {
+  transform: scale(1.04);
+}
+
+.theme-toggle-radio:active {
+  transform: scale(0.96);
+}
+
+.theme-toggle-radio .theme-toggle-icon {
+  font-size: 15px;
+}
+
+.theme-toggle-radio .theme-toggle-label {
+  font-size: 11px;
+}
+
+.theme-toggle-radio.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   LIGHT MODE
+   ═══════════════════════════════════════════════════════════════ */
+html.light-mode body {
+  color: #1a1a2e;
+  background: #e8ecf1;
+}
+
+html.light-mode ::selection {
+  background: rgba(0, 120, 212, 0.25);
+  color: #1a1a2e;
+}
+
+/* ── Nav & Radio bar ──────────────────────────────────────── */
+html.light-mode .glass-nav {
+  background: rgba(255, 255, 255, 0.65);
+  border-bottom-color: rgba(0, 0, 0, 0.10);
+}
+
+html.light-mode .glass-nav a:not(.nav-brand) {
+  color: rgba(0, 0, 0, 0.55);
+}
+
+html.light-mode .glass-nav a:not(.nav-brand):hover,
+html.light-mode .glass-nav a:not(.nav-brand).active {
+  color: #1a1a2e;
+  background: rgba(0, 0, 0, 0.08);
+}
+
+html.light-mode .glass-nav a:not(.nav-brand).active {
+  background: rgba(0, 0, 0, 0.12);
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.08),
+              inset 0 0 8px rgba(0, 0, 0, 0.04);
+  text-shadow: none;
+}
+
+html.light-mode .nav-brand {
+  color: rgba(0, 0, 0, 0.75);
+  background: rgba(0, 0, 0, 0.05);
+  border-color: rgba(0, 0, 0, 0.10);
+}
+
+html.light-mode .radio-brand {
+  color: rgba(0, 0, 0, 0.75);
+  background: rgba(0, 0, 0, 0.05);
+  border-color: rgba(0, 0, 0, 0.10);
+}
+
+html.light-mode .theme-toggle {
+  border-color: rgba(0, 0, 0, 0.12);
+  background: rgba(0, 0, 0, 0.06);
+  color: rgba(0, 0, 0, 0.75);
+}
+
+html.light-mode .theme-toggle:hover {
+  background: rgba(0, 0, 0, 0.12);
+  border-color: rgba(0, 0, 0, 0.25);
+}
+
+/* ── Radio player ─────────────────────────────────────────── */
+html.light-mode .radio-song-title {
+  color: rgba(0, 0, 0, 0.45);
+}
+
+html.light-mode .radio-player.playing .radio-song-title {
+  color: rgba(0, 0, 0, 0.7);
+}
+
+.connect-subtitle {
+  color: rgba(255, 255, 255, 0.6);
+}
+html.light-mode .connect-subtitle {
+  color: rgba(0, 0, 0, 0.55);
+}
+
+html.light-mode .radio-eq-bar {
+  background: rgba(0, 0, 0, 0.18);
+}
+
+html.light-mode .radio-btn {
+  color: rgba(0, 0, 0, 0.45);
+}
+
+html.light-mode .radio-btn:hover {
+  background: rgba(0, 0, 0, 0.08);
+  color: #1a1a2e;
+}
+
+html.light-mode .radio-btn-play {
+  background: rgba(0, 0, 0, 0.05);
+  border-color: rgba(0, 0, 0, 0.15);
+  color: rgba(0, 0, 0, 0.6);
+}
+
+html.light-mode .radio-btn-play:hover {
+  background: rgba(0, 0, 0, 0.12);
+  border-color: rgba(0, 0, 0, 0.3);
+  color: #1a1a2e;
+}
+
+html.light-mode .radio-player.playing .radio-btn-play {
+  background: rgba(0, 100, 200, 0.12);
+  border-color: rgba(0, 100, 200, 0.35);
+  color: rgba(0, 100, 200, 0.9);
+  box-shadow: 0 0 15px rgba(0, 100, 200, 0.15);
+}
+
+html.light-mode .radio-vol-btn {
+  color: rgba(0, 0, 0, 0.35);
+}
+
+html.light-mode .radio-vol-btn:hover {
+  color: rgba(0, 0, 0, 0.7);
+}
+
+html.light-mode .radio-vol-slider {
+  background: rgba(0, 0, 0, 0.12);
+}
+
+html.light-mode .radio-vol-slider::-webkit-slider-thumb {
+  background: rgba(0, 0, 0, 0.5);
+  border-color: rgba(0, 0, 0, 0.2);
+}
+
+html.light-mode .radio-vol-slider::-moz-range-thumb {
+  background: rgba(0, 0, 0, 0.5);
+  border-color: rgba(0, 0, 0, 0.2);
+}
+
+/* ── Glass tiles ──────────────────────────────────────────── */
+html.light-mode .glass-tile {
+  background: rgba(255, 255, 255, 0.55);
+  border-color: rgba(0, 0, 0, 0.10);
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.06),
+              0 0 0 1px rgba(255, 255, 255, 0.5) inset;
+}
+
+html.light-mode .glass-tile:hover {
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.10),
+              0 0 0 1px rgba(255, 255, 255, 0.6) inset;
+  border-color: rgba(0, 0, 0, 0.18);
+}
+
+/* ── Opaque bands ─────────────────────────────────────────── */
+html.light-mode .opaque-band {
+  background: rgba(255, 255, 255, 0.55);
+  border-top-color: rgba(0, 0, 0, 0.08);
+  border-bottom-color: rgba(0, 0, 0, 0.08);
+}
+
+html.light-mode .opaque-band .glass-tile {
+  background: rgba(0, 0, 0, 0.03);
+  border-color: rgba(0, 0, 0, 0.08);
+}
+
+html.light-mode .opaque-band .glass-tile:hover {
+  background: rgba(0, 0, 0, 0.06);
+  border-color: rgba(0, 0, 0, 0.15);
+}
+
+/* ── Footer ───────────────────────────────────────────────── */
+html.light-mode .footer-pane {
+  background: rgba(255, 255, 255, 0.55);
+  border-top-color: rgba(0, 0, 0, 0.08);
+  border-bottom-color: rgba(0, 0, 0, 0.08);
+}
+
+html.light-mode .footer-pane .footer-card {
+  background: rgba(0, 0, 0, 0.03);
+  border-color: rgba(0, 0, 0, 0.08);
+}
+
+html.light-mode .footer-pane .footer-card:hover {
+  background: rgba(0, 0, 0, 0.06);
+  border-color: rgba(0, 0, 0, 0.15);
+}
+
+html.light-mode .footer-detail-item {
+  color: rgba(0, 0, 0, 0.55);
+}
+
+html.light-mode .footer-detail-item strong {
+  color: rgba(0, 0, 0, 0.85);
+}
+
+html.light-mode .footer-detail-icon {
+  background: rgba(0, 100, 200, 0.08);
+  border-color: rgba(0, 100, 200, 0.18);
+  color: rgba(0, 100, 200, 0.8);
+}
+
+html.light-mode .footer-detail-item:hover .footer-detail-icon {
+  background: rgba(0, 100, 200, 0.15);
+  border-color: rgba(0, 100, 200, 0.4);
+  color: #0064c8;
+  box-shadow: 0 0 8px rgba(0, 100, 200, 0.2);
+}
+
+html.light-mode .footer-detail-desc {
+  color: rgba(0, 0, 0, 0.4);
+}
+
+html.light-mode .footer-detail-desc code {
+  background: rgba(0, 0, 0, 0.05);
+  border-color: rgba(0, 0, 0, 0.08);
+  color: rgba(0, 80, 160, 0.85);
+}
+
+html.light-mode .footer-detail-desc a:hover code {
+  background: rgba(0, 100, 200, 0.1);
+  border-color: rgba(0, 100, 200, 0.3);
+  color: #0050a0;
+}
+
+html.light-mode .footer-detail-row .footer-detail-item {
+  background: rgba(0, 0, 0, 0.03);
+  border-color: rgba(0, 0, 0, 0.08);
+}
+
+html.light-mode .footer-detail-row .footer-detail-item:hover {
+  background: rgba(0, 0, 0, 0.06);
+  border-color: rgba(0, 0, 0, 0.15);
+}
+
+html.light-mode .footer-repo-btn {
+  color: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.04);
+  border-color: rgba(0, 0, 0, 0.12);
+}
+
+html.light-mode .footer-repo-btn:hover {
+  color: #1a1a2e;
+  background: rgba(0, 0, 0, 0.10);
+  border-color: rgba(0, 0, 0, 0.25);
+}
+
+html.light-mode .glass-footer {
+  color: rgba(0, 0, 0, 0.3);
+  border-top-color: rgba(0, 0, 0, 0.08);
+}
+
+html.light-mode .glass-footer a {
+  color: rgba(0, 100, 200, 0.6);
+}
+
+/* ── Text & heading colors ────────────────────────────────── */
+html.light-mode .hero-name {
+  background: linear-gradient(135deg, #1a1a2e 0%, rgba(0, 0, 0, 0.6) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+html.light-mode .hero-tagline {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+html.light-mode .hero-tagline strong a {
+  color: rgba(0, 100, 200, 0.9);
+}
+
+html.light-mode .hero-tagline strong a:hover {
+  color: #1a1a2e;
+}
+
+html.light-mode .hero-bio {
+  color: rgba(0, 0, 0, 0.45);
+}
+
+html.light-mode .hero-bio strong a {
+  color: rgba(0, 100, 200, 0.8);
+}
+
+html.light-mode hr {
+  border-top-color: rgba(0, 0, 0, 0.12);
+}
+
+html.light-mode .hero-links a {
+  background: rgba(0, 0, 0, 0.04);
+  border-color: rgba(0, 0, 0, 0.12);
+  color: rgba(0, 0, 0, 0.5);
+}
+
+html.light-mode .hero-links a:hover {
+  background: rgba(0, 0, 0, 0.10);
+  border-color: rgba(0, 0, 0, 0.25);
+  color: #1a1a2e;
+}
+
+html.light-mode .hero-portrait {
+  border-color: rgba(0, 0, 0, 0.12);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.10);
+}
+
+html.light-mode .hero-portrait:hover {
+  border-color: rgba(0, 0, 0, 0.25);
+  box-shadow: 0 6px 30px rgba(0, 0, 0, 0.15);
+}
+
+html.light-mode .section-heading {
+  color: #1a1a2e;
+}
+
+html.light-mode .section-desc {
+  color: rgba(0, 0, 0, 0.55);
+}
+
+html.light-mode .section-desc a {
+  color: rgba(0, 100, 200, 0.85);
+}
+
+html.light-mode .section-blurb {
+  color: rgba(0, 0, 0, 0.55);
+}
+
+html.light-mode .section-blurb a {
+  color: rgba(0, 100, 200, 0.85);
+}
+
+html.light-mode .scroll-hint {
+  color: rgba(0, 0, 0, 0.35);
+}
+
+/* ── Section badges ───────────────────────────────────────── */
+html.light-mode .section-badge {
+  color: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.04);
+  border-color: rgba(0, 0, 0, 0.12);
+}
+
+html.light-mode .section-badge:hover {
+  color: #1a1a2e;
+  background: rgba(0, 0, 0, 0.08);
+  border-color: rgba(0, 0, 0, 0.25);
+}
+
+html.light-mode .section-intro-img {
+  border-color: rgba(0, 0, 0, 0.10);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+/* ── Entry cards ──────────────────────────────────────────── */
+html.light-mode .entry-card .entry-name {
+  color: #1a1a2e;
+}
+
+html.light-mode .entry-card .entry-title {
+  color: rgba(0, 0, 0, 0.55);
+  background: rgba(0, 0, 0, 0.04);
+  border-color: rgba(0, 0, 0, 0.10);
+}
+
+html.light-mode .entry-card .entry-meta {
+  color: rgba(0, 0, 0, 0.55);
+}
+
+html.light-mode .entry-card .entry-motto {
+  color: rgba(0, 0, 0, 0.4);
+}
+
+html.light-mode .entry-card .entry-github {
+  color: rgba(0, 100, 200, 0.7);
+  background: rgba(0, 100, 200, 0.06);
+  border-color: rgba(0, 100, 200, 0.15);
+}
+
+html.light-mode .entry-card .entry-github:hover {
+  background: rgba(0, 100, 200, 0.12);
+  color: #0050a0;
+}
+
+html.light-mode .entry-card .entry-logo {
+  background: rgba(0, 0, 0, 0.03);
+  border-color: rgba(0, 0, 0, 0.08);
+}
+
+/* ── Video cards ──────────────────────────────────────────── */
+html.light-mode .video-card .video-label {
+  color: rgba(0, 0, 0, 0.75);
+}
+
+html.light-mode .year-badge {
+  color: rgba(0, 0, 0, 0.55);
+  background: rgba(0, 0, 0, 0.04);
+  border-color: rgba(0, 0, 0, 0.10);
+}
+
+/* ── Modals ───────────────────────────────────────────────── */
+html.light-mode .modal-overlay {
+  background: rgba(0, 0, 0, 0.35);
+}
+
+html.light-mode .modal-card .modal-title {
+  color: #1a1a2e;
+}
+
+html.light-mode .modal-card .modal-body {
+  color: rgba(0, 0, 0, 0.7);
+}
+
+html.light-mode .modal-card .modal-body a {
+  color: rgba(0, 100, 200, 0.85);
+}
+
+html.light-mode .modal-card .modal-subtitle .modal-badge {
+  color: rgba(0, 0, 0, 0.55);
+  background: rgba(0, 0, 0, 0.04);
+  border-color: rgba(0, 0, 0, 0.10);
+}
+
+/* ── Win / Play badges (card + modal) ─────────────────────── */
+html.light-mode .entry-card .entry-win,
+html.light-mode .modal-card .modal-subtitle .modal-win-badge {
+  color: rgba(160, 110, 0, 0.95);
+  background: rgba(180, 130, 0, 0.12);
+  border-color: rgba(160, 110, 0, 0.35);
+}
+
+html.light-mode .entry-card .entry-play,
+html.light-mode .modal-card .modal-subtitle .modal-play-badge {
+  color: rgba(160, 110, 0, 0.95);
+  background: rgba(180, 130, 0, 0.12);
+  border-color: rgba(160, 110, 0, 0.35);
+}
+
+html.light-mode .entry-card .entry-play:hover,
+html.light-mode .modal-card .modal-subtitle .modal-play-badge:hover {
+  background: rgba(180, 130, 0, 0.22);
+  color: rgba(120, 80, 0, 1);
+  border-color: rgba(160, 110, 0, 0.55);
+}
+
+html.light-mode .entry-card .entry-title-highlight {
+  color: rgba(160, 110, 0, 0.95);
+  background: rgba(180, 130, 0, 0.12);
+  border-color: rgba(160, 110, 0, 0.35);
+}
+
+/* ── Win / Play badge glow (light mode) ───────────────────── */
+html.light-mode .entry-card .entry-win,
+html.light-mode .entry-card .entry-title-highlight,
+html.light-mode .modal-card .modal-subtitle .modal-win-badge,
+html.light-mode .modal-card .modal-subtitle .modal-play-badge {
+  animation: win-pulse-light 2s ease-in-out infinite;
+}
+
+html.light-mode .entry-card .entry-play {
+  animation: win-pulse-light 2s ease-in-out infinite;
+}
+
+html.light-mode .card-action-badge {
+  animation: badgePulse-light 2.5s ease-in-out infinite;
+}
+
+html.light-mode .card-action-badge.badge-dive {
+  animation: badgePulseDive-light 2.5s ease-in-out infinite;
+}
+
+@keyframes win-pulse-light {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(160, 110, 0, 0.25); }
+  50%      { box-shadow: 0 0 8px 2px rgba(160, 110, 0, 0.12); }
+}
+
+@keyframes badgePulse-light {
+  0%, 100% { box-shadow: 0 0 6px rgba(160, 110, 0, 0.15), inset 0 0 4px rgba(160, 110, 0, 0.05); }
+  50%      { box-shadow: 0 0 14px rgba(160, 110, 0, 0.35), inset 0 0 6px rgba(160, 110, 0, 0.1); }
+}
+
+@keyframes badgePulseDive-light {
+  0%, 100% { box-shadow: 0 0 6px rgba(0, 100, 180, 0.15), inset 0 0 4px rgba(0, 100, 180, 0.05); }
+  50%      { box-shadow: 0 0 14px rgba(0, 100, 180, 0.35), inset 0 0 6px rgba(0, 100, 180, 0.1); }
+}
+
+/* ── Deck modal ───────────────────────────────────────────── */
+html.light-mode .deck-hero {
+  background: rgba(245, 245, 250, 0.95);
+  border-bottom-color: rgba(0, 0, 0, 0.06);
+}
+
+html.light-mode .deck-hero-name { color: #1a1a2e; }
+html.light-mode .deck-hero-motto { color: rgba(0, 0, 0, 0.45); }
+html.light-mode .deck-hero-bracket { color: rgba(0, 0, 0, 0.45); }
+
+html.light-mode .deck-hero-link {
+  color: rgba(0, 100, 200, 0.8);
+  -webkit-text-fill-color: rgba(0, 100, 200, 0.8);
+  background: rgba(0, 100, 200, 0.08);
+  border-color: rgba(0, 100, 200, 0.18);
+}
+
+html.light-mode .deck-section-label { color: rgba(0, 0, 0, 0.75); }
+html.light-mode .deck-section-heading { border-bottom-color: rgba(0, 0, 0, 0.06); }
+html.light-mode .deck-carousel-counter { color: rgba(0, 0, 0, 0.35); }
+
+html.light-mode .deck-carousel-btn {
+  background: rgba(0, 0, 0, 0.05);
+  border-color: rgba(0, 0, 0, 0.12);
+  color: rgba(0, 0, 0, 0.5);
+}
+
+html.light-mode .deck-carousel-btn:hover {
+  background: rgba(0, 0, 0, 0.10);
+  color: #1a1a2e;
+}
+
+html.light-mode .deck-body a[data-card-link] {
+  color: rgba(0, 100, 200, 0.85);
+  border-bottom-color: rgba(0, 100, 200, 0.3);
+}
+
+/* ── MARP BOM ─────────────────────────────────────────────── */
+html.light-mode .marp-bom h4 {
+  color: rgba(0, 0, 0, 0.7);
+  border-bottom-color: rgba(0, 0, 0, 0.06);
+}
+
+html.light-mode .marp-bom h5 { color: rgba(0, 0, 0, 0.45); }
+
+html.light-mode .marp-bom thead th {
+  color: rgba(0, 0, 0, 0.4);
+  border-bottom-color: rgba(0, 0, 0, 0.10);
+}
+
+html.light-mode .marp-bom tbody td {
+  color: rgba(0, 0, 0, 0.7);
+  border-bottom-color: rgba(0, 0, 0, 0.05);
+}
+
+html.light-mode .marp-bom tbody tr:hover {
+  background: rgba(0, 0, 0, 0.03);
+}
+
+html.light-mode .marp-bom a { color: rgba(0, 100, 200, 0.85); }
+
+/* ── PDF / Game modal headers ─────────────────────────────── */
+html.light-mode .pdf-modal-header h2,
+html.light-mode .marp-modal-header h2,
+html.light-mode .bitnaughts-modal-header h2 {
+  color: #1a1a2e;
+}
+
+html.light-mode .game-modal-header h2 {
+  color: rgba(180, 130, 0, 0.95);
+}
+
+html.light-mode .pdf-modal-header a,
+html.light-mode .game-modal-header a,
+html.light-mode .marp-modal-header a,
+html.light-mode .bitnaughts-modal-header a {
+  color: rgba(0, 100, 200, 0.85);
+  background: rgba(0, 0, 0, 0.04);
+  border-color: rgba(0, 0, 0, 0.10);
+}
+
+/* ── Scrollbar ────────────────────────────────────────────── */
+html.light-mode ::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.12);
+}
+
+html.light-mode ::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.22);
+}
+
+/* ── Outline pill ─────────────────────────────────────────── */
+html.light-mode .outline-pill {
+  border-color: rgba(0, 0, 0, 0.15);
+  color: rgba(0, 0, 0, 0.45);
+}
+
+/* ── Mobile radio bar light override ──────────────────────── */
+@media (max-width: 768px) {
+  html.light-mode .radio-player {
+    background: rgba(255, 255, 255, 0.7);
+    border-top-color: rgba(0, 0, 0, 0.08);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
    RESPONSIVE
    ═══════════════════════════════════════════════════════════════ */
 @media (max-width: 900px) {
@@ -2256,6 +2936,8 @@ hr {
   }
 
   .nav-brand { display: none; }
+  .theme-toggle:not(.theme-toggle-radio) { display: none; }
+  .theme-toggle-radio { display: flex; }
   .radio-brand { display: inline-flex; }
   .brand-surname { display: none; }
 
@@ -2362,4 +3044,42 @@ hr {
   .footer-detail-icon { width: 28px; height: 28px; font-size: 12px; border-radius: 7px; }
   .footer-detail-item { gap: 10px; }
   .footer-repo-btn { padding: 7px 14px; font-size: 12px; }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   REDUCED MOTION — respect user's OS-level preference
+   ═══════════════════════════════════════════════════════════════ */
+@media (prefers-reduced-motion: reduce) {
+  /* Disable smooth scrolling */
+  html { scroll-behavior: auto; }
+
+  /* Kill all CSS animations */
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  /* Show reveal elements immediately (no slide-up) */
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* Freeze scroll-hint bounce */
+  .scroll-hint {
+    animation: none;
+  }
+
+  /* Disable pulsing badges */
+  .entry-win,
+  .entry-play,
+  .entry-title-highlight,
+  .card-action-badge,
+  .card-action-badge.badge-dive,
+  .tile-glow,
+  .modal-play-badge,
+  .modal-win-badge {
+    animation: none;
+  }
 }
