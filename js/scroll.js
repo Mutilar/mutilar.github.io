@@ -108,3 +108,34 @@
   window.addEventListener("scroll", updateActive, { passive: true });
   updateActive();
 })();
+
+// ═══════════════════════════════════════════════════════════════
+//  DEFERRED HASH NAVIGATION
+//  The browser's native #hash scroll fires before CSV grids
+//  populate, so the target offset is wrong. We suppress the
+//  premature scroll, then re-scroll once layout has settled.
+// ═══════════════════════════════════════════════════════════════
+(() => {
+  const hash = window.location.hash;
+  if (!hash) return;
+
+  // Immediately kill the premature scroll the browser already started
+  if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+  window.scrollTo(0, 0);
+
+  function scrollToHash() {
+    const id = hash.substring(1);
+    const el = document.getElementById(id);
+    if (!el) return;
+    // Use a small offset so the band header isn't hidden behind the sticky nav
+    const navHeight = document.querySelector(".glass-nav")?.offsetHeight || 0;
+    const top = el.getBoundingClientRect().top + window.scrollY - navHeight;
+    window.scrollTo({ top, behavior: "smooth" });
+  }
+
+  // Wait for full page load (images, scripts, CSV grids), then
+  // add an extra delay for any remaining async layout shifts.
+  window.addEventListener("load", () => {
+    setTimeout(scrollToHash, 350);
+  });
+})();
