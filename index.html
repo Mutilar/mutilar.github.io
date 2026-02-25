@@ -585,49 +585,41 @@
       </div>
 
       <!-- Architecture & repo tiles -->
+      <div class="glass-tile video-card reveal" style="cursor:pointer;margin-bottom:32px;" role="button" tabindex="0" aria-label="Open Architecture Diagrams" data-action="open" data-open="archModal">
+        <div class="video-label">🧜‍♀️ Mermaid<span class="card-action-badge badge-dive">🔍 See More!</span><span class="year-badge">2026</span></div>
+        <div class="video-wrap">
+          <img src="images/mutilar-architecture-preview.png" alt="Mutilar Architecture Preview" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" loading="lazy">
+        </div>
+      </div>
       <div class="card-grid card-grid-wide" style="margin-bottom:32px;">
-        <div class="glass-tile video-card reveal" style="cursor:pointer;" role="button" tabindex="0" aria-label="Open Architecture Diagrams" data-action="open" data-open="archModal">
-          <div class="video-label">🏗️ Architecture<span class="card-action-badge badge-dive">🔍 See More!</span></div>
+        <div class="glass-tile video-card reveal">
+          <div class="video-label">🏗️ Architecture</div>
           <div class="footer-detail-list" style="padding:0 24px 20px;">
-            <div class="footer-detail-item">
-              <span class="footer-detail-icon"><i class="fa fa-file-code-o"></i></span>
-              <div>
-                <strong>Single-Page App</strong>
-                <span class="footer-detail-desc">Pure HTML, CSS &amp; vanilla JS — zero build tools, zero frameworks</span>
-              </div>
-            </div>
             <div class="footer-detail-item">
               <span class="footer-detail-icon"><i class="fa fa-database"></i></span>
               <div>
                 <strong>CSV-Driven Data</strong>
-                <span class="footer-detail-desc">Content lives in flat CSV files parsed at runtime by PapaParse</span>
-              </div>
-            </div>
-            <div class="footer-detail-item">
-              <span class="footer-detail-icon"><i class="fa fa-paint-brush"></i></span>
-              <div>
-                <strong>Dual-Canvas Parallax</strong>
-                <span class="footer-detail-desc">Two fixed canvases blend orb &amp; glint layers keyed to scroll position</span>
+                <span class="footer-detail-desc">Content lives in editable <code>*.csv</code> files parsed at runtime by <code>PapaParse</code></span>
               </div>
             </div>
             <div class="footer-detail-item">
               <span class="footer-detail-icon"><i class="fa fa-window-restore"></i></span>
               <div>
                 <strong>Glass Morphism</strong>
-                <span class="footer-detail-desc">Frosted glass tiles &amp; bands via <code>backdrop-filter</code> &amp; subtle borders</span>
+                <span class="footer-detail-desc">Frosted glass tiles &amp; bands via <code>backdrop-filter</code> &amp; <span class="outline-pill">subtle borders</span></span>
               </div>
             </div>
             <div class="footer-detail-item">
               <span class="footer-detail-icon"><i class="fa fa-music"></i></span>
               <div>
                 <strong>Integrated Radio</strong>
-                <span class="footer-detail-desc">Background audio player with EQ visualizer &amp; volume controls</span>
+                <span class="footer-detail-desc">Open-sourced music with <code>EQ visualizer</code> &amp; volume controls</span>
               </div>
             </div>
           </div>
         </div>
         <a href="https://github.com/Mutilar/mutilar.github.io" target="_blank" class="glass-tile video-card reveal" style="cursor:pointer;text-decoration:none;color:inherit;" role="link" aria-label="Open Repository on GitHub">
-          <div class="video-label">📂 Repository<span class="card-action-badge"><i class="fa fa-external-link"></i> GitHub</span></div>
+          <div class="video-label">📂 Repository<span class="card-action-badge"><i class="fa fa-github"></i> GitHub</span></div>
           <div class="footer-detail-list" style="padding:0 24px 20px;">
             <div class="footer-detail-item">
               <span class="footer-detail-icon"><i class="fa fa-sitemap"></i></span>
@@ -640,19 +632,21 @@
               <span class="footer-detail-icon"><i class="fa fa-cogs"></i></span>
               <div>
                 <strong>JS Modules</strong>
-                <span class="footer-detail-desc"><code>parallax.js</code> · <code>scroll.js</code> · <code>modals.js</code> · <code>data.js</code> · <code>pdfviewer.js</code> · <code>radio.js</code></span>
+                <span class="footer-detail-desc"><code>parallax.js</code> · <code>scroll.js</code> · <code>modals.js</code> · <code>data.js</code> · <code>radio.js</code></span>
               </div>
             </div>
-            <div class="footer-detail-item">
-              <span class="footer-detail-icon"><i class="fa fa-cloud"></i></span>
-              <div>
-                <strong>Hosted on GitHub Pages</strong>
+            <div class="footer-detail-row">
+              <div class="footer-detail-item">
+                <span class="footer-detail-icon"><i class="fa fa-cloud"></i></span>
+                <div>
+                  <strong>GitHub Pages</strong>
+                </div>
               </div>
-            </div>
-            <div class="footer-detail-item">
-              <span class="footer-detail-icon"><i class="fa fa-balance-scale"></i></span>
-              <div>
-                <strong>MIT Licensed</strong>
+              <div class="footer-detail-item">
+                <span class="footer-detail-icon"><i class="fa fa-balance-scale"></i></span>
+                <div>
+                  <strong>MIT Licensed</strong>
+                </div>
               </div>
             </div>
           </div>

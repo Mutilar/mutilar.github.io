@@ -74,12 +74,20 @@
   function updateActive() {
     let current = sectionIds[0];
     const scrollY = window.scrollY + 150;
-    sections.forEach(el => {
-      if (el.offsetTop <= scrollY) current = el.id;
-    });
+    const footerPane = document.getElementById("footer-pane");
+    const inFooter = footerPane && footerPane.offsetTop <= scrollY;
+
+    if (!inFooter) {
+      sections.forEach(el => {
+        if (el.offsetTop <= scrollY) current = el.id;
+      });
+    } else {
+      current = null;
+    }
+
     navLinks.forEach(a => {
       const href = a.getAttribute("href").substring(1);
-      const isActive = href === current;
+      const isActive = !inFooter && href === current;
       a.classList.toggle("active", isActive);
       if (isActive && current !== prevActive) {
         a.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
