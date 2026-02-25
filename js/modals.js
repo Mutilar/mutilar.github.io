@@ -175,7 +175,7 @@ modal.addEventListener("click", e => { if (e.target === modal) closeModal(); });
 // Safe no-ops for modal close functions that may not be defined yet
 window.closeDeckModal = window.closeDeckModal || function() {};
 
-document.addEventListener("keydown", e => { if (e.key === "Escape") { closeModal(); closePdfModal(); closeGameModal(); closeMarpModal(); closeArchModal(); closeBitnaughtsModal(); closeBitnaughtsIphoneModal(); window.closeDeckModal(); } });
+document.addEventListener("keydown", e => { if (e.key === "Escape") { closeModal(); closePdfModal(); closeResumePdfModal(); closeGameModal(); closeMarpModal(); closeArchModal(); closeBitnaughtsModal(); closeBitnaughtsIphoneModal(); window.closeDeckModal(); } });
 
 // ── Footer year (safe alternative to document.write) ──
 const footerYear = document.getElementById("footer-year");
@@ -326,6 +326,25 @@ pdfModalClose.addEventListener("click", closePdfModal);
 pdfModal.addEventListener("click", e => { if (e.target === pdfModal) closePdfModal(); });
 
 // ═══════════════════════════════════════════════════════════════
+//  RESUME PDF VIEWER MODAL
+// ═══════════════════════════════════════════════════════════════
+const resumePdfModal = document.getElementById("resume-pdf-modal");
+const resumePdfModalClose = document.getElementById("resumePdfModalClose");
+
+function openResumePdfModal() {
+  toggleModal(resumePdfModal, true);
+  renderPdfInline("pdf/resume.pdf", { viewerId: "resume-pdf-viewer", loadingId: "resume-pdf-loading", singlePage: true });
+}
+
+function closeResumePdfModal() {
+  toggleModal(resumePdfModal, false);
+  clearPdfViewer("resume-pdf-viewer");
+}
+
+resumePdfModalClose.addEventListener("click", closeResumePdfModal);
+resumePdfModal.addEventListener("click", e => { if (e.target === resumePdfModal) closeResumePdfModal(); });
+
+// ═══════════════════════════════════════════════════════════════
 //  GAME PLAYER MODAL
 // ═══════════════════════════════════════════════════════════════
 const gameModal = document.getElementById("game-modal");
@@ -466,7 +485,9 @@ gameModal.addEventListener("click", e => { if (e.target === gameModal) closeGame
       heroImg.src = "";
     }
 
-    document.getElementById("deck-hero-name").textContent = (item.NAME || "").replace(/<br\s*\/?>/gi, " ");
+    const deckName = (item.NAME || "").replace(/<br\s*\/?>/gi, " ");
+    document.getElementById("deck-hero-name").textContent = deckName;
+    document.getElementById("deck-sticky-title").textContent = deckName;
     document.getElementById("deck-hero-motto").textContent = item.MOTTO || "";
 
     const heroLink = document.getElementById("deck-hero-link");

@@ -38,10 +38,15 @@ function loadPdfJs() {
 }
 
 let pdfResizeHandler = null;
+let resumePdfResizeHandler = null;
 
-async function renderPdfInline(pdfUrl) {
-  const viewer = document.getElementById('pdf-viewer');
-  const loadingEl = document.getElementById('pdf-loading');
+async function renderPdfInline(pdfUrl, opts) {
+  opts = opts || {};
+  const viewerId = opts.viewerId || 'pdf-viewer';
+  const loadingId = opts.loadingId || 'pdf-loading';
+  const singlePage = opts.singlePage || false;
+  const viewer = document.getElementById(viewerId);
+  const loadingEl = document.getElementById(loadingId);
   if (!viewer) return;
 
   viewer.innerHTML = '';
@@ -59,7 +64,8 @@ async function renderPdfInline(pdfUrl) {
 
   function getScale(page) {
     const vp = page.getViewport({ scale: 1 });
-    const availWidth = (viewer.clientWidth / 2) - 20;
+    const divisor = singlePage ? 1 : 2;
+    const availWidth = (viewer.clientWidth / divisor) - 20;
     const availHeight = viewer.clientHeight - 32;
     const scaleW = availWidth / vp.width;
     const scaleH = availHeight / vp.height;
@@ -78,11 +84,16 @@ async function renderPdfInline(pdfUrl) {
     return canvas;
   }
 
-  // Build spread rows: page 1 alone (cover), then pairs
-  const spreads = [[1]];
-  for (let p = 2; p <= totalPages; p += 2) {
-    if (p + 1 <= totalPages) spreads.push([p, p + 1]);
-    else spreads.push([p]);
+  // Build spread rows: single-page mode = one page per row; spread mode = cover alone then pairs
+  const spreads = [];
+  if (singlePage) {
+    for (let p = 1; p <= totalPages; p++) spreads.push([p]);
+  } else {
+    spreads.push([1]);
+    for (let p = 2; p <= totalPages; p += 2) {
+      if (p + 1 <= totalPages) spreads.push([p, p + 1]);
+      else spreads.push([p]);
+    }
   }
 
   async function renderAll() {
@@ -102,9 +113,11 @@ async function renderPdfInline(pdfUrl) {
   loadingEl.style.display = 'none';
 
   // Re-render on resize
-  if (pdfResizeHandler) window.removeEventListener('resize', pdfResizeHandler);
+  const handlerKey = singlePage ? 'resumePdfResizeHandler' : 'pdfResizeHandler';
+  const prevHandler = singlePage ? resumePdfResizeHandler : pdfResizeHandler;
+  if (prevHandler) window.removeEventListener('resize', prevHandler);
   let resizeTimer;
-  pdfResizeHandler = () => {
+  const newHandler = () => {
     clearTimeout(resizeTimer);
     resizeTimer = setTimeout(async () => {
       const scrollRatio = viewer.scrollTop / (viewer.scrollHeight || 1);
@@ -112,14 +125,24 @@ async function renderPdfInline(pdfUrl) {
       viewer.scrollTop = scrollRatio * viewer.scrollHeight;
     }, 250);
   };
-  window.addEventListener('resize', pdfResizeHandler);
+  if (singlePage) resumePdfResizeHandler = newHandler;
+  else pdfResizeHandler = newHandler;
+  window.addEventListener('resize', newHandler);
 }
 
-function clearPdfViewer() {
-  const viewer = document.getElementById('pdf-viewer');
+function clearPdfViewer(viewerId) {
+  const id = viewerId || 'pdf-viewer';
+  const viewer = document.getElementById(id);
   if (viewer) viewer.innerHTML = '';
-  if (pdfResizeHandler) {
-    window.removeEventListener('resize', pdfResizeHandler);
-    pdfResizeHandler = null;
+  if (id === 'resume-pdf-viewer') {
+    if (resumePdfResizeHandler) {
+      window.removeEventListener('resize', resumePdfResizeHandler);
+      resumePdfResizeHandler = null;
+    }
+  } else {
+    if (pdfResizeHandler) {
+      window.removeEventListener('resize', pdfResizeHandler);
+      pdfResizeHandler = null;
+    }
   }
 }

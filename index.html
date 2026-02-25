@@ -181,11 +181,7 @@
   <div class="opaque-band" id="about">
     <div class="band-content band-header">
       <h2 class="section-heading reveal" style="margin-bottom:0;">👋 About Me</h2>
-      <div class="section-badge-group">
-        <a class="section-badge" href="https://github.com/Mutilar" target="_blank"><i class="fa fa-github"></i> GitHub</a>
-        <a class="section-badge" href="https://www.linkedin.com/in/brian-hungerman/" target="_blank"><i class="fa fa-linkedin"></i> LinkedIn</a>
-        <a class="section-badge section-badge-glow" href="pdf/resume.pdf" target="_blank"><i class="fa fa-file-text"></i> Resume</a>
-      </div>
+      <a class="section-badge" href="https://www.linkedin.com/in/brian-hungerman/" target="_blank"><i class="fa fa-linkedin"></i> LinkedIn</a>
     </div>
   </div>
 
@@ -377,7 +373,10 @@
   <div class="opaque-band" id="work">
     <div class="band-content band-header">
       <h2 class="section-heading reveal" style="margin-bottom:0;">👨‍💻 Work</h2>
-      <a class="section-badge" href="https://www.linkedin.com/in/brian-hungerman/" target="_blank"><i class="fa fa-linkedin"></i> LinkedIn</a>
+      <div class="section-badge-group">
+        <a class="section-badge" href="https://www.linkedin.com/in/brian-hungerman/" target="_blank"><i class="fa fa-linkedin"></i> LinkedIn</a>
+        <a class="section-badge section-badge-glow" href="#" onclick="event.preventDefault(); openResumePdfModal();"><i class="fa fa-file-text"></i> Resume</a>
+      </div>
     </div>
   </div>
 
@@ -406,8 +405,9 @@
     <div class="band-content band-header">
       <h2 class="section-heading reveal" style="margin-bottom:0;">🎓 Education</h2>
       <div class="section-badge-group">
-        <a class="section-badge" href="https://www.ucmerced.edu/" target="_blank"><i class="fa fa-university"></i> University of California, Merced</a>
-        <span class="section-badge section-badge-glow"><i class="fa fa-graduation-cap"></i> <em>Magna Cum Laude</em></span>
+        <a class="section-badge" href="https://www.ucmerced.edu/" target="_blank"><i class="fa fa-university"></i> <span class="badge-long">University of California, Merced</span><span class="badge-short">UCMerced</span></a>
+        <span class="section-badge badge-desktop"><i class="fa fa-calendar"></i> 2016 – 2019</span>
+        <span class="section-badge section-badge-glow"><i class="fa fa-graduation-cap"></i> <em><span class="badge-long">Magna Cum Laude</span><span class="badge-short">GPA 3.74</span></em></span>
       </div>
     </div>
   </div>
@@ -437,9 +437,8 @@
     <div class="band-content band-header">
       <h2 class="section-heading reveal" style="margin-bottom:0;">🛠️ Projects</h2>
       <div class="section-badge-group">
+        <a class="section-badge" href="https://github.com/iteratecode" target="_blank"><i class="fa fa-github"></i> Iterate</a>
         <a class="section-badge" href="https://github.com/Mutilar" target="_blank"><i class="fa fa-github"></i> Mutilar</a>
-        <a class="section-badge" href="https://github.com/OzoneGIS" target="_blank"><i class="fa fa-github"></i> Ozone</a>
-        <a class="section-badge" href="https://github.com/plebeiathon" target="_blank"><i class="fa fa-github"></i> Plebeiathon</a>
       </div>
     </div>
   </div>
@@ -528,9 +527,7 @@
     <div class="band-content band-header">
       <h2 class="section-heading reveal" style="margin-bottom:0;">🎮 Games</h2>
       <div class="section-badge-group">
-        <a class="section-badge" href="https://github.com/Mutilar" target="_blank"><i class="fa fa-github"></i> Mutilar</a>
-        <a class="section-badge" href="https://github.com/iteratecode" target="_blank"><i class="fa fa-github"></i> Iterate</a>
-        <a class="section-badge" href="https://github.com/searauber" target="_blank"><i class="fa fa-github"></i> Searauber</a>
+        <a class="section-badge" href="https://github.com/searauber" target="_blank"><i class="fa fa-github"></i> SeeRäuber</a>
         <a class="section-badge" href="https://github.com/bitnaughts" target="_blank"><i class="fa fa-github"></i> BitNaughts</a>
       </div>
     </div>
@@ -659,7 +656,7 @@
           </div>
         </div>
         <a href="https://github.com/Mutilar/mutilar.github.io" target="_blank" class="glass-tile video-card reveal" style="cursor:pointer;text-decoration:none;color:inherit;" role="link" aria-label="Open Repository on GitHub">
-          <div class="video-label">📂 Repository<span class="card-action-badge"><i class="fa fa-github"></i> GitHub</span></div>
+          <div class="video-label">📂 Repository<span class="card-action-badge badge-static"><i class="fa fa-github"></i> GitHub</span></div>
           <div class="footer-detail-list" style="padding:0 14px 14px;">
             <div class="footer-detail-item">
               <span class="footer-detail-icon"><i class="fa fa-sitemap"></i></span>
@@ -724,15 +721,18 @@
      ═══════════════════════════════════════════════════════════════ -->
 <div class="modal-overlay" id="deck-modal">
   <div class="glass-tile modal-card deck-modal-card" style="position:relative;">
+    <div class="modal-sticky-bar">
+      <h2 class="modal-sticky-title" id="deck-sticky-title"></h2>
+      <a class="modal-sticky-link" id="deck-hero-link" href="#" target="_blank"><i class="fa fa-clone"></i> Archidekt</a>
+      <button class="modal-close" id="deckModalClose" aria-label="Close modal">&times;</button>
+    </div>
 
     <!-- Commander hero -->
     <div class="deck-hero">
-      <button class="modal-close" id="deckModalClose" aria-label="Close modal">&times;</button>
       <img class="deck-hero-img" id="deck-hero-img" src="" alt="" />
       <div class="deck-hero-info">
         <h2 class="deck-hero-name" id="deck-hero-name"></h2>
         <p class="deck-hero-motto" id="deck-hero-motto" style="display:none"></p>
-        <a class="deck-hero-link" id="deck-hero-link" href="#" target="_blank"><i class="fa fa-clone"></i> Archidekt</a>
         <div class="modal-body deck-body" id="deck-body"></div>
         <!-- <p class="deck-hero-bracket" id="deck-hero-bracket"></p> -->
       </div>
@@ -748,10 +748,9 @@
      ═══════════════════════════════════════════════════════════════ -->
 <div class="modal-overlay" id="pdf-modal">
   <div class="glass-tile modal-card pdf-modal-card" style="position:relative;">
-    <button class="modal-close" id="pdfModalClose" aria-label="Close modal">&times;</button>
-    <div class="pdf-modal-header">
-      <h2>📖 Dusk Rose Codex</h2>
-      <a href="pdf/bible.pdf" target="_blank"><i class="fa fa-external-link"></i> Open in new tab</a>
+    <div class="modal-sticky-bar">
+      <a class="modal-sticky-link" href="pdf/bible.pdf" target="_blank"><i class="fa fa-external-link"></i> Open in new tab</a>
+      <button class="modal-close" id="pdfModalClose" aria-label="Close modal">&times;</button>
     </div>
     <div class="pdf-embed-wrap">
       <div id="pdf-loading" style="display:none;position:absolute;inset:0;align-items:center;justify-content:center;color:#aaa;font-family:system-ui,sans-serif;font-size:15px;z-index:10;">Loading PDF…</div>
@@ -761,14 +760,30 @@
 </div>
 
 <!-- ═══════════════════════════════════════════════════════════════
+     RESUME PDF VIEWER MODAL
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="modal-overlay" id="resume-pdf-modal">
+  <div class="glass-tile modal-card pdf-modal-card" style="position:relative;">
+    <div class="modal-sticky-bar">
+      <a class="modal-sticky-link" href="pdf/resume.pdf" target="_blank"><i class="fa fa-external-link"></i> Open in new tab</a>
+      <button class="modal-close" id="resumePdfModalClose" aria-label="Close modal">&times;</button>
+    </div>
+    <div class="pdf-embed-wrap">
+      <div id="resume-pdf-loading" style="display:none;position:absolute;inset:0;align-items:center;justify-content:center;color:#aaa;font-family:system-ui,sans-serif;font-size:15px;z-index:10;">Loading PDF…</div>
+      <div id="resume-pdf-viewer"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
      GAME PLAYER MODAL
      ═══════════════════════════════════════════════════════════════ -->
 <div class="modal-overlay" id="game-modal">
   <div class="glass-tile modal-card game-modal-card" style="position:relative;">
-    <button class="modal-close" id="gameModalClose" aria-label="Close modal">&times;</button>
-    <div class="game-modal-header">
-      <h2 id="game-modal-title"><i class="fa fa-gamepad"></i> Play</h2>
-      <a id="game-modal-link" href="#" target="_blank"><i class="fa fa-external-link"></i> Open in new tab</a>
+    <div class="modal-sticky-bar">
+      <h2 class="modal-sticky-title" id="game-modal-title"><i class="fa fa-gamepad"></i> Play</h2>
+      <a class="modal-sticky-link" id="game-modal-link" href="#" target="_blank"><i class="fa fa-external-link"></i> Open in new tab</a>
+      <button class="modal-close" id="gameModalClose" aria-label="Close modal">&times;</button>
     </div>
     <div class="game-embed-wrap">
       <iframe id="game-iframe" src="" title="Game" allowfullscreen scrolling="no"></iframe>
@@ -781,10 +796,10 @@
      ═══════════════════════════════════════════════════════════════ -->
 <div class="modal-overlay" id="bitnaughts-modal">
   <div class="glass-tile modal-card bitnaughts-modal-card" style="position:relative;">
-    <div class="bitnaughts-modal-header">
+    <div class="modal-sticky-bar">
+      <h2 class="modal-sticky-title">☄ BitNaughts — Early Iterations</h2>
+      <a class="modal-sticky-link" href="https://github.com/bitnaughts" target="_blank"><i class="fa fa-github"></i> bitnaughts</a>
       <button class="modal-close" id="bitnaughtsModalClose" aria-label="Close modal">&times;</button>
-      <h2>☄ BitNaughts — Early Iterations</h2>
-      <a href="https://github.com/bitnaughts" target="_blank"><i class="fa fa-github"></i> bitnaughts</a>
     </div>
     <div class="bitnaughts-gallery">
       <div class="bitnaughts-gallery-item">
@@ -808,10 +823,10 @@
      ═══════════════════════════════════════════════════════════════ -->
 <div class="modal-overlay" id="bitnaughts-iphone-modal">
   <div class="glass-tile modal-card bitnaughts-modal-card" style="position:relative;">
-    <div class="bitnaughts-modal-header">
+    <div class="modal-sticky-bar">
+      <h2 class="modal-sticky-title">☄ BitNaughts — U.X. Design</h2>
+      <a class="modal-sticky-link" href="https://github.com/bitnaughts" target="_blank"><i class="fa fa-github"></i> bitnaughts</a>
       <button class="modal-close" id="bitnaughtsIphoneModalClose" aria-label="Close modal">&times;</button>
-      <h2>☄ BitNaughts — U.X. Design</h2>
-      <a href="https://github.com/bitnaughts" target="_blank"><i class="fa fa-github"></i> bitnaughts</a>
     </div>
     <div class="bitnaughts-gallery">
       <div class="bitnaughts-gallery-item">
@@ -839,10 +854,10 @@
      ═══════════════════════════════════════════════════════════════ -->
 <div class="modal-overlay" id="arch-modal">
   <div class="glass-tile modal-card marp-modal-card" style="position:relative;">
-    <div class="marp-modal-header">
+    <div class="modal-sticky-bar">
+      <h2 class="modal-sticky-title">🏗️ Site Architecture</h2>
+      <a class="modal-sticky-link" href="https://github.com/Mutilar/mutilar.github.io" target="_blank"><i class="fa fa-github"></i> Mutilar.github.io</a>
       <button class="modal-close" id="archModalClose" aria-label="Close modal">&times;</button>
-      <h2>🏗️ Site Architecture</h2>
-      <a href="https://github.com/Mutilar/mutilar.github.io" target="_blank"><i class="fa fa-github"></i> Mutilar.github.io</a>
     </div>
 
     <!-- Diagram placeholder — replace src with your actual architecture diagram -->
@@ -929,7 +944,10 @@
      ═══════════════════════════════════════════════════════════════ -->
 <div class="modal-overlay" id="quilt-modal">
   <div class="glass-tile modal-card" style="position:relative;">
-    <button class="modal-close" id="quiltModalClose" aria-label="Close modal">&times;</button>
+    <div class="modal-sticky-bar">
+      <h2 class="modal-sticky-title">🐧 Easter Egg</h2>
+      <button class="modal-close" id="quiltModalClose" aria-label="Close modal">&times;</button>
+    </div>
     <img class="modal-img" src="images/quilting.png" alt="Brian quilting a penguin quilt" />
     <div class="modal-header-row">
       <h2 class="modal-title">🐧 Biography</h2>
@@ -948,10 +966,10 @@
      ═══════════════════════════════════════════════════════════════ -->
 <div class="modal-overlay" id="marp-modal">
   <div class="glass-tile modal-card marp-modal-card" style="position:relative;">
-    <div class="marp-modal-header">
+    <div class="modal-sticky-bar">
+      <h2 class="modal-sticky-title">🧮 MARP Diagrams</h2>
+      <a class="modal-sticky-link" href="https://github.com/Mutilar/Marp" target="_blank"><i class="fa fa-github"></i> Mutilar/Marp</a>
       <button class="modal-close" id="marpModalClose" aria-label="Close modal">&times;</button>
-      <h2>🧮 MARP Diagrams</h2>
-      <a href="https://github.com/Mutilar/Marp" target="_blank"><i class="fa fa-github"></i> Mutilar/Marp</a>
     </div>
     <div class="marp-diagram-wrap">
       <img id="marp-diagram-img" class="theme-img" data-src-dark="images/marp-high-level-diagram.png" data-src-light="images/marp-high-level-diagram-light.png" src="images/marp-high-level-diagram.png" alt="MARP High-Level Wiring Diagram" loading="lazy">
