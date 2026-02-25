@@ -1180,13 +1180,14 @@ html.light-mode .card-action-badge.badge-static {
   gap: 12px;
   margin-bottom: 20px;
   flex-wrap: wrap;
-  padding-right: 48px;
 }
 
 .modal-card .modal-title {
   font-size: 26px;
   font-weight: 800;
   margin: 0;
+  padding-left: 1.4em;
+  text-indent: -1.4em;
 }
 
 .modal-card .modal-subtitle {
@@ -1203,9 +1204,11 @@ html.light-mode .card-action-badge.badge-static {
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.3px;
-  color: rgba(255, 255, 255, 0.65);
-  background: rgba(255, 255, 255, 0.07);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.8);
+  background: rgba(30, 30, 40, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
   white-space: nowrap;
 }
 
@@ -1218,9 +1221,12 @@ html.light-mode .card-action-badge.badge-static {
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.3px;
-  color: rgba(255, 215, 0, 0.9);
-  background: rgba(255, 215, 0, 0.1);
-  border: 1px solid rgba(255, 215, 0, 0.3);
+  color: rgba(255, 215, 0, 0.95);
+  background: rgba(40, 30, 0, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 215, 0, 0.4);
+  box-shadow: 0 0 8px rgba(255, 215, 0, 0.3), 0 0 20px rgba(255, 215, 0, 0.1);
   white-space: nowrap;
   animation: win-pulse 2s ease-in-out infinite;
 }
@@ -1357,13 +1363,24 @@ html.light-mode .card-action-badge.badge-static {
   text-underline-offset: 2px;
 }
 
-.modal-close {
+.modal-sticky-bar {
   position: sticky;
-  top: 16px;
-  float: right;
-  margin-right: 4px;
-  margin-top: -4px;
-  margin-bottom: -40px;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 12px 32px 8px;
+  margin: -28px -32px 0;
+  pointer-events: none;
+}
+
+.modal-sticky-bar > * {
+  pointer-events: auto;
+}
+
+.modal-close {
   width: 40px;
   height: 40px;
   display: flex;
@@ -1377,6 +1394,7 @@ html.light-mode .card-action-badge.badge-static {
   cursor: pointer;
   transition: all 0.3s;
   z-index: 20;
+  flex-shrink: 0;
 }
 
 .modal-close:hover {
@@ -2820,17 +2838,21 @@ html.light-mode .modal-card .modal-body a {
 }
 
 html.light-mode .modal-card .modal-subtitle .modal-badge {
-  color: rgba(0, 0, 0, 0.55);
-  background: rgba(0, 0, 0, 0.04);
-  border-color: rgba(0, 0, 0, 0.10);
+  color: rgba(0, 0, 0, 0.7);
+  background: rgba(240, 240, 245, 0.75);
+  border-color: rgba(0, 0, 0, 0.12);
+}
+
+html.light-mode .modal-sticky-bar {
 }
 
 /* ── Win / Play badges (card + modal) ─────────────────────── */
 html.light-mode .entry-card .entry-win,
 html.light-mode .modal-card .modal-subtitle .modal-win-badge {
-  color: rgba(160, 110, 0, 0.95);
-  background: rgba(180, 130, 0, 0.12);
-  border-color: rgba(160, 110, 0, 0.35);
+  color: rgba(140, 95, 0, 1);
+  background: rgba(255, 235, 180, 0.8);
+  border-color: rgba(160, 110, 0, 0.4);
+  box-shadow: 0 0 8px rgba(180, 130, 0, 0.25), 0 0 16px rgba(180, 130, 0, 0.1);
 }
 
 html.light-mode .entry-card .entry-play,

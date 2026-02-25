@@ -707,11 +707,13 @@
      ═══════════════════════════════════════════════════════════════ -->
 <div class="modal-overlay" id="modal">
   <div class="glass-tile modal-card" style="position:relative;">
-    <button class="modal-close" id="modalClose" aria-label="Close modal">&times;</button>
+    <div class="modal-sticky-bar">
+      <p class="modal-subtitle" id="modal-title"></p>
+      <button class="modal-close" id="modalClose" aria-label="Close modal">&times;</button>
+    </div>
     <img class="modal-img" id="modal-image" src="" alt="" />
     <div class="modal-header-row">
       <h2 class="modal-title" id="modal-name"></h2>
-      <p class="modal-subtitle" id="modal-title"></p>
     </div>
     <div class="modal-body" id="modal-biography"></div>
   </div>
