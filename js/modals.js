@@ -297,7 +297,7 @@ const pdfModalClose = document.getElementById("pdfModalClose");
 
 function openPdfModal() {
   toggleModal(pdfModal, true);
-  renderPdfInline("bible/bible.pdf");
+  renderPdfInline("pdf/bible.pdf");
 }
 
 function closePdfModal() {

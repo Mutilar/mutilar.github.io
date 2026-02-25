@@ -721,7 +721,7 @@ html.light-mode .section-badge-glow:hover {
    HERO
    ═══════════════════════════════════════════════════════════════ */
 .hero-card {
-  max-width: 750px;
+  max-width: 925px;
   width: 100%;
   display: flex;
   align-items: center;
@@ -730,14 +730,14 @@ html.light-mode .section-badge-glow:hover {
 }
 
 .hero-text {
-  text-align: left;
+  text-align: center;
   flex: 1;
   min-width: 0;
 }
 
 .hero-portrait {
-  width: 300px;
-  height: 300px;
+  width: 375px;
+  height: 375px;
   border-radius: 50%;
   object-fit: cover;
   border: 3px solid rgba(255, 255, 255, 0.25);
@@ -764,6 +764,12 @@ html.light-mode .section-badge-glow:hover {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+}
+.hero-name .emoji-reset {
+  -webkit-text-fill-color: initial;
+  background: none;
+  -webkit-background-clip: initial;
+  background-clip: initial;
 }
 
 .hero-tagline {
@@ -797,6 +803,7 @@ html.light-mode .section-badge-glow:hover {
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
+  justify-content: center;
 }
 
 .hero-links a {
@@ -1071,6 +1078,13 @@ html.light-mode .section-badge-glow:hover {
   animation: badgePulse 2.5s ease-in-out infinite;
 }
 
+.card-action-badge.badge-static {
+  animation: none;
+  box-shadow: none;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
 .card-action-badge.badge-dive {
   background: rgba(130, 200, 255, 0.15);
   border: 1px solid rgba(130, 200, 255, 0.45);
@@ -1100,6 +1114,14 @@ html.light-mode .card-action-badge.badge-dive {
   background: rgba(0, 100, 180, 0.1);
   border-color: rgba(0, 100, 180, 0.35);
   box-shadow: 0 0 6px rgba(0, 100, 180, 0.15), inset 0 0 4px rgba(0, 100, 180, 0.05);
+}
+
+html.light-mode .card-action-badge.badge-static {
+  animation: none;
+  box-shadow: none;
+  color: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.06);
+  border-color: rgba(0, 0, 0, 0.15);
 }
 
 /* ═══════════════════════════════════════════════════════════════

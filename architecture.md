@@ -82,8 +82,8 @@ graph TD
             CSVFiles["csv/\n<i>📊 *.csv</i>"]
             AudioFiles["radio/\n<i>🎵 *.mp3</i>"]
             GameBuilds["games/\n<i>🎮 *.webgl</i>"]
-            BiblePDF["bible/\n<i>📕 *.pdf</i>"]
-            Images ~~~ CSVFiles ~~~ AudioFiles ~~~ GameBuilds ~~~ BiblePDF
+            PDFs["pdf/\n<i>📕 *.pdf</i>"]
+            Images ~~~ CSVFiles ~~~ AudioFiles ~~~ GameBuilds ~~~ PDFs
         end
         
         subgraph SectionCSV["📋 SECTION CSVs"]
@@ -168,7 +168,7 @@ graph TD
     class PapaParse,PDFjs script
     class ModalsJS,DataJS,ScrollJS,ParallaxJS,RadioJS,PdfViewerJS script
     class WorkCSV,EduCSV,ProjectsCSV,HacksCSV,GamesCSV,MarpCSV,BNCSV,MtgCSV,NoblesCSV,DemonsCSV,BomJSON data
-    class ReadmeMD,ArchMD,CNAMEFile,LicenseTxt,Images,CardArt,CSVFiles,AudioFiles,GameBuilds,BiblePDF asset
+    class ReadmeMD,ArchMD,CNAMEFile,LicenseTxt,Images,CardArt,CSVFiles,AudioFiles,GameBuilds,PDFs asset
     class ParallaxBG,Bands,Tiles,Player,DetailModal,DeckModal,PdfModal,GameModal,MarpModal output
 
     classDef hosting fill:#e74c3c,stroke:#c0392b,color:#67000d,stroke-width:2px
