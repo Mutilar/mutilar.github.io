@@ -1350,9 +1350,12 @@ html.light-mode .card-action-badge.badge-static {
 }
 
 .modal-close {
-  position: absolute;
+  position: sticky;
   top: 16px;
-  right: 20px;
+  float: right;
+  margin-right: 4px;
+  margin-top: -4px;
+  margin-bottom: -40px;
   width: 40px;
   height: 40px;
   display: flex;

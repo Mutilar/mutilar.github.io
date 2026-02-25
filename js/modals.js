@@ -233,6 +233,23 @@ archModalClose.addEventListener("click", closeArchModal);
 archModal.addEventListener("click", e => { if (e.target === archModal) closeArchModal(); });
 
 // ═══════════════════════════════════════════════════════════════
+// QUILTING MODAL (Easter Egg)
+// ═══════════════════════════════════════════════════════════════
+const quiltModal = document.getElementById("quilt-modal");
+const quiltModalClose = document.getElementById("quiltModalClose");
+
+function openQuiltModal() {
+  toggleModal(quiltModal, true);
+}
+
+function closeQuiltModal() {
+  toggleModal(quiltModal, false);
+}
+
+quiltModalClose.addEventListener("click", closeQuiltModal);
+quiltModal.addEventListener("click", e => { if (e.target === quiltModal) closeQuiltModal(); });
+
+// ═══════════════════════════════════════════════════════════════
 //  MARP DIAGRAM MODAL
 // ═══════════════════════════════════════════════════════════════
 const marpModal = document.getElementById("marp-modal");

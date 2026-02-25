@@ -695,7 +695,7 @@
 
       <!-- Copyright -->
       <footer class="glass-footer">
-        <p>Brian Hungerman · <span id="footer-year"></span><br><a href="https://github.com/Mutilar/mutilar.github.io" target="_blank"><i class="fa fa-github"></i> mutilar.github.io</a></p>
+        <p><strong><a href="https://time.is/" target="_blank" style="text-decoration:none;">📅 <span id="footer-year"></span></a></strong><br><strong><a href="#" onclick="event.preventDefault(); openQuiltModal();" style="text-decoration:none;cursor:pointer;">🐧 Brian Hungerman</a></strong><br><strong><a href="https://brianhungerman.com" target="_blank"><i class="fa fa-globe"></i> brianhungerman.com</a></strong></p>
       </footer>
 
     </div>
@@ -850,76 +850,93 @@
 
     <!-- Architecture details -->
     <div class="marp-bom">
-      <h4>🖥️ Front-End</h4>
+      <h4>🌐 Hosting</h4>
       <table>
-        <thead><tr><th>Module</th><th>Role</th><th>Details</th></tr></thead>
+        <thead><tr><th>Layer</th><th>Details</th></tr></thead>
         <tbody>
-          <tr><td><code>index.html</code></td><td>Single-Page Shell</td><td>All sections, modals &amp; structured data (JSON-LD, Open Graph, Twitter Cards) in one file</td></tr>
-          <tr><td><code>css/styles.css</code></td><td>Styling</td><td>Glassmorphic design via <code>backdrop-filter</code>, responsive breakpoints, scroll reveal animations</td></tr>
-          <tr><td><code>js/parallax.js</code></td><td>Background Renderer</td><td>Dual-canvas engine — coprime orb oscillations with per-section color palettes, blended via clip regions</td></tr>
-          <tr><td><code>js/scroll.js</code></td><td>Scroll Behavior</td><td>IntersectionObserver reveals, scroll-hint fade-outs, active nav highlight, brand label toggle</td></tr>
-          <tr><td><code>js/modals.js</code></td><td>Modal System</td><td>Stacked modal management with focus trapping, glow effects, data-action delegation, Escape handling</td></tr>
-          <tr><td><code>js/data.js</code></td><td>Data Layer</td><td>CSV → card grid renderer via PapaParse, deck modal, MARP BOM loader, about-grid cherry-picker</td></tr>
-          <tr><td><code>js/pdfviewer.js</code></td><td>PDF Viewer</td><td>Dynamic PDF.js import, spread-view rendering with responsive scaling</td></tr>
-          <tr><td><code>js/radio.js</code></td><td>Audio Player</td><td>Web Audio API analyser → EQ bar visualization, playlist management, volume/mute controls</td></tr>
+          <tr><td>GitHub Pages</td><td>Static deploy from <code>master</code> branch at <code>mutilar.github.io</code></td></tr>
+          <tr><td>Custom Domain</td><td><code>CNAME</code> → <code>brianhungerman.com</code></td></tr>
+          <tr><td>HTTPS</td><td>TLS via GitHub Pages, enforced automatically</td></tr>
         </tbody>
       </table>
 
-      <h4>📊 Data Layer</h4>
+      <h4>📄 Single-Page Shell</h4>
       <table>
-        <thead><tr><th>File</th><th>Section</th><th>Format</th></tr></thead>
+        <thead><tr><th>Concept</th><th>Details</th></tr></thead>
         <tbody>
-          <tr><td><code>csv/work.csv</code></td><td>👨‍💻 Work</td><td>CSV (PapaParse)</td></tr>
-          <tr><td><code>csv/education.csv</code></td><td>🎓 Education</td><td>CSV</td></tr>
-          <tr><td><code>csv/projects.csv</code></td><td>🛠️ Projects</td><td>CSV</td></tr>
-          <tr><td><code>csv/hackathons.csv</code></td><td>⛏️ Hackathons</td><td>CSV</td></tr>
-          <tr><td><code>csv/games.csv</code></td><td>🎮 Games</td><td>CSV</td></tr>
-          <tr><td><code>csv/marp.csv</code></td><td>🤖 MARP</td><td>CSV</td></tr>
-          <tr><td><code>csv/bitnaughts.csv</code></td><td>☄ BitNaughts</td><td>CSV</td></tr>
-          <tr><td><code>csv/mtg.csv</code></td><td>🪄 MTG</td><td>CSV (triggers deck modal)</td></tr>
-          <tr><td><code>csv/nobles.csv</code></td><td>👑 The Nobles</td><td>CSV (card art gallery)</td></tr>
-          <tr><td><code>csv/demons.csv</code></td><td>👹 The Demons</td><td>CSV (card art gallery)</td></tr>
-          <tr><td><code>csv/marp-bom.json</code></td><td>🤖 MARP BOM</td><td>JSON (deferred load)</td></tr>
+          <tr><td>One HTML File</td><td><code>index.html</code> — all sections, modals &amp; metadata in a single document</td></tr>
+          <tr><td>Structured Data</td><td>JSON-LD, Open Graph &amp; Twitter Cards for SEO &amp; social previews</td></tr>
+          <tr><td>Glassmorphic CSS</td><td><code>backdrop-filter</code>, responsive breakpoints &amp; scroll-reveal animations</td></tr>
+          <tr><td>Accessibility</td><td>Skip-link, focus trapping, ARIA attributes &amp; <code>&lt;noscript&gt;</code> fallback</td></tr>
         </tbody>
       </table>
 
-      <h4>🧩 Modal System</h4>
+      <h4>📦 CDN</h4>
       <table>
-        <thead><tr><th>Modal</th><th>Trigger</th><th>Content</th></tr></thead>
+        <thead><tr><th>Library</th><th>Purpose</th></tr></thead>
         <tbody>
-          <tr><td>Detail Modal</td><td>Click any entry card</td><td>Image, title badges, rich HTML biography from CSV <code>TEXT</code> column</td></tr>
-          <tr><td>MTG Deck Modal</td><td>Click an MTG deck card</td><td>Commander hero, per-type card art carousels, in-text card-link navigation</td></tr>
-          <tr><td>MARP Diagrams</td><td>MARP section tile</td><td>High-level wiring diagram + JSON-driven Bill of Materials tables</td></tr>
-          <tr><td>Architecture</td><td>Footer Architecture tile</td><td>This modal — site system diagrams &amp; module reference</td></tr>
-          <tr><td>PDF Viewer</td><td>MTG section tile</td><td>PDF.js spread-view renderer for the Dusk Rose Codex</td></tr>
-          <tr><td>Game Player</td><td>"Play me!" badges</td><td>Scaled iframe with native-resolution fitting (Graviton, SpaceNinjas, VooDoo)</td></tr>
-          <tr><td>BitNaughts Gallery</td><td>BitNaughts section tiles</td><td>GIF/image galleries (early iterations &amp; iPhone U.X.)</td></tr>
+          <tr><td>Font Awesome</td><td>Icon font for UI &amp; social links</td></tr>
+          <tr><td>PapaParse</td><td>CSV parsing → card grid rendering</td></tr>
+          <tr><td>PDF.js</td><td>In-page spread-view PDF reader (dynamic import)</td></tr>
         </tbody>
       </table>
 
-      <h4>🎨 Visual Pipeline</h4>
+      <h4>📂 Assets</h4>
       <table>
-        <thead><tr><th>Stage</th><th>Description</th></tr></thead>
+        <thead><tr><th>Path</th><th>Contents</th></tr></thead>
         <tbody>
-          <tr><td>Orb Canvas</td><td>Four radial-gradient orbs per section with coprime oscillation periods; colors from <code>data-colors</code> attribute</td></tr>
-          <tr><td>Glint Canvas</td><td>Smaller, faster accent particles layered on top with independent timing</td></tr>
-          <tr><td>Clip Regions</td><td>Each parallax-window clips to its viewport rect; <code>data-attention</code> controls orb confinement</td></tr>
-          <tr><td>Opaque Bands</td><td>Section headers with frosted glass backgrounds break the parallax flow</td></tr>
-          <tr><td>Glass Tiles</td><td><code>backdrop-filter: blur()</code> + subtle borders + hover glow transitions</td></tr>
+          <tr><td><code>csv/</code></td><td>11 CSV files + 1 JSON — each drives a card grid section</td></tr>
+          <tr><td><code>images/</code></td><td>Banners, card art, diagrams &amp; GIFs</td></tr>
+          <tr><td><code>games/</code></td><td>Unity WebGL builds (Graviton, SpaceNinjas, VooDoo)</td></tr>
+          <tr><td><code>radio/</code></td><td>MP3 playlist for the audio player</td></tr>
+          <tr><td><code>pdf/</code></td><td>Dusk Rose Codex PDF</td></tr>
         </tbody>
       </table>
 
-      <h4>♿ Accessibility</h4>
+      <h4>⚡ Vanilla JS</h4>
       <table>
-        <thead><tr><th>Feature</th><th>Implementation</th></tr></thead>
+        <thead><tr><th>Module</th><th>Role</th></tr></thead>
         <tbody>
-          <tr><td>Skip to Content</td><td><code>&lt;a href="#about" class="skip-to-content"&gt;</code> — visible on Tab focus</td></tr>
-          <tr><td>Focus Trapping</td><td>Tab cycles within topmost open modal overlay</td></tr>
-          <tr><td>ARIA</td><td><code>aria-label</code>, <code>aria-pressed</code>, <code>role="button"</code> on interactive elements</td></tr>
-          <tr><td>Noscript</td><td>Static fallback with name, links &amp; contact info</td></tr>
-          <tr><td>Structured Data</td><td>JSON-LD <code>ProfilePage</code> schema for search engines</td></tr>
+          <tr><td><code>parallax.js</code></td><td>Dual-canvas orb &amp; glint animations clipped per section</td></tr>
+          <tr><td><code>scroll.js</code></td><td>IntersectionObserver reveals, nav highlight &amp; scroll hints</td></tr>
+          <tr><td><code>modals.js</code></td><td>Stacked modal manager with focus trap &amp; <code>data-action</code> delegation</td></tr>
+          <tr><td><code>data.js</code></td><td>CSV → card grids, deck modal &amp; MARP BOM loader</td></tr>
+          <tr><td><code>pdfviewer.js</code></td><td>Dynamic PDF.js import &amp; responsive spread rendering</td></tr>
+          <tr><td><code>radio.js</code></td><td>Web Audio analyser → EQ visualizer &amp; playlist controls</td></tr>
+          <tr><td><code>theme.js</code></td><td>Light / dark mode toggle with <code>localStorage</code> persistence</td></tr>
         </tbody>
       </table>
+
+      <h4>🎨 User Experience</h4>
+      <table>
+        <thead><tr><th>Element</th><th>Details</th></tr></thead>
+        <tbody>
+          <tr><td>Parallax Background</td><td>Coprime-oscillating orbs &amp; glint particles per section palette</td></tr>
+          <tr><td>Frosted Bands</td><td>Opaque headers with glass blur break the parallax flow</td></tr>
+          <tr><td>Glass Tiles</td><td>Blur + border + hover glow cards for all content</td></tr>
+          <tr><td>7 Modal Types</td><td>Detail, Deck, MARP, Architecture, PDF, Game &amp; Gallery</td></tr>
+          <tr><td>Radio Player</td><td>Collapsible EQ-bar audio player with volume &amp; mute</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     QUILTING MODAL (Easter Egg)
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="modal-overlay" id="quilt-modal">
+  <div class="glass-tile modal-card" style="position:relative;">
+    <button class="modal-close" id="quiltModalClose" aria-label="Close modal">&times;</button>
+    <img class="modal-img" src="images/quilting.png" alt="Brian quilting a penguin quilt" />
+    <div class="modal-header-row">
+      <h2 class="modal-title">🐧 Biography</h2>
+    </div>
+    <div class="modal-body">
+      <blockquote>
+        <p>My love for penguins and creating physical objects culminated at a young age with my first quilt.</p>
+        <cite>Brian Hungerman</cite>
+      </blockquote>
     </div>
   </div>
 </div>
