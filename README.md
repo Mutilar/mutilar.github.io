@@ -161,6 +161,8 @@ Graviton, SpaceNinjas & VooDoo are playable in-browser via WebGL on the portfoli
 
 [mutilar.github.io](https://mutilar.github.io) is itself an open-source project — a single-page app with zero build tools and zero frameworks.
 
+![Site Architecture](images/mutilar-architecture.png)
+
 | Layer | Details |
 |---|---|
 | **Rendering** | Dual-canvas parallax engine — coprime orb oscillations with per-section color palettes, blended via clip regions keyed to scroll position |
