@@ -26,9 +26,9 @@ function buildEntryCard(item, dataset, opts) {
         </div>
       </div>
       ${(hasTitle || hasWin || hasPlay) ? `<div class="entry-badges">
+        ${hasWin ? `<div class="entry-win"><i class="fa fa-trophy"></i> ${item.WIN}</div>` : ""}
         ${hasPlay ? (item.PLAY.trim().startsWith('http') ? `<a href="${item.PLAY.trim()}" target="_blank" class="entry-play" onclick="event.stopPropagation();"><i class="fa fa-gamepad"></i> Play me!</a>` : `<a href="#" class="entry-play" onclick="event.preventDefault(); event.stopPropagation(); openGameModal('${item.PLAY.trim()}', '${(item.NAME || '').replace(/'/g, "\\'")}', ${item.PLAY_W || 960}, ${item.PLAY_H || 600})"><i class="fa fa-gamepad"></i> Play me!</a>`) : ""}
         ${hasTitle ? item.TITLE.split(',').map(t => { const txt = t.trim(); const cls = txt.toLowerCase().startsWith('senior') ? 'entry-title entry-title-highlight' : 'entry-title'; return `<div class="${cls}">${txt}</div>`; }).join('') : ""}
-        ${hasWin ? `<div class="entry-win"><i class="fa fa-trophy"></i> ${item.WIN}</div>` : ""}
       </div>` : ""}
     </div>
     ${hasMotto ? `<div class="entry-motto">"${item.MOTTO}"</div>` : ""}
