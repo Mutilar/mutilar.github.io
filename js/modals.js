@@ -22,18 +22,32 @@ let _modalOpenCount = 0;
 
 function toggleModal(el, open) {
   if (open) {
+    el.classList.remove("closing");
     el.classList.add("open");
     _modalOpenCount++;
     document.body.style.overflow = "hidden";
+    document.documentElement.style.overflow = "hidden";
     // Move focus into the modal
     const focusTarget = el.querySelector(".modal-close, button, [tabindex]");
     if (focusTarget) requestAnimationFrame(() => focusTarget.focus());
   } else {
     if (!el.classList.contains("open")) return;
+    el.classList.add("closing");
     el.classList.remove("open");
     _modalOpenCount = Math.max(0, _modalOpenCount - 1);
-    if (_modalOpenCount === 0) {
-      document.body.style.overflow = "";
+
+    const onEnd = () => {
+      el.classList.remove("closing");
+      if (_modalOpenCount === 0) {
+        document.body.style.overflow = "";
+        document.documentElement.style.overflow = "";
+      }
+    };
+    const card = el.querySelector(".modal-card");
+    if (card) {
+      card.addEventListener("animationend", onEnd, { once: true });
+    } else {
+      setTimeout(onEnd, 250);
     }
   }
 }
@@ -175,7 +189,10 @@ modal.addEventListener("click", e => { if (e.target === modal) closeModal(); });
 // Safe no-ops for modal close functions that may not be defined yet
 window.closeDeckModal = window.closeDeckModal || function() {};
 
-document.addEventListener("keydown", e => { if (e.key === "Escape") { closeModal(); closePdfModal(); closeResumePdfModal(); closeGameModal(); closeMarpModal(); closeArchModal(); closeBitnaughtsModal(); closeBitnaughtsIphoneModal(); window.closeDeckModal(); } });
+// Safe no-op for timeline modal close until timeline.js loads
+window.closeTimelineModal = window.closeTimelineModal || function() {};
+
+document.addEventListener("keydown", e => { if (e.key === "Escape") { closeModal(); closePdfModal(); closeResumePdfModal(); closeGameModal(); closeMarpModal(); closeArchModal(); closeBitnaughtsModal(); closeBitnaughtsIphoneModal(); window.closeDeckModal(); window.closeTimelineModal(); } });
 
 // ── Footer year (safe alternative to document.write) ──
 const footerYear = document.getElementById("footer-year");
@@ -187,6 +204,7 @@ const _modalOpeners = {
   pdfModal: function() { openPdfModal(); },
   bitnaughtsIphoneModal: function() { openBitnaughtsIphoneModal(); },
   archModal: function() { openArchModal(); },
+  timelineModal: function() { window.openTimelineModal && window.openTimelineModal(); },
 };
 
 document.addEventListener("click", function(e) {

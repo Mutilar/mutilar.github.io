@@ -181,7 +181,7 @@
   <div class="opaque-band" id="about">
     <div class="band-content band-header">
       <h2 class="section-heading reveal" style="margin-bottom:0;">👋 About Me</h2>
-      <a class="section-badge" href="https://www.linkedin.com/in/brian-hungerman/" target="_blank"><i class="fa fa-linkedin"></i> LinkedIn</a>
+      <a class="section-badge section-badge-glow" href="#" onclick="event.preventDefault(); openTimelineModal();"><i class="fa fa-clock-o"></i> Timeline</a>
     </div>
   </div>
 
@@ -960,6 +960,28 @@
 </div>
 
 <!-- ═══════════════════════════════════════════════════════════════
+     TIMELINE MODAL
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="modal-overlay" id="timeline-modal">
+  <div class="glass-tile modal-card timeline-modal-card" style="position:relative;">
+    <div class="modal-sticky-bar">
+      <button class="timeline-filter active" data-filter="all" style="--tc:255,255,255;--tc-light:30,30,40"><span class="all-indicator">⬜</span> 🎛️ All</button>
+      <button class="timeline-filter" data-filter="robotics" style="--tc:242,80,34"><span class="timeline-dot" style="background:rgba(242,80,34,0.9);"></span> 🤖 Robotics</button>
+      <button class="timeline-filter" data-filter="games" style="--tc:127,186,0"><span class="timeline-dot" style="background:rgba(127,186,0,0.9);"></span> 🎮 Games</button>
+      <button class="timeline-filter" data-filter="software" style="--tc:0,164,239"><span class="timeline-dot" style="background:rgba(0,164,239,0.9);"></span> 💻 Software</button>
+      <button class="timeline-filter" data-filter="research" style="--tc:255,185,0"><span class="timeline-dot" style="background:rgba(255,185,0,0.9);"></span> 🔬 Research</button>
+      <button class="timeline-filter" data-filter="education" style="--tc:0,120,212"><span class="timeline-dot" style="background:rgba(0,120,212,0.9);"></span> 🎓 Education</button>
+      <button class="modal-close" id="timelineModalClose" aria-label="Close modal">&times;</button>
+    </div>
+    <div class="timeline-container" id="timeline-container">
+      <div class="timeline-entries" id="timeline-entries">
+        <p style="color:rgba(255,255,255,0.5);font-style:italic;padding:24px;">Loading timeline…</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
      MARP DIAGRAM MODAL
      ═══════════════════════════════════════════════════════════════ -->
 <div class="modal-overlay" id="marp-modal">
@@ -988,6 +1010,7 @@
 <script defer src="js/modals.js"></script>
 <script defer src="js/pdfviewer.js"></script>
 <script defer src="js/data.js"></script>
+<script defer src="js/timeline.js"></script>
 <script defer src="js/radio.js"></script>
 
 </body>
