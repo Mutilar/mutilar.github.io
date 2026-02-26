@@ -6,7 +6,7 @@
 //  arrows inside a pannable/zoomable viewport.  Instantiated once
 //  for the Architecture modal and once for the MARP wiring modal.
 //
-//  Matches the skill-tree.js / timeline.js aesthetic.
+//  Matches the knowledge-graph.js / timeline.js aesthetic.
 // ═══════════════════════════════════════════════════════════════
 (() => {
 
@@ -418,8 +418,9 @@
       if (!toPt && sgBounds.has(edge.to))     { const b = sgBounds.get(edge.to);   toPt   = { x: b.cx, y: b.cy, cls: "" }; toSg   = b; }
       if (!fromPt || !toPt) return;
 
-      // Determine edge color from source node's class
-      const edgeCls = fromPt.cls || toPt.cls || "";
+      // Determine edge color from target node's class (edge represents flow INTO target)
+      // Fall back to source class, then white
+      const edgeCls = toPt.cls || fromPt.cls || "";
       const edgeTC = colors[edgeCls] || "255,255,255";
 
       const fHH = fromSg ? fromSg.h / 2 : NODE_H / 2;

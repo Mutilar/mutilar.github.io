@@ -164,7 +164,7 @@
     "ropgamedesign":   ["🕹️"],
     "roparchitecture": ["🏗️"],
     "apjava":          ["☕"],
-    "gasleek":         ["🥇"],
+    "gasleek":         ["🏆"],
     "sriracha":        ["🥉"],
     "smartank":        ["🥇"],
     "spaceninjas":     ["🥷"],
@@ -177,10 +177,10 @@
     "gist":            ["🥇"],
     "digestquest":     ["🥇"],
     "voodoo":          ["🎨"],
-    "popvuj":          ["🌄"],
+    "popvuj":          ["⛪"],
     "the-nobles":      ["👑"],
     "the-demons":      ["👹"],
-    "duskrosecodex":   ["📖"],
+    "duskrosecodex":   ["📜"],
   };
 
   function getTheme(item) { return themeMap[item.ID] || "software"; }
@@ -1409,7 +1409,7 @@
     const nameBreaks = {
       "Red Tie Robotics":             "Red Tie<br>Robotics",
       "Summer of Game Design":        "Summer of<br>Game Design",
-      "CITRIS & Banatao Institute":   "CITRIS &<br>Banatao<br>Institute",
+      "CITRIS & Banatao Institute":   "CITRIS",
       "VICE Lab":                     "VICE<br>Lab",
       "ANDES Lab":                    "ANDES<br>Lab",
       "Alamo Robotics":               "Alamo<br>Robotics",
@@ -1428,10 +1428,16 @@
       "AP Java":                     "Java",
       "ROP Game Design":             "Game<br>Design",
       "ROP Architecture":            "Archi-<br>tecture",
+      "ChemisTRY":                   "Chem-<br>isTRY",
+      "VooDoo":                       "Voo-<br>Doo",
+      "SeeRäuber":                    "Sea-<br>Räuber",
       "AzureMLOps":                   "Azure<br>MLOps",
       "BitNaughts":                   "BitNaughts",
       "GISt":                         "GISt",
       "SpaceNinjas":                  "Space<br>Ninjas",
+      "SMARTank":                     "SMART<br>Tank",
+      "The Nobles":                   "Nobles",
+      "The Demons":                   "Demons",
     };
     if (nameBreaks[text]) return nameBreaks[text];
 
