@@ -3820,13 +3820,13 @@ html.light-mode .timeline-filter.filter-pulse {
   background: rgba(255, 255, 255, 0.08);
   border: 2px solid rgba(255, 255, 255, 0.3);
   border-radius: 50%;
-  padding: 16px;
+  padding: 0;
+  gap: 0;
   min-width: 90px;
   max-width: 90px;
   width: 90px;
   height: 90px;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
   cursor: default;
@@ -3850,6 +3850,19 @@ html.light-mode .timeline-filter.filter-pulse {
 .kg-node-center .kg-node-icon {
   font-size: 36px;
   line-height: 1;
+  margin-top: -10px;
+  transition: transform 0.3s ease;
+}
+
+.kg-node-center:hover .kg-node-icon {
+  animation: kg-penguin-bounce 1s ease infinite;
+}
+
+@keyframes kg-penguin-bounce {
+  0%, 100% { transform: translateY(0); }
+  30%      { transform: translateY(-6px); }
+  50%      { transform: translateY(0); }
+  70%      { transform: translateY(-3px); }
 }
 
 /* ── Node accent gradient ─────────────────────────────────── */

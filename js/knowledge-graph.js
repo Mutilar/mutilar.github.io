@@ -108,7 +108,7 @@
     "smartank":        ["🥇 Hardware"],
     "spaceninjas":     ["🥷 Platformer"],
     "graviton":        ["🌸 Tower<sup>Def</sup>"],
-    "galconq":         ["🌌 4<sup>X</sup> VB<sup>.NET</sup>"],
+    "galconq":         ["🌌 4<sup>X</sup>"],
     "seerauber":       ["🥈 2<sup>ND</sup>"],
     "ozone":           ["🥈 2<sup>ND</sup>"],
     "blindsight":      ["🥉 3<sup>RD</sup>"],
@@ -186,6 +186,7 @@
   const allThemes = ["robotics", "games", "software", "research", "education"];
 
   let _nodes = [];       // { el, edgeEl, theme, quadrant, item, category, absMonth, dist }
+  let _hoveredNode = null; // currently hovered node (for whisper on hover)
   let _transform = { x: 0, y: 0, scale: 1 };
   let _graphWorld = null; // the transform container
   let _edgeSVG = null;    // the SVG for edges
@@ -271,12 +272,19 @@
   function applyFilter() {
     _nodes.forEach(n => {
       // Education nodes live in quadrant slots but have theme "education".
-      // A node is visible if its quadrant filter is active AND
-      // (it's not education OR the education filter is also active).
+      // For education nodes: visible if education filter is active AND
+      //   (its quadrant filter is also active OR no quadrant filters are on).
+      // For non-education nodes: visible if its quadrant filter is active.
       const quadrantOn = activeFilters.has(n.quadrant);
       const isEdu = n.theme === "education";
       const eduOn = activeFilters.has("education");
-      const hide = !quadrantOn || (isEdu && !eduOn);
+      const anyQuadrantOn = ["robotics", "games", "software", "research"].some(q => activeFilters.has(q));
+      let hide;
+      if (isEdu) {
+        hide = !eduOn || (anyQuadrantOn && !quadrantOn);
+      } else {
+        hide = !quadrantOn;
+      }
       n.el.classList.toggle("kg-hidden", hide);
       if (n.edgeEl) n.edgeEl.classList.toggle("kg-edge-hidden", hide);
     });
@@ -285,7 +293,61 @@
 
   /* ── Pan & Zoom ───────────────────────────────────────────── */
   const MIN_SCALE = 1;
-  const MAX_SCALE = 2;
+  const MAX_SCALE = 4;
+
+  /** Compute the allowed pan range so the graph content stays mostly visible.
+   *  Returns { minX, maxX, minY, maxY } for _transform.x/y. */
+  function getPanBounds() {
+    const viewport = graphModal.querySelector(".kg-viewport");
+    if (!viewport || _nodes.length === 0) return null;
+    const vw = viewport.clientWidth;
+    const vh = viewport.clientHeight;
+    // Find world-space extent of all nodes
+    let wMinX = Infinity, wMaxX = -Infinity, wMinY = Infinity, wMaxY = -Infinity;
+    _nodes.forEach(n => {
+      if (n.targetX < wMinX) wMinX = n.targetX;
+      if (n.targetX > wMaxX) wMaxX = n.targetX;
+      if (n.targetY < wMinY) wMinY = n.targetY;
+      if (n.targetY > wMaxY) wMaxY = n.targetY;
+    });
+    // Add margin for node sizes
+    const margin = 80;
+    wMinX -= margin; wMaxX += margin;
+    wMinY -= margin; wMaxY += margin;
+    // In screen space, node at worldX appears at: worldX * scale + transform.x
+    // We want at least 15% of viewport to still show content:
+    // => wMaxX * scale + tx >= vw * 0.15   → tx >= vw*0.15 - wMaxX*scale
+    // => wMinX * scale + tx <= vw * 0.85   → tx <= vw*0.85 - wMinX*scale
+    const s = _transform.scale;
+    const pad = 0.15;
+    return {
+      minX: vw * pad - wMaxX * s,
+      maxX: vw * (1 - pad) - wMinX * s,
+      minY: vh * pad - wMaxY * s,
+      maxY: vh * (1 - pad) - wMinY * s,
+    };
+  }
+
+  /** Check if current pan is out of bounds and spring back if so. */
+  let _panBounceTimer = null;
+  function bounceBackIfNeeded() {
+    const bounds = getPanBounds();
+    if (!bounds) return;
+    let tx = _transform.x, ty = _transform.y;
+    let clamped = false;
+    if (tx < bounds.minX) { tx = bounds.minX; clamped = true; }
+    if (tx > bounds.maxX) { tx = bounds.maxX; clamped = true; }
+    if (ty < bounds.minY) { ty = bounds.minY; clamped = true; }
+    if (ty > bounds.maxY) { ty = bounds.maxY; clamped = true; }
+    if (clamped) {
+      _transform.x = tx;
+      _transform.y = ty;
+      _graphWorld.style.transition = "transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1)";
+      updateTransform();
+      if (_panBounceTimer) clearTimeout(_panBounceTimer);
+      _panBounceTimer = setTimeout(() => { _graphWorld.style.transition = ""; }, 380);
+    }
+  }
 
   function updateTransform() {
     if (!_graphWorld) return;
@@ -317,7 +379,8 @@
         const sx = n.targetX * _transform.scale + _transform.x;
         const sy = n.targetY * _transform.scale + _transform.y;
         const inCenter = sx >= left && sx <= right && sy >= top && sy <= bottom;
-        const focused = inCenter && !n.el.classList.contains("kg-hidden");
+        const hovered = n === _hoveredNode;
+        const focused = (inCenter || hovered) && !n.el.classList.contains("kg-hidden");
         n.el.classList.toggle("kg-in-focus", focused);
 
         if (!n.nameLayer || !n.whisperLayers || n.whisperLayers.length < 2) return;
@@ -333,6 +396,7 @@
             // First frame of focus: immediately show the correct whisper
             const cur = n.whisperLayers[n.activeWhisper];
             cur.innerHTML = n.whispers[idx];
+            fitTextToCircle(cur, parseFloat(n.el.style.getPropertyValue('--kg-size')) || 70, (parseFloat(n.el.style.getPropertyValue('--kg-size')) || 70) * 0.35);
             cur.classList.add("kg-name-show");
             n.lastWhisperIdx = idx;
           } else if (idx !== n.lastWhisperIdx) {
@@ -341,6 +405,7 @@
             const inIdx    = 1 - n.activeWhisper;
             const inLayer  = n.whisperLayers[inIdx];
             inLayer.innerHTML = n.whispers[idx];
+            fitTextToCircle(inLayer, parseFloat(n.el.style.getPropertyValue('--kg-size')) || 70, (parseFloat(n.el.style.getPropertyValue('--kg-size')) || 70) * 0.35);
             inLayer.classList.add("kg-name-show");
             outLayer.classList.remove("kg-name-show");
             n.activeWhisper = inIdx;
@@ -387,11 +452,13 @@
     viewport.addEventListener("pointerup", () => {
       isPanning = false;
       viewport.style.cursor = "grab";
+      bounceBackIfNeeded();
     });
 
     viewport.addEventListener("pointercancel", () => {
       isPanning = false;
       viewport.style.cursor = "grab";
+      bounceBackIfNeeded();
     });
 
     // Zoom with scroll wheel
@@ -434,8 +501,10 @@
           _transform.y = my - bRatio * (my - _transform.y);
           _graphWorld.style.transition = "transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)";
           updateTransform();
-          setTimeout(() => { _graphWorld.style.transition = ""; }, 320);
+          setTimeout(() => { _graphWorld.style.transition = ""; bounceBackIfNeeded(); }, 320);
         }, 80);
+      } else {
+        bounceBackIfNeeded();
       }
     }, { passive: false });
 
@@ -695,6 +764,15 @@
         const nameLayer = el.querySelector(".kg-name-layer:first-child");
         const whisperLayers = Array.from(el.querySelectorAll(".kg-name-whisper"));
 
+        // Hover tracking for whisper-on-hover
+        el.addEventListener("mouseenter", () => {
+          const node = _nodes.find(nd => nd.el === el);
+          if (node) { _hoveredNode = node; updateProximityGlow(); }
+        });
+        el.addEventListener("mouseleave", () => {
+          if (_hoveredNode && _hoveredNode.el === el) { _hoveredNode = null; updateProximityGlow(); }
+        });
+
         _nodes.push({
           el,
           edgeEl: edgeLine,
@@ -731,6 +809,54 @@
 
     initPanZoom();
     graphBuilt = true;
+  }
+
+  /** Fit a text layer's font-size so its content fills the circle's width.
+   *  Uses a binary search with a shared offscreen canvas for measuring.
+   *  Accounts for <sup> content rendering at ~65% of base font size. */
+  const _fitCanvas = document.createElement("canvas").getContext("2d");
+  function fitTextToCircle(layer, circleSize, maxFont) {
+    if (!layer) return;
+    // Usable width ≈ chord at ~70% of radius (text sits near center of circle)
+    const usable = circleSize * 0.82 - 12; // subtract padding
+    if (usable <= 0) return;
+    // Parse HTML into segments: { text, isSup } per line (split on <br>)
+    const html = layer.innerHTML || "";
+    const withBreaks = html.replace(/<br\s*\/?>/gi, "\n");
+    // Split into lines, then parse each line for sup vs normal segments
+    const lines = withBreaks.split(/\n/).map(l => l.trim()).filter(Boolean);
+    if (lines.length === 0) return;
+    // For each line, extract segments
+    const SUP_SCALE = 0.65;
+    const parsed = lines.map(line => {
+      const segs = [];
+      let rest = line;
+      const supRe = /<sup[^>]*>(.*?)<\/sup>/gi;
+      let lastIdx = 0, m;
+      while ((m = supRe.exec(line)) !== null) {
+        if (m.index > lastIdx) segs.push({ text: line.slice(lastIdx, m.index).replace(/<[^>]+>/g, ""), isSup: false });
+        segs.push({ text: m[1].replace(/<[^>]+>/g, ""), isSup: true });
+        lastIdx = supRe.lastIndex;
+      }
+      if (lastIdx < line.length) segs.push({ text: line.slice(lastIdx).replace(/<[^>]+>/g, ""), isSup: false });
+      return segs;
+    });
+    // Binary search: scale UP to fill, or DOWN to fit the widest line
+    let lo = 5, hi = maxFont;
+    for (let i = 0; i < 10; i++) {
+      const mid = (lo + hi) / 2;
+      const maxW = Math.max(...parsed.map(segs => {
+        let w = 0;
+        segs.forEach(s => {
+          _fitCanvas.font = `700 ${s.isSup ? mid * SUP_SCALE : mid}px sans-serif`;
+          w += _fitCanvas.measureText(s.text).width;
+        });
+        return w;
+      }));
+      if (maxW > usable) hi = mid;
+      else lo = mid;
+    }
+    layer.style.fontSize = Math.max(5, Math.floor(lo)) + "px";
   }
 
   /** Build a single node DOM element (circular, sized by duration) */
@@ -773,6 +899,15 @@
     el.addEventListener("click", e => {
       e.stopPropagation();
       openModal(category, item.ID);
+    });
+
+    // Fit text to circle after DOM is ready
+    const baseFont = Math.round(8 * fontScale);
+    const nameLayer = el.querySelector(".kg-name-layer:first-child");
+    const whisperLayers = el.querySelectorAll(".kg-name-whisper");
+    requestAnimationFrame(() => {
+      fitTextToCircle(nameLayer, size, size * 0.35);
+      whisperLayers.forEach(wl => fitTextToCircle(wl, size, size * 0.35));
     });
 
     return el;

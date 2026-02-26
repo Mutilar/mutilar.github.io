@@ -890,7 +890,7 @@
       "🌸 Tower<sup>Def</sup>",
     ],
     "galconq": [
-      "🌌 4<sup>X</sup> VB<sup>.NET</sup>",
+      "🌌 4<sup>X</sup>",
     ],
     "seerauber": [
       "🥈 2<sup>ND</sup>",
