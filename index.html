@@ -863,92 +863,23 @@
 </div>
 
 <!-- ═══════════════════════════════════════════════════════════════
-     SITE ARCHITECTURE MODAL
+     SITE ARCHITECTURE MODAL — Mermaid Diagram Viewer
      ═══════════════════════════════════════════════════════════════ -->
 <div class="modal-overlay" id="arch-modal">
-  <div class="glass-tile modal-card marp-modal-card" style="position:relative;">
+  <div class="glass-tile modal-card mm-modal-card" style="position:relative;">
     <div class="modal-sticky-bar">
-      <div class="modal-sticky-group tl-glow">
-        <a class="modal-sticky-link" href="https://github.com/Mutilar/mutilar.github.io" target="_blank"><i class="fa fa-github"></i> Mutilar.github.io</a>
-        <button class="modal-close" id="archModalClose" aria-label="Close modal">&times;</button>
+      <div class="mm-filter-group tl-glow">
+        <div class="mm-filter-row">
+          <a class="modal-sticky-link" href="https://github.com/Mutilar/mutilar.github.io" target="_blank"><i class="fa fa-github"></i> Mutilar.github.io</a>
+          <span class="mm-filter-pills" id="arch-filters"></span>
+          <button class="modal-close" id="archModalClose" aria-label="Close modal">&times;</button>
+        </div>
       </div>
     </div>
-
-    <!-- Diagram placeholder — replace src with your actual architecture diagram -->
-    <div class="marp-diagram-wrap" style="margin-bottom:24px;">
-      <img id="arch-diagram-img" class="theme-img" data-src-dark="images/mutilar-architecture.png" data-src-light="images/mutilar-architecture-light.png" src="images/mutilar-architecture.png" alt="Site Architecture Diagram" loading="lazy" onerror="this.parentElement.style.display='none'">
-    </div>
-
-    <!-- Architecture details -->
-    <div class="marp-bom">
-      <h4>🌐 Hosting</h4>
-      <table>
-        <thead><tr><th>Layer</th><th>Details</th></tr></thead>
-        <tbody>
-          <tr><td>GitHub Pages</td><td>Static deploy from <code>master</code> branch at <code>mutilar.github.io</code></td></tr>
-          <tr><td>Custom Domain</td><td><code>CNAME</code> → <code>brianhungerman.com</code></td></tr>
-          <tr><td>HTTPS</td><td>TLS via GitHub Pages, enforced automatically</td></tr>
-        </tbody>
-      </table>
-
-      <h4>📄 Single-Page Shell</h4>
-      <table>
-        <thead><tr><th>Concept</th><th>Details</th></tr></thead>
-        <tbody>
-          <tr><td>One HTML File</td><td><code>index.html</code> — all sections, modals &amp; metadata in a single document</td></tr>
-          <tr><td>Structured Data</td><td>JSON-LD, Open Graph &amp; Twitter Cards for SEO &amp; social previews</td></tr>
-          <tr><td>Glassmorphic CSS</td><td><code>backdrop-filter</code>, responsive breakpoints &amp; scroll-reveal animations</td></tr>
-          <tr><td>Accessibility</td><td>Skip-link, focus trapping, ARIA attributes &amp; <code>&lt;noscript&gt;</code> fallback</td></tr>
-        </tbody>
-      </table>
-
-      <h4>📦 CDN</h4>
-      <table>
-        <thead><tr><th>Library</th><th>Purpose</th></tr></thead>
-        <tbody>
-          <tr><td>Font Awesome</td><td>Icon font for UI &amp; social links</td></tr>
-          <tr><td>PapaParse</td><td>CSV parsing → card grid rendering</td></tr>
-          <tr><td>PDF.js</td><td>In-page spread-view PDF reader (dynamic import)</td></tr>
-        </tbody>
-      </table>
-
-      <h4>📂 Assets</h4>
-      <table>
-        <thead><tr><th>Path</th><th>Contents</th></tr></thead>
-        <tbody>
-          <tr><td><code>csv/</code></td><td>11 CSV files + 1 JSON — each drives a card grid section</td></tr>
-          <tr><td><code>images/</code></td><td>Banners, card art, diagrams &amp; GIFs</td></tr>
-          <tr><td><code>games/</code></td><td>Unity WebGL builds (Graviton, SpaceNinjas, VooDoo)</td></tr>
-          <tr><td><code>radio/</code></td><td>MP3 playlist for the audio player</td></tr>
-          <tr><td><code>pdf/</code></td><td>Dusk Rose Codex PDF</td></tr>
-        </tbody>
-      </table>
-
-      <h4>⚡ Vanilla JS</h4>
-      <table>
-        <thead><tr><th>Module</th><th>Role</th></tr></thead>
-        <tbody>
-          <tr><td><code>parallax.js</code></td><td>Dual-canvas orb &amp; glint animations clipped per section</td></tr>
-          <tr><td><code>scroll.js</code></td><td>IntersectionObserver reveals, nav highlight &amp; scroll hints</td></tr>
-          <tr><td><code>modals.js</code></td><td>Stacked modal manager with focus trap &amp; <code>data-action</code> delegation</td></tr>
-          <tr><td><code>data.js</code></td><td>CSV → card grids, deck modal &amp; MARP BOM loader</td></tr>
-          <tr><td><code>pdfviewer.js</code></td><td>Dynamic PDF.js import &amp; responsive spread rendering</td></tr>
-          <tr><td><code>radio.js</code></td><td>Web Audio analyser → EQ visualizer &amp; playlist controls</td></tr>
-          <tr><td><code>theme.js</code></td><td>Light / dark mode toggle with <code>localStorage</code> persistence</td></tr>
-        </tbody>
-      </table>
-
-      <h4>🎨 User Experience</h4>
-      <table>
-        <thead><tr><th>Element</th><th>Details</th></tr></thead>
-        <tbody>
-          <tr><td>Parallax Background</td><td>Coprime-oscillating orbs &amp; glint particles per section palette</td></tr>
-          <tr><td>Frosted Bands</td><td>Opaque headers with glass blur break the parallax flow</td></tr>
-          <tr><td>Glass Tiles</td><td>Blur + border + hover glow cards for all content</td></tr>
-          <tr><td>7 Modal Types</td><td>Detail, Deck, MARP, Architecture, PDF, Game &amp; Gallery</td></tr>
-          <tr><td>Radio Player</td><td>Collapsible EQ-bar audio player with volume &amp; mute</td></tr>
-        </tbody>
-      </table>
+    <div class="mm-viewport" style="cursor:grab;">
+      <div class="mm-world">
+        <svg class="mm-edges" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 6000 6000"></svg>
+      </div>
     </div>
   </div>
 </div>
@@ -1035,13 +966,19 @@
 <div class="modal-overlay" id="marp-modal">
   <div class="glass-tile modal-card marp-modal-card" style="position:relative;">
     <div class="modal-sticky-bar">
-      <div class="modal-sticky-group tl-glow">
-        <a class="modal-sticky-link" href="https://github.com/Mutilar/Marp" target="_blank"><i class="fa fa-github"></i> Mutilar/Marp</a>
-        <button class="modal-close" id="marpModalClose" aria-label="Close modal">&times;</button>
+      <div class="mm-filter-group tl-glow">
+        <div class="mm-filter-row">
+          <a class="modal-sticky-link" href="https://github.com/Mutilar/Marp" target="_blank"><i class="fa fa-github"></i> Mutilar/Marp</a>
+          <span class="mm-filter-pills" id="marp-filters"></span>
+          <button class="modal-close" id="marpModalClose" aria-label="Close modal">&times;</button>
+        </div>
       </div>
     </div>
-    <div class="marp-diagram-wrap">
-      <img id="marp-diagram-img" class="theme-img" data-src-dark="images/marp-high-level-diagram.png" data-src-light="images/marp-high-level-diagram-light.png" src="images/marp-high-level-diagram.png" alt="MARP High-Level Wiring Diagram" loading="lazy">
+    <!-- Interactive wiring diagram — rendered by mermaid-view.js -->
+    <div class="mm-viewport" style="flex:1 1 auto;min-height:340px;">
+      <div class="mm-world">
+        <svg class="mm-edges" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 6000 6000"></svg>
+      </div>
     </div>
 
     <!-- BOM (Bill of Materials) — populated from csv/marp-bom.json -->
@@ -1061,6 +998,7 @@
 <script defer src="js/data.js"></script>
 <script defer src="js/timeline.js"></script>
 <script defer src="js/knowledge-graph.js"></script>
+<script defer src="js/mermaid-view.js"></script>
 <script defer src="js/radio.js"></script>
 
 </body>

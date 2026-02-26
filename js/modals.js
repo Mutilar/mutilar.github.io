@@ -185,7 +185,7 @@ window.closeDeckModal = window.closeDeckModal || function() {};
 window.closeTimelineModal = window.closeTimelineModal || function() {};
 window.closeKnowledgeModal = window.closeKnowledgeModal || function() {};
 
-document.addEventListener("keydown", e => { if (e.key === "Escape") { closeModal(); closePdfModal(); closeResumePdfModal(); closeGameModal(); closeMarpModal(); closeArchModal(); closeBitnaughtsModal(); closeBitnaughtsIphoneModal(); window.closeDeckModal(); window.closeTimelineModal(); window.closeKnowledgeModal(); } });
+document.addEventListener("keydown", e => { if (e.key === "Escape") { closeModal(); closePdfModal(); closeResumePdfModal(); closeGameModal(); window.closeMarpModal(); window.closeArchModal(); closeBitnaughtsModal(); closeBitnaughtsIphoneModal(); window.closeDeckModal(); window.closeTimelineModal(); window.closeKnowledgeModal(); } });
 
 // ── Footer year (safe alternative to document.write) ──
 const footerYear = document.getElementById("footer-year");
@@ -193,10 +193,10 @@ if (footerYear) footerYear.textContent = new Date().getFullYear();
 
 // ── Video-card event delegation (replaces inline onclick/onkeydown) ──
 const _modalOpeners = {
-  marpModal: function() { openMarpModal(); },
+  marpModal: function() { window.openMarpModal(); },
   pdfModal: function() { openPdfModal(); },
   bitnaughtsIphoneModal: function() { openBitnaughtsIphoneModal(); },
-  archModal: function() { openArchModal(); },
+  archModal: function() { window.openArchModal(); },
   timelineModal: function() { window.openTimelineModal && window.openTimelineModal(); },
   knowledgeModal: function() { window.openKnowledgeModal && window.openKnowledgeModal(); },
 };
@@ -228,21 +228,11 @@ document.addEventListener("keydown", function(e) {
 });
 
 // ═══════════════════════════════════════════════════════════════
-//  SITE ARCHITECTURE MODAL
+//  SITE ARCHITECTURE MODAL — handled by mermaid-view.js
 // ═══════════════════════════════════════════════════════════════
-const archModal = document.getElementById("arch-modal");
-const archModalClose = document.getElementById("archModalClose");
-
-function openArchModal() {
-  toggleModal(archModal, true);
-}
-
-function closeArchModal() {
-  toggleModal(archModal, false);
-}
-
-archModalClose.addEventListener("click", closeArchModal);
-archModal.addEventListener("click", e => { if (e.target === archModal) closeArchModal(); });
+// openArchModal / closeArchModal are defined in mermaid-view.js
+window.openArchModal  = window.openArchModal  || function() {};
+window.closeArchModal = window.closeArchModal || function() {};
 
 // ═══════════════════════════════════════════════════════════════
 // QUILTING MODAL (Easter Egg)
@@ -262,21 +252,11 @@ quiltModalClose.addEventListener("click", closeQuiltModal);
 quiltModal.addEventListener("click", e => { if (e.target === quiltModal) closeQuiltModal(); });
 
 // ═══════════════════════════════════════════════════════════════
-//  MARP DIAGRAM MODAL
+//  MARP DIAGRAM MODAL — handled by mermaid-view.js
 // ═══════════════════════════════════════════════════════════════
-const marpModal = document.getElementById("marp-modal");
-const marpModalClose = document.getElementById("marpModalClose");
-
-function openMarpModal() {
-  toggleModal(marpModal, true);
-}
-
-function closeMarpModal() {
-  toggleModal(marpModal, false);
-}
-
-marpModalClose.addEventListener("click", closeMarpModal);
-marpModal.addEventListener("click", e => { if (e.target === marpModal) closeMarpModal(); });
+// openMarpModal / closeMarpModal are defined in mermaid-view.js
+window.openMarpModal  = window.openMarpModal  || function() {};
+window.closeMarpModal = window.closeMarpModal || function() {};
 
 // ═══════════════════════════════════════════════════════════════
 //  BITNAUGHTS GALLERY MODAL

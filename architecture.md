@@ -130,28 +130,40 @@ graph TD
     %% ── TB FLOW ──
 
     %% 1. Hosting → Shell
-    Hosting -->|"HTTPS\nGET /"| Shell
+    GitHub -->|"HTTPS\nGET /"| IndexHTML
 
-    %% 2. Shell → CDN + Assets + Scripts
-    Shell -->|"link script"| CDN
-    Shell -->|"link rel=stylesheet"| Assets
-    Shell -->|"script defer"| Scripts
+    %% 2. Shell → CDN (index.html loads each CDN library)
+    IndexHTML -->|"link"| FontAwesome
+    IndexHTML -->|"script"| PapaParse
+    IndexHTML -->|"script"| PDFjs
 
-    %% 3. CDN → Assets / Scripts
-    CDN -.->|"dynamic import()"| Scripts
+    %% 3. Shell → Assets (stylesheet + arch diagram)
+    IndexHTML -->|"link rel=stylesheet"| StylesCSS
 
-    %% 5. Data → Scripts
-    Scripts -.->|"fetch()"| Assets
-    Scripts -->|"fetchCSV()"| Assets
+    %% 4. Shell → Scripts (deferred script tags)
+    IndexHTML -->|"script defer"| ModalsJS
 
-    %% 6. Assets → Scripts
-    Assets -->|"*.png\n*.mp3\n*.pdf"| Scripts
+    %% 5. CDN libs feed into the Scripts that consume them
+    PapaParse -.->|"Papa.parse()"| DataJS
+    PDFjs -.->|"pdfjsLib"| PdfViewerJS
+    FontAwesome -.->|"icons"| StylesCSS
 
-    %% 7. Scripts → View
-    Scripts -->|"onScroll()\nonClick()"| View
-    Scripts -->|"toggleModal()\ntrapFocus()"| View
-    Scripts -->|"createAnalyser()"| View
-    Scripts -->|"getDocument()"| View
+    %% 6. Scripts read data & assets
+    DataJS -->|"fetchCSV()"| WorkCSV
+    DataJS -->|"fetchCSV()"| MarpCSV
+    PdfViewerJS -.->|"fetch()"| PDFs
+    RadioJS -.->|"fetch()"| AudioFiles
+    ModalsJS -.->|"fetch()"| GameBuilds
+    ParallaxJS -.->|"url()"| Images
+
+    %% 7. Scripts → View elements
+    ParallaxJS -->|"onScroll()"| ParallaxBG
+    ScrollJS -->|"onScroll()"| Bands
+    DataJS -->|"onClick()"| Tiles
+    ModalsJS -->|"toggleModal()"| DeckModal
+    PdfViewerJS -->|"getDocument()"| PdfModal
+    ModalsJS -->|"toggleModal()"| GameModal
+    RadioJS -->|"createAnalyser()"| Player
 
     %% ── LAYOUT: enforce strict TB tier order ──
     Legend ~~~ Hosting
