@@ -512,7 +512,7 @@ hr {
   border-radius: 20px;
   backdrop-filter: blur(20px) saturate(1.3);
   -webkit-backdrop-filter: blur(20px) saturate(1.3);
-  padding: 28px 42px;
+  padding: 20px 40px;
   box-shadow: 0 0 15px rgba(255, 255, 255, 0.07),
               0 0 40px rgba(255, 255, 255, 0.03);
   transition: box-shadow 0.4s ease, border-color 0.4s ease;
@@ -2887,9 +2887,10 @@ html.light-mode .timeline-filter:hover {
 html.light-mode .timeline-filter.active {
   color: #fff;
   background: rgba(var(--tc-light, var(--tc)), 0.25);
-  border-color: rgba(var(--tc-light, var(--tc)), 0.4);
-  box-shadow: 0 0 8px rgba(var(--tc-light, var(--tc)), 0.1),
-              0 0 20px rgba(var(--tc-light, var(--tc)), 0.04);
+  border-color: rgba(var(--tc-light, var(--tc)), 0.45);
+  box-shadow: 0 0 16px rgba(var(--tc-light, var(--tc)), 0.18),
+              0 0 40px rgba(var(--tc-light, var(--tc)), 0.10),
+              0 0 80px rgba(var(--tc-light, var(--tc)), 0.05);
 }
 
 html.light-mode .tl-ruler-year {
@@ -3200,9 +3201,10 @@ html.light-mode .outline-pill {
 .timeline-filter.active {
   color: #fff;
   background: rgba(var(--tc), 0.14);
-  border-color: rgba(var(--tc), 0.4);
-  box-shadow: 0 0 8px rgba(var(--tc), 0.15),
-              0 0 20px rgba(var(--tc), 0.06);
+  border-color: rgba(var(--tc), 0.55);
+  box-shadow: 0 0 20px rgba(var(--tc), 0.25),
+              0 0 50px rgba(var(--tc), 0.12),
+              0 0 100px rgba(var(--tc), 0.06);
 }
 
 @keyframes filter-backoff-pulse {
@@ -3402,6 +3404,10 @@ html.light-mode .timeline-filter.filter-pulse {
   opacity: 1;
   background: rgba(0, 0, 0, 0.55);
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.5), 0 0 40px rgba(0, 0, 0, 0.25);
+}
+
+.tl-whisper-layer sup {
+  margin-left: 0.25em;
 }
 
 /* Gradient accent */

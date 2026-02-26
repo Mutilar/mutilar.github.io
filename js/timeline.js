@@ -13,7 +13,7 @@
   const MIN_SPAN  = 1;    // minimum 1-month height for point events
   const MONTH_LABELS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
   const GAP = 3;          // px gap between side-by-side slivers
-  const CALENDAR_PAD = 100; // px buffer top & bottom of timeline
+  const CALENDAR_PAD = 0; // px buffer top & bottom of timeline
 
   /* ── Thematic work-stream categories ────────────────────── */
   const themeConfig = {
@@ -383,7 +383,7 @@
 
     function updateWhispers() {
       const rect = modalCard.getBoundingClientRect();
-      const centerY = rect.top + rect.height / 2 + 10; // shift up to account for header
+      const centerY = rect.top + rect.height / 2; // shift down so transition falls between tiles
 
       /* ── Align HUD to timeline-entries (same basis as sliver %) ── */
       const entriesRect = _container.getBoundingClientRect();
@@ -490,9 +490,9 @@
       if (s.startOff < visMin) visMin = s.startOff;
       if (s.endOff   > visMax) visMax = s.endOff;
     });
-    // 1-month padding for visual breathing room
-    visMin -= 1;
-    visMax += 1;
+    // Extra seasons above & below for visual breathing room
+    visMin -= 7;
+    visMax += 7;
 
     const totalH = (visMax - visMin + 1) * MONTH_H + CALENDAR_PAD * 2;
     _container.style.height = totalH + "px";
@@ -573,9 +573,9 @@
       if (s.startOff < visMin) visMin = s.startOff;
       if (s.endOff   > visMax) visMax = s.endOff;
     });
-    // 1-month padding to match ruler
-    visMin -= 1;
-    visMax += 1;
+    // Extra seasons to match ruler
+    visMin -= 7;
+    visMax += 7;
 
     /* ---- 1. Build events ---- */
     const START = 0, END = 1;
@@ -635,46 +635,49 @@
   const whisperData = {
     /* ── Multi-whisper (tall slivers) ── */
     "microsoft|SWE I &amp; II": [
-      "🔒 Security Champ",
-      "🌐 8B+ inferences/day",
-      "🛡️ DRI Champ",
-      "☁️ 50+ DCs",
-      "🚀 GA launch",
-      "⚙️ Envoy Proxy",
+      "🔒 SEC<sup>CHAMP</sup>",
+      "🌐 8B+<sup>INF/DAY</sup>",
+      "🛡️ DRI<sup>CHAMP</sup>",
+      "☁️ 50+<sup>DCS</sup>",
+      "🚀 GA<sup>LAUNCH</sup>",
+      "⚙️ ENVOY<sup>PROXY</sup>",
     ],
     "bitnaughts": [
-      "🎮 Code Gamified!",
-      "💻 4 Hackathons",
-      "🌍 Play online",
-      "🧠 See code",
-      "🎓 Learn code",
-      "🔄 Understand code",
+      "🎮 Code<sup>GAMIFIED!</sup>",
+      "💻 4<sup>HACKATHONS</sup>",
+      "🌍 Play<sup>IT</sup>",
+      "👁️ See<sup>CODE</sup>",
+      "🔄 Try<sup>CODE</sup>",
+      "🎓 Learn<sup>CODE</sup>",
     ],
     "redtierobotics|Electrician": [
-      "⚡ AMAX",
+      "⚡ AMAX<sup>ESD</sup>",
     ],
     "redtierobotics|Electrical Lead": [
-      "🔌 CAD",
+      "🔌 CAD<sup>DESIGN</sup>",
     ],
     "redtierobotics|Treasurer": [
-      "💰 $18K+ budget",
+      "💰 $18K+<sup>BUDGET</sup>",
     ],
     "voodoo": [
-      "🎨 Pixel Art",
+      "🎨 Pixel<sup>ART</sup>",
     ],
 
     /* ── Single-whisper (coSlumn) ── */
+    "microsoft|Senior SWE": [
+      "🧠 A.I.<sup>U.X.</sup>",
+    ],
     "microsoft|SWE Intern": [
-      "⚡ MLOps",
+      "⚡ ML<sup>OPS</sup>",
     ],
     "marp": [
-      "🤖 Robot",
+      "🤖 Home<sup>ROBOT</sup>",
     ],
     "iterate": [
       "🏆 $5,000",
     ],
     "ventana": [
-      "🔬 Cancer A.I.",
+      "🔬 Cancer<sup>A.I.</sup>",
     ],
     "home-iot": [
       "🎛️ Tactility",
@@ -686,75 +689,113 @@
       "🧊 Fermi",
     ],
     "hackmerced": [
-      "🧑‍💻 350+ hackers",
+      "🧑‍💻 350+<sup>HACKERS</sup>",
     ],
     "motleymoves": [
-      "🏃 Exercise",
+      "🏃 Run<sup>A.I.</sup>",
     ],
     "andeslab": [
-      "🏭 HVAC",
+      "🏭 HVAC<sup>A.I.</sup",
     ],
     "breeze": [
-      "💨 Aux air",
+      "💨 Aux<sup>Air</sup>",
     ],
     "dogpark": [
-      "🥈 2nd",
+      "🥈 2<sup>ND</sup>",
     ],
     "vicelab": [
-      "🛰️ Ag A.I.",
+      "🛰️ Ag<sup>A.I.</sup>",
     ],
     "maces": [
       "🚀 NASA",
     ],
     "citris|Event Organizer": [
-      "🏙️ CyberAware",
+      "🏙️ Cyber<sup>AWARE</sup>",
     ],
     "citris|Web Developer": [
-      "🏙️ GitOps",
+      "🏙️ Git<sup>OPS</sup>",
     ],
     "amaxesd": [
       "⚡ ESD",
     ],
     "summerofgamedesign|Instructor": [
-      "👨‍🏫 50+ kids",
+      "👨‍🏫 50+<sup>KIDS</sup>",
     ],
     "summerofgamedesign|Founder": [
-      "💰 $25K+ raised",
+      "💰 $25K+<sup>RAISED</sup>",
     ],
     "alamorobotics": [
-      "🤖 Mindstorm",
+      "🤖 Mind<sup>STORM</sup>",
     ],
     "acm": [
-      "💻 Outreach",
+      "💻 Out<sup>REACH</sup>",
     ],
     "learnbeat": [
-      "📚 STEM Ed",
+      "📚 STEM<sup>EDU</sup>",
+    ],
+
+    /* ── Education single-whispers ── */
+    "cse180": [
+      "🤖 ROS",
+    ],
+    "cse165": [
+      "📦 OOP",
+    ],
+    "cse160": [
+      "🌐 TCP",
+    ],
+    "cse120": [
+      "💻 SWE",
+    ],
+    "cse111": [
+      "🗃️ SQL",
+    ],
+    "cse100": [
+      "📊 Big<sup>O</sup>",
+    ],
+    "cse031": [
+      "⚙️ MIPS",
+    ],
+    "cse030": [
+      "📚 C++",
+    ],
+    "cse015": [
+      "🔢 Proofs",
     ],
 
     /* ── Hackathon single-whispers ── */
     "gasleek": [
-      "🥇 1st",
+      "🥇 1<sup>ST</sup>",
     ],
     "sriracha": [
-      "🥉 3rd",
+      "🥉 3<sup>RD</sup>",
     ],
     "smartank": [
-      "🥇 Robot",
+      "🥇 Hardware",
     ],
     "spaceninjas": [
       "🥷 Platformer",
     ],
+    "galconq": [
+      "🌌 4X<sup>VB.NET</sup>",
+    ],
     "seerauber": [
-      "🥈 2nd",
+      "🥈 2<sup>ND</sup>",
     ],
     "ozone": [
-      "🥈 2nd",
+      "🥈 2<sup>ND</sup>",
     ],
     "blindsight": [
-      "🥉 3rd",
+      "🥉 3<sup>RD</sup>",
     ],
     "motorskills": [
-      "🥈 GCP",
+      "🥇 GCP",
+    ],
+    "gist": [
+      "🥇 Environment",
+    ],
+    "digestquest": [
+      "🥇 Design",
     ],
   };
 
