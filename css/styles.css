@@ -3805,7 +3805,8 @@ html.light-mode .timeline-filter.filter-pulse {
   text-align: center;
 }
 
-.kg-node:hover {
+.kg-node:hover,
+.kg-node.kg-in-focus:hover {
   background: #000;
   border-color: #fff;
   box-shadow: 0 0 20px rgba(255, 255, 255, 0.15),
@@ -3897,6 +3898,11 @@ html.light-mode .timeline-filter.filter-pulse {
   text-align: center;
   width: 100%;
   overflow: visible;
+  transition: transform 0.3s ease;
+}
+
+.kg-node:hover .kg-node-name {
+  animation: kg-penguin-bounce 1s ease infinite;
 }
 
 /* Crossfade layers: name ↔ whisper */
@@ -3983,7 +3989,8 @@ html.light-mode .kg-node {
   border-color: #ccc;
 }
 
-html.light-mode .kg-node:hover {
+html.light-mode .kg-node:hover,
+html.light-mode .kg-node.kg-in-focus:hover {
   background: #fff;
   border-color: #000;
   box-shadow: 0 0 16px rgba(0, 0, 0, 0.12),
