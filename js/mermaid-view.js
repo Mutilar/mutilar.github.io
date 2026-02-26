@@ -341,6 +341,7 @@
       const isInvisible = !sg.label || sg.label.trim() === "" || sg.label === sg.id;
       const c = document.createElement("div");
       c.className = "mm-subgraph" + (isInvisible ? " mm-subgraph-invisible" : "");
+      c.dataset.mmSg = sg.id;
       c.style.left = gx + "px"; c.style.top = gy + "px";
       c.style.width = gw + "px"; c.style.height = gh + "px";
       if (!isInvisible) {
@@ -379,6 +380,7 @@
       const tc = colors[cls] || "255,255,255";
       const el = document.createElement("div");
       el.className = "mm-node";
+      el.dataset.mmId = node.id;
       if (cls) el.dataset.mmClass = cls;
       el.style.setProperty("--tc", tc);
       el.style.left = (pos.x - NODE_W / 2) + "px";
@@ -504,6 +506,8 @@
       if (edge.dashed) path.setAttribute("stroke-dasharray", "6 4");
       path.setAttribute("marker-end", "url(#" + getMarkerId(edgeTC, edge.dashed) + ")");
       path.classList.add("mm-edge", "mm-thread");
+      path.dataset.mmFrom = edge.from;
+      path.dataset.mmTo = edge.to;
       svgLayer.appendChild(path);
 
       // Collect endpoint classes for filtering
@@ -519,6 +523,8 @@
         const lx = (x1 + x2) / 2, ly = (y1 + y2) / 2;
         const g = document.createElementNS(svgNS, "g");
         g.classList.add("mm-edge-label-group");
+        g.dataset.mmFrom = edge.from;
+        g.dataset.mmTo = edge.to;
         const labelLines = edge.label.split("\n");
         const lh = 12, totalLH = labelLines.length * lh;
         const maxLen = Math.max(...labelLines.map(l => l.length));
@@ -588,13 +594,22 @@
       if (!state._dims) return null;
       const vw = viewport.clientWidth, vh = viewport.clientHeight;
       const s = state.scale;
-      const pad = 0.48;   // tight — keep content mostly centered, matches skill-tree
+      const pad = 0.75;    // content edge can't go past 25% of viewport
       return {
         minX: vw * pad - state._dims.svgW * s,
         maxX: vw * (1 - pad),
         minY: vh * pad - state._dims.svgH * s,
         maxY: vh * (1 - pad),
       };
+    }
+
+    // Rubber-band: the further past bounds, the harder it resists
+    function rubberBand(val, min, max) {
+      if (val >= min && val <= max) return val;
+      const limit = 60;           // max overshoot in px
+      const over = val < min ? min - val : val - max;
+      const damped = limit * (1 - Math.exp(-over / limit));  // asymptotic
+      return val < min ? min - damped : max + damped;
     }
 
     let _panBounceTimer = null;
@@ -608,22 +623,25 @@
       if (ty > bounds.maxY) { ty = bounds.maxY; clamped = true; }
       if (clamped) {
         state.x = tx; state.y = ty;
-        state.world.style.transition = "transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1)";
+        state.world.style.transition = "transform 0.3s cubic-bezier(0.25, 1, 0.5, 1)";
         update();
         if (_panBounceTimer) clearTimeout(_panBounceTimer);
-        _panBounceTimer = setTimeout(function () { state.world.style.transition = ""; }, 380);
+        _panBounceTimer = setTimeout(function () { state.world.style.transition = ""; }, 340);
       }
     }
 
     viewport.addEventListener("pointerdown", e => {
-      if (e.target.closest(".mm-node")) return;
+      if (e.target.closest(".mm-node") || e.target.closest(".mm-explore-hint")) return;
       isPanning = true; startX = e.clientX; startY = e.clientY;
       startTX = state.x; startTY = state.y;
       viewport.style.cursor = "grabbing"; viewport.setPointerCapture(e.pointerId);
     });
     viewport.addEventListener("pointermove", e => {
       if (!isPanning) return;
-      state.x = startTX + (e.clientX - startX); state.y = startTY + (e.clientY - startY); update();
+      let nx = startTX + (e.clientX - startX), ny = startTY + (e.clientY - startY);
+      const bounds = getPanBounds();
+      if (bounds) { nx = rubberBand(nx, bounds.minX, bounds.maxX); ny = rubberBand(ny, bounds.minY, bounds.maxY); }
+      state.x = nx; state.y = ny; update();
     });
     viewport.addEventListener("pointerup", () => {
       isPanning = false; viewport.style.cursor = "grab";
@@ -661,7 +679,7 @@
           state.scale = clamped;
           const bRatio = clamped / overshoot;
           state.x = mx - bRatio * (mx - state.x); state.y = my - bRatio * (my - state.y);
-          state.world.style.transition = "transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)";
+          state.world.style.transition = "transform 0.3s cubic-bezier(0.25, 1, 0.5, 1)";
           update();
           setTimeout(function () { state.world.style.transition = ""; bounceBackIfNeeded(); }, 320);
         }, 80);
@@ -796,7 +814,7 @@
   }
 
   function buildFilters(pillContainer, legendNodes, colors, rebuild) {
-    if (!pillContainer || !legendNodes.length) return;
+    if (!pillContainer || !legendNodes.length) return null;
     pillContainer.innerHTML = "";
 
     // Deduplicate by class name
@@ -842,10 +860,26 @@
       rebuild(activeFilters);
     }
 
-    allBtn.addEventListener("click", () => {
-      if (activeFilters.size === allClasses.length) return;
+    // Programmatic: set exactly one filter active
+    function setOnly(cls) {
+      activeFilters.clear();
+      activeFilters.add(cls);
+      doFilter();
+    }
+    // Programmatic: add one more filter
+    function addFilter(cls) {
+      activeFilters.add(cls);
+      doFilter();
+    }
+    // Programmatic: activate all
+    function setAll() {
       allClasses.forEach(c => activeFilters.add(c));
       doFilter();
+    }
+
+    allBtn.addEventListener("click", () => {
+      if (activeFilters.size === allClasses.length) return;
+      setAll();
     });
 
     themeBtns.forEach(btn => {
@@ -865,6 +899,12 @@
     });
 
     window.addEventListener("theme-changed", syncUI);
+
+    // Build class→label map for explore hint
+    const labelMap = {};
+    filters.forEach(f => { labelMap[f.cls] = f.label; });
+
+    return { allClasses: allClasses, labelMap: labelMap, setOnly: setOnly, addFilter: addFilter, setAll: setAll };
   }
 
   /* ═════════════════════════════════════════════════════════════
@@ -879,12 +919,13 @@
     let _svgLayer = null, _dims = null;
     let _ast = null, _legend = null;
 
-    function fitView(animate) {
+    function fitView(animate, useInitialScale) {
       const vp = modal.querySelector(".mm-viewport");
       if (!vp || !state.world || !_dims) return;
       const vw = vp.clientWidth, vh = vp.clientHeight;
       const sx = (vw - 40) / _dims.svgW, sy = (vh - 40) / _dims.svgH;
-      state.scale = Math.min(sx, sy, 1);
+      const fitScale = Math.min(sx, sy, 1);
+      state.scale = (useInitialScale && cfg.initialScale) ? Math.max(fitScale, cfg.initialScale) : fitScale;
       state.x = (vw - _dims.svgW * state.scale) / 2;
       state.y = 20;
       if (animate) {
@@ -896,10 +937,30 @@
 
     function rebuild(activeClasses) {
       if (!_ast || !_svgLayer) return;
+
+      // Determine which nodes & subgraphs survive the filter
       const filtered = filterAST(_ast, activeClasses);
-      _dims = buildDiagram(filtered, cfg.colors, state.world, _svgLayer, _legend.legendIds);
-      state._dims = _dims;
-      requestAnimationFrame(() => fitView(true));
+      const liveNodes = new Set(Object.keys(filtered.nodes));
+      const liveSgs   = new Set(filtered.subgraphs.map(sg => sg.id));
+      const liveEdgeKeys = new Set(filtered.edges.map(e => e.from + "->" + e.to));
+
+      // Toggle nodes
+      state.world.querySelectorAll(".mm-node[data-mm-id]").forEach(el => {
+        el.classList.toggle("mm-hidden", !liveNodes.has(el.dataset.mmId));
+      });
+
+      // Toggle subgraphs
+      state.world.querySelectorAll(".mm-subgraph[data-mm-sg]").forEach(el => {
+        el.classList.toggle("mm-hidden", !liveSgs.has(el.dataset.mmSg));
+      });
+
+      // Toggle edges + their labels
+      _svgLayer.querySelectorAll(".mm-edge[data-mm-from]").forEach(el => {
+        el.classList.toggle("mm-hidden", !liveEdgeKeys.has(el.dataset.mmFrom + "->" + el.dataset.mmTo));
+      });
+      _svgLayer.querySelectorAll(".mm-edge-label-group[data-mm-from]").forEach(el => {
+        el.classList.toggle("mm-hidden", !liveEdgeKeys.has(el.dataset.mmFrom + "->" + el.dataset.mmTo));
+      });
     }
 
     function load() {
@@ -918,19 +979,116 @@
           // Build filter pills from legend
           const pillContainer = document.getElementById(cfg.filterId);
           if (pillContainer && _legend.legendNodes.length) {
-            buildFilters(pillContainer, _legend.legendNodes, cfg.colors, rebuild);
+            _filterAPI = buildFilters(pillContainer, _legend.legendNodes, cfg.colors, rebuild);
           }
 
-          requestAnimationFrame(() => fitView(false));
+          requestAnimationFrame(() => fitView(false, true));
         })
         .catch(err => console.error("[mermaid-view]", cfg.mdFile, err));
     }
 
+    // ── Auto-explore tour ────────────────────────────────────
+    let _filterAPI = null;
+    let _exploreTimers = [];
+    let _exploring = false;
+
+    var EXPLORE_DEFAULT = '<strong>Explore</strong><span class="scroll-arrow">\uD83D\uDD2D</span>';
+
+    // Crossfade helper: fade out → swap innerHTML → fade in
+    var _fadePending = null;
+    function crossfadeHint(hint, html, cb) {
+      if (_fadePending) clearTimeout(_fadePending);
+      hint.style.transition = "opacity 0.15s ease";
+      hint.style.opacity = "0";
+      _fadePending = setTimeout(function () {
+        hint.innerHTML = html;
+        if (cb) cb();
+        // force reflow so opacity:0 is painted before we go to 1
+        void hint.offsetWidth;
+        hint.style.opacity = "1";
+        _fadePending = setTimeout(function () {
+          hint.style.transition = "";
+          hint.style.opacity = "";
+          _fadePending = null;
+        }, 160);
+      }, 160);
+    }
+
+    function resetHintLabel() {
+      var hint = modal.querySelector(".mm-explore-hint");
+      if (!hint) return;
+      if (_exploring) {
+        crossfadeHint(hint, EXPLORE_DEFAULT, function () { hint.classList.remove("exploring"); });
+      } else {
+        hint.innerHTML = EXPLORE_DEFAULT;
+        hint.classList.remove("exploring");
+      }
+    }
+
+    function setHintLabel(label) {
+      var hint = modal.querySelector(".mm-explore-hint");
+      if (!hint) return;
+      // Split leading emoji from text
+      var m = label.match(/^(\p{Emoji_Presentation}|\p{Emoji}\uFE0F?)\s*/u);
+      var emoji = m ? m[1] : '\uD83D\uDD2D';
+      var text  = m ? label.slice(m[0].length) : label;
+      var html = '<strong>' + text + '</strong><span class="scroll-arrow">' + emoji + '</span>';
+      crossfadeHint(hint, html);
+    }
+
+    function stopExplore() {
+      _exploreTimers.forEach(t => clearTimeout(t));
+      _exploreTimers = [];
+      _exploring = false;
+      resetHintLabel();
+      if (_filterAPI) _filterAPI.setAll();
+    }
+
+    function startExplore() {
+      if (!_filterAPI) return;
+
+      // If already exploring, cancel and reset
+      if (_exploring) {
+        stopExplore();
+        return;
+      }
+
+      _exploring = true;
+      var hint = modal.querySelector(".mm-explore-hint");
+      if (hint) hint.classList.add("exploring");
+      var classes = _filterAPI.allClasses;
+      var labels = _filterAPI.labelMap;
+      var delay = 3000;
+
+      // Start with first category only
+      _filterAPI.setOnly(classes[0]);
+      setHintLabel(labels[classes[0]] || classes[0]);
+
+      // Add each subsequent category one at a time
+      for (var i = 1; i < classes.length; i++) {
+        (function (idx) {
+          _exploreTimers.push(setTimeout(function () {
+            if (!_exploring) return;
+            _filterAPI.addFilter(classes[idx]);
+            setHintLabel(labels[classes[idx]] || classes[idx]);
+          }, delay * idx));
+        })(i);
+      }
+
+      // Final: show all and reset hint to Explore
+      _exploreTimers.push(setTimeout(function () {
+        if (!_exploring) return;
+        _filterAPI.setAll();
+        _exploring = false;
+        resetHintLabel();
+      }, delay * classes.length));
+    }
+
     function open() {
       toggleModal(modal, true);
-      if (!state.built) load(); else requestAnimationFrame(() => fitView(false));
+      if (!state.built) load(); else requestAnimationFrame(() => fitView(false, true));
     }
-    function close() { toggleModal(modal, false); }
+    function close() { stopExplore(); toggleModal(modal, false); }
 
     // Wire DOM
     const vp = modal.querySelector(".mm-viewport");
@@ -946,6 +1104,22 @@
     document.addEventListener("keydown", e => {
       if (e.key === "Escape" && modal.classList.contains("open")) close();
     });
+
+    // ── Explore hint ─────────────────────────────────────────
+    if (vp) {
+      const hint = document.createElement("div");
+      hint.className = "mm-explore-hint scroll-hint";
+      hint.innerHTML = '<strong>Explore</strong><span class="scroll-arrow">\uD83D\uDD2D</span>';
+      hint.style.cursor = "pointer";
+      hint.addEventListener("click", function (e) {
+        e.preventDefault();
+        startExplore();
+      });
+      // Also stop explore on user pan/zoom interaction
+      vp.addEventListener("pointerdown", function (e) { if (_exploring && !e.target.closest(".mm-explore-hint")) stopExplore(); });
+      vp.addEventListener("wheel", function () { if (_exploring) stopExplore(); }, { passive: true });
+      vp.appendChild(hint);
+    }
 
     window[cfg.openGlobal]  = open;
     window[cfg.closeGlobal] = close;
@@ -963,6 +1137,7 @@
     mdFile:      "architecture.md",
     openGlobal:  "openArchModal",
     closeGlobal: "closeArchModal",
+    initialScale: .825,
     colors: {
       hosting: "242,80,34",
       config:  "255,185,0",

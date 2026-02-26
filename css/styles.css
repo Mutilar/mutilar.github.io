@@ -3261,6 +3261,10 @@ html.light-mode .outline-pill {
 }
 
 .mm-modal-card .modal-sticky-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
   flex-wrap: wrap;
   justify-content: flex-end;
   gap: 6px;
@@ -3379,6 +3383,37 @@ html.light-mode .mm-filter.active {
   user-select: none;
   -webkit-user-select: none;
   cursor: grab;
+  border-radius: 20px;
+}
+
+/* ── Explore hint (bottom of viewport) ────────────────────── */
+.mm-explore-hint {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+  margin-top: 0;
+  cursor: pointer;
+  transition: opacity 0.4s ease, color 0.25s ease;
+  animation: bounce-y-hero 1.8s ease-in-out infinite, tl-glow-pulse 3s ease-in-out infinite;
+}
+
+.mm-explore-hint.exploring {
+  animation: none;
+  color: rgba(255, 255, 255, 1);
+}
+
+.mm-explore-hint.exploring strong {
+  color: rgba(255, 255, 255, 1);
+}
+
+.mm-explore-hint:hover {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.mm-explore-hint:hover strong {
+  color: #fff;
 }
 
 /* ── World (transform container) ──────────────────────────── */
@@ -3407,6 +3442,15 @@ html.light-mode .mm-filter.active {
   filter: drop-shadow(0 0 4px currentColor);
 }
 
+.mm-node.mm-hidden,
+.mm-subgraph.mm-hidden,
+.mm-edge.mm-hidden,
+.mm-edge-label-group.mm-hidden {
+  opacity: 0 !important;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
 .mm-thread {
   animation: mm-thread-pulse 3s ease-in-out infinite;
 }
@@ -3427,6 +3471,7 @@ html.light-mode .mm-filter.active {
   -webkit-backdrop-filter: blur(4px);
   pointer-events: none;
   z-index: 0;
+  transition: opacity 0.3s ease;
 }
 
 .mm-subgraph-invisible {
@@ -3469,7 +3514,7 @@ html.light-mode .mm-filter.active {
   gap: 2px;
   z-index: 5;
   cursor: default;
-  transition: background 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease, transform 0.2s ease;
+  transition: opacity 0.3s ease, background 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease, transform 0.2s ease;
   overflow: hidden;
 }
 
@@ -3627,12 +3672,19 @@ html.light-mode .mm-edge {
    ═══════════════════════════════════════════════════════════════ */
 .timeline-modal-card {
   max-width: 960px;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
 }
 
 .timeline-modal-card .modal-sticky-bar {
+  position: sticky;
+  top: 0;
   flex-wrap: wrap;
   justify-content: flex-end;
   gap: 6px;
+  margin: 0 -40px;
+  padding: 12px 40px 8px;
+  border-radius: 20px 20px 0 0;
 }
 
 /* ── Filter button group ──────────────────────────────────── */
@@ -4004,10 +4056,23 @@ html.light-mode .timeline-filter.filter-pulse {
   margin-left: auto;
 }
 
+/* ── Tablet ───────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .timeline-modal-card .modal-sticky-bar {
+    margin: 0 -18px;
+    padding: 12px 18px 8px;
+  }
+}
+
 /* ── Mobile ───────────────────────────────────────────────── */
 @media (max-width: 600px) {
   .timeline-modal-card {
-    padding: 16px 8px !important;
+    padding: 0 8px !important;
+  }
+  .timeline-modal-card .modal-sticky-bar {
+    margin: 0 -8px;
+    padding: 10px 8px 6px;
+    border-radius: 16px 16px 0 0;
   }
   .timeline-filter {
     padding: 5px 10px;
