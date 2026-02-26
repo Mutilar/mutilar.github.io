@@ -349,7 +349,7 @@
       scrollHint = document.createElement("div");
       scrollHint.id = "tl-scroll-hint";
       scrollHint.className = "scroll-hint tl-scroll-hint";
-      scrollHint.innerHTML = '<strong>Scroll</strong><span class="scroll-arrow">⏷</span>';
+      scrollHint.innerHTML = '<strong>Take A Scroll</strong><span class="scroll-arrow">🚶</span>';
       scrollHint.style.cursor = "pointer";
       const tlContainer = document.getElementById("timeline-container");
       tlContainer.appendChild(scrollHint);
