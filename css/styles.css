@@ -3471,7 +3471,7 @@ html.light-mode .timeline-filter.filter-pulse {
   position: fixed;
   top: 50%;
   transform: translateY(-50%);
-  z-index: 9999;
+  z-index: 205;
   pointer-events: none;
   display: none;
   opacity: 0;
