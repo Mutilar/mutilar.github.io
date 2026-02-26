@@ -171,10 +171,10 @@
         </div>
       </div>
     </div>
-    <div class="scroll-hint">
-      <span>About Me</span>
+    <a href="#about" class="scroll-hint">
+      <strong>About Me</strong>
       <span class="scroll-arrow">👋</span>
-    </div>
+    </a>
   </div>
 
   <!-- ███ BAND 0: About Me header — opaque ███ -->
@@ -225,10 +225,10 @@
       </div>
       <div class="card-grid card-grid-wide" id="about-grid"></div>
     </div>
-    <div class="scroll-hint">
-      <span>MARP</span>
+    <a href="#marp" class="scroll-hint">
+      <strong>MARP</strong>
       <span class="scroll-arrow">🤖</span>
-    </div>
+    </a>
   </div>
 
   <!-- ███ BAND 1: Marp header — opaque ███ -->
@@ -267,10 +267,10 @@
       </div>
       <div class="card-grid card-grid-wide" id="marp-grid"></div>
     </div>
-    <div class="scroll-hint">
-      <span>BitNaughts</span>
+    <a href="#bitnaughts" class="scroll-hint">
+      <strong>BitNaughts</strong>
       <span class="scroll-arrow">☄</span>
-    </div>
+    </a>
   </div>
 
   <!-- ███ BAND 2: BitNaughts header — opaque ███ -->
@@ -321,10 +321,10 @@
       </div>
       <div class="card-grid card-grid-wide" id="bitnaughts-grid" style="margin-top:32px;"></div>
     </div>
-    <div class="scroll-hint">
-      <span>Magic: The Gathering</span>
+    <a href="#mtg" class="scroll-hint">
+      <strong>Magic: The Gathering</strong>
       <span class="scroll-arrow">🪄</span>
-    </div>
+    </a>
   </div>
 
   <!-- ███ BAND: MTG ███ -->
@@ -363,10 +363,10 @@
       </div>
       <div class="card-grid card-grid-wide" id="mtg-grid"></div>
     </div>
-    <div class="scroll-hint">
-      <span>Work</span>
+    <a href="#work" class="scroll-hint">
+      <strong>Work</strong>
       <span class="scroll-arrow">👨‍💻</span>
-    </div>
+    </a>
   </div>
 
   <!-- ███ BAND 3: Work ███ -->
@@ -394,10 +394,10 @@
       </div>
       <div class="card-grid" id="work-grid"></div>
     </div>
-    <div class="scroll-hint">
-      <span>Education</span>
+    <a href="#education" class="scroll-hint">
+      <strong>Education</strong>
       <span class="scroll-arrow">🎓</span>
-    </div>
+    </a>
   </div>
 
   <!-- ███ BAND 3.5: Education ███ -->
@@ -426,10 +426,10 @@
       </div>
       <div class="card-grid" id="education-grid"></div>
     </div>
-    <div class="scroll-hint">
-      <span>Projects</span>
+    <a href="#projects" class="scroll-hint">
+      <strong>Projects</strong>
       <span class="scroll-arrow">🛠️</span>
-    </div>
+    </a>
   </div>
 
   <!-- ███ BAND 4: Projects ███ -->
@@ -471,10 +471,10 @@
       </div>
       <div class="card-grid" id="projects-grid"></div>
     </div>
-    <div class="scroll-hint">
-      <span>Hacks</span>
+    <a href="#hackathons" class="scroll-hint">
+      <strong>Hacks</strong>
       <span class="scroll-arrow">⛏️</span>
-    </div>
+    </a>
   </div>
 
   <!-- ███ BAND 5: Hackathons ███ -->
@@ -516,10 +516,10 @@
       </div>
       <div class="card-grid" id="hackathons-grid"></div>
     </div>
-    <div class="scroll-hint">
-      <span>Games</span>
+    <a href="#games" class="scroll-hint">
+      <strong>Games</strong>
       <span class="scroll-arrow">🎮</span>
-    </div>
+    </a>
   </div>
 
   <!-- ███ BAND 6: Games ███ -->
@@ -561,10 +561,10 @@
       </div>
       <div class="card-grid" id="games-grid"></div>
     </div>
-    <div class="scroll-hint">
-      <span>Cheers</span>
+    <a href="#footer-band" class="scroll-hint">
+      <strong>Cheers</strong>
       <span class="scroll-arrow">🍻</span>
-    </div>
+    </a>
   </div>
 
   <!-- ███ BAND 7: FOOTER ███ -->
@@ -591,10 +591,10 @@
         <a target="_blank" href="https://open.spotify.com/user/12143746238" title="Spotify"><i class="fa fa-spotify"></i></a>
       </div>
     </div>
-    <div class="scroll-hint">
-      <span>Open Source</span>
+    <a href="#open-source" class="scroll-hint">
+      <strong>Open Source</strong>
       <span class="scroll-arrow">🏗️</span>
-    </div>
+    </a>
   </div>
 
   <!-- ▓▓▓ WINDOW 8: Full-viewport frosted footer — step into the glass ▓▓▓ -->
@@ -705,8 +705,10 @@
 <div class="modal-overlay" id="modal">
   <div class="glass-tile modal-card" style="position:relative;">
     <div class="modal-sticky-bar">
-      <p class="modal-subtitle" id="modal-title"></p>
-      <button class="modal-close" id="modalClose" aria-label="Close modal">&times;</button>
+      <div class="modal-sticky-group tl-glow">
+        <p class="modal-subtitle" id="modal-title"></p>
+        <button class="modal-close" id="modalClose" aria-label="Close modal">&times;</button>
+      </div>
     </div>
     <img class="modal-img" id="modal-image" src="" alt="" />
     <div class="modal-header-row">
@@ -722,9 +724,11 @@
 <div class="modal-overlay" id="deck-modal">
   <div class="glass-tile modal-card deck-modal-card" style="position:relative;">
     <div class="modal-sticky-bar">
-      <h2 class="modal-sticky-title" id="deck-sticky-title"></h2>
-      <a class="modal-sticky-link" id="deck-hero-link" href="#" target="_blank"><i class="fa fa-clone"></i> Archidekt</a>
-      <button class="modal-close" id="deckModalClose" aria-label="Close modal">&times;</button>
+      <div class="modal-sticky-group tl-glow">
+        <h2 class="modal-sticky-title" id="deck-sticky-title"></h2>
+        <a class="modal-sticky-link" id="deck-hero-link" href="#" target="_blank"><i class="fa fa-clone"></i> Archidekt</a>
+        <button class="modal-close" id="deckModalClose" aria-label="Close modal">&times;</button>
+      </div>
     </div>
 
     <!-- Commander hero -->
@@ -749,8 +753,10 @@
 <div class="modal-overlay" id="pdf-modal">
   <div class="glass-tile modal-card pdf-modal-card" style="position:relative;">
     <div class="modal-sticky-bar">
-      <a class="modal-sticky-link" href="pdf/bible.pdf" target="_blank"><i class="fa fa-external-link"></i> Open in new tab</a>
-      <button class="modal-close" id="pdfModalClose" aria-label="Close modal">&times;</button>
+      <div class="modal-sticky-group tl-glow">
+        <a class="modal-sticky-link" href="pdf/bible.pdf" target="_blank"><i class="fa fa-external-link"></i> Open in new tab</a>
+        <button class="modal-close" id="pdfModalClose" aria-label="Close modal">&times;</button>
+      </div>
     </div>
     <div class="pdf-embed-wrap">
       <div id="pdf-loading" style="display:none;position:absolute;inset:0;align-items:center;justify-content:center;color:#aaa;font-family:system-ui,sans-serif;font-size:15px;z-index:10;">Loading PDF…</div>
@@ -765,8 +771,10 @@
 <div class="modal-overlay" id="resume-pdf-modal">
   <div class="glass-tile modal-card pdf-modal-card" style="position:relative;">
     <div class="modal-sticky-bar">
-      <a class="modal-sticky-link" href="pdf/resume.pdf" target="_blank"><i class="fa fa-external-link"></i> Open in new tab</a>
-      <button class="modal-close" id="resumePdfModalClose" aria-label="Close modal">&times;</button>
+      <div class="modal-sticky-group tl-glow">
+        <a class="modal-sticky-link" href="pdf/resume.pdf" target="_blank"><i class="fa fa-external-link"></i> Open in new tab</a>
+        <button class="modal-close" id="resumePdfModalClose" aria-label="Close modal">&times;</button>
+      </div>
     </div>
     <div class="pdf-embed-wrap">
       <div id="resume-pdf-loading" style="display:none;position:absolute;inset:0;align-items:center;justify-content:center;color:#aaa;font-family:system-ui,sans-serif;font-size:15px;z-index:10;">Loading PDF…</div>
@@ -781,9 +789,11 @@
 <div class="modal-overlay" id="game-modal">
   <div class="glass-tile modal-card game-modal-card" style="position:relative;">
     <div class="modal-sticky-bar">
-      <h2 class="modal-sticky-title" id="game-modal-title"><i class="fa fa-gamepad"></i> Play</h2>
-      <a class="modal-sticky-link" id="game-modal-link" href="#" target="_blank"><i class="fa fa-external-link"></i> Open in new tab</a>
-      <button class="modal-close" id="gameModalClose" aria-label="Close modal">&times;</button>
+      <div class="modal-sticky-group tl-glow">
+        <h2 class="modal-sticky-title" id="game-modal-title"><i class="fa fa-gamepad"></i> Play</h2>
+        <a class="modal-sticky-link" id="game-modal-link" href="#" target="_blank"><i class="fa fa-external-link"></i> Open in new tab</a>
+        <button class="modal-close" id="gameModalClose" aria-label="Close modal">&times;</button>
+      </div>
     </div>
     <div class="game-embed-wrap">
       <iframe id="game-iframe" src="" title="Game" allowfullscreen scrolling="no"></iframe>
@@ -797,9 +807,11 @@
 <div class="modal-overlay" id="bitnaughts-modal">
   <div class="glass-tile modal-card bitnaughts-modal-card" style="position:relative;">
     <div class="modal-sticky-bar">
-      <h2 class="modal-sticky-title">☄ BitNaughts — Early Iterations</h2>
-      <a class="modal-sticky-link" href="https://github.com/bitnaughts" target="_blank"><i class="fa fa-github"></i> bitnaughts</a>
-      <button class="modal-close" id="bitnaughtsModalClose" aria-label="Close modal">&times;</button>
+      <div class="modal-sticky-group tl-glow">
+        <h2 class="modal-sticky-title">☄ BitNaughts — Early Iterations</h2>
+        <a class="modal-sticky-link" href="https://github.com/bitnaughts" target="_blank"><i class="fa fa-github"></i> bitnaughts</a>
+        <button class="modal-close" id="bitnaughtsModalClose" aria-label="Close modal">&times;</button>
+      </div>
     </div>
     <div class="bitnaughts-gallery">
       <div class="bitnaughts-gallery-item">
@@ -824,9 +836,11 @@
 <div class="modal-overlay" id="bitnaughts-iphone-modal">
   <div class="glass-tile modal-card bitnaughts-modal-card" style="position:relative;">
     <div class="modal-sticky-bar">
-      <h2 class="modal-sticky-title">☄ BitNaughts — U.X. Design</h2>
-      <a class="modal-sticky-link" href="https://github.com/bitnaughts" target="_blank"><i class="fa fa-github"></i> bitnaughts</a>
-      <button class="modal-close" id="bitnaughtsIphoneModalClose" aria-label="Close modal">&times;</button>
+      <div class="modal-sticky-group tl-glow">
+        <h2 class="modal-sticky-title">☄ BitNaughts — U.X. Design</h2>
+        <a class="modal-sticky-link" href="https://github.com/bitnaughts" target="_blank"><i class="fa fa-github"></i> bitnaughts</a>
+        <button class="modal-close" id="bitnaughtsIphoneModalClose" aria-label="Close modal">&times;</button>
+      </div>
     </div>
     <div class="bitnaughts-gallery">
       <div class="bitnaughts-gallery-item">
@@ -855,8 +869,10 @@
 <div class="modal-overlay" id="arch-modal">
   <div class="glass-tile modal-card marp-modal-card" style="position:relative;">
     <div class="modal-sticky-bar">
-      <a class="modal-sticky-link" href="https://github.com/Mutilar/mutilar.github.io" target="_blank"><i class="fa fa-github"></i> Mutilar.github.io</a>
-      <button class="modal-close" id="archModalClose" aria-label="Close modal">&times;</button>
+      <div class="modal-sticky-group tl-glow">
+        <a class="modal-sticky-link" href="https://github.com/Mutilar/mutilar.github.io" target="_blank"><i class="fa fa-github"></i> Mutilar.github.io</a>
+        <button class="modal-close" id="archModalClose" aria-label="Close modal">&times;</button>
+      </div>
     </div>
 
     <!-- Diagram placeholder — replace src with your actual architecture diagram -->
@@ -944,7 +960,9 @@
 <div class="modal-overlay" id="quilt-modal">
   <div class="glass-tile modal-card" style="position:relative;">
     <div class="modal-sticky-bar">
-      <button class="modal-close" id="quiltModalClose" aria-label="Close modal">&times;</button>
+      <div class="modal-sticky-group tl-glow">
+        <button class="modal-close" id="quiltModalClose" aria-label="Close modal">&times;</button>
+      </div>
     </div>
     <img class="modal-img" src="images/quilting.png" alt="Brian quilting a penguin quilt" />
     <div class="modal-header-row">
@@ -965,13 +983,15 @@
 <div class="modal-overlay" id="timeline-modal">
   <div class="glass-tile modal-card timeline-modal-card" style="position:relative;">
     <div class="modal-sticky-bar">
-      <button class="timeline-filter active" data-filter="all" style="--tc:255,255,255;--tc-light:30,30,40"><span class="all-indicator">⬜</span> 🎛️ All</button>
-      <button class="timeline-filter" data-filter="robotics" style="--tc:242,80,34"><span class="timeline-dot" style="background:rgba(242,80,34,0.9);"></span> 🤖 Robotics</button>
-      <button class="timeline-filter" data-filter="games" style="--tc:127,186,0"><span class="timeline-dot" style="background:rgba(127,186,0,0.9);"></span> 🎮 Games</button>
-      <button class="timeline-filter" data-filter="software" style="--tc:0,164,239"><span class="timeline-dot" style="background:rgba(0,164,239,0.9);"></span> 💻 Software</button>
-      <button class="timeline-filter" data-filter="research" style="--tc:255,185,0"><span class="timeline-dot" style="background:rgba(255,185,0,0.9);"></span> 🔬 Research</button>
-      <button class="timeline-filter" data-filter="education" style="--tc:0,120,212"><span class="timeline-dot" style="background:rgba(0,120,212,0.9);"></span> 🎓 Education</button>
-      <button class="modal-close" id="timelineModalClose" aria-label="Close modal">&times;</button>
+      <div class="timeline-filter-group tl-glow">
+        <button class="timeline-filter active" data-filter="all" style="--tc:255,255,255;--tc-light:30,30,40"><span class="all-indicator">⬜</span> 🎛️ All</button>
+        <button class="timeline-filter" data-filter="robotics" style="--tc:242,80,34"><span class="timeline-dot" style="background:rgba(242,80,34,0.9);"></span> 🤖 Robotics</button>
+        <button class="timeline-filter" data-filter="games" style="--tc:127,186,0"><span class="timeline-dot" style="background:rgba(127,186,0,0.9);"></span> 🎮 Games</button>
+        <button class="timeline-filter" data-filter="software" style="--tc:0,164,239"><span class="timeline-dot" style="background:rgba(0,164,239,0.9);"></span> 💻 Software</button>
+        <button class="timeline-filter" data-filter="research" style="--tc:255,185,0"><span class="timeline-dot" style="background:rgba(255,185,0,0.9);"></span> 🔬 Research</button>
+        <button class="timeline-filter" data-filter="education" style="--tc:0,120,212"><span class="timeline-dot" style="background:rgba(0,120,212,0.9);"></span> 🎓 Education</button>
+        <button class="modal-close" id="timelineModalClose" aria-label="Close modal">&times;</button>
+      </div>
     </div>
     <div class="timeline-container" id="timeline-container">
       <div class="timeline-entries" id="timeline-entries">
@@ -987,9 +1007,10 @@
 <div class="modal-overlay" id="marp-modal">
   <div class="glass-tile modal-card marp-modal-card" style="position:relative;">
     <div class="modal-sticky-bar">
-      <h2 class="modal-sticky-title">🧮 MARP Diagrams</h2>
-      <a class="modal-sticky-link" href="https://github.com/Mutilar/Marp" target="_blank"><i class="fa fa-github"></i> Mutilar/Marp</a>
-      <button class="modal-close" id="marpModalClose" aria-label="Close modal">&times;</button>
+      <div class="modal-sticky-group tl-glow">
+        <a class="modal-sticky-link" href="https://github.com/Mutilar/Marp" target="_blank"><i class="fa fa-github"></i> Mutilar/Marp</a>
+        <button class="modal-close" id="marpModalClose" aria-label="Close modal">&times;</button>
+      </div>
     </div>
     <div class="marp-diagram-wrap">
       <img id="marp-diagram-img" class="theme-img" data-src-dark="images/marp-high-level-diagram.png" data-src-light="images/marp-high-level-diagram-light.png" src="images/marp-high-level-diagram.png" alt="MARP High-Level Wiring Diagram" loading="lazy">

@@ -122,10 +122,25 @@ hr {
   font-weight: 500;
   letter-spacing: 1.5px;
   text-transform: uppercase;
-  cursor: default;
+  text-decoration: none;
+  cursor: pointer;
   user-select: none;
-  transition: opacity 0.4s ease;
+  transition: opacity 0.4s ease, color 0.25s ease;
   animation: bounce-y 1.8s ease-in-out infinite;
+}
+
+a.scroll-hint:hover {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+a.scroll-hint strong {
+  font-weight: 800;
+  color: rgba(255, 255, 255, 0.75);
+  transition: color 0.25s ease;
+}
+
+a.scroll-hint:hover strong {
+  color: rgba(255, 255, 255, 1);
 }
 
 .scroll-hint .scroll-arrow {
@@ -1210,6 +1225,7 @@ html.light-mode .card-action-badge.badge-static {
 .modal-card .modal-subtitle {
   display: flex;
   flex-wrap: wrap;
+  flex: 1;
   gap: 6px;
   margin: 0;
   justify-content: flex-end;
@@ -1401,6 +1417,22 @@ html.light-mode .card-action-badge.badge-static {
   pointer-events: auto;
 }
 
+/* ── Sticky-bar glow group (wraps content + close button) ── */
+.modal-sticky-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: 18px;
+}
+
+/* When group contains a title, expand to fill the bar */
+.modal-sticky-group:has(.modal-sticky-title),
+.modal-sticky-group:has(.modal-subtitle) {
+  flex: 1;
+  min-width: 0;
+}
+
 .modal-sticky-title {
   flex: 1;
   font-size: 20px;
@@ -1456,6 +1488,8 @@ html.light-mode .card-action-badge.badge-static {
 
 .modal-close:hover {
   background: rgba(255, 60, 60, 1);
+  box-shadow: 0 0 12px rgba(255, 60, 60, 0.6),
+              0 0 28px rgba(255, 60, 60, 0.3);
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -2626,6 +2660,18 @@ html.light-mode .scroll-hint {
   color: rgba(255, 255, 255, 0.55);
 }
 
+html.light-mode a.scroll-hint:hover {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+html.light-mode a.scroll-hint strong {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+html.light-mode a.scroll-hint:hover strong {
+  color: rgba(255, 255, 255, 1);
+}
+
 /* ── Section badges ───────────────────────────────────────── */
 html.light-mode .section-badge {
   color: rgba(0, 0, 0, 0.6);
@@ -2895,6 +2941,12 @@ html.light-mode .timeline-filter.active {
               0 0 80px rgba(var(--tc-light, var(--tc)), 0.05);
 }
 
+html.light-mode .timeline-filter.active:hover {
+  background: rgba(var(--tc-light, var(--tc)), 0.12);
+  border-color: rgba(var(--tc-light, var(--tc)), 0.2);
+  box-shadow: none;
+}
+
 html.light-mode .tl-ruler-year {
   color: rgba(0, 0, 0, 0.65);
 }
@@ -2935,10 +2987,24 @@ html.light-mode .tl-sliver-name {
   color: #1a1a2e;
 }
 
-html.light-mode .tl-whisper-layer.tl-whisper-show {
-  color: #000;
+html.light-mode .tl-whisper-layer.tl-whisper-show,
+html.light-mode .tl-glow {
   background: rgba(255, 255, 255, 0.7);
   box-shadow: 0 0 16px rgba(255, 255, 255, 0.6), 0 0 32px rgba(255, 255, 255, 0.3);
+  animation: tl-glow-pulse-light 3s ease-in-out infinite;
+}
+
+@keyframes tl-glow-pulse-light {
+  0%, 100% {
+    box-shadow: 0 0 16px rgba(255, 255, 255, 0.6), 0 0 32px rgba(255, 255, 255, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 24px rgba(255, 255, 255, 0.75), 0 0 48px rgba(255, 255, 255, 0.4), 0 0 72px rgba(255, 255, 255, 0.15);
+  }
+}
+
+html.light-mode .tl-whisper-layer.tl-whisper-show {
+  color: #000;
 }
 
 html.light-mode .tl-sliver-title {
@@ -3173,6 +3239,16 @@ html.light-mode .outline-pill {
   gap: 6px;
 }
 
+/* ── Filter button group ──────────────────────────────────── */
+.timeline-filter-group {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 18px;
+}
+
 /* ── Filter buttons (inside modal-sticky-bar) ─────────────── */
 .timeline-filter {
   display: inline-flex;
@@ -3211,6 +3287,12 @@ html.light-mode .outline-pill {
               0 0 100px rgba(var(--tc), 0.06);
 }
 
+.timeline-filter.active:hover {
+  background: rgba(var(--tc), 0.08);
+  border-color: rgba(var(--tc), 0.25);
+  box-shadow: none;
+}
+
 @keyframes filter-backoff-pulse {
   0%   { box-shadow: 0 0 10px rgba(255,255,255,0.15); }
   50%  { box-shadow: 0 0 22px rgba(255,255,255,0.5), 0 0 40px rgba(255,255,255,0.2); }
@@ -3243,8 +3325,23 @@ html.light-mode .timeline-filter.filter-pulse {
   bottom: 12px;
   margin-top: -60px;
   z-index: 20;
-  transition: opacity 0.3s ease;
+  cursor: pointer;
+  transition: opacity 0.3s ease, color 0.25s ease;
   animation: bounce-y 1.8s ease-in-out infinite;
+}
+
+.tl-scroll-hint:hover {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.tl-scroll-hint strong {
+  font-weight: 800;
+  color: rgba(255, 255, 255, 0.75);
+  transition: color 0.25s ease;
+}
+
+.tl-scroll-hint:hover strong {
+  color: rgba(255, 255, 255, 1);
 }
 
 /* ── Timeline container ───────────────────────────────────── */
@@ -3403,11 +3500,25 @@ html.light-mode .timeline-filter.filter-pulse {
   max-width: 100%;
 }
 
+.tl-whisper-layer.tl-whisper-show,
+.tl-glow {
+  background: rgba(0, 0, 0, 0.55);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5), 0 0 40px rgba(0, 0, 0, 0.25);
+  animation: tl-glow-pulse 3s ease-in-out infinite;
+}
+
+@keyframes tl-glow-pulse {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5), 0 0 40px rgba(0, 0, 0, 0.25);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.65), 0 0 60px rgba(0, 0, 0, 0.35), 0 0 90px rgba(0, 0, 0, 0.15);
+  }
+}
+
 .tl-whisper-layer.tl-whisper-show {
   color: #fff;
   opacity: 1;
-  background: rgba(0, 0, 0, 0.55);
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5), 0 0 40px rgba(0, 0, 0, 0.25);
 }
 
 .tl-whisper-layer sup {

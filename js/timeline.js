@@ -13,6 +13,9 @@
   const MIN_SPAN  = 1;    // minimum 1-month height for point events
   const MONTH_LABELS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
   const GAP = 3;          // px gap between side-by-side slivers
+
+  let _tlAutoScrollRAF = null;
+  function _tlStopAutoScroll() { if (_tlAutoScrollRAF) { cancelAnimationFrame(_tlAutoScrollRAF); _tlAutoScrollRAF = null; } }
   const CALENDAR_PAD = 0; // px buffer top & bottom of timeline
 
   /* ── Thematic work-stream categories ────────────────────── */
@@ -75,6 +78,7 @@
     });
   }
   function closeTimelineModal() {
+    _tlStopAutoScroll();
     toggleModal(timelineModal, false);
     const hud = document.getElementById("tl-whisper-hud");
     if (hud) hud.classList.remove("tl-whisper-active");
@@ -95,10 +99,18 @@
     const allActive = activeFilters.size === allThemes.length;
     allBtn.classList.toggle("active", allActive);
     const indicator = allBtn.querySelector(".all-indicator");
-    if (indicator) indicator.textContent = allActive ? "\u2b1c" : "\u2b1b";
+    if (indicator) {
+      const isLight = document.documentElement.classList.contains("light-mode");
+      indicator.textContent = allActive
+        ? (isLight ? "\u2b1b" : "\u2b1c")   // active:  ⬛ light / ⬜ dark
+        : (isLight ? "\u2b1c" : "\u2b1b");   // inactive: ⬜ light / ⬛ dark
+    }
     themeBtns.forEach(b => b.classList.toggle("active", activeFilters.has(b.dataset.filter)));
   }
   syncFilterUI();   // set initial active state on all buttons
+
+  // Re-sync All indicator when theme toggles (⬜/⬛ swap)
+  window.addEventListener("theme-changed", () => syncFilterUI());
 
   allBtn.addEventListener("click", () => {
     if (activeFilters.size === allThemes.length) {
@@ -337,10 +349,68 @@
       scrollHint = document.createElement("div");
       scrollHint.id = "tl-scroll-hint";
       scrollHint.className = "scroll-hint tl-scroll-hint";
-      scrollHint.innerHTML = '<span>Scroll</span><span class="scroll-arrow">⏷</span>';
+      scrollHint.innerHTML = '<strong>Scroll</strong><span class="scroll-arrow">⏷</span>';
+      scrollHint.style.cursor = "pointer";
       const tlContainer = document.getElementById("timeline-container");
       tlContainer.appendChild(scrollHint);
     }
+
+    // ── Slow auto-scroll on hint click, interruptible by user ──
+    let _autoScrolling = false;
+
+    scrollHint.onclick = function (e) {
+      e.preventDefault();
+      _tlStopAutoScroll();
+      const maxScroll = modalCard.scrollHeight - modalCard.clientHeight;
+      if (modalCard.scrollTop >= maxScroll - 1) return; // already at bottom
+
+      const FAST = 400;        // px/s at top
+      const SLOW = 100;         // px/s at bottom
+
+      let lastT = null;
+      let userInterrupted = false;
+      _autoScrolling = true;
+
+      // Hide hint while auto-scrolling
+      scrollHint.style.opacity = 0;
+      scrollHint.style.pointerEvents = 'none';
+
+      function onUserScroll() { userInterrupted = true; }
+      modalCard.addEventListener("wheel", onUserScroll, { once: true, passive: true });
+      modalCard.addEventListener("touchstart", onUserScroll, { once: true, passive: true });
+
+      function step(ts) {
+        if (userInterrupted) { cleanup(); return; }
+        if (!lastT) { lastT = ts; }
+        const dt = (ts - lastT) / 1000;
+        lastT = ts;
+
+        // Linear deceleration from FAST → SLOW over the full scroll range
+        const maxS = modalCard.scrollHeight - modalCard.clientHeight;
+        const progress = maxS > 0 ? modalCard.scrollTop / maxS : 1;
+        const speed = FAST + (SLOW - FAST) * progress;
+
+        const dist = speed * dt;
+        modalCard.scrollTop += dist;
+        if (modalCard.scrollTop >= maxS - 1) { cleanup(); return; }
+        _tlAutoScrollRAF = requestAnimationFrame(step);
+      }
+
+      function cleanup() {
+        _tlStopAutoScroll();
+        _autoScrolling = false;
+        modalCard.removeEventListener("wheel", onUserScroll);
+        modalCard.removeEventListener("touchstart", onUserScroll);
+        // Re-show hint if not at bottom
+        const maxS = modalCard.scrollHeight - modalCard.clientHeight;
+        if (modalCard.scrollTop < maxS - 1) {
+          scrollHint.style.opacity = 1;
+          scrollHint.style.pointerEvents = '';
+        }
+      }
+
+      _tlAutoScrollRAF = requestAnimationFrame(step);
+    };
 
     // ── Whisper HUD overlay ──────────────────────────────────
     const modalCard = timelineModal.querySelector(".timeline-modal-card");
@@ -374,8 +444,6 @@
       return slot;
     }
 
-    const WHISPER_FADE_PX = 150;
-
     function crossfade(layers, activeIdx, html) {
       const outLayer = layers[activeIdx];
       const inLayer  = layers[1 - activeIdx];
@@ -391,22 +459,14 @@
 
     function updateWhispers() {
       const rect = modalCard.getBoundingClientRect();
-      const centerY = rect.top + rect.height / 2; // shift down so transition falls between tiles
+      const centerY = rect.top + rect.height / 2;
 
       /* ── Align HUD to timeline-entries (same basis as sliver %) ── */
       const entriesRect = _container.getBoundingClientRect();
       whisperHUD.style.left  = entriesRect.left + 'px';
       whisperHUD.style.width = entriesRect.width + 'px';
+      whisperHUD.style.opacity = 1;
 
-      /* ── Scroll-position-based master opacity ── */
-      const st = modalCard.scrollTop;
-      const maxScroll = modalCard.scrollHeight - modalCard.clientHeight;
-      const fadeIn  = Math.min(1, st / WHISPER_FADE_PX);
-      const fadOut  = Math.min(1, Math.max(0, (maxScroll - st)) / WHISPER_FADE_PX);
-      const masterOpacity = Math.min(fadeIn, fadOut);
-      whisperHUD.style.opacity = masterOpacity;
-
-      const FADE_ZONE = MONTH_H * 0.5;
       const glowingSlivers = new Set();
       const activeKeys = new Set();   // track which slots are active this frame
 
@@ -416,19 +476,21 @@
         if (!list || !list.length) return;
 
         const sr = s.el.getBoundingClientRect();
-        if (sr.bottom + FADE_ZONE < centerY || sr.top - FADE_ZONE > centerY) return;
+        // Fade zone: 25px at each edge for smooth fade in/out
+        const FADE = 25;
+        if (centerY < sr.top || centerY > sr.bottom) return;
 
+        // Compute opacity: ramp up in first 25px, full in middle, ramp down in last 25px
         let fadeFactor = 1;
-        if (centerY < sr.top - 25) {
-          fadeFactor = Math.max(0, 1 - (sr.top - 25 - centerY) / FADE_ZONE);
-        } else if (centerY > sr.bottom) {
-          fadeFactor = Math.max(0, 1 - (centerY - sr.bottom) / FADE_ZONE);
+        if (centerY < sr.top + FADE) {
+          fadeFactor = (centerY - sr.top) / FADE;
+        } else if (centerY > sr.bottom - FADE) {
+          fadeFactor = (sr.bottom - centerY) / FADE;
         }
 
         let idx = 0;
         if (list.length > 1) {
-          const effectiveH = sr.height - FADE_ZONE * 0.5;
-          const progress = Math.max(0, Math.min(1, (centerY - sr.top) / effectiveH));
+          const progress = Math.max(0, Math.min(1, (centerY - sr.top) / sr.height));
           idx = Math.min(list.length - 1, Math.floor(progress * list.length));
         }
 
@@ -453,7 +515,7 @@
         }
       });
 
-      // Fade out slots that are no longer active
+      // Hide slots that are no longer active
       for (const key in _slots) {
         if (!activeKeys.has(key)) {
           const slot = _slots[key];
@@ -473,8 +535,12 @@
 
     function updateScrollHint() {
       if (!scrollHint) return;
+      // Don't touch hint while auto-scrolling (it's hidden by the auto-scroller)
+      if (_autoScrolling) return;
       const st = modalCard.scrollTop;
-      const opacity = Math.max(0, 1 - st / 120);
+      const maxS = modalCard.scrollHeight - modalCard.clientHeight;
+      // Show hint whenever there's more to scroll, hide at bottom
+      const opacity = (st >= maxS - 1) ? 0 : 1;
       scrollHint.style.opacity = opacity;
       scrollHint.style.pointerEvents = opacity < 0.1 ? 'none' : '';
     }
@@ -521,8 +587,8 @@
       if (s.endOff   > visMax) visMax = s.endOff;
     });
     // Extra seasons above & below for visual breathing room
-    visMin -= 7;
-    visMax += 7;
+    visMin -= 6;
+    visMax += 9;
 
     const totalH = (visMax - visMin + 1) * MONTH_H + CALENDAR_PAD * 2;
     _container.style.height = totalH + "px";
@@ -604,8 +670,8 @@
       if (s.endOff   > visMax) visMax = s.endOff;
     });
     // Extra seasons to match ruler
-    visMin -= 7;
-    visMax += 7;
+    visMin -= 6;
+    visMax += 9;
 
     /* ---- 1. Build events ---- */
     const START = 0, END = 1;
@@ -665,49 +731,49 @@
   const whisperData = {
     /* ── Multi-whisper (tall slivers) ── */
     "microsoft|SWE I &amp; II": [
-      "🔒 SEC<sup>CHAMP</sup>",
+      "🔒 Champ<sup>SEC</sup>",
       "🌐 8B+<sup>INF/DAY</sup>",
-      "🛡️ DRI<sup>CHAMP</sup>",
-      "☁️ 50+<sup>DCS</sup>",
-      "🚀 GA<sup>LAUNCH</sup>",
-      "⚙️ ENVOY<sup>PROXY</sup>",
+      "🛡️ Champ<sup>DRI</sup>",
+      "☁️ 50+<sup>DCs</sup>",
+      "🚀 GA",
+      "📡 Envoy",
     ],
     "bitnaughts": [
-      "🎮 Code<sup>GAMIFIED!</sup>",
-      "💻 4<sup>HACKATHONS</sup>",
-      "🌍 Play<sup>IT</sup>",
+      "🎮 Code Gamified",
       "👁️ See<sup>CODE</sup>",
       "🔄 Try<sup>CODE</sup>",
       "🎓 Learn<sup>CODE</sup>",
+      "💻 4 Hacks",
+      "🌍 Play It",
     ],
     "redtierobotics|Electrician": [
-      "⚡ AMAX<sup>ESD</sup>",
+      "⚡ AMAX",
     ],
     "redtierobotics|Electrical Lead": [
-      "🔌 CAD<sup>DESIGN</sup>",
+      "🔌 CAD",
     ],
     "redtierobotics|Treasurer": [
-      "💰 $18K+<sup>BUDGET</sup>",
+      "💰 $18K+ Budget",
     ],
     "voodoo": [
-      "🎨 Pixel<sup>ART</sup>",
+      "🎨 Pixel Art",
     ],
 
     /* ── Single-whisper (coSlumn) ── */
     "microsoft|Senior SWE": [
-      "🧠 A.I.<sup>U.X.</sup>",
+      "🧠 A.I. U.X.",
     ],
     "microsoft|SWE Intern": [
       "⚡ ML<sup>OPS</sup>",
     ],
     "marp": [
-      "🤖 Home<sup>ROBOT</sup>",
+      "🤖 Robot",
     ],
     "iterate": [
       "🏆 $5,000",
     ],
     "ventana": [
-      "🔬 Cancer<sup>A.I.</sup>",
+      "🔬 A.I.",
     ],
     "home-iot": [
       "🎛️ Tactility",
@@ -715,11 +781,14 @@
     "azuremlops": [
       "⚡ CI/CD",
     ],
+    "chemistry": [
+      "🧪 Learn<sup>A.R.</sup>",
+    ],
     "firmi": [
       "🧊 Fermi",
     ],
     "hackmerced": [
-      "🧑‍💻 350+<sup>HACKERS</sup>",
+      "🧑‍💻 350+",
     ],
     "motleymoves": [
       "🏃 Run<sup>A.I.</sup>",
@@ -728,7 +797,7 @@
       "🏭 HVAC<sup>A.I.</sup",
     ],
     "breeze": [
-      "💨 Aux<sup>Air</sup>",
+      "💨 Aux<sup>A.I.</sup>",
     ],
     "dogpark": [
       "🥈 2<sup>ND</sup>",
@@ -749,19 +818,19 @@
       "⚡ ESD",
     ],
     "summerofgamedesign|Instructor": [
-      "👨‍🏫 50+<sup>KIDS</sup>",
+      "👨‍🏫 50+",
     ],
     "summerofgamedesign|Founder": [
-      "💰 $25K+<sup>RAISED</sup>",
+      "💰 $25K+",
     ],
     "alamorobotics": [
-      "🤖 Mind<sup>STORM</sup>",
+      "🤖 Mindstorm",
     ],
     "acm": [
-      "💻 Out<sup>REACH</sup>",
+      "💻 Outreach",
     ],
     "learnbeat": [
-      "📚 STEM<sup>EDU</sup>",
+      "📚 Learn<sup>STEM</sup>",
     ],
 
     /* ── Education single-whispers ── */
@@ -787,7 +856,7 @@
       "⚙️ MIPS",
     ],
     "cse030": [
-      "📚 C++",
+      "📚 C<sup>++</sup>",
     ],
     "cse015": [
       "🔢 Proofs",
@@ -806,8 +875,11 @@
     "spaceninjas": [
       "🥷 Platformer",
     ],
+    "graviton": [
+      "🌸 Tower Def",
+    ],
     "galconq": [
-      "🌌 4X<sup>VB.NET</sup>",
+      "🌌 4X VB.NET",
     ],
     "seerauber": [
       "🥈 2<sup>ND</sup>",
