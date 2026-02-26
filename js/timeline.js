@@ -62,6 +62,9 @@
   function openTimelineModal() {
     toggleModal(timelineModal, true);
     if (!timelineBuilt) buildTimeline();
+    // Re-activate whisper HUD (hidden on close)
+    const hud = document.getElementById("tl-whisper-hud");
+    if (hud) hud.classList.add("tl-whisper-active");
   }
   function closeTimelineModal() {
     toggleModal(timelineModal, false);
@@ -320,6 +323,17 @@
     rebuildRuler();
     repackSlivers();
 
+    // ── Scroll-down hint ─────────────────────────────────────
+    let scrollHint = document.getElementById("tl-scroll-hint");
+    if (!scrollHint) {
+      scrollHint = document.createElement("div");
+      scrollHint.id = "tl-scroll-hint";
+      scrollHint.className = "scroll-hint tl-scroll-hint";
+      scrollHint.innerHTML = '<span>Scroll</span><span class="scroll-arrow">⏷</span>';
+      const tlContainer = document.getElementById("timeline-container");
+      tlContainer.appendChild(scrollHint);
+    }
+
     // ── Whisper HUD overlay ──────────────────────────────────
     const modalCard = timelineModal.querySelector(".timeline-modal-card");
     let whisperHUD = document.getElementById("tl-whisper-hud");
@@ -449,7 +463,15 @@
       });
     }
 
-    modalCard.addEventListener("scroll", updateWhispers, { passive: true });
+    function updateScrollHint() {
+      if (!scrollHint) return;
+      const st = modalCard.scrollTop;
+      const opacity = Math.max(0, 1 - st / 120);
+      scrollHint.style.opacity = opacity;
+      scrollHint.style.pointerEvents = opacity < 0.1 ? 'none' : '';
+    }
+
+    modalCard.addEventListener("scroll", () => { updateWhispers(); updateScrollHint(); }, { passive: true });
 
     timelineBuilt = true;
   }
@@ -655,13 +677,13 @@
       "🔬 Cancer A.I.",
     ],
     "home-iot": [
-      "🎛️ Tactile",
+      "🎛️ Tactility",
     ],
     "azuremlops": [
       "⚡ CI/CD",
     ],
     "firmi": [
-      "🚀 3D-print",
+      "🧊 Fermi",
     ],
     "hackmerced": [
       "🧑‍💻 350+ hackers",
@@ -676,15 +698,18 @@
       "💨 Aux air",
     ],
     "dogpark": [
-      "🥈 2nd place",
+      "🥈 2nd",
     ],
     "vicelab": [
       "🛰️ Ag A.I.",
     ],
     "maces": [
-      "🚀 NASA MUREP",
+      "🚀 NASA",
     ],
-    "citris": [
+    "citris|Event Organizer": [
+      "🏙️ CyberAware",
+    ],
+    "citris|Web Developer": [
       "🏙️ GitOps",
     ],
     "amaxesd": [
@@ -700,24 +725,36 @@
       "🤖 Mindstorm",
     ],
     "acm": [
-      "💻 Outreach lead",
+      "💻 Outreach",
     ],
     "learnbeat": [
-      "📚 STEM education",
+      "📚 STEM Ed",
     ],
 
     /* ── Hackathon single-whispers ── */
     "gasleek": [
-      "🥇 1st place",
+      "🥇 1st",
     ],
     "sriracha": [
-      "🥉 3rd place",
+      "🥉 3rd",
     ],
     "smartank": [
-      "🥇 Hardware",
+      "🥇 Robot",
     ],
     "spaceninjas": [
       "🥷 Platformer",
+    ],
+    "seerauber": [
+      "🥈 2nd",
+    ],
+    "ozone": [
+      "🥈 2nd",
+    ],
+    "blindsight": [
+      "🥉 3rd",
+    ],
+    "motorskills": [
+      "🥈 GCP",
     ],
   };
 

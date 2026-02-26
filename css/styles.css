@@ -2921,10 +2921,11 @@ html.light-mode .tl-sliver:hover {
 }
 
 html.light-mode .tl-sliver.tl-whisper-glow {
-  box-shadow: 0 0 10px rgba(var(--tc), 0.12),
-              0 0 25px rgba(var(--tc), 0.06);
-  border-color: rgba(var(--tc), 0.3);
-  background: rgba(var(--tc), 0.04);
+  box-shadow: 0 0 16px rgba(var(--tc), 0.18),
+              0 0 40px rgba(var(--tc), 0.10),
+              0 0 80px rgba(var(--tc), 0.05);
+  border-color: rgba(var(--tc), 0.45);
+  background: rgba(var(--tc), 0.06);
 }
 
 html.light-mode .tl-sliver-name {
@@ -3230,6 +3231,16 @@ html.light-mode .timeline-filter.filter-pulse {
   flex-shrink: 0;
 }
 
+/* ── Timeline scroll hint ─────────────────────────────────── */
+.tl-scroll-hint {
+  position: sticky;
+  bottom: 12px;
+  margin-top: -60px;
+  z-index: 20;
+  transition: opacity 0.3s ease;
+  animation: bounce-y 1.8s ease-in-out infinite;
+}
+
 /* ── Timeline container ───────────────────────────────────── */
 .timeline-container {
   position: relative;
@@ -3330,10 +3341,11 @@ html.light-mode .timeline-filter.filter-pulse {
 }
 
 .tl-sliver.tl-whisper-glow {
-  box-shadow: 0 0 12px rgba(var(--tc), 0.18),
-              0 0 30px rgba(var(--tc), 0.08);
-  border-color: rgba(var(--tc), 0.4);
-  background: rgba(var(--tc), 0.05);
+  box-shadow: 0 0 20px rgba(var(--tc), 0.25),
+              0 0 50px rgba(var(--tc), 0.12),
+              0 0 100px rgba(var(--tc), 0.06);
+  border-color: rgba(var(--tc), 0.55);
+  background: rgba(var(--tc), 0.08);
 }
 
 /* ── Whisper HUD overlay ──────────────────────────────── */
