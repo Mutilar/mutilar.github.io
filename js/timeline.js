@@ -734,17 +734,17 @@
       "🌐 8B+<sup>INF/DAY</sup>",
       "🔒 Champ<sup>SEC</sup>",
       "🎯 Champ<sup>DRI</sup>",
-      "☁️ 50+ DCs",
+      "☁️ 50+<sup>DCs</sup>",
       "🚀 GA",
       "📡 Envoy",
     ],
     "bitnaughts": [
-      "🎮 Code Gamified",
+      "🎮 Code<sup>Gamified</sup>",
       "👁️ See<sup>CODE</sup>",
       "🔄 Try<sup>CODE</sup>",
       "🎓 Learn<sup>CODE</sup>",
-      "💻 4 Hacks",
-      "🌍 Play It",
+      "💻 4<sup>Hacks</sup>",
+      "🌍 Play<sup>It</sup>",
     ],
     "redtierobotics|Electrician": [
       "⚡ AMAX",
@@ -753,10 +753,10 @@
       "🔌 CAD",
     ],
     "redtierobotics|Treasurer": [
-      "💰 $18K+ Budget",
+      "💰 $18K+<sup>Budget</sup>",
     ],
     "voodoo": [
-      "🎨 Pixel Art",
+      "🎨 Pixe<sup>Art</sup>",
     ],
 
     /* ── Single-whisper (coSlumn) ── */
@@ -764,7 +764,7 @@
       "🧠 A.I. U.X.",
     ],
     "microsoft|SWE Intern": [
-      "⚡ ML<sup>OPS</sup>",
+      "⚡ MLOps",
     ],
     "marp": [
       "🤖 Robot",
@@ -782,7 +782,7 @@
       "⚡ CI/CD",
     ],
     "chemistry": [
-      "🧪 Learn<sup>A.R.</sup>",
+      "🧪 A.R.",
     ],
     "firmi": [
       "🧊 Fermi",
@@ -791,13 +791,13 @@
       "🧑‍💻 350+",
     ],
     "motleymoves": [
-      "🏃 Run<sup>A.I.</sup>",
+      "🏃 Running",
     ],
     "andeslab": [
-      "🏭 HVAC<sup>A.I.</sup",
+      "🏭 HVAC",
     ],
     "breeze": [
-      "💨 Aux<sup>A.I.</sup>",
+      "💨 Aux<sup>Air</sup>",
     ],
     "dogpark": [
       "🥈 2<sup>ND</sup>",
@@ -809,19 +809,19 @@
       "🚀 NASA",
     ],
     "citris|Event Organizer": [
-      "🏙️ Cyber<sup>AWARE</sup>",
+      "🏙️ Cyber<sup>Aware</sup>",
     ],
     "citris|Web Developer": [
-      "🏙️ GitOPS",
+      "🏙️ Git<sup>Ops</sup>",
     ],
     "amaxesd": [
       "⚡ ESD",
     ],
     "summerofgamedesign|Instructor": [
-      "👨‍🏫 50+ Students",
+      "👨‍🏫 50+<sup>Students</sup>",
     ],
     "summerofgamedesign|Founder": [
-      "💰 $25K+ Budget",
+      "💰 $25K+<sup>Budget</sup>",
     ],
     "alamorobotics": [
       "🤖 Mindstorm",
@@ -850,7 +850,7 @@
       "🗃️ SQL",
     ],
     "cse100": [
-      "📊 Big<sup>O</sup>",
+      "📊 BigO",
     ],
     "cse031": [
       "⚙️ MIPS",
@@ -876,7 +876,7 @@
       "🥷 Platformer",
     ],
     "graviton": [
-      "🌸 Tower Def",
+      "🌸 Tower<sup>Def</sup>",
     ],
     "galconq": [
       "🌌 4X VB<sup>.NET</sup>",
