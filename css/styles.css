@@ -3284,7 +3284,7 @@ html.light-mode .outline-pill {
 .mm-filter-row {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: flex-end;
   align-items: center;
   gap: 6px;
   width: 100%;
@@ -3368,15 +3368,6 @@ html.light-mode .mm-filter.active {
   background: rgba(var(--tc), 0.12);
   border-color: rgba(var(--tc), 0.45);
   box-shadow: 0 0 12px rgba(var(--tc), 0.15);
-}
-
-/* ── Hidden nodes/edges when filtered ─────────────────────── */
-.mm-node.mm-hidden,
-.mm-edge.mm-hidden,
-.mm-edge-label-group.mm-hidden {
-  opacity: 0.08;
-  pointer-events: none;
-  transition: opacity 0.4s ease;
 }
 
 /* ── Viewport (pan/zoom area) ─────────────────────────────── */

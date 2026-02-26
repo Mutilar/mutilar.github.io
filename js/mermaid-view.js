@@ -66,6 +66,7 @@
     // Main pass
     for (const rawLine of lines) {
       const line = rawLine.trim();
+      if (line.includes("CNAME") && line.includes("-->")) console.log("[mm] CNAME edge line found:", JSON.stringify(line));
       if (!line || line.startsWith("%%") || line.startsWith("---") || line === "``" + "`mermaid" || line === "``" + "`") continue;
       if (line.startsWith("graph ") || line.startsWith("title:")) continue;
       if (line.startsWith("classDef ") || line.startsWith("class ") || line.startsWith("style ")) continue;
@@ -97,6 +98,7 @@
       // Edge
       const edgeMatch = line.match(/^(\w+)\s+(-->|-.->)\s*(?:\|"?([^"|]*)"?\|\s*)?(\w+)\s*$/);
       if (edgeMatch) {
+        console.log("[mm] parsed edge:", edgeMatch[1], "->", edgeMatch[4], "label:", edgeMatch[3]);
         edges.push({ from: edgeMatch[1], to: edgeMatch[4], label: (edgeMatch[3] || "").replace(/\\n/g, "\n"), dashed: edgeMatch[2] === "-.->" });
         [edgeMatch[1], edgeMatch[4]].forEach(id => {
           if (!nodes[id] && !subgraphIdSet.has(id)) nodes[id] = { id, label: id, htmlLabel: "", classes: [] };
@@ -125,6 +127,8 @@
       if (bareMatch && subgraphStack.length) {
         const id = bareMatch[1];
         if (nodes[id]) subgraphStack[subgraphStack.length - 1].children.push(id);
+      } else if (!bareMatch) {
+        console.log("[mm] UNMATCHED line:", JSON.stringify(line));
       }
     }
 
@@ -147,6 +151,13 @@
     const legendNodes = [];
     const legendNodeIds = new Set();
     function walkLegend(sg) {
+      // Recurse into child subgraphs FIRST so nested legend items
+      // (Hosting, Config, …) appear before direct children (Output),
+      // matching the visual top-to-bottom order in the .md source.
+      (sg.childSubgraphs || []).forEach(cid => {
+        const ch = ast.subgraphs.find(s => s.id === cid);
+        if (ch) walkLegend(ch);
+      });
       (sg.children || []).forEach(id => {
         const node = ast.nodes[id];
         if (node) {
@@ -156,10 +167,6 @@
             legendNodeIds.add(id);
           }
         }
-      });
-      (sg.childSubgraphs || []).forEach(cid => {
-        const ch = ast.subgraphs.find(s => s.id === cid);
-        if (ch) walkLegend(ch);
       });
     }
     ast.subgraphs.filter(sg => sg.id === "Legend").forEach(walkLegend);
@@ -411,33 +418,57 @@
     // Draw edges
     const edgeElements = [];
     let edgeCount = 0;
+    console.log("[mm] edges to draw:", ast.edges.length, ast.edges.map(e => e.from + "->" + e.to));
     ast.edges.forEach(edge => {
       let fromPt = nodeElements[edge.from], toPt = nodeElements[edge.to];
       let fromSg = null, toSg = null;
       if (!fromPt && sgBounds.has(edge.from)) { const b = sgBounds.get(edge.from); fromPt = { x: b.cx, y: b.cy, cls: "" }; fromSg = b; }
       if (!toPt && sgBounds.has(edge.to))     { const b = sgBounds.get(edge.to);   toPt   = { x: b.cx, y: b.cy, cls: "" }; toSg   = b; }
-      if (!fromPt || !toPt) return;
+      if (!fromPt || !toPt) { console.log("[mm] SKIP edge", edge.from, "->", edge.to, "fromPt:", !!fromPt, "toPt:", !!toPt); return; }
 
-      // Determine edge color from target node's class (edge represents flow INTO target)
-      // Fall back to source class, then white
-      const edgeCls = toPt.cls || fromPt.cls || "";
+      // Determine edge color: prefer the more specific (non-hosting) class
+      // so infrastructure edges are colored by their semantic category.
+      // e.g. CNAME(config)→IndexHTML(hosting) = config,
+      //      IndexHTML(hosting)→FontAwesome(styling) = styling,
+      //      GitHub(hosting)→IndexHTML(hosting) = hosting
+      const fCls = fromPt.cls || "";
+      const tCls = toPt.cls || "";
+      let edgeCls;
+      if (fCls && tCls && fCls !== tCls) {
+        edgeCls = (tCls === "hosting") ? fCls : (fCls === "hosting") ? tCls : (tCls || fCls);
+      } else {
+        edgeCls = tCls || fCls || "";
+      }
       const edgeTC = colors[edgeCls] || "255,255,255";
 
       const fHH = fromSg ? fromSg.h / 2 : NODE_H / 2;
       const tHH = toSg   ? toSg.h / 2   : NODE_H / 2;
 
-      // Always: exit bottom-center of source, enter top-center of target
-      let x1 = fromPt.x, y1 = fromPt.y + fHH;
-      let x2 = toPt.x,   y2 = toPt.y - tHH;
+      // Determine direction: if target center is above source center,
+      // exit top-center of source → enter bottom-center of target (upward arrow).
+      // Otherwise exit bottom-center of source → enter top-center of target (downward).
+      const goingUp = toPt.y < fromPt.y;
+      let x1, y1, x2, y2;
+      if (goingUp) {
+        x1 = fromPt.x; y1 = fromPt.y - fHH;   // exit top-center
+        x2 = toPt.x;   y2 = toPt.y + tHH;      // enter bottom-center
+      } else {
+        x1 = fromPt.x; y1 = fromPt.y + fHH;    // exit bottom-center
+        x2 = toPt.x;   y2 = toPt.y - tHH;      // enter top-center
+      }
 
       const path = document.createElementNS(svgNS, "path");
-      const gap = y2 - y1;
-      if (gap > 0) {
+      const gap = Math.abs(y2 - y1);
+      if (!goingUp && gap > 0) {
         // Normal downward flow — smooth vertical bezier
         const cy = Math.max(gap * 0.45, 30);
         path.setAttribute("d", "M" + x1 + "," + y1 + " C" + x1 + "," + (y1 + cy) + " " + x2 + "," + (y2 - cy) + " " + x2 + "," + y2);
+      } else if (goingUp) {
+        // Upward flow — exit top, curve upward to enter bottom of target
+        const cy = Math.max(gap * 0.45, 30);
+        path.setAttribute("d", "M" + x1 + "," + y1 + " C" + x1 + "," + (y1 - cy) + " " + x2 + "," + (y2 + cy) + " " + x2 + "," + y2);
       } else {
-        // Target is above or same row — S-curve looping down then back up
+        // Same row (gap ≈ 0) — S-curve via a side detour
         const loopOut = 60;
         const midX = (x1 + x2) / 2;
         path.setAttribute("d", "M" + x1 + "," + y1 + " C" + x1 + "," + (y1 + loopOut) + " " + midX + "," + (y1 + loopOut) + " " + midX + "," + ((y1 + y2) / 2) + " S" + x2 + "," + (y2 - loopOut) + " " + x2 + "," + y2);
@@ -580,10 +611,99 @@
   }
 
   /* ═════════════════════════════════════════════════════════════
-     6. FILTER SYSTEM
+     6. FILTER SYSTEM — rebuilds layout excluding hidden classes
      ═════════════════════════════════════════════════════════════ */
 
-  function buildFilters(pillContainer, legendNodes, colors, nodeElements, edgeElements) {
+  /**
+   * Create a filtered copy of the AST driven by EDGE category.
+   *
+   * An edge's category uses the "prefer non-hosting" rule (matching the
+   * rendering color logic).  We keep every edge whose category is in
+   * `keep`, then keep every node that is an endpoint of a surviving edge.
+   * Unclassed / footer nodes survive automatically if any edge touches them.
+   * Subgraphs that end up empty are collapsed.
+   */
+  function filterAST(ast, keep) {
+    const allActive = keep.size >= Object.keys(ast.classDefs).length;
+    if (allActive) {
+      // Everything visible — return original AST untouched
+      return ast;
+    }
+
+    function nodeCls(id) {
+      return ast.classAssigns[id] || (ast.nodes[id] && ast.nodes[id].classes && ast.nodes[id].classes[0]) || "";
+    }
+
+    function edgeCat(fromCls, toCls) {
+      if (fromCls && toCls && fromCls !== toCls) {
+        return (toCls === "hosting") ? fromCls : (fromCls === "hosting") ? toCls : (toCls || fromCls);
+      }
+      return toCls || fromCls || "";
+    }
+
+    // 1. Determine which edges survive based on their color-category
+    const survivingEdges = [];
+    const neededNodeIds = new Set();
+
+    ast.edges.forEach(edge => {
+      const fromCls = nodeCls(edge.from);
+      const toCls   = nodeCls(edge.to);
+      const edgeCategory = edgeCat(fromCls, toCls);
+      if (!edgeCategory || keep.has(edgeCategory)) {
+        survivingEdges.push(edge);
+        neededNodeIds.add(edge.from);
+        neededNodeIds.add(edge.to);
+      }
+    });
+
+    // 2. Also keep any node whose own class is in `keep` (even if no
+    //    surviving edge touches it — e.g. a leaf node with no outgoing edges)
+    Object.keys(ast.nodes).forEach(id => {
+      const cls = nodeCls(id);
+      if (!cls || cls === "footer" || keep.has(cls)) neededNodeIds.add(id);
+    });
+
+    // 3. Build filtered node map
+    const nodes = {};
+    neededNodeIds.forEach(id => {
+      if (ast.nodes[id]) nodes[id] = ast.nodes[id];
+    });
+
+    // 4. Final edge filter: both endpoints must exist in `nodes`
+    const edges = survivingEdges.filter(e => nodes[e.from] && nodes[e.to]);
+
+    // 5. Deep-clone subgraphs with pruned children lists
+    function cloneSG(sg) {
+      return {
+        id: sg.id, label: sg.label, direction: sg.direction, parent: sg.parent,
+        children: (sg.children || []).filter(id => !!nodes[id]),
+        childSubgraphs: (sg.childSubgraphs || []).slice(),
+      };
+    }
+    const subgraphs = ast.subgraphs.map(cloneSG);
+
+    // 6. Collapse empty subgraphs
+    const sgMap = new Map();
+    subgraphs.forEach(sg => sgMap.set(sg.id, sg));
+    function hasContent(sg) {
+      if (sg.children.length > 0) return true;
+      return (sg.childSubgraphs || []).some(cid => {
+        const ch = sgMap.get(cid);
+        return ch && hasContent(ch);
+      });
+    }
+    subgraphs.forEach(sg => {
+      sg.childSubgraphs = (sg.childSubgraphs || []).filter(cid => {
+        const ch = sgMap.get(cid);
+        return ch && hasContent(ch);
+      });
+    });
+    const liveSubgraphs = subgraphs.filter(sg => hasContent(sg));
+
+    return { title: ast.title, nodes, edges, subgraphs: liveSubgraphs, classDefs: ast.classDefs, classAssigns: ast.classAssigns };
+  }
+
+  function buildFilters(pillContainer, legendNodes, colors, rebuild) {
     if (!pillContainer || !legendNodes.length) return;
     pillContainer.innerHTML = "";
 
@@ -596,19 +716,6 @@
 
     const allClasses = filters.map(f => f.cls);
     const activeFilters = new Set(allClasses);
-
-    function applyFilter() {
-      const allActive = activeFilters.size === allClasses.length;
-      Object.values(nodeElements).forEach(n => {
-        if (!n.cls) return;
-        n.el.classList.toggle("mm-hidden", !allActive && !activeFilters.has(n.cls));
-      });
-      edgeElements.forEach(e => {
-        const hide = !allActive && [...e.classes].some(c => !activeFilters.has(c));
-        e.path.classList.toggle("mm-hidden", hide);
-        if (e.labelGroup) e.labelGroup.classList.toggle("mm-hidden", hide);
-      });
-    }
 
     // "All" button
     const allBtn = document.createElement("button");
@@ -638,10 +745,15 @@
       themeBtns.forEach(b => b.classList.toggle("active", activeFilters.has(b.dataset.filter)));
     }
 
+    function doFilter() {
+      syncUI();
+      rebuild(activeFilters);
+    }
+
     allBtn.addEventListener("click", () => {
       if (activeFilters.size === allClasses.length) return;
       allClasses.forEach(c => activeFilters.add(c));
-      syncUI(); applyFilter();
+      doFilter();
     });
 
     themeBtns.forEach(btn => {
@@ -656,7 +768,7 @@
         } else {
           activeFilters.add(f);
         }
-        syncUI(); applyFilter();
+        doFilter();
       });
     });
 
@@ -673,8 +785,9 @@
 
     const state = { built: false, x: 0, y: 0, scale: 1, world: null, _update: null };
     let _svgLayer = null, _dims = null;
+    let _ast = null, _legend = null;
 
-    function fitView() {
+    function fitView(animate) {
       const vp = modal.querySelector(".mm-viewport");
       if (!vp || !state.world || !_dims) return;
       const vw = vp.clientWidth, vh = vp.clientHeight;
@@ -682,7 +795,18 @@
       state.scale = Math.min(sx, sy, 1);
       state.x = (vw - _dims.svgW * state.scale) / 2;
       state.y = 20;
+      if (animate) {
+        state.world.style.transition = "transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)";
+        setTimeout(() => { state.world.style.transition = ""; }, 550);
+      }
       if (state._update) state._update();
+    }
+
+    function rebuild(activeClasses) {
+      if (!_ast || !_svgLayer) return;
+      const filtered = filterAST(_ast, activeClasses);
+      _dims = buildDiagram(filtered, cfg.colors, state.world, _svgLayer, _legend.legendIds);
+      requestAnimationFrame(() => fitView(true));
     }
 
     function load() {
@@ -692,25 +816,25 @@
         .then(md => {
           const m = md.match(/```mermaid\s*\n([\s\S]*?)```/);
           if (!m) { console.warn("[mermaid-view] No mermaid block in", cfg.mdFile); return; }
-          const ast = parseMermaid(m[1]);
-          const legend = extractLegend(ast);
-          _dims = buildDiagram(ast, cfg.colors, state.world, _svgLayer, legend.legendIds);
+          _ast = parseMermaid(m[1]);
+          _legend = extractLegend(_ast);
+          _dims = buildDiagram(_ast, cfg.colors, state.world, _svgLayer, _legend.legendIds);
           state.built = true;
 
           // Build filter pills from legend
           const pillContainer = document.getElementById(cfg.filterId);
-          if (pillContainer && legend.legendNodes.length) {
-            buildFilters(pillContainer, legend.legendNodes, cfg.colors, _dims.nodeElements, _dims.edgeElements);
+          if (pillContainer && _legend.legendNodes.length) {
+            buildFilters(pillContainer, _legend.legendNodes, cfg.colors, rebuild);
           }
 
-          requestAnimationFrame(fitView);
+          requestAnimationFrame(() => fitView(false));
         })
         .catch(err => console.error("[mermaid-view]", cfg.mdFile, err));
     }
 
     function open() {
       toggleModal(modal, true);
-      if (!state.built) load(); else requestAnimationFrame(fitView);
+      if (!state.built) load(); else requestAnimationFrame(() => fitView(false));
     }
     function close() { toggleModal(modal, false); }
 
