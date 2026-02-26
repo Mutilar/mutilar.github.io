@@ -2888,7 +2888,9 @@ html.light-mode .timeline-filter.active {
   color: #fff;
   background: rgba(var(--tc-light, var(--tc)), 0.25);
   border-color: rgba(var(--tc-light, var(--tc)), 0.45);
-  box-shadow: 0 0 16px rgba(var(--tc-light, var(--tc)), 0.18),
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.4),
+              0 0 24px rgba(255, 255, 255, 0.2),
+              0 0 16px rgba(var(--tc-light, var(--tc)), 0.18),
               0 0 40px rgba(var(--tc-light, var(--tc)), 0.10),
               0 0 80px rgba(var(--tc-light, var(--tc)), 0.05);
 }
@@ -3202,7 +3204,9 @@ html.light-mode .outline-pill {
   color: #fff;
   background: rgba(var(--tc), 0.14);
   border-color: rgba(var(--tc), 0.55);
-  box-shadow: 0 0 20px rgba(var(--tc), 0.25),
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.5),
+              0 0 30px rgba(0, 0, 0, 0.25),
+              0 0 20px rgba(var(--tc), 0.25),
               0 0 50px rgba(var(--tc), 0.12),
               0 0 100px rgba(var(--tc), 0.06);
 }

@@ -65,6 +65,14 @@
     // Re-activate whisper HUD (hidden on close)
     const hud = document.getElementById("tl-whisper-hud");
     if (hud) hud.classList.add("tl-whisper-active");
+    // Start scrolled 5% down
+    requestAnimationFrame(() => {
+      const card = timelineModal.querySelector(".timeline-modal-card");
+      if (card) {
+        const target = Math.round(card.scrollHeight * 0.005);
+        card.scrollTop = target;
+      }
+    });
   }
   function closeTimelineModal() {
     toggleModal(timelineModal, false);
@@ -471,7 +479,29 @@
       scrollHint.style.pointerEvents = opacity < 0.1 ? 'none' : '';
     }
 
-    modalCard.addEventListener("scroll", () => { updateWhispers(); updateScrollHint(); }, { passive: true });
+    // ── Overscroll bounce ────────────────────────────────────
+    let _bouncing = false;
+    function checkOverscrollBounce() {
+      if (_bouncing) return;
+      const st = modalCard.scrollTop;
+      const maxScroll = modalCard.scrollHeight - modalCard.clientHeight;
+      if (st <= 0 || st >= maxScroll) {
+        _bouncing = true;
+        const dir = st <= 0 ? 1 : -1;  // 1 = bounce down, -1 = bounce up
+        modalCard.style.transition = 'transform 0.15s ease-out';
+        modalCard.style.transform = `translateY(${dir * 12}px)`;
+        setTimeout(() => {
+          modalCard.style.transition = 'transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)';
+          modalCard.style.transform = '';
+          setTimeout(() => {
+            modalCard.style.transition = '';
+            _bouncing = false;
+          }, 300);
+        }, 150);
+      }
+    }
+
+    modalCard.addEventListener("scroll", () => { updateWhispers(); updateScrollHint(); checkOverscrollBounce(); }, { passive: true });
 
     timelineBuilt = true;
   }
