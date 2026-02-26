@@ -38,8 +38,8 @@ graph TD
         subgraph CDN["🌐 CDN"]
             direction LR
             FontAwesome["FontAwesome\n<i>🅰️ Icons</i>"]
-            PapaParse["PapaParse\n<i>🗂️ CSV Parser</i>"]
             PDFjs["PDF.js\n<i>📕 PDF Reader</i>"]
+            PapaParse["PapaParse\n<i>🗂️ CSV Parser</i>"]
         end
     end
 
@@ -63,7 +63,7 @@ graph TD
             LicenseTxt["LICENSE.txt\n<i>📜 MIT License</i>"]
         end
         
-        subgraph SectionCSV["📋 SECTION CSVs"]
+        subgraph Experience["📋 Experience"]
             direction TB
             WorkCSV["work.csv\n<i>👨‍💻 Work</i>"]
             EduCSV["education.csv\n<i>🎓 Education</i>"]
@@ -71,7 +71,7 @@ graph TD
             HacksCSV["hackathons.csv\n<i>⛏️ Hackathons</i>"]
             GamesCSV["games.csv\n<i>🎮 Games</i>"]
         end
-        subgraph SpecialCSV["🎯 SPECIAL CSVs"]
+        subgraph Hobbies["🎯 Hobbies"]
             direction TB
             MarpCSV["marp.csv\n<i>🤖 MARP</i>"]
             BNCSV["bitnaughts.csv\n<i>☄️ BitNaughts</i>"]
@@ -138,16 +138,16 @@ graph TD
     FontAwesome -.-> StylesCSS
 
     %% 6. Scripts read data & assets
-    DataJS -->|"fetchCSV()"| WorkCSV
-    DataJS -->|"fetchCSV()"| MarpCSV
+    DataJS -->|"fetch()"| Experience
+    DataJS -->|"fetch()"| Hobbies
     PdfViewerJS -.->|"fetch()"| PDFs
     RadioJS -.->|"fetch()"| AudioFiles
     ModalsJS -.->|"fetch()"| GameBuilds
     ParallaxJS -.->|"url()"| Images
 
     %% 7. Scripts → View elements
-    ParallaxJS -->|"onScroll()"| ParallaxBG
-    ScrollJS -->|"onScroll()"| Bands
+    ParallaxJS -->|"render()"| ParallaxBG
+    ScrollJS -->|"onScroll()"| Elements
     DataJS -->|"onClick()"| Tiles
     PdfViewerJS -->|"getDocument()"| PdfModal
     ModalsJS -->|"toggleModal()"| Modals
@@ -177,8 +177,8 @@ graph TD
     style Scripts fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
     style Core fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
     style Render fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
-    style SectionCSV fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
-    style SpecialCSV fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
+    style Experience fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
+    style Hobbies fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
     style Assets fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
     style AssetFiles fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
     style AssetFolders fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333

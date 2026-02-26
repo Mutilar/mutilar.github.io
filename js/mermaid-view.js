@@ -18,8 +18,8 @@
   const SUBGRAPH_PAD = 16;
   const SUBGRAPH_HEADER = 32;
   const SECTION_GAP = 28;
-  const MIN_SCALE = 0.25;
-  const MAX_SCALE = 3;
+  const MIN_SCALE = 0.5;
+  const MAX_SCALE = 1.5;
 
   /* ═════════════════════════════════════════════════════════════
      1. MERMAID PARSER — Lightweight subset for `graph TD`
@@ -137,6 +137,30 @@
     });
 
     return { title, nodes, edges, subgraphs, classDefs, classAssigns };
+  }
+
+  /* ── Subgraph class inference ─────────────────────────────── */
+  // Derive an effective class for a subgraph from its children's
+  // dominant class.  If all (classed) children share a single class,
+  // that becomes the subgraph's class.  Otherwise returns "".
+  function inferSubgraphClass(sgId, ast) {
+    const sgMap = new Map();
+    ast.subgraphs.forEach(sg => sgMap.set(sg.id, sg));
+    const sg = sgMap.get(sgId);
+    if (!sg) return "";
+    const childClasses = new Set();
+    function walk(s) {
+      (s.children || []).forEach(id => {
+        const cls = ast.classAssigns[id] || (ast.nodes[id] && ast.nodes[id].classes && ast.nodes[id].classes[0]) || "";
+        if (cls && cls !== "footer") childClasses.add(cls);
+      });
+      (s.childSubgraphs || []).forEach(cid => {
+        const ch = sgMap.get(cid);
+        if (ch) walk(ch);
+      });
+    }
+    walk(sg);
+    return childClasses.size === 1 ? [...childClasses][0] : "";
   }
 
   /* ═════════════════════════════════════════════════════════════
@@ -422,20 +446,18 @@
     ast.edges.forEach(edge => {
       let fromPt = nodeElements[edge.from], toPt = nodeElements[edge.to];
       let fromSg = null, toSg = null;
-      if (!fromPt && sgBounds.has(edge.from)) { const b = sgBounds.get(edge.from); fromPt = { x: b.cx, y: b.cy, cls: "" }; fromSg = b; }
-      if (!toPt && sgBounds.has(edge.to))     { const b = sgBounds.get(edge.to);   toPt   = { x: b.cx, y: b.cy, cls: "" }; toSg   = b; }
+      if (!fromPt && sgBounds.has(edge.from)) { const b = sgBounds.get(edge.from); fromPt = { x: b.cx, y: b.cy, cls: inferSubgraphClass(edge.from, ast) }; fromSg = b; }
+      if (!toPt && sgBounds.has(edge.to))     { const b = sgBounds.get(edge.to);   toPt   = { x: b.cx, y: b.cy, cls: inferSubgraphClass(edge.to, ast) };   toSg   = b; }
       if (!fromPt || !toPt) { console.log("[mm] SKIP edge", edge.from, "->", edge.to, "fromPt:", !!fromPt, "toPt:", !!toPt); return; }
 
-      // Determine edge color: prefer the more specific (non-hosting) class
-      // so infrastructure edges are colored by their semantic category.
-      // e.g. CNAME(config)→IndexHTML(hosting) = config,
-      //      IndexHTML(hosting)→FontAwesome(styling) = styling,
-      //      GitHub(hosting)→IndexHTML(hosting) = hosting
+      // Determine edge color: prefer the TARGET's class so the arrow
+      // color reflects what is being accessed / consumed.
+      // Special case: if exactly one end is "hosting", use the other.
       const fCls = fromPt.cls || "";
       const tCls = toPt.cls || "";
       let edgeCls;
       if (fCls && tCls && fCls !== tCls) {
-        edgeCls = (tCls === "hosting") ? fCls : (fCls === "hosting") ? tCls : (tCls || fCls);
+        edgeCls = (tCls === "hosting") ? fCls : tCls;
       } else {
         edgeCls = tCls || fCls || "";
       }
@@ -559,6 +581,40 @@
     }
     state._update = update;
 
+    // ── Pan bounds — keep content mostly visible ─────────────
+    // Returns { minX, maxX, minY, maxY } for state.x/y so you
+    // can never pan more than ~half the viewport past any edge.
+    function getPanBounds() {
+      if (!state._dims) return null;
+      const vw = viewport.clientWidth, vh = viewport.clientHeight;
+      const s = state.scale;
+      const pad = 0.48;   // tight — keep content mostly centered, matches skill-tree
+      return {
+        minX: vw * pad - state._dims.svgW * s,
+        maxX: vw * (1 - pad),
+        minY: vh * pad - state._dims.svgH * s,
+        maxY: vh * (1 - pad),
+      };
+    }
+
+    let _panBounceTimer = null;
+    function bounceBackIfNeeded() {
+      const bounds = getPanBounds();
+      if (!bounds) return;
+      let tx = state.x, ty = state.y, clamped = false;
+      if (tx < bounds.minX) { tx = bounds.minX; clamped = true; }
+      if (tx > bounds.maxX) { tx = bounds.maxX; clamped = true; }
+      if (ty < bounds.minY) { ty = bounds.minY; clamped = true; }
+      if (ty > bounds.maxY) { ty = bounds.maxY; clamped = true; }
+      if (clamped) {
+        state.x = tx; state.y = ty;
+        state.world.style.transition = "transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1)";
+        update();
+        if (_panBounceTimer) clearTimeout(_panBounceTimer);
+        _panBounceTimer = setTimeout(function () { state.world.style.transition = ""; }, 380);
+      }
+    }
+
     viewport.addEventListener("pointerdown", e => {
       if (e.target.closest(".mm-node")) return;
       isPanning = true; startX = e.clientX; startY = e.clientY;
@@ -569,17 +625,49 @@
       if (!isPanning) return;
       state.x = startTX + (e.clientX - startX); state.y = startTY + (e.clientY - startY); update();
     });
-    viewport.addEventListener("pointerup", () => { isPanning = false; viewport.style.cursor = "grab"; });
-    viewport.addEventListener("pointercancel", () => { isPanning = false; viewport.style.cursor = "grab"; });
+    viewport.addEventListener("pointerup", () => {
+      isPanning = false; viewport.style.cursor = "grab";
+      bounceBackIfNeeded();
+    });
+    viewport.addEventListener("pointercancel", () => {
+      isPanning = false; viewport.style.cursor = "grab";
+      bounceBackIfNeeded();
+    });
 
+    let _zoomBounceTimer = null;
     viewport.addEventListener("wheel", e => {
       e.preventDefault();
       const rect = viewport.getBoundingClientRect();
       const mx = e.clientX - rect.left, my = e.clientY - rect.top;
       const prev = state.scale;
-      state.scale = Math.max(MIN_SCALE, Math.min(MAX_SCALE, state.scale * (e.deltaY > 0 ? 0.92 : 1.08)));
+      const raw = state.scale * (e.deltaY > 0 ? 0.92 : 1.08);
+      const clamped = Math.max(MIN_SCALE, Math.min(MAX_SCALE, raw));
+      const atLimit = raw !== clamped;
+      state.scale = clamped;
       const ratio = state.scale / prev;
-      state.x = mx - ratio * (mx - state.x); state.y = my - ratio * (my - state.y); update();
+      state.x = mx - ratio * (mx - state.x); state.y = my - ratio * (my - state.y);
+      update();
+
+      if (atLimit) {
+        // Elastic overshoot then spring back (matches skill-tree feel)
+        if (_zoomBounceTimer) clearTimeout(_zoomBounceTimer);
+        const overshoot = raw < MIN_SCALE ? MIN_SCALE * 0.92 : MAX_SCALE * 1.06;
+        state.scale = overshoot;
+        const oRatio = state.scale / clamped;
+        state.x = mx - oRatio * (mx - state.x); state.y = my - oRatio * (my - state.y);
+        state.world.style.transition = "transform 0.08s ease-out";
+        update();
+        _zoomBounceTimer = setTimeout(function () {
+          state.scale = clamped;
+          const bRatio = clamped / overshoot;
+          state.x = mx - bRatio * (mx - state.x); state.y = my - bRatio * (my - state.y);
+          state.world.style.transition = "transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)";
+          update();
+          setTimeout(function () { state.world.style.transition = ""; bounceBackIfNeeded(); }, 320);
+        }, 80);
+      } else {
+        bounceBackIfNeeded();
+      }
     }, { passive: false });
 
     let lastDist = 0;
@@ -608,6 +696,7 @@
         lastDist = dist;
       }
     }, { passive: false });
+    viewport.addEventListener("touchend", () => { bounceBackIfNeeded(); }, { passive: true });
   }
 
   /* ═════════════════════════════════════════════════════════════
@@ -631,12 +720,12 @@
     }
 
     function nodeCls(id) {
-      return ast.classAssigns[id] || (ast.nodes[id] && ast.nodes[id].classes && ast.nodes[id].classes[0]) || "";
+      return ast.classAssigns[id] || (ast.nodes[id] && ast.nodes[id].classes && ast.nodes[id].classes[0]) || inferSubgraphClass(id, ast) || "";
     }
 
     function edgeCat(fromCls, toCls) {
       if (fromCls && toCls && fromCls !== toCls) {
-        return (toCls === "hosting") ? fromCls : (fromCls === "hosting") ? toCls : (toCls || fromCls);
+        return (toCls === "hosting") ? fromCls : toCls;
       }
       return toCls || fromCls || "";
     }
@@ -669,8 +758,7 @@
       if (ast.nodes[id]) nodes[id] = ast.nodes[id];
     });
 
-    // 4. Final edge filter: both endpoints must exist in `nodes`
-    const edges = survivingEdges.filter(e => nodes[e.from] && nodes[e.to]);
+    // 4. (edge filtering moved after subgraph pruning — see step 7)
 
     // 5. Deep-clone subgraphs with pruned children lists
     function cloneSG(sg) {
@@ -699,6 +787,10 @@
       });
     });
     const liveSubgraphs = subgraphs.filter(sg => hasContent(sg));
+
+    // 7. Final edge filter: both endpoints must be a node or a surviving subgraph
+    const liveSgIds = new Set(liveSubgraphs.map(sg => sg.id));
+    const edges = survivingEdges.filter(e => (nodes[e.from] || liveSgIds.has(e.from)) && (nodes[e.to] || liveSgIds.has(e.to)));
 
     return { title: ast.title, nodes, edges, subgraphs: liveSubgraphs, classDefs: ast.classDefs, classAssigns: ast.classAssigns };
   }
@@ -806,6 +898,7 @@
       if (!_ast || !_svgLayer) return;
       const filtered = filterAST(_ast, activeClasses);
       _dims = buildDiagram(filtered, cfg.colors, state.world, _svgLayer, _legend.legendIds);
+      state._dims = _dims;
       requestAnimationFrame(() => fitView(true));
     }
 
@@ -819,6 +912,7 @@
           _ast = parseMermaid(m[1]);
           _legend = extractLegend(_ast);
           _dims = buildDiagram(_ast, cfg.colors, state.world, _svgLayer, _legend.legendIds);
+          state._dims = _dims;
           state.built = true;
 
           // Build filter pills from legend
