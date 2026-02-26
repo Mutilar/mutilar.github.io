@@ -23,21 +23,18 @@ graph TD
         end
     end
 
-    Legend ~~~ BatterySupply
-
     subgraph BatterySupply["🔋 POWER"]
         direction LR
         Battery["Li-ion Battery\n<i>Aegis, 240 Wh</i>\n24 V, 10 Ah"]
         Meter["Inline Battery Meter\n<i>Aegis</i>\n24 V, 1 W"]
         Switch["Safety Switch\n<i>FRC</i>\n24 V, 30 A"]
-        Battery ~~~ Meter ~~~ Switch
     end
 
     subgraph FuseDistribution["⚡ DISTRIBUTION"]
         direction TB
+        FuseBlock["Fuse Block\n<i>Tutooper, 6 Slots</i>\n24 V, 30 A"]
         subgraph Fuses["🧯 FUSING"]
             direction LR
-            FuseBlock["Fuse Block\n<i>Tutooper, 6 Slots</i>\n24 V, 30 A"]
             FuseBuck5["Fuse\n24 V, 5 A"]
             FuseBuck12["Fuse\n24 V, 5 A"]
             FusePD["Fuse\n24 V, 5 A"]
@@ -57,18 +54,30 @@ graph TD
     subgraph Mobility["🦾 MOBILITY"]
         direction TB
         subgraph WheelDrive["⚙️ WHEELS"]
-            direction TB
-            Stepper24Left["Left Driver\n<i>TB6600</i>\n24 V, 1 W"]
-            Stepper24Right["Right Driver\n<i>TB6600</i>\n24 V, 1 W"]
-            LeftWheel["Left Motor\n<i>KH56</i>\n24 V, 24 W"]
-            RightWheel["Right Motor\n<i>KH56</i>\n24 V, 24 W"]
+            direction LR
+            subgraph WheelLeft["⬅️ LEFT"]
+                direction TB
+                Stepper24Left["Driver\n<i>TB6600</i>\n24 V, 1 W"]
+                LeftWheel["Motor\n<i>KH56</i>\n24 V, 24 W"]
+            end
+            subgraph WheelRight["➡️ RIGHT"]
+                direction TB
+                Stepper24Right["Driver\n<i>TB6600</i>\n24 V, 1 W"]
+                RightWheel["Motor\n<i>KH56</i>\n24 V, 24 W"]
+            end
         end
         subgraph TurretDrive["🎯 TURRET"]
-            direction TB
-            Stepper12Pan["Pan Driver\n<i>TB6600</i>\n12 V, 0.5 W"]
-            Stepper12Tilt["Tilt Driver\n<i>TB6600</i>\n12 V, 0.5 W"]
-            HeadPan["Pan Motor\n<i>M55</i>\n12 V, 12 W"]
-            HeadTilt["Tilt Motor\n<i>M55</i>\n12 V, 12 W"]
+            direction LR
+            subgraph TurretPan["🔄 PAN"]
+                direction TB
+                Stepper12Pan["Driver\n<i>TB6600</i>\n12 V, 0.5 W"]
+                HeadPan["Motor\n<i>M55</i>\n12 V, 12 W"]
+            end
+            subgraph TurretTilt["↕️ TILT"]
+                direction TB
+                Stepper12Tilt["Driver\n<i>TB6600</i>\n12 V, 0.5 W"]
+                HeadTilt["Motor\n<i>M55</i>\n12 V, 12 W"]
+            end
         end
     end
 
@@ -92,6 +101,8 @@ graph TD
     end
 
     %% Power path (top to bottom)
+    Battery -->|"24 V"| Meter
+    Meter -->|"24 V"| Switch
     Switch -->|"24 V"| FuseBlock
     FuseBlock --> FuseBuck5
     FuseBlock --> FuseBuck12
@@ -130,9 +141,6 @@ graph TD
     Stepper24Left --> LeftWheel
     Stepper24Right --> RightWheel
 
-    %% Force FaceLighting below Mobility (invisible layout link)
-    Projector ~~~ Turret
-
     %% Turret internal
     IRLED -.->|750 nm| Camera
 
@@ -164,7 +172,11 @@ graph TD
     style PowerConversion fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
     style Mobility fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
     style TurretDrive fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
+    style TurretPan fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
+    style TurretTilt fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
     style WheelDrive fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
+    style WheelLeft fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
+    style WheelRight fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
     style FaceLighting fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
     style Turret fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
     style Eyes fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
@@ -172,8 +184,4 @@ graph TD
     style Legend fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
     style LegendPower fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
     style LegendSystems fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
-
-    Footer["Brian Hungerman · 2026"]:::footer
-    FaceLighting ~~~ Footer
-    classDef footer fill:none,stroke:none,color:#999,font-size:14px
 ```

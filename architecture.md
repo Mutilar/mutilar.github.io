@@ -19,8 +19,8 @@ graph TD
             end
             subgraph LegendData["📊 DATA"]
                 direction TB
-                L6["📊 Data"]:::data
-                L7["📦 Assets"]:::asset
+                L6["📦 Assets"]:::asset
+                L7["📊 Data"]:::data
             end
         end
         L8["🧠 Output"]:::output
@@ -32,7 +32,7 @@ graph TD
         CNAME["CNAME\n<i>🌐 brianhungerman.com</i>"]
     end
 
-    subgraph Shell["📄 SINGLE-PAGE SHELL"]
+    subgraph Shell["📄 SHELL"]
         direction TB
         IndexHTML["index.html\n<i>📄 927 LOC</i>"]
         subgraph CDN["🌐 CDN"]
@@ -45,14 +45,6 @@ graph TD
 
     subgraph Assets["🎨 ASSETS"]
         direction LR
-        subgraph AssetFolders["📁 FOLDERS"]
-            direction TB
-            Images["images/\n<i>🖼️ *.png, *.gif</i>"]
-            CSVFiles["csv/\n<i>📊 *.csv</i>"]
-            AudioFiles["radio/\n<i>🎵 *.mp3</i>"]
-            GameBuilds["games/\n<i>🎮 *.webgl</i>"]
-            PDFs["pdf/\n<i>📕 *.pdf</i>"]
-        end
         subgraph AssetFiles["📄 FILES"]
             direction TB
             ReadmeMD["README.md\n<i>📄 Documentation</i>"]
@@ -63,7 +55,15 @@ graph TD
             LicenseTxt["LICENSE.txt\n<i>📜 MIT License</i>"]
         end
         
-        subgraph Experience["📋 Experience"]
+        subgraph AssetFolders["📁 FOLDERS"]
+            direction TB
+            Images["images/\n<i>🖼️ *.png, *.gif</i>"]
+            CSVFiles["csv/\n<i>📊 *.csv</i>"]
+            AudioFiles["radio/\n<i>🎵 *.mp3</i>"]
+            GameBuilds["games/\n<i>🎮 *.webgl</i>"]
+            PDFs["pdf/\n<i>📕 *.pdf</i>"]
+        end
+        subgraph Experience["📋 EXPERIENCES"]
             direction TB
             WorkCSV["work.csv\n<i>👨‍💻 Work</i>"]
             EduCSV["education.csv\n<i>🎓 Education</i>"]
@@ -71,13 +71,14 @@ graph TD
             HacksCSV["hackathons.csv\n<i>⛏️ Hackathons</i>"]
             GamesCSV["games.csv\n<i>🎮 Games</i>"]
         end
-        subgraph Hobbies["🎯 Hobbies"]
+        subgraph Hobbies["🎯 HOBBIES"]
             direction TB
             MarpCSV["marp.csv\n<i>🤖 MARP</i>"]
             BNCSV["bitnaughts.csv\n<i>☄️ BitNaughts</i>"]
             MtgCSV["mtg.csv\n<i>🔮 MTG</i>"]
             NoblesCSV["nobles.csv\n<i>👑 Nobles</i>"]
             DemonsCSV["demons.csv\n<i>👹 Demons</i>"]
+            BomJSON["marp-bom.json\n<i>📋 Bill of Materials</i>"]
         end
     end
 
@@ -88,12 +89,16 @@ graph TD
             ParallaxJS["parallax.js\n<i>🎨 Orbs & Glint</i>"]
             RadioJS["radio.js\n<i>🎵 Web Audio</i>"]
             PdfViewerJS["pdfviewer.js\n<i>📕 PDF Reader</i>"]
+            MermaidViewJS["mermaid.js\n<i>🧜‍♀️ Diagram Viewer</i>"]
+            SkillTreeJS["skilltree.js\n<i>🌳 Knowledge Graph</i>"]
+            TimelineJS["timeline.js\n<i>📅 Swimlane Layout</i>"]
         end
         subgraph Core["🧠 CORE"]
             direction TB
             ModalsJS["modals.js\n<i>🪟 Pop-outs</i>"]
             DataJS["data.js\n<i>🗂️ CSV Reader</i>"]
             ScrollJS["scroll.js\n<i>👁️ Observer</i>"]
+            ThemeJS["theme.js\n<i>🌓 Light/Dark Toggle</i>"]
         end
     end
 
@@ -112,6 +117,9 @@ graph TD
             PdfModal["PDF Modal\n<i>📕 PDF Viewer</i>"]
             GameModal["Game Modals\n<i>🎮 Unity WebGL</i>"]
             MarpModal["MARP Modal\n<i>🤖 Robot Details</i>"]
+            ArchModal["Arch Modal\n<i>🏗️ Architecture</i>"]
+            KnowledgeModal["Knowledge Modal\n<i>🌳 Skill Graph</i>"]
+            TimelineModal["Timeline Modal\n<i>📅 Timeline</i>"]
         end
     end
 
@@ -130,6 +138,7 @@ graph TD
     IndexHTML -->|"link"| StylesCSS
 
     %% 4. Shell → Scripts (deferred script tags)
+    IndexHTML -->|"script defer"| ThemeJS
     IndexHTML -->|"script defer"| ModalsJS
 
     %% 5. CDN libs feed into the Scripts that consume them
@@ -140,36 +149,43 @@ graph TD
     %% 6. Scripts read data & assets
     DataJS -->|"fetch()"| Experience
     DataJS -->|"fetch()"| Hobbies
+    DataJS -.->|"url()"| Images
     PdfViewerJS -.->|"fetch()"| PDFs
     RadioJS -.->|"fetch()"| AudioFiles
     ModalsJS -.->|"fetch()"| GameBuilds
-    ParallaxJS -.->|"url()"| Images
+    MermaidViewJS -.->|"fetch()"| ArchMD
+    MermaidViewJS -.->|"fetch()"| MarpArchMD
+    MermaidViewJS -.->|"fetch()"| BomJSON
 
     %% 7. Scripts → View elements
+    ThemeJS -->|"toggle()"| Layers
     ParallaxJS -->|"render()"| ParallaxBG
     ScrollJS -->|"onScroll()"| Elements
     DataJS -->|"onClick()"| Tiles
-    PdfViewerJS -->|"getDocument()"| PdfModal
+    PdfViewerJS -.->|"getDocument()"| PdfModal
     ModalsJS -->|"toggleModal()"| Modals
-    RadioJS -->|"createAnalyser()"| Player
+    RadioJS -.->|"createAnalyser()"| Player
+    MermaidViewJS -.->|"createDiagram()"| ArchModal
+    SkillTreeJS -.->|"buildGraph()"| KnowledgeModal
+    TimelineJS -.->|"buildTimeline()"| TimelineModal
 
     class GitHub,IndexHTML hosting
     class Route53,CNAME,OpenGraph,JSONLD,Favicons config
     class StylesCSS styling
     class FontAwesome styling
     class PapaParse,PDFjs script
-    class ModalsJS,DataJS,ScrollJS,ParallaxJS,RadioJS,PdfViewerJS script
+    class ModalsJS,DataJS,ScrollJS,ThemeJS,ParallaxJS,RadioJS,PdfViewerJS,MermaidViewJS,SkillTreeJS,TimelineJS script
     class WorkCSV,EduCSV,ProjectsCSV,HacksCSV,GamesCSV,MarpCSV,BNCSV,MtgCSV,NoblesCSV,DemonsCSV,BomJSON data
     class ReadmeMD,ArchMD,MarpArchMD,CNAMEFile,LicenseTxt,Images,CardArt,CSVFiles,AudioFiles,GameBuilds,PDFs asset
-    class ParallaxBG,Bands,Tiles,Player,DetailModal,DeckModal,PdfModal,GameModal,MarpModal output
+    class ParallaxBG,Bands,Tiles,Player,DetailModal,DeckModal,PdfModal,GameModal,MarpModal,ArchModal,KnowledgeModal,TimelineModal output
 
-    classDef hosting fill:#e74c3c,stroke:#c0392b,color:#67000d,stroke-width:2px
-    classDef config fill:#f9a825,stroke:#f57f17,color:#4a3800,stroke-width:1.5px
-    classDef styling fill:#d98cb3,stroke:#a03060,color:#4a0028,stroke-width:1.5px
-    classDef script fill:#8dd3c7,stroke:#238b45,color:#00441b,stroke-width:1.5px
-    classDef data fill:#88b3e1,stroke:#1f78b4,color:#08306b,stroke-width:1.5px
-    classDef asset fill:#cde1f7,stroke:#1f78b4,color:#08306b,stroke-width:1.5px
-    classDef output fill:#fdd835,stroke:#f9a825,color:#4a3800,stroke-width:2px
+    classDef hosting fill:#f7a799,stroke:#f25022,color:#5a1000,stroke-width:2px
+    classDef config fill:#ffe49a,stroke:#ffb900,color:#4a3200,stroke-width:1.5px
+    classDef styling fill:#f7a799,stroke:#f25022,color:#5a1000,stroke-width:1.5px
+    classDef script fill:#c8e6a0,stroke:#7fba00,color:#2d4a00,stroke-width:1.5px
+    classDef data fill:#a0cfff,stroke:#0078d4,color:#002050,stroke-width:1.5px
+    classDef asset fill:#d0e8ff,stroke:#0078d4,color:#002050,stroke-width:1.5px
+    classDef output fill:#ffe49a,stroke:#ffb900,color:#4a3200,stroke-width:2px
 
     style Hosting fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
     style Shell fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333

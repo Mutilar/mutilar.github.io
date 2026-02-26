@@ -216,7 +216,7 @@
             <img src="images/arch.png" alt="Architecture" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" loading="lazy">
           </div>
         </div>        
-        <div class="glass-tile video-card reveal" style="cursor:pointer;" role="button" tabindex="0" aria-label="See more about Marp" data-action="scroll" data-scroll-to="marp">
+        <div class="glass-tile video-card reveal" style="cursor:pointer;" role="button" tabindex="0" aria-label="Open MARP Diagrams" data-action="open" data-open="marpModal">
           <div class="video-label">🤖 Marp<span class="card-action-badge badge-dive">🔍 See More!</span><span class="year-badge">'24-'26</span></div>
           <div class="video-wrap">
             <img class="theme-img" data-src-dark="images/marp-diagram.png" data-src-light="images/marp-diagram-light.png" src="images/marp-diagram.png" alt="Marp Diagram" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" loading="lazy">
@@ -963,11 +963,10 @@
      MARP DIAGRAM MODAL
      ═══════════════════════════════════════════════════════════════ -->
 <div class="modal-overlay" id="marp-modal">
-  <div class="glass-tile modal-card marp-modal-card" style="position:relative;">
+  <div class="glass-tile modal-card mm-modal-card marp-modal-card" style="position:relative;">
     <div class="modal-sticky-bar">
       <div class="mm-filter-group tl-glow">
         <div class="mm-filter-row">
-          <a class="modal-sticky-link" href="https://github.com/Mutilar/Marp" target="_blank"><i class="fa fa-github"></i> Mutilar/Marp</a>
           <span class="mm-filter-pills" id="marp-filters"></span>
           <button class="modal-close" id="marpModalClose" aria-label="Close modal">&times;</button>
         </div>

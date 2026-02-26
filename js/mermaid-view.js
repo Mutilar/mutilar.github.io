@@ -523,6 +523,7 @@
         const lx = (x1 + x2) / 2, ly = (y1 + y2) / 2;
         const g = document.createElementNS(svgNS, "g");
         g.classList.add("mm-edge-label-group");
+        if (edge.dashed) g.classList.add("mm-dashed-label");
         g.dataset.mmFrom = edge.from;
         g.dataset.mmTo = edge.to;
         const labelLines = edge.label.split("\n");
@@ -532,13 +533,13 @@
         const bg = document.createElementNS(svgNS, "rect");
         bg.setAttribute("x", lx - bw / 2); bg.setAttribute("y", ly - bh / 2);
         bg.setAttribute("width", bw); bg.setAttribute("height", bh);
-        bg.setAttribute("rx", "6"); bg.setAttribute("fill", "rgba(15,15,20,0.8)");
-        bg.setAttribute("stroke", "rgba(255,255,255,0.15)"); bg.setAttribute("stroke-width", "0.5");
+        bg.setAttribute("rx", "6"); bg.setAttribute("fill", edge.dashed ? "rgba(15,15,20,0.4)" : "rgba(15,15,20,0.8)");
+        bg.setAttribute("stroke", edge.dashed ? "rgba(255,255,255,0.08)" : "rgba(255,255,255,0.15)"); bg.setAttribute("stroke-width", "0.5");
         g.appendChild(bg);
         labelLines.forEach((ln, i) => {
           const t = document.createElementNS(svgNS, "text");
           t.setAttribute("x", lx); t.setAttribute("y", ly - totalLH / 2 + i * lh + lh - 2);
-          t.setAttribute("text-anchor", "middle"); t.setAttribute("fill", "rgba(255,255,255,0.8)");
+          t.setAttribute("text-anchor", "middle"); t.setAttribute("fill", edge.dashed ? "rgba(255,255,255,0.4)" : "rgba(255,255,255,0.8)");
           t.setAttribute("font-size", "10"); t.setAttribute("font-family", "system-ui, sans-serif");
           t.setAttribute("font-weight", "600"); t.textContent = ln;
           g.appendChild(t);
@@ -570,6 +571,124 @@
       world.appendChild(f);
       if (nodeElements["Footer"]) nodeElements["Footer"].el.remove();
     }
+
+    // ── Hover interaction: highlight connected edges & nodes ──
+    // Build adjacency: nodeId/sgId → [ { path, labelGroup, peerId } ]
+    const adjacency = {};
+    ast.edges.forEach(edge => {
+      const pathEl = svgLayer.querySelector('.mm-edge[data-mm-from="' + edge.from + '"][data-mm-to="' + edge.to + '"]');
+      const lblEl  = svgLayer.querySelector('.mm-edge-label-group[data-mm-from="' + edge.from + '"][data-mm-to="' + edge.to + '"]');
+      if (!pathEl) return;
+      if (!adjacency[edge.from]) adjacency[edge.from] = [];
+      if (!adjacency[edge.to])   adjacency[edge.to]   = [];
+      adjacency[edge.from].push({ path: pathEl, labelGroup: lblEl, peerId: edge.to });
+      adjacency[edge.to].push({   path: pathEl, labelGroup: lblEl, peerId: edge.from });
+    });
+
+    // Subgraph lookup helpers (built early for use in highlight logic)
+    const sgNodeMap = {};
+    ast.subgraphs.forEach(sg => {
+      const nodeSet = new Set();
+      collectAllNodes(sg, sgMap, nodeSet);
+      sgNodeMap[sg.id] = nodeSet;
+    });
+
+    function collectChildSgs(sgId, out) {
+      const sg = sgMap.get(sgId);
+      if (!sg) return;
+      (sg.childSubgraphs || []).forEach(cid => {
+        out.add(cid);
+        collectChildSgs(cid, out);
+      });
+    }
+
+    // Highlight an endpoint (could be a node OR a subgraph)
+    function highlightEndpoint(id) {
+      if (nodeElements[id]) {
+        nodeElements[id].el.classList.add("mm-highlight");
+      }
+      // If this id is a subgraph, highlight the container + children + descendant nodes
+      const sgEl = world.querySelector('.mm-subgraph[data-mm-sg="' + id + '"]');
+      if (sgEl) {
+        sgEl.classList.add("mm-highlight");
+        const childSgs = new Set();
+        collectChildSgs(id, childSgs);
+        childSgs.forEach(cid => {
+          const cEl = world.querySelector('.mm-subgraph[data-mm-sg="' + cid + '"]');
+          if (cEl) cEl.classList.add("mm-highlight");
+        });
+        const descendants = sgNodeMap[id];
+        if (descendants) {
+          descendants.forEach(nid => {
+            if (nodeElements[nid]) nodeElements[nid].el.classList.add("mm-highlight");
+          });
+        }
+      }
+    }
+
+    function clearHighlights() {
+      world.classList.remove("mm-hovering");
+      world.querySelectorAll(".mm-highlight").forEach(el => el.classList.remove("mm-highlight"));
+      svgLayer.querySelectorAll(".mm-highlight").forEach(el => el.classList.remove("mm-highlight"));
+    }
+
+    // Node hover → highlight self + connected edges + peer nodes/subgraphs
+    Object.values(nodeElements).forEach(({ el, x, y, cls }) => {
+      const id = el.dataset.mmId;
+      el.addEventListener("mouseenter", () => {
+        if (_exploring) return;
+        world.classList.add("mm-hovering");
+        el.classList.add("mm-highlight");
+        const adj = adjacency[id] || [];
+        adj.forEach(a => {
+          a.path.classList.add("mm-highlight");
+          if (a.labelGroup) a.labelGroup.classList.add("mm-highlight");
+          highlightEndpoint(a.peerId);
+        });
+      });
+      el.addEventListener("mouseleave", clearHighlights);
+    });
+
+    // Edge hover → highlight the edge + both endpoint nodes/subgraphs
+    svgLayer.querySelectorAll(".mm-edge[data-mm-from]").forEach(pathEl => {
+      const fromId = pathEl.dataset.mmFrom;
+      const toId   = pathEl.dataset.mmTo;
+      const lblEl  = svgLayer.querySelector('.mm-edge-label-group[data-mm-from="' + fromId + '"][data-mm-to="' + toId + '"]');
+      pathEl.addEventListener("mouseenter", () => {
+        if (_exploring) return;
+        world.classList.add("mm-hovering");
+        pathEl.classList.add("mm-highlight");
+        if (lblEl) lblEl.classList.add("mm-highlight");
+        highlightEndpoint(fromId);
+        highlightEndpoint(toId);
+      });
+      pathEl.addEventListener("mouseleave", clearHighlights);
+    });
+
+    // Subgraph header hover → highlight all descendant nodes + their edges + peers
+    world.querySelectorAll(".mm-subgraph[data-mm-sg]").forEach(sgEl => {
+      const header = sgEl.querySelector(".mm-subgraph-header");
+      if (!header) return;
+      const sgId = sgEl.dataset.mmSg;
+      const descendantNodes = sgNodeMap[sgId];
+      if (!descendantNodes || descendantNodes.size === 0) return;
+
+      header.addEventListener("mouseenter", () => {
+        if (_exploring) return;
+        world.classList.add("mm-hovering");
+        highlightEndpoint(sgId);
+        descendantNodes.forEach(nodeId => {
+          if (nodeElements[nodeId]) nodeElements[nodeId].el.classList.add("mm-highlight");
+          const adj = adjacency[nodeId] || [];
+          adj.forEach(a => {
+            a.path.classList.add("mm-highlight");
+            if (a.labelGroup) a.labelGroup.classList.add("mm-highlight");
+            highlightEndpoint(a.peerId);
+          });
+        });
+      });
+      header.addEventListener("mouseleave", clearHighlights);
+    });
 
     return { svgW, svgH, nodeElements, edgeElements };
   }
@@ -876,6 +995,11 @@
       allClasses.forEach(c => activeFilters.add(c));
       doFilter();
     }
+    // Programmatic: deactivate all (hide everything)
+    function setNone() {
+      activeFilters.clear();
+      doFilter();
+    }
 
     allBtn.addEventListener("click", () => {
       if (activeFilters.size === allClasses.length) return;
@@ -904,7 +1028,7 @@
     const labelMap = {};
     filters.forEach(f => { labelMap[f.cls] = f.label; });
 
-    return { allClasses: allClasses, labelMap: labelMap, setOnly: setOnly, addFilter: addFilter, setAll: setAll };
+    return { allClasses: allClasses, labelMap: labelMap, setOnly: setOnly, addFilter: addFilter, setAll: setAll, setNone: setNone };
   }
 
   /* ═════════════════════════════════════════════════════════════
@@ -918,18 +1042,25 @@
     const state = { built: false, x: 0, y: 0, scale: 1, world: null, _update: null };
     let _svgLayer = null, _dims = null;
     let _ast = null, _legend = null;
+    let _visibleBounds = null;  // { x, y, w, h } of visible content
 
-    function fitView(animate, useInitialScale) {
+    function fitView(animate) {
       const vp = modal.querySelector(".mm-viewport");
       if (!vp || !state.world || !_dims) return;
       const vw = vp.clientWidth, vh = vp.clientHeight;
-      const sx = (vw - 40) / _dims.svgW, sy = (vh - 40) / _dims.svgH;
+      // Use visible bounds if available, else full diagram
+      const bw = _visibleBounds ? _visibleBounds.w : _dims.svgW;
+      const bh = _visibleBounds ? _visibleBounds.h : _dims.svgH;
+      const bx = _visibleBounds ? _visibleBounds.x : 0;
+      const by = _visibleBounds ? _visibleBounds.y : 0;
+      const sx = (vw - 40) / bw, sy = (vh - 40) / bh;
       const fitScale = Math.min(sx, sy, 1);
-      state.scale = (useInitialScale && cfg.initialScale) ? Math.max(fitScale, cfg.initialScale) : fitScale;
-      state.x = (vw - _dims.svgW * state.scale) / 2;
-      state.y = 20;
+      state.scale = fitScale;
+      // Center on the visible content bounding box
+      state.x = (vw - bw * state.scale) / 2 - bx * state.scale;
+      state.y = (vh - bh * state.scale) / 2 - by * state.scale;
       if (animate) {
-        state.world.style.transition = "transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)";
+        state.world.style.transition = "transform 0.5s cubic-bezier(0.25, 1, 0.5, 1)";
         setTimeout(() => { state.world.style.transition = ""; }, 550);
       }
       if (state._update) state._update();
@@ -937,6 +1068,20 @@
 
     function rebuild(activeClasses) {
       if (!_ast || !_svgLayer) return;
+
+      // Snapshot currently visible elements BEFORE toggling
+      const prevVisibleNodes = new Set();
+      const prevVisibleSgs   = new Set();
+      const prevVisibleEdges = new Set();
+      state.world.querySelectorAll(".mm-node[data-mm-id]:not(.mm-hidden)").forEach(el => {
+        prevVisibleNodes.add(el.dataset.mmId);
+      });
+      state.world.querySelectorAll(".mm-subgraph[data-mm-sg]:not(.mm-hidden)").forEach(el => {
+        prevVisibleSgs.add(el.dataset.mmSg);
+      });
+      _svgLayer.querySelectorAll(".mm-edge[data-mm-from]:not(.mm-hidden)").forEach(el => {
+        prevVisibleEdges.add(el.dataset.mmFrom + "->" + el.dataset.mmTo);
+      });
 
       // Determine which nodes & subgraphs survive the filter
       const filtered = filterAST(_ast, activeClasses);
@@ -961,6 +1106,76 @@
       _svgLayer.querySelectorAll(".mm-edge-label-group[data-mm-from]").forEach(el => {
         el.classList.toggle("mm-hidden", !liveEdgeKeys.has(el.dataset.mmFrom + "->" + el.dataset.mmTo));
       });
+
+      // ── Glow newly-revealed elements during explore tour ───
+      if (_exploring) {
+        // Clear any prior explore highlights
+        state.world.querySelectorAll(".mm-explore-glow").forEach(el => el.classList.remove("mm-explore-glow"));
+        _svgLayer.querySelectorAll(".mm-explore-glow").forEach(el => el.classList.remove("mm-explore-glow"));
+        state.world.classList.add("mm-explore-hovering");
+
+        // Highlight newly visible nodes
+        state.world.querySelectorAll(".mm-node[data-mm-id]:not(.mm-hidden)").forEach(el => {
+          if (!prevVisibleNodes.has(el.dataset.mmId)) {
+            el.classList.add("mm-explore-glow");
+          }
+        });
+        // Highlight newly visible subgraphs
+        state.world.querySelectorAll(".mm-subgraph[data-mm-sg]:not(.mm-hidden)").forEach(el => {
+          if (!prevVisibleSgs.has(el.dataset.mmSg)) {
+            el.classList.add("mm-explore-glow");
+          }
+        });
+        // Highlight newly visible edges + labels
+        _svgLayer.querySelectorAll(".mm-edge[data-mm-from]:not(.mm-hidden)").forEach(el => {
+          const key = el.dataset.mmFrom + "->" + el.dataset.mmTo;
+          if (!prevVisibleEdges.has(key)) {
+            el.classList.add("mm-explore-glow");
+          }
+        });
+        _svgLayer.querySelectorAll(".mm-edge-label-group[data-mm-from]:not(.mm-hidden)").forEach(el => {
+          const key = el.dataset.mmFrom + "->" + el.dataset.mmTo;
+          if (!prevVisibleEdges.has(key)) {
+            el.classList.add("mm-explore-glow");
+          }
+        });
+
+        // Fade out glow after 3s (matches tour step delay)
+        if (_exploreGlowTimer) clearTimeout(_exploreGlowTimer);
+        _exploreGlowTimer = setTimeout(function () {
+          state.world.querySelectorAll(".mm-explore-glow").forEach(el => el.classList.remove("mm-explore-glow"));
+          _svgLayer.querySelectorAll(".mm-explore-glow").forEach(el => el.classList.remove("mm-explore-glow"));
+          state.world.classList.remove("mm-explore-hovering");
+        }, 3000);
+      }
+
+      // Compute bounding box of visible elements for camera fit
+      let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+      state.world.querySelectorAll(".mm-node[data-mm-id]:not(.mm-hidden)").forEach(el => {
+        const x = parseFloat(el.style.left), y = parseFloat(el.style.top);
+        const w = parseFloat(el.style.width), h = parseFloat(el.style.height);
+        if (x < minX) minX = x;
+        if (y < minY) minY = y;
+        if (x + w > maxX) maxX = x + w;
+        if (y + h > maxY) maxY = y + h;
+      });
+      state.world.querySelectorAll(".mm-subgraph[data-mm-sg]:not(.mm-hidden)").forEach(el => {
+        const x = parseFloat(el.style.left), y = parseFloat(el.style.top);
+        const w = parseFloat(el.style.width), h = parseFloat(el.style.height);
+        if (x < minX) minX = x;
+        if (y < minY) minY = y;
+        if (x + w > maxX) maxX = x + w;
+        if (y + h > maxY) maxY = y + h;
+      });
+
+      if (minX < Infinity) {
+        const pad = 20;
+        _visibleBounds = { x: minX - pad, y: minY - pad, w: (maxX - minX) + pad * 2, h: (maxY - minY) + pad * 2 };
+      } else {
+        _visibleBounds = null;  // fallback to full diagram
+      }
+
+      requestAnimationFrame(() => fitView(true));
     }
 
     function load() {
@@ -982,7 +1197,7 @@
             _filterAPI = buildFilters(pillContainer, _legend.legendNodes, cfg.colors, rebuild);
           }
 
-          requestAnimationFrame(() => fitView(false, true));
+          requestAnimationFrame(() => fitView(false));
         })
         .catch(err => console.error("[mermaid-view]", cfg.mdFile, err));
     }
@@ -991,6 +1206,7 @@
     let _filterAPI = null;
     let _exploreTimers = [];
     let _exploring = false;
+    let _exploreGlowTimer = null;
 
     var EXPLORE_DEFAULT = '<strong>Explore</strong><span class="scroll-arrow">\uD83D\uDD2D</span>';
 
@@ -1040,6 +1256,19 @@
       _exploreTimers.forEach(t => clearTimeout(t));
       _exploreTimers = [];
       _exploring = false;
+      if (_exploreGlowTimer) { clearTimeout(_exploreGlowTimer); _exploreGlowTimer = null; }
+      // Clear any lingering explore glow
+      if (state.world) {
+        state.world.classList.remove("mm-exploring");
+        state.world.classList.remove("mm-explore-hovering");
+        state.world.querySelectorAll(".mm-explore-glow").forEach(el => el.classList.remove("mm-explore-glow"));
+      }
+      if (_svgLayer) {
+        _svgLayer.querySelectorAll(".mm-explore-glow").forEach(el => el.classList.remove("mm-explore-glow"));
+      }
+      // Clear pill glow
+      var pills = document.getElementById(cfg.filterId);
+      if (pills) pills.querySelectorAll(".mm-filter-glow").forEach(function (el) { el.classList.remove("mm-filter-glow"); });
       resetHintLabel();
       if (_filterAPI) _filterAPI.setAll();
     }
@@ -1054,15 +1283,31 @@
       }
 
       _exploring = true;
+      if (state.world) state.world.classList.add("mm-exploring");
       var hint = modal.querySelector(".mm-explore-hint");
       if (hint) hint.classList.add("exploring");
       var classes = _filterAPI.allClasses;
       var labels = _filterAPI.labelMap;
       var delay = 3000;
 
+      // Glow the filter pill for the current explore step
+      var pillContainer = document.getElementById(cfg.filterId);
+      function glowFilterPill(cls) {
+        if (!pillContainer) return;
+        // Remove prior pill glow
+        pillContainer.querySelectorAll(".mm-filter-glow").forEach(function (el) { el.classList.remove("mm-filter-glow"); });
+        // Add glow to matching pill
+        var pill = pillContainer.querySelector('.mm-filter[data-filter="' + cls + '"]');
+        if (pill) pill.classList.add("mm-filter-glow");
+      }
+
+      // Hide everything first so the first setOnly reveals into an empty canvas
+      _filterAPI.setNone();
+
       // Start with first category only
       _filterAPI.setOnly(classes[0]);
       setHintLabel(labels[classes[0]] || classes[0]);
+      glowFilterPill(classes[0]);
 
       // Add each subsequent category one at a time
       for (var i = 1; i < classes.length; i++) {
@@ -1071,6 +1316,7 @@
             if (!_exploring) return;
             _filterAPI.addFilter(classes[idx]);
             setHintLabel(labels[classes[idx]] || classes[idx]);
+            glowFilterPill(classes[idx]);
           }, delay * idx));
         })(i);
       }
@@ -1080,13 +1326,16 @@
         if (!_exploring) return;
         _filterAPI.setAll();
         _exploring = false;
+        if (state.world) state.world.classList.remove("mm-exploring");
+        // Clear pill glow
+        if (pillContainer) pillContainer.querySelectorAll(".mm-filter-glow").forEach(function (el) { el.classList.remove("mm-filter-glow"); });
         resetHintLabel();
       }, delay * classes.length));
     }
 
     function open() {
       toggleModal(modal, true);
-      if (!state.built) load(); else requestAnimationFrame(() => fitView(false, true));
+      if (!state.built) load(); else requestAnimationFrame(() => fitView(false));
     }
     function close() { stopExplore(); toggleModal(modal, false); }
 
@@ -1137,14 +1386,13 @@
     mdFile:      "architecture.md",
     openGlobal:  "openArchModal",
     closeGlobal: "closeArchModal",
-    initialScale: .825,
     colors: {
       hosting: "242,80,34",
       config:  "255,185,0",
-      styling: "200,120,180",
+      styling: "242,80,34",
       script:  "127,186,0",
       data:    "0,120,212",
-      asset:   "100,160,220",
+      asset:   "0,120,212",
       output:  "255,185,0",
       footer:  "120,120,120",
     },

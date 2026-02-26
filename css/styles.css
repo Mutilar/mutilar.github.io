@@ -3374,6 +3374,30 @@ html.light-mode .mm-filter.active {
   box-shadow: 0 0 12px rgba(var(--tc), 0.15);
 }
 
+/* ── Explore tour: active filter pill glow ─────────────────── */
+.mm-filter.mm-filter-glow {
+  color: #fff;
+  border-color: rgba(var(--tc), 0.9) !important;
+  background: rgba(var(--tc), 0.25) !important;
+  box-shadow: 0 0 14px rgba(var(--tc), 0.5),
+              0 0 36px rgba(var(--tc), 0.25),
+              0 0 60px rgba(var(--tc), 0.1) !important;
+  animation: mm-pill-glow 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+html.light-mode .mm-filter.mm-filter-glow {
+  color: rgba(0, 0, 0, 0.9);
+  background: rgba(var(--tc), 0.2) !important;
+  box-shadow: 0 0 10px rgba(var(--tc), 0.3),
+              0 0 28px rgba(var(--tc), 0.15) !important;
+}
+
+@keyframes mm-pill-glow {
+  0%   { transform: scale(0.92); opacity: 0.5; }
+  60%  { transform: scale(1.08); opacity: 1; }
+  100% { transform: scale(1);    opacity: 1; }
+}
+
 /* ── Viewport (pan/zoom area) ─────────────────────────────── */
 .mm-viewport {
   flex: 1;
@@ -3438,8 +3462,109 @@ html.light-mode .mm-filter.active {
 
 /* ── Edge lines (matches kg-thread neon glow style) ───────── */
 .mm-edge {
-  transition: opacity 0.4s ease;
+  transition: opacity 0.4s ease, stroke-width 0.25s ease, filter 0.25s ease;
   filter: drop-shadow(0 0 4px currentColor);
+  pointer-events: stroke;
+  cursor: pointer;
+}
+
+.mm-edge:hover {
+  stroke-width: 4 !important;
+  filter: drop-shadow(0 0 8px currentColor) drop-shadow(0 0 16px currentColor);
+}
+
+/* Connected-edge highlight when hovering a node or edge */
+.mm-edge.mm-highlight {
+  stroke-width: 3.5 !important;
+  filter: drop-shadow(0 0 10px currentColor) drop-shadow(0 0 20px currentColor);
+}
+
+.mm-edge-label-group {
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.mm-edge-label-group.mm-highlight rect {
+  fill: rgba(15, 15, 20, 0.95) !important;
+  stroke: rgba(255, 255, 255, 0.35) !important;
+}
+
+/* Dim non-related elements during hover */
+.mm-world.mm-hovering .mm-node:not(.mm-highlight) {
+  opacity: 0.3;
+}
+.mm-world.mm-hovering .mm-edge:not(.mm-highlight) {
+  opacity: 0.12;
+}
+.mm-world.mm-hovering .mm-edge-label-group:not(.mm-highlight) {
+  opacity: 0.12;
+}
+.mm-world.mm-hovering .mm-subgraph:not(.mm-highlight) {
+  opacity: 0.4;
+}
+.mm-world.mm-hovering .mm-subgraph.mm-highlight {
+  opacity: 1;
+  border-color: rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.06);
+}
+/* Keep highlighted elements fully opaque */
+.mm-world.mm-hovering .mm-node.mm-highlight {
+  opacity: 1;
+  border-color: rgba(var(--tc), 0.7);
+  box-shadow: 0 0 16px rgba(var(--tc), 0.3),
+              0 0 40px rgba(var(--tc), 0.15);
+}
+
+/* ── Explore tour glow — newly-revealed elements pulse ────── */
+.mm-node.mm-explore-glow {
+  border-color: rgba(var(--tc), 0.8) !important;
+  box-shadow: 0 0 18px rgba(var(--tc), 0.4),
+              0 0 44px rgba(var(--tc), 0.2),
+              0 0 80px rgba(var(--tc), 0.08) !important;
+  animation: mm-explore-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  z-index: 10;
+}
+
+.mm-subgraph.mm-explore-glow {
+  border-color: rgba(255, 255, 255, 0.3) !important;
+  background: rgba(255, 255, 255, 0.07) !important;
+  animation: mm-explore-sg-pop 0.6s ease both;
+}
+
+.mm-edge.mm-explore-glow {
+  stroke-width: 3.5 !important;
+  filter: drop-shadow(0 0 10px currentColor) drop-shadow(0 0 20px currentColor) !important;
+  animation: mm-explore-edge-pop 0.6s ease both;
+}
+
+.mm-edge-label-group.mm-explore-glow rect {
+  fill: rgba(15, 15, 20, 0.95) !important;
+  stroke: rgba(255, 255, 255, 0.35) !important;
+}
+
+@keyframes mm-explore-pop {
+  0%   { transform: scale(0.88); opacity: 0; }
+  60%  { transform: scale(1.04); opacity: 1; }
+  100% { transform: scale(1);    opacity: 1; }
+}
+
+@keyframes mm-explore-sg-pop {
+  0%   { opacity: 0.3; }
+  100% { opacity: 1; }
+}
+
+@keyframes mm-explore-edge-pop {
+  0%   { stroke-width: 1; opacity: 0.2; }
+  50%  { stroke-width: 4; opacity: 1; }
+  100% { stroke-width: 3.5; opacity: 1; }
+}
+
+/* Suppress hover interactions during explore tour */
+.mm-world.mm-exploring .mm-node,
+.mm-world.mm-exploring .mm-subgraph-header,
+.mm-world.mm-exploring ~ .mm-edges .mm-edge {
+  pointer-events: none !important;
+  cursor: default;
 }
 
 .mm-node.mm-hidden,
@@ -3495,6 +3620,14 @@ html.light-mode .mm-filter.active {
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 14px 14px 0 0;
   background: rgba(255, 255, 255, 0.03);
+  pointer-events: auto;
+  cursor: pointer;
+  transition: color 0.25s ease, background 0.25s ease;
+}
+
+.mm-subgraph-header:hover {
+  color: rgba(255, 255, 255, 0.85);
+  background: rgba(255, 255, 255, 0.07);
 }
 
 /* ── Node tiles (glassmorphic cards) ──────────────────────── */
@@ -3615,6 +3748,16 @@ html.light-mode .mm-subgraph-header {
   background: rgba(0, 0, 0, 0.03);
 }
 
+html.light-mode .mm-subgraph-header:hover {
+  color: rgba(0, 0, 0, 0.8);
+  background: rgba(0, 0, 0, 0.06);
+}
+
+html.light-mode .mm-world.mm-hovering .mm-subgraph.mm-highlight {
+  border-color: rgba(0, 0, 0, 0.18);
+  background: rgba(0, 0, 0, 0.05);
+}
+
 html.light-mode .mm-node {
   background: rgba(245, 245, 250, 0.85);
   border-color: rgba(0, 0, 0, 0.12);
@@ -3650,6 +3793,35 @@ html.light-mode .mm-arrow-head {
 html.light-mode .mm-edge {
   stroke: rgba(0, 0, 0, 0.35) !important;
   filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.3));
+}
+
+html.light-mode .mm-edge:hover {
+  stroke: rgba(0, 0, 0, 0.7) !important;
+  filter: drop-shadow(0 0 4px rgba(0, 0, 0, 0.4)) drop-shadow(0 0 10px rgba(0, 0, 0, 0.2));
+}
+
+html.light-mode .mm-edge.mm-highlight {
+  stroke: rgba(0, 0, 0, 0.6) !important;
+  filter: drop-shadow(0 0 6px rgba(0, 0, 0, 0.3)) drop-shadow(0 0 14px rgba(0, 0, 0, 0.15));
+}
+
+html.light-mode .mm-world.mm-hovering .mm-node.mm-highlight {
+  box-shadow: 0 0 12px rgba(var(--tc), 0.2),
+              0 0 32px rgba(var(--tc), 0.1);
+}
+
+html.light-mode .mm-node.mm-explore-glow {
+  box-shadow: 0 0 14px rgba(var(--tc), 0.25),
+              0 0 36px rgba(var(--tc), 0.12) !important;
+}
+
+html.light-mode .mm-subgraph.mm-explore-glow {
+  border-color: rgba(0, 0, 0, 0.2) !important;
+  background: rgba(0, 0, 0, 0.05) !important;
+}
+
+html.light-mode .mm-edge.mm-explore-glow {
+  filter: drop-shadow(0 0 4px rgba(0, 0, 0, 0.4)) drop-shadow(0 0 10px rgba(0, 0, 0, 0.2)) !important;
 }
 
 /* ── Mobile ───────────────────────────────────────────────── */
