@@ -98,7 +98,7 @@
     popvuj:       "games",      // God-sim city builder → Games
     "the-nobles": "games",      // MTG Commander deck → Games
     "the-demons": "games",      // MTG Commander deck → Games
-    duskrosecodex: "software",  // Lore tooling + LaTeX → Software
+    duskrosecodex: "games",     // MTG lore compendium → Games
     azuremlops:   "software",   // CI/CD pipeline → Software
     motleymoves:  "software",   // Web app → Software
     dogpark:      "software",   // Mobile app → Software
@@ -130,7 +130,7 @@
    *  they crossfade based on zoom level. */
   const whisperLabels = {
     "microsoft":       ["🧠"],
-    "bitnaughts":      ["🎮"],
+    "bitnaughts":      ["☄️"],
     "marp":            ["🤖"],
     "iterate":         ["🏆"],
     "ventana":         ["🧬"],
@@ -138,7 +138,7 @@
     "azuremlops":      ["⚡"],
     "chemistry":       ["🧪"],
     "firmi":           ["⚛️"],
-    "hackmerced":      ["🧑‍💻<br>350+"],
+    "hackmerced":      ["🧑‍💻"],
     "motleymoves":     ["🏃"],
     "andeslab":        ["🏭"],
     "breeze":          ["💨"],
@@ -147,11 +147,11 @@
     "maces":           ["🚀"],
     "citris":          ["🏙️"],
     "amaxesd":         ["⚡"],
-    "summerofgamedesign": ["💰<br>$25K+"],
+    "summerofgamedesign": ["💰<br>$25K"],
     "alamorobotics":   ["🤖"],
     "acm":             ["🤝"],
     "learnbeat":       ["🌱"],
-    "redtierobotics":  ["💰<br>$18K+"],
+    "redtierobotics":  ["💰<br>$18K"],
     "cse180":          ["🤖"],
     "cse165":          ["📦"],
     "cse160":          ["🌐"],
@@ -440,7 +440,7 @@
     const dateRange = Math.max(1, globalMax - globalMin);
 
     const MIN_DIST     = 100;
-    const MAX_DIST     = 500;
+    const MAX_DIST     = 400;
     const SPREAD_ANGLE = Math.PI / 2.5;
     const CENTER_R     = 50;
     const PADDING      = 2;
@@ -456,7 +456,7 @@
 
       group.forEach((n, idx) => {
         const t = dateRange > 0 ? (n.absMonth - globalMin) / dateRange : 0.5;
-        const dist = MIN_DIST + t * (MAX_DIST - MIN_DIST);
+        const dist = MIN_DIST + Math.sqrt(t) * (MAX_DIST - MIN_DIST);
         let angle;
         if (group.length === 1) {
           angle = baseAngle;
@@ -960,7 +960,7 @@
     const dateRange = Math.max(1, globalMax - globalMin);
 
     const MIN_DIST     = 100;    // px — minimum distance from center
-    const MAX_DIST     = 500;   // px — maximum distance from center
+    const MAX_DIST     = 400;   // px — maximum distance from center
     const SPREAD_ANGLE = Math.PI / 2.5; // angular spread per quadrant (~72°)
 
     // Duration → circle size mapping
@@ -1407,19 +1407,27 @@
     // ── Explicit overrides: plain-text name → exact circle display ──
     // When auto-breaking produces too many lines, add the name here.
     const nameBreaks = {
-      "Red Tie Robotics (FRC 1458)":  "Red Tie<br>Robotics<br>(FRC 1458)",
+      "Red Tie Robotics":             "Red Tie<br>Robotics",
       "Summer of Game Design":        "Summer of<br>Game Design",
       "CITRIS & Banatao Institute":   "CITRIS &<br>Banatao<br>Institute",
-      "MACES (NASA MUREP)":           "MACES<br>(NASA MUREP)",
-      "VICE Lab (UCM)":               "VICE<br>Lab<br>(UCM)",
-      "ANDES Lab (UCM)":              "ANDES<br>Lab<br>(UCM)",
+      "VICE Lab":                     "VICE<br>Lab",
+      "ANDES Lab":                    "ANDES<br>Lab",
       "Alamo Robotics":               "Alamo<br>Robotics",
       "Dog Park":                     "Dog<br>Park",
       "IoT Panel":                    "IoT<br>Panel",
       "AMAX ESD":                     "AMAX<br>ESD",
-      "AP Java":                      "AP<br>Java",
-      "ROP Game Design":              "ROP<br>Game<br>Design",
-      "ROP Architecture":             "ROP<br>Architecture",
+      "CSE 180":                     "#180",
+      "CSE 165":                     "#165",
+      "CSE 160":                     "#160",
+      "CSE 120":                     "#120",
+      "CSE 111":                     "#111",
+      "CSE 100":                     "#100",
+      "CSE 31":                      "#31",
+      "CSE 30":                      "#30",
+      "CSE 15":                      "#15",
+      "AP Java":                     "Java",
+      "ROP Game Design":             "Game<br>Design",
+      "ROP Architecture":            "Archi-<br>tecture",
       "AzureMLOps":                   "Azure<br>MLOps",
       "BitNaughts":                   "BitNaughts",
       "GISt":                         "GISt",

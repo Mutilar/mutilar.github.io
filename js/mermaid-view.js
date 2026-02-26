@@ -6,7 +6,7 @@
 //  arrows inside a pannable/zoomable viewport.  Instantiated once
 //  for the Architecture modal and once for the MARP wiring modal.
 //
-//  Matches the knowledge-graph.js / timeline.js aesthetic.
+//  Matches the skill-tree.js / timeline.js aesthetic.
 // ═══════════════════════════════════════════════════════════════
 (() => {
 
@@ -105,7 +105,7 @@
       }
 
       // Node definition
-      const nodeMatch = line.match(/^(\w+)\s*\["(.*)"\]\s*(?:::(\w+))?\s*$/);
+      const nodeMatch = line.match(/^(\w+)\s*\["(.*)"\]\s*(?::::(\w+))?\s*$/);
       if (nodeMatch) {
         const id = nodeMatch[1], rawLabel = nodeMatch[2], inlineCls = nodeMatch[3] || null;
         const parts = rawLabel.split("\\n");
@@ -693,17 +693,13 @@
           if (!m) { console.warn("[mermaid-view] No mermaid block in", cfg.mdFile); return; }
           const ast = parseMermaid(m[1]);
           const legend = extractLegend(ast);
-          console.log("[mermaid-view] legend:", legend.legendNodes.length, "nodes,", legend.legendIds.size, "sgIds");
           _dims = buildDiagram(ast, cfg.colors, state.world, _svgLayer, legend.legendIds);
           state.built = true;
 
           // Build filter pills from legend
           const pillContainer = document.getElementById(cfg.filterId);
-          console.log("[mermaid-view] pillContainer:", cfg.filterId, pillContainer, "legendNodes:", legend.legendNodes);
           if (pillContainer && legend.legendNodes.length) {
             buildFilters(pillContainer, legend.legendNodes, cfg.colors, _dims.nodeElements, _dims.edgeElements);
-          } else {
-            console.warn("[mermaid-view] No filter pills: container=", !!pillContainer, "nodes=", legend.legendNodes.length);
           }
 
           requestAnimationFrame(fitView);

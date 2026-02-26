@@ -3298,6 +3298,8 @@ html.light-mode .outline-pill {
 }
 
 .mm-filter {
+  appearance: none;
+  -webkit-appearance: none;
   display: inline-flex;
   align-items: center;
   gap: 5px;
@@ -3305,12 +3307,14 @@ html.light-mode .outline-pill {
   border-radius: 14px;
   font-size: 11px;
   font-weight: 600;
+  font-family: inherit;
   letter-spacing: 0.3px;
   color: rgba(255, 255, 255, 0.6);
   background: rgba(30, 30, 40, 0.75);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.18);
+  outline: none;
   cursor: pointer;
   transition: all 0.3s ease;
   white-space: nowrap;
