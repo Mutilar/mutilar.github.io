@@ -2932,7 +2932,9 @@ html.light-mode .tl-sliver-name {
 }
 
 html.light-mode .tl-whisper-layer.tl-whisper-show {
-  color: rgba(0, 0, 0, 0.18);
+  color: #000;
+  background: rgba(255, 255, 255, 0.7);
+  box-shadow: 0 0 16px rgba(255, 255, 255, 0.6), 0 0 32px rgba(255, 255, 255, 0.3);
 }
 
 html.light-mode .tl-sliver-title {
@@ -3355,30 +3357,18 @@ html.light-mode .timeline-filter.filter-pulse {
   top: 0;
   bottom: 0;
   min-height: 60px;
-}
-
-.tl-whisper-left {
-  left: 54px;
-  width: calc(50% - 28.5px);
-}
-
-.tl-whisper-right {
-  left: calc(50% + 28.5px);
-  width: calc(50% - 28.5px);
-}
-
-.tl-whisper-center {
-  left: 54px;
-  right: 0;
-  width: auto;
+  transition: opacity 0.15s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .tl-whisper-layer {
   position: absolute;
-  inset: 0;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
+  padding: 4px 14px;
   font-size: 30px;
   font-weight: 800;
   font-style: italic;
@@ -3387,15 +3377,19 @@ html.light-mode .timeline-filter.filter-pulse {
   text-transform: none;
   text-align: center;
   color: rgba(255, 255, 255, 0);
-  white-space: normal;
+  white-space: nowrap;
   overflow: visible;
-  transition: color 0.5s ease, opacity 0.5s ease;
+  transition: color 0.5s ease, opacity 0.5s ease, background 0.5s ease, box-shadow 0.5s ease;
   opacity: 0;
+  border-radius: 8px;
+  max-width: 100%;
 }
 
 .tl-whisper-layer.tl-whisper-show {
-  color: rgba(255, 255, 255, 0.22);
+  color: #fff;
   opacity: 1;
+  background: rgba(0, 0, 0, 0.55);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5), 0 0 40px rgba(0, 0, 0, 0.25);
 }
 
 /* Gradient accent */
