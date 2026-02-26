@@ -18,22 +18,36 @@
     software:  { color: "0,164,239",   icon: "fa-code",           label: "Software",   emoji: "💻" },
     research:  { color: "255,185,0",   icon: "fa-flask",          label: "Research",   emoji: "🔬" },
     education: { color: "0,120,212",   icon: "fa-graduation-cap", label: "Education",  emoji: "🎓" },
+    work:      { color: "0,120,212",   icon: "fa-briefcase",     label: "Work",       emoji: "💼" },
+    hacks:     { color: "255,75,120",  icon: "fa-bolt",          label: "Hacks",      emoji: "⚡" },
+    projects:  { color: "255,140,60",  icon: "fa-rocket",        label: "Projects",   emoji: "🚀" },
+  };
+
+  /* ── Thread (overlay-theme) colors — one thread per theme×quadrant pair ── */
+  const threadConfig = {
+    work:      { color: "0,120,212",  label: "Work" },       // MSFT Blue
+    education: { color: "0,200,180",  label: "Education" },  // Teal
+    hacks:     { color: "255,75,120", label: "Hacks" },      // Pink/Magenta
+    projects:  { color: "255,140,60", label: "Projects" },   // Orange
   };
 
   const themeMap = {
-    marp: "robotics", sriracha: "robotics", smartank: "robotics",
-    blindsight: "robotics", amaxesd: "robotics", redtierobotics: "robotics",
-    alamorobotics: "robotics", motorskills: "robotics", "home-iot": "robotics",
-    bitnaughts: "games", graviton: "games", spaceninjas: "games",
-    voodoo: "games", galconq: "games", popvuj: "games",
-    seerauber: "games", summerofgamedesign: "games", iterate: "games",
-    microsoft: "software", azuremlops: "software", ventana: "software",
-    citris: "software", hackmerced: "software", motleymoves: "software",
-    breeze: "software", dogpark: "software",
-    ozone: "software", gasleek: "software", chemistry: "software",
-    gist: "software", digestquest: "software",
-    vicelab: "research", andeslab: "research", maces: "research",
-    firmi: "research", learnbeat: "research", acm: "research",
+    marp: "projects", amaxesd: "projects", redtierobotics: "work",
+    alamorobotics: "work", "home-iot": "projects",
+    bitnaughts: "projects", voodoo: "projects", galconq: "projects", popvuj: "projects",
+    graviton: "hacks", spaceninjas: "work",
+    summerofgamedesign: "work", iterate: "projects",
+    microsoft: "work", ventana: "work",
+    citris: "work", hackmerced: "work",
+    vicelab: "work", andeslab: "work", maces: "work",
+    learnbeat: "work", acm: "work",
+    azuremlops: "projects", motleymoves: "projects",
+    breeze: "projects", dogpark: "projects",
+    ozone: "projects",
+    firmi: "projects",
+    sriracha: "hacks", smartank: "hacks", blindsight: "hacks",
+    motorskills: "hacks", seerauber: "hacks",
+    gasleek: "hacks", chemistry: "hacks", gist: "hacks", digestquest: "hacks",
     cse180: "education", cse165: "education", cse160: "education",
     cse120: "education", cse111: "education", cse100: "education",
     cse031: "education", cse030: "education", cse015: "education",
@@ -54,6 +68,55 @@
     ropgamedesign: "games",      // Game Design → Games/West
     roparchitecture: "robotics", // Architecture/CAD → Robotics/North
     apjava: "software",         // AP CS A/Java → Software/South
+  };
+
+  /** Map work items to a directional quadrant theme */
+  const workQuadrantMap = {
+    microsoft:        "software",   // SWE → Software/South
+    ventana:          "software",   // SWE Intern → Software/South
+    citris:           "software",   // Web Dev → Software/South
+    hackmerced:       "software",   // Director → Software/South
+    vicelab:          "research",   // Geospatial RA → Research/East
+    andeslab:         "research",   // Computational RA → Research/East
+    maces:            "research",   // NASA MUREP RA → Research/East
+    learnbeat:        "research",   // STEM Instructor → Research/East
+    acm:              "research",   // Outreach → Research/East
+    alamorobotics:    "robotics",   // Lego Mindstorm → Robotics/North
+    redtierobotics:   "robotics",   // FRC 1458 → Robotics/North
+    summerofgamedesign: "games",    // Game Design Camp → Games/West
+    spaceninjas:      "games",      // Teaching boilerplate → Games/West
+  };
+
+  /** Map hackathon items to a directional quadrant theme */
+  const hacksQuadrantMap = {
+    motorskills:  "robotics",   // IoT ML hardware → Robotics/North
+    sriracha:     "robotics",   // RC tank robot → Robotics/North
+    smartank:     "robotics",   // Autonomous robot → Robotics/North
+    blindsight:   "robotics",   // Haptic wearable → Robotics/North
+    seerauber:    "games",      // Pirate strategy game → Games/West
+    graviton:     "games",      // Tower defense game → Games/West
+    gasleek:      "research",   // ML linear regression → Research/East
+    chemistry:    "research",   // AR science education → Research/East
+    gist:         "software",   // AR Unity app → Software/South
+    digestquest:  "software",   // OCR web app → Software/South
+  };
+
+  /** Map project items to a directional quadrant theme */
+  const projectsQuadrantMap = {
+    marp:         "robotics",   // Robot platform → Robotics/North
+    amaxesd:      "robotics",   // ESD hardware → Robotics/North
+    "home-iot":   "robotics",   // IoT hardware → Robotics/North
+    iterate:      "games",      // Mobile code editor/game → Games/West
+    bitnaughts:   "games",      // Code-gamified project → Games/West
+    voodoo:       "games",      // Pixel art auto-battler → Games/West
+    galconq:      "games",      // Procedural space strategy → Games/West
+    popvuj:       "games",      // God-sim city builder → Games/West
+    azuremlops:   "software",   // CI/CD pipeline → Software/South
+    motleymoves:  "software",   // Web app → Software/South
+    dogpark:      "software",   // Mobile app → Software/South
+    ozone:        "software",   // React web app → Software/South
+    breeze:       "research",   // IoT air quality sensing → Research/East
+    firmi:        "research",   // Physics modeling → Research/East
   };
 
   /** Quadrant direction vectors (unit) */
@@ -182,11 +245,12 @@
 
   /* ── State ────────────────────────────────────────────────── */
   let graphBuilt = false;
-  let activeFilters = new Set(["robotics", "games", "software", "research", "education"]);
-  const allThemes = ["robotics", "games", "software", "research", "education"];
+  let activeFilters = new Set(["robotics", "games", "software", "research", "education", "work", "hacks", "projects"]);
+  const allThemes = ["robotics", "games", "software", "research", "education", "work", "hacks", "projects"];
 
-  let _nodes = [];       // { el, edgeEl, theme, quadrant, item, category, absMonth, dist }
+  let _nodes = [];       // { el, theme, quadrant, item, category, absMonth, dist }
   let _hoveredNode = null; // currently hovered node (for whisper on hover)
+  let _threads = [];     // { theme, quadrant, segments[], nodes[] } — theme×quadrant thread lines
   let _transform = { x: 0, y: 0, scale: 1 };
   let _graphWorld = null; // the transform container
   let _edgeSVG = null;    // the SVG for edges
@@ -251,16 +315,32 @@
     });
   }
 
+  const quadrantFilters = ["robotics", "games", "software", "research"];
+  const overlayFilters  = ["education", "work", "hacks", "projects"];
+
   themeBtns.forEach(btn => {
     btn.addEventListener("click", () => {
       const f = btn.dataset.filter;
+      const isQuadrant = quadrantFilters.includes(f);
+      const sameGroup  = isQuadrant ? quadrantFilters : overlayFilters;
+      const otherGroup = isQuadrant ? overlayFilters  : quadrantFilters;
+
       if (activeFilters.size === allThemes.length) {
-        activeFilters.clear();
+        // All on → solo within this group, keep the other group intact
+        sameGroup.forEach(t => activeFilters.delete(t));
         activeFilters.add(f);
       } else if (activeFilters.has(f) && activeFilters.size === 1) {
+        // Last filter standing → restore all
         allThemes.forEach(t => activeFilters.add(t));
       } else if (activeFilters.has(f)) {
-        activeFilters.delete(f);
+        // Check if it's the last one in its group
+        const siblingsOn = sameGroup.filter(t => t !== f && activeFilters.has(t));
+        if (siblingsOn.length === 0) {
+          // Last in group → restore entire group
+          sameGroup.forEach(t => activeFilters.add(t));
+        } else {
+          activeFilters.delete(f);
+        }
       } else {
         activeFilters.add(f);
       }
@@ -270,25 +350,239 @@
   });
 
   function applyFilter() {
+    // Determine which nodes are visible
+    const anyQuadrantOn = ["robotics", "games", "software", "research"].some(q => activeFilters.has(q));
     _nodes.forEach(n => {
-      // Education nodes live in quadrant slots but have theme "education".
-      // For education nodes: visible if education filter is active AND
-      //   (its quadrant filter is also active OR no quadrant filters are on).
-      // For non-education nodes: visible if its quadrant filter is active.
       const quadrantOn = activeFilters.has(n.quadrant);
       const isEdu = n.theme === "education";
       const eduOn = activeFilters.has("education");
-      const anyQuadrantOn = ["robotics", "games", "software", "research"].some(q => activeFilters.has(q));
+      const isWork = n.theme === "work";
+      const workOn = activeFilters.has("work");
+      const isHacks = n.theme === "hacks";
+      const hacksOn = activeFilters.has("hacks");
+      const isProjects = n.theme === "projects";
+      const projectsOn = activeFilters.has("projects");
       let hide;
       if (isEdu) {
         hide = !eduOn || (anyQuadrantOn && !quadrantOn);
+      } else if (isWork) {
+        hide = !workOn || (anyQuadrantOn && !quadrantOn);
+      } else if (isHacks) {
+        hide = !hacksOn || (anyQuadrantOn && !quadrantOn);
+      } else if (isProjects) {
+        hide = !projectsOn || (anyQuadrantOn && !quadrantOn);
       } else {
         hide = !quadrantOn;
       }
+      n._hidden = hide;
       n.el.classList.toggle("kg-hidden", hide);
-      if (n.edgeEl) n.edgeEl.classList.toggle("kg-edge-hidden", hide);
     });
+
+    // Update thread visibility: a theme×quadrant thread is visible when
+    // both its theme filter AND its quadrant filter are active
+    _threads.forEach(th => {
+      const themeOn    = activeFilters.has(th.theme);
+      const quadrantOn = activeFilters.has(th.quadrant);
+      const visible    = themeOn && quadrantOn;
+      th.segments.forEach(seg => {
+        seg.classList.toggle("kg-thread-hidden", !visible);
+      });
+    });
+
+    // Re-layout visible nodes and animate them into new positions
+    relayoutAndAnimate();
     updateProximityGlow();
+  }
+
+  /** Re-run the positioning algorithm for visible nodes only,
+   *  then spring-animate them from current to new positions. */
+  function relayoutAndAnimate() {
+    const visible = _nodes.filter(n => !n._hidden);
+    if (visible.length === 0) return;
+
+    // Group visible nodes by quadrant
+    const quadrants = { robotics: [], games: [], software: [], research: [] };
+    visible.forEach(n => {
+      if (quadrants[n.quadrant]) quadrants[n.quadrant].push(n);
+    });
+
+    // Sort each quadrant by date (oldest first, closest to center)
+    Object.values(quadrants).forEach(group => {
+      group.sort((a, b) => a.absMonth - b.absMonth);
+    });
+
+    // Compute global date range across visible items
+    const absMonths = visible.map(n => n.absMonth);
+    const globalMin = Math.min(...absMonths);
+    const globalMax = Math.max(...absMonths);
+    const dateRange = Math.max(1, globalMax - globalMin);
+
+    const MIN_DIST     = 100;
+    const MAX_DIST     = 400;
+    const SPREAD_ANGLE = Math.PI / 2.5;
+    const CENTER_R     = 50;
+    const PADDING      = 2;
+    const ITERATIONS   = 60;
+
+    // First pass: compute ideal positions from temporal data
+    const movable = [];
+    Object.keys(quadrants).forEach(qKey => {
+      const group = quadrants[qKey];
+      if (group.length === 0) return;
+      const dir = quadrantDir[qKey];
+      const baseAngle = Math.atan2(dir.y, dir.x);
+
+      group.forEach((n, idx) => {
+        const t = dateRange > 0 ? (n.absMonth - globalMin) / dateRange : 0.5;
+        const dist = MIN_DIST + t * (MAX_DIST - MIN_DIST);
+        let angle;
+        if (group.length === 1) {
+          angle = baseAngle;
+        } else {
+          const at = idx / (group.length - 1);
+          angle = baseAngle + SPREAD_ANGLE * (at - 0.5);
+        }
+        const seed1 = Math.sin(idx * 7.3 + baseAngle * 13.7);
+        const seed2 = Math.sin(idx * 11.1 + baseAngle * 5.3);
+        const jitterDist  = dist * (1 + seed1 * 0.06);
+        const jitterAngle = angle + seed2 * 0.06;
+
+        n._newX = Math.cos(jitterAngle) * jitterDist;
+        n._newY = Math.sin(jitterAngle) * jitterDist;
+        movable.push(n);
+      });
+    });
+
+    // Collision resolution
+    for (let iter = 0; iter < ITERATIONS; iter++) {
+      let anyMoved = false;
+
+      for (let i = 0; i < movable.length; i++) {
+        const a = movable[i];
+        // vs center node
+        const dcx = a._newX;
+        const dcy = a._newY;
+        const distC = Math.sqrt(dcx * dcx + dcy * dcy) || 0.01;
+        const minDistC = a.r + CENTER_R + PADDING;
+        if (distC < minDistC) {
+          const push = (minDistC - distC) / distC;
+          a._newX += dcx * push;
+          a._newY += dcy * push;
+          anyMoved = true;
+        }
+        // vs other movable nodes
+        for (let j = i + 1; j < movable.length; j++) {
+          const b = movable[j];
+          const dx = b._newX - a._newX;
+          const dy = b._newY - a._newY;
+          const dist = Math.sqrt(dx * dx + dy * dy) || 0.01;
+          const minDist = a.r + b.r + PADDING;
+          if (dist < minDist) {
+            const overlap = (minDist - dist) / 2;
+            const nx = dx / dist;
+            const ny = dy / dist;
+            a._newX -= nx * overlap;
+            a._newY -= ny * overlap;
+            b._newX += nx * overlap;
+            b._newY += ny * overlap;
+            anyMoved = true;
+          }
+        }
+      }
+      if (!anyMoved) break;
+    }
+
+    // Animate nodes to new positions with spring easing
+    const maxDist = Math.max(1, ...visible.map(n => Math.sqrt(n._newX * n._newX + n._newY * n._newY)));
+    const MAX_DELAY = 200;
+
+    visible.forEach((n, i) => {
+      const distFrac = Math.sqrt(n._newX * n._newX + n._newY * n._newY) / maxDist;
+      const delay = distFrac * MAX_DELAY + i * 4;
+
+      setTimeout(() => {
+        n.el.style.transition = "left 0.55s cubic-bezier(0.34, 1.56, 0.64, 1), top 0.55s cubic-bezier(0.34, 1.56, 0.64, 1)";
+        n.el.style.left = n._newX + "px";
+        n.el.style.top  = n._newY + "px";
+        n.targetX = n._newX;
+        n.targetY = n._newY;
+        n.dist = Math.sqrt(n._newX * n._newX + n._newY * n._newY);
+
+        // Clear node transition after animation
+        setTimeout(() => {
+          n.el.style.transition = "";
+        }, 600);
+      }, delay);
+    });
+
+    // ── Animate thread curves to new node positions (radius-aware) ──
+    _threads.forEach(th => {
+      const themeOn    = activeFilters.has(th.theme);
+      const quadrantOn = activeFilters.has(th.quadrant);
+      if (!themeOn || !quadrantOn) return;
+
+      th.segments.forEach((seg, i) => {
+        // Segment i connects th.nodes[i] → th.nodes[i+1]
+        const fromNode = th.nodes[i];
+        const toNode   = th.nodes[i + 1];
+        if (!fromNode || !toNode) return;
+        if (fromNode._hidden || toNode._hidden) return;
+
+        let nx1 = fromNode._newX;
+        let ny1 = fromNode._newY;
+        let nx2 = toNode._newX;
+        let ny2 = toNode._newY;
+
+        // Shorten endpoints by node radii
+        const dx = nx2 - nx1;
+        const dy = ny2 - ny1;
+        const len = Math.sqrt(dx * dx + dy * dy);
+        if (len > 0) {
+          const ux = dx / len, uy = dy / len;
+          const fromR = fromNode.r || 30;
+          const toR   = toNode.r || 30;
+          if (len > fromR + toR) {
+            nx1 += ux * fromR;
+            ny1 += uy * fromR;
+            nx2 -= ux * toR;
+            ny2 -= uy * toR;
+          }
+        }
+
+        const ncp = _bezierCtrl(nx1, ny1, nx2, ny2, i);
+
+        // Previous curve coords
+        const ox1 = seg._cx1 || 0, oy1 = seg._cy1 || 0;
+        const ocx = seg._ccx || 0, ocy = seg._ccy || 0;
+        const ox2 = seg._cx2 || 0, oy2 = seg._cy2 || 0;
+
+        const dur = 550;
+        const start = performance.now() + 50;
+        function animSeg(now) {
+          let t = Math.min(1, (now - start) / dur);
+          if (t < 0) t = 0;
+          const ease = t < 1 ? 1 - Math.pow(1 - t, 3) * (1 + 2.5 * (1 - t) * Math.sin(t * Math.PI)) : 1;
+          const ax1 = ox1 + (nx1 - ox1) * ease;
+          const ay1 = oy1 + (ny1 - oy1) * ease;
+          const acx = ocx + (ncp.x - ocx) * ease;
+          const acy = ocy + (ncp.y - ocy) * ease;
+          const ax2 = ox2 + (nx2 - ox2) * ease;
+          const ay2 = oy2 + (ny2 - oy2) * ease;
+          seg.setAttribute("d", _curveD(ax1, ay1, acx, acy, ax2, ay2));
+          if (t < 1) requestAnimationFrame(animSeg);
+        }
+        requestAnimationFrame(animSeg);
+
+        // Store final coords
+        seg._cx1 = nx1; seg._cy1 = ny1;
+        seg._ccx = ncp.x; seg._ccy = ncp.y;
+        seg._cx2 = nx2; seg._cy2 = ny2;
+      });
+    });
+
+    // Re-check glow after animations settle
+    const totalAnimTime = MAX_DELAY + visible.length * 4 + 600;
+    setTimeout(() => updateProximityGlow(), totalAnimTime);
   }
 
   /* ── Pan & Zoom ───────────────────────────────────────────── */
@@ -547,6 +841,30 @@
     }, { passive: false });
   }
 
+  /* ── Bézier curve helpers (used by thread build + animations) ── */
+  /** Compute a quadratic Bézier control point offset perpendicular to the
+   *  line from (x1,y1)→(x2,y2).  The `idx` parameter alternates the sign
+   *  so consecutive segments arc in opposite directions for a spline feel. */
+  function _bezierCtrl(x1, y1, x2, y2, idx) {
+    const mx = (x1 + x2) / 2;
+    const my = (y1 + y2) / 2;
+    const dx = x2 - x1;
+    const dy = y2 - y1;
+    const len = Math.sqrt(dx * dx + dy * dy) || 1;
+    const px = -dy / len;
+    const py =  dx / len;
+    const sign = (idx % 2 === 0) ? 1 : -1;
+    const offset = len * 0.18 * sign;
+    return { x: mx + px * offset, y: my + py * offset };
+  }
+
+  /** Build an SVG quadratic Bézier path `d` attribute. */
+  function _curveD(x1, y1, cx, cy, x2, y2) {
+    return `M${x1},${y1} Q${cx},${cy} ${x2},${y2}`;
+  }
+
+
+
   /* ── Build Graph ──────────────────────────────────────────── */
   function buildGraph() {
     const datasets = ["work", "education", "projects", "hackathons", "games"];
@@ -564,10 +882,16 @@
         // Duration in months (minimum 3 for point-events like hackathons)
         const duration = Math.max(3, (endMo || startMo) - startMo);
 
-        // Determine quadrant: education items use their mapped quadrant
+        // Determine quadrant: education & work items use their mapped quadrant
         let quadrant = theme;
         if (theme === "education") {
           quadrant = eduQuadrantMap[item.ID] || "software";
+        } else if (theme === "work") {
+          quadrant = workQuadrantMap[item.ID] || "software";
+        } else if (theme === "hacks") {
+          quadrant = hacksQuadrantMap[item.ID] || "software";
+        } else if (theme === "projects") {
+          quadrant = projectsQuadrantMap[item.ID] || "software";
         }
 
         items.push({ item, category: cat, theme, quadrant, absMonth: startMo, endMonth: endMo || startMo, duration });
@@ -597,8 +921,10 @@
     _nodes = [];
 
     // ── Create center node ────────────────────────────────────
+    const centerSize = 90; // px — center node diameter
     const centerNode = document.createElement("div");
     centerNode.className = "kg-node kg-node-center";
+    centerNode.style.setProperty("--kg-size", centerSize + "px");
     centerNode.innerHTML = `<div class="kg-node-icon">🐧</div>`;
     centerNode.style.left = "0px";
     centerNode.style.top = "0px";
@@ -615,7 +941,7 @@
     const globalMax = Math.max(...items.map(it => it.absMonth));
     const dateRange = Math.max(1, globalMax - globalMin);
 
-    const MIN_DIST     = 80;    // px — minimum distance from center
+    const MIN_DIST     = 100;    // px — minimum distance from center
     const MAX_DIST     = 400;   // px — maximum distance from center
     const SPREAD_ANGLE = Math.PI / 2.5; // angular spread per quadrant (~72°)
 
@@ -735,24 +1061,8 @@
       const group = quadrants[qKey];
       if (group.length === 0) return;
 
-      // Create edge lines and node elements
+      // Create node elements
       group.forEach((it, idx) => {
-        // Edge: connect to previous node in same quadrant, or center
-        const parentX = idx > 0 ? group[idx - 1].x : 0;
-        const parentY = idx > 0 ? group[idx - 1].y : 0;
-
-        const edgeCfg = it.theme === "education" ? themeConfig.education : (themeConfig[it.quadrant] || themeConfig.software);
-        const edgeLine = document.createElementNS("http://www.w3.org/2000/svg", "line");
-        edgeLine.setAttribute("x1", parentX);
-        edgeLine.setAttribute("y1", parentY);
-        edgeLine.setAttribute("x2", it.x);
-        edgeLine.setAttribute("y2", it.y);
-        edgeLine.setAttribute("stroke", `rgba(${edgeCfg.color}, 0.25)`);
-        edgeLine.setAttribute("stroke-width", "1.5");
-        edgeLine.classList.add("kg-edge");
-        edgeLine.dataset.quadrant = it.quadrant;
-        _edgeSVG.appendChild(edgeLine);
-
         // Node element (pass size for duration-based circle)
         const el = buildNodeElement(it);
         el.style.left = it.x + "px";
@@ -775,13 +1085,14 @@
 
         _nodes.push({
           el,
-          edgeEl: edgeLine,
           theme: it.theme,
           quadrant: it.quadrant,
           item: it.item,
           category: it.category,
           absMonth: it.absMonth,
+          endMonth: it.endMonth,
           dist: it.dist,
+          r: it.r,
           targetX: it.x,
           targetY: it.y,
           whispers: wList,
@@ -790,6 +1101,145 @@
           activeWhisper: 0,    // which of the two whisper spans is currently shown
           lastWhisperIdx: -1,  // last whisper data index
           wasFocused: false,
+        });
+      });
+    });
+
+    // ── Create theme×quadrant threads (individual line segments with arrows) ──
+    _threads = [];
+    const svgNS = "http://www.w3.org/2000/svg";
+
+    // Add a <defs> for arrowhead markers (one per overlay theme)
+    let defs = _edgeSVG.querySelector("defs");
+    if (!defs) {
+      defs = document.createElementNS(svgNS, "defs");
+      _edgeSVG.prepend(defs);
+    }
+
+    const overlayThemes = ["work", "education", "hacks", "projects"];
+    const quadrantKeys  = ["robotics", "games", "software", "research"];
+
+    // SVG glow filter for neon thread effect
+    const glowFilter = document.createElementNS(svgNS, "filter");
+    glowFilter.setAttribute("id", "thread-glow");
+    glowFilter.setAttribute("x", "-50%");
+    glowFilter.setAttribute("y", "-50%");
+    glowFilter.setAttribute("width", "200%");
+    glowFilter.setAttribute("height", "200%");
+    const feBlur = document.createElementNS(svgNS, "feGaussianBlur");
+    feBlur.setAttribute("stdDeviation", "2.5");
+    feBlur.setAttribute("result", "blur");
+    const feMerge = document.createElementNS(svgNS, "feMerge");
+    const feMergeBlur = document.createElementNS(svgNS, "feMergeNode");
+    feMergeBlur.setAttribute("in", "blur");
+    const feMergeOrig = document.createElementNS(svgNS, "feMergeNode");
+    feMergeOrig.setAttribute("in", "SourceGraphic");
+    feMerge.appendChild(feMergeBlur);
+    feMerge.appendChild(feMergeOrig);
+    glowFilter.appendChild(feBlur);
+    glowFilter.appendChild(feMerge);
+    defs.appendChild(glowFilter);
+
+    // Create one arrowhead marker per overlay theme (fixed size)
+    overlayThemes.forEach(theme => {
+      const cfg = threadConfig[theme];
+      if (!cfg) return;
+      const markerId = `thread-arrow-${theme}`;
+      const marker = document.createElementNS(svgNS, "marker");
+      marker.setAttribute("id", markerId);
+      marker.setAttribute("viewBox", "0 0 10 10");
+      marker.setAttribute("refX", "10");
+      marker.setAttribute("refY", "5");
+      marker.setAttribute("markerWidth", "4");
+      marker.setAttribute("markerHeight", "4");
+      marker.setAttribute("orient", "auto-start-reverse");
+      marker.setAttribute("markerUnits", "userSpaceOnUse");
+      const arrowPath = document.createElementNS(svgNS, "path");
+      arrowPath.setAttribute("d", "M 0 1 L 10 5 L 0 9 z");
+      arrowPath.setAttribute("fill", `rgb(${cfg.color})`);
+      marker.appendChild(arrowPath);
+      defs.appendChild(marker);
+    });
+
+    // Virtual center node used as the origin for every thread's stem segment.
+    // Carries the same shape as real node objects so all animation paths work.
+    const _centerVirtual = {
+      targetX: 0, targetY: 0,
+      _newX: 0,   _newY: 0,
+      r: centerSize / 2,      // 45 px
+      _hidden: false,
+    };
+
+    // Create threads for each (overlayTheme, quadrant) pair with ≥2 nodes
+    overlayThemes.forEach(theme => {
+      const cfg = threadConfig[theme];
+      if (!cfg) return;
+
+      quadrantKeys.forEach(quadrant => {
+        const threadNodes = _nodes.filter(n => n.theme === theme && n.quadrant === quadrant);
+        if (threadNodes.length < 2) return;
+
+        // Sort by end-date (oldest completion first)
+        threadNodes.sort((a, b) => a.endMonth - b.endMonth);
+
+        // Prepend center virtual node so the first segment is center → oldest node
+        const nodesWithCenter = [_centerVirtual, ...threadNodes];
+
+        // Create one line segment per consecutive pair (including center stem)
+        const segments = [];
+        for (let i = 1; i < nodesWithCenter.length; i++) {
+          const fromNode = nodesWithCenter[i - 1];
+          const toNode   = nodesWithCenter[i];
+
+          let fromX = fromNode.targetX;
+          let fromY = fromNode.targetY;
+          let toX   = toNode.targetX;
+          let toY   = toNode.targetY;
+
+          // Shorten endpoints by node radii so arrows terminate at circle edge
+          const dx  = toX - fromX;
+          const dy  = toY - fromY;
+          const len = Math.sqrt(dx * dx + dy * dy);
+          if (len > 0) {
+            const ux = dx / len, uy = dy / len;
+            const fromR = fromNode.r || 30;
+            const toR   = toNode.r || 30;
+            if (len > fromR + toR) {
+              fromX += ux * fromR;
+              fromY += uy * fromR;
+              toX   -= ux * toR;
+              toY   -= uy * toR;
+            }
+          }
+
+          // Quadratic Bézier control point
+          const cp = _bezierCtrl(fromX, fromY, toX, toY, i);
+
+          const path = document.createElementNS(svgNS, "path");
+          path.setAttribute("d", _curveD(fromX, fromY, cp.x, cp.y, toX, toY));
+          path.setAttribute("fill", "none");
+          path.setAttribute("stroke", `rgb(${cfg.color})`);
+          path.setAttribute("stroke-width", "1");
+          path.setAttribute("stroke-linecap", "round");
+          path.setAttribute("filter", "url(#thread-glow)");
+          path.setAttribute("marker-end", `url(#thread-arrow-${theme})`);
+          path.classList.add("kg-thread");
+          path.dataset.theme    = theme;
+          path.dataset.quadrant = quadrant;
+
+          // Store current curve coords for animation interpolation
+          path._cx1 = fromX; path._cy1 = fromY;
+          path._ccx = cp.x;  path._ccy = cp.y;
+          path._cx2 = toX;   path._cy2 = toY;
+          _edgeSVG.appendChild(path);
+          segments.push(path);
+        }
+
+        _threads.push({
+          theme,
+          quadrant,
+          segments,
+          nodes: nodesWithCenter,   // [center, node0, node1, …]
         });
       });
     });
@@ -863,7 +1313,7 @@
   function buildNodeElement(it) {
     const { item, category, theme, quadrant } = it;
     // Education nodes use education color (deeper blue) regardless of quadrant placement
-    const cfg = theme === "education" ? themeConfig.education : (themeConfig[quadrant] || themeConfig.software);
+    const cfg = theme === "education" ? themeConfig.education : theme === "work" ? themeConfig.work : theme === "hacks" ? themeConfig.hacks : theme === "projects" ? themeConfig.projects : (themeConfig[quadrant] || themeConfig.software);
     const themeCfg = themeConfig[theme] || themeConfig.software;
     const size = it.size || 60;
 
@@ -877,7 +1327,7 @@
     const fontScale = Math.max(0.75, size / 80);
     el.style.setProperty("--kg-font", Math.round(8 * fontScale) + "px");
     el.style.setProperty("--kg-whisper", Math.round(7 * fontScale) + "px");
-    el.style.borderColor = `rgba(${cfg.color}, 0.45)`;
+    // border-color handled by CSS states (resting / in-focus / hover)
 
     const cleanName = (item.NAME || "")
       .replace(/<br\s*\/?>/gi, "\n")           // preserve <br> as newline
@@ -921,13 +1371,17 @@
       n.el.style.top = "0px";
       n.el.style.opacity = "0";
       n.el.style.transform = "translate(-50%, -50%) scale(0.3)";
-      if (n.edgeEl) {
-        n.edgeEl.setAttribute("x1", "0");
-        n.edgeEl.setAttribute("y1", "0");
-        n.edgeEl.setAttribute("x2", "0");
-        n.edgeEl.setAttribute("y2", "0");
-        n.edgeEl.style.opacity = "0";
-      }
+    });
+
+    // Reset thread curves to center
+    _threads.forEach(th => {
+      th.segments.forEach(seg => {
+        seg.setAttribute("d", _curveD(0, 0, 0, 0, 0, 0));
+        seg._cx1 = 0; seg._cy1 = 0;
+        seg._ccx = 0; seg._ccy = 0;
+        seg._cx2 = 0; seg._cy2 = 0;
+        seg.style.opacity = "0";
+      });
     });
 
     // Stagger nodes outward by distance from center (temporal order)
@@ -944,23 +1398,9 @@
         n.el.style.opacity = "";
         n.el.style.transform = "translate(-50%, -50%) scale(1)";
 
-        if (n.edgeEl) {
-          n.edgeEl.style.transition = "opacity 0.4s ease";
-          n.edgeEl.style.opacity = "";
-          // Find parent coordinates
-          const sameQuadrant = _nodes.filter(m => m.quadrant === n.quadrant);
-          const qIdx = sameQuadrant.indexOf(n);
-          const parentNode = qIdx > 0 ? sameQuadrant[qIdx - 1] : null;
-          n.edgeEl.setAttribute("x1", parentNode ? parentNode.targetX : 0);
-          n.edgeEl.setAttribute("y1", parentNode ? parentNode.targetY : 0);
-          n.edgeEl.setAttribute("x2", n.targetX);
-          n.edgeEl.setAttribute("y2", n.targetY);
-        }
-
         // Clear transition after animation
         setTimeout(() => {
           n.el.style.transition = "";
-          if (n.edgeEl) n.edgeEl.style.transition = "";
         }, 700);
       }, delay);
     });
@@ -978,8 +1418,58 @@
       });
     }
 
-    // Re-check glow after entrance animation settles
-    const totalAnimTime = MAX_DELAY + _nodes.length * 8 + 700;
-    setTimeout(() => updateProximityGlow(), totalAnimTime);
+    // Wait until all nodes have finished positioning before animating threads
+    const nodeSettleTime = MAX_DELAY + _nodes.length * 8 + 700;
+    setTimeout(() => {
+      // Fade in thread curves once nodes are in place
+      _threads.forEach(th => {
+        const thNodes = th.nodes;
+        th.segments.forEach((seg, i) => {
+          // Segment i connects thNodes[i] → thNodes[i+1]
+          const fromNode = thNodes[i];
+          const toNode   = thNodes[i + 1];
+
+          let fx1 = fromNode.targetX;
+          let fy1 = fromNode.targetY;
+          let fx2 = toNode.targetX;
+          let fy2 = toNode.targetY;
+
+          // Shorten by radii
+          const dx  = fx2 - fx1;
+          const dy  = fy2 - fy1;
+          const len = Math.sqrt(dx * dx + dy * dy);
+          if (len > 0) {
+            const ux = dx / len, uy = dy / len;
+            const fromR = fromNode.r || 30;
+            const toR   = toNode.r || 30;
+            if (len > fromR + toR) {
+              fx1 += ux * fromR;
+              fy1 += uy * fromR;
+              fx2 -= ux * toR;
+              fy2 -= uy * toR;
+            }
+          }
+
+          const fcp = _bezierCtrl(fx1, fy1, fx2, fy2, i);
+
+          // Set final path immediately, fade in with staggered delay
+          seg.setAttribute("d", _curveD(fx1, fy1, fcp.x, fcp.y, fx2, fy2));
+          seg.style.transition = "opacity 0.6s ease";
+          const delay = i * 60;
+          setTimeout(() => {
+            seg.style.opacity = "";
+            setTimeout(() => { seg.style.transition = ""; }, 700);
+          }, delay);
+
+          // Store final coords
+          seg._cx1 = fx1; seg._cy1 = fy1;
+          seg._ccx = fcp.x; seg._ccy = fcp.y;
+          seg._cx2 = fx2; seg._cy2 = fy2;
+        });
+      });
+
+      // Re-check glow after thread animations settle
+      setTimeout(() => updateProximityGlow(), 800);
+    }, nodeSettleTime);
   }
 })();

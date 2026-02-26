@@ -3753,14 +3753,23 @@ html.light-mode .timeline-filter.filter-pulse {
   height: 4000px;
   pointer-events: none;
   overflow: visible;
+  z-index: 1;
 }
 
-.kg-edge {
-  transition: opacity 0.3s ease;
+/* ── Theme×quadrant threads (neon glow lines connecting same-theme nodes within a quadrant) ── */
+.kg-thread {
+  transition: opacity 0.4s ease;
+  animation: thread-pulse 3s ease-in-out infinite;
 }
 
-.kg-edge-hidden {
+@keyframes thread-pulse {
+  0%, 100% { stroke-width: 1; }
+  50%      { stroke-width: 1.8; }
+}
+
+.kg-thread-hidden {
   opacity: 0 !important;
+  animation: none;
 }
 
 /* ── Node (positioned absolutely within kg-world) ─────────── */
@@ -3771,37 +3780,32 @@ html.light-mode .timeline-filter.filter-pulse {
   width: var(--kg-size, 70px);
   height: var(--kg-size, 70px);
   border-radius: 50%;
-  border: 2px solid rgba(255, 255, 255, 0.2);
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  border: 2px solid #333;
+  background: #191919;
   cursor: pointer;
-  transition: background 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease, opacity 0.3s ease;
+  transition: background 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
   z-index: 3;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 1px;
-  opacity: 0.55;
   overflow: visible;
   padding: 6px;
   text-align: center;
 }
 
 .kg-node:hover {
-  background: rgba(var(--tc), 0.10);
-  border-color: rgba(var(--tc), 0.6);
-  box-shadow: 0 0 20px rgba(var(--tc), 0.25),
-              0 0 50px rgba(var(--tc), 0.12),
-              0 0 100px rgba(var(--tc), 0.06);
+  background: #000;
+  border-color: #fff;
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.15),
+              0 0 50px rgba(255, 255, 255, 0.06);
   z-index: 10;
-  opacity: 1;
 }
 
 .kg-node.kg-in-focus {
-  opacity: 1;
-  border-color: rgba(var(--tc), 0.55);
+  background: color-mix(in srgb, rgb(var(--tc)) 20%, #191919);
+  border-color: rgb(var(--tc));
   box-shadow: 0 0 18px rgba(var(--tc), 0.22),
               0 0 45px rgba(var(--tc), 0.10),
               0 0 90px rgba(var(--tc), 0.05);
@@ -3811,6 +3815,7 @@ html.light-mode .timeline-filter.filter-pulse {
 .kg-node.kg-hidden {
   opacity: 0 !important;
   pointer-events: none;
+  transition: opacity 0.3s ease;
 }
 
 /* ── Center node (identity) ───────────────────────────────── */
@@ -3822,10 +3827,10 @@ html.light-mode .timeline-filter.filter-pulse {
   border-radius: 50%;
   padding: 0;
   gap: 0;
-  min-width: 90px;
-  max-width: 90px;
-  width: 90px;
-  height: 90px;
+  width: var(--kg-size, 90px);
+  min-width: var(--kg-size, 90px);
+  max-width: var(--kg-size, 90px);
+  height: var(--kg-size, 90px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -3848,9 +3853,9 @@ html.light-mode .timeline-filter.filter-pulse {
 }
 
 .kg-node-center .kg-node-icon {
-  font-size: 36px;
+  font-size: calc(var(--kg-size, 90px) * 0.4);
   line-height: 1;
-  margin-top: -10px;
+  margin-top: calc(var(--kg-size, 90px) * -0.11);
   transition: transform 0.3s ease;
 }
 
@@ -3961,18 +3966,20 @@ html.light-mode .kg-filter.filter-pulse {
 }
 
 html.light-mode .kg-node {
-  background: rgba(0, 0, 0, 0.03);
+  background: #e6e6e6;
+  border-color: #ccc;
 }
 
 html.light-mode .kg-node:hover {
-  background: rgba(var(--tc), 0.06);
-  border-color: rgba(var(--tc), 0.45);
-  box-shadow: 0 0 16px rgba(var(--tc), 0.18),
-              0 0 40px rgba(var(--tc), 0.10),
-              0 0 80px rgba(var(--tc), 0.05);
+  background: #fff;
+  border-color: #000;
+  box-shadow: 0 0 16px rgba(0, 0, 0, 0.12),
+              0 0 40px rgba(0, 0, 0, 0.06);
 }
 
 html.light-mode .kg-node.kg-in-focus {
+  background: color-mix(in srgb, rgb(var(--tc)) 15%, #e6e6e6);
+  border-color: rgb(var(--tc));
   box-shadow: 0 0 14px rgba(var(--tc), 0.15),
               0 0 36px rgba(var(--tc), 0.08),
               0 0 70px rgba(var(--tc), 0.04);
