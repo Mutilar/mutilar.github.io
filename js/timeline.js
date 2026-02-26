@@ -587,7 +587,7 @@
       if (s.endOff   > visMax) visMax = s.endOff;
     });
     // Extra seasons above & below for visual breathing room
-    visMin -= 3;
+    visMin -= 6;
     visMax += 9;
 
     const totalH = (visMax - visMin + 1) * MONTH_H + CALENDAR_PAD * 2;
@@ -670,7 +670,7 @@
       if (s.endOff   > visMax) visMax = s.endOff;
     });
     // Extra seasons to match ruler
-    visMin -= 3;
+    visMin -= 6;
     visMax += 9;
 
     /* ---- 1. Build events ---- */
