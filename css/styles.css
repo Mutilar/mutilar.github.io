@@ -3250,7 +3250,7 @@ html.light-mode .outline-pill {
 
 .timeline-modal-card .modal-sticky-bar {
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: flex-end;
   gap: 6px;
 }
 
