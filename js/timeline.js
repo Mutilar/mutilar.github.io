@@ -349,7 +349,7 @@
       scrollHint = document.createElement("div");
       scrollHint.id = "tl-scroll-hint";
       scrollHint.className = "scroll-hint tl-scroll-hint";
-      scrollHint.innerHTML = '<strong>Take A Scroll</strong><span class="scroll-arrow">🚶</span>';
+      scrollHint.innerHTML = '<strong>Take A Stroll</strong><span class="scroll-arrow">🚶</span>';
       scrollHint.style.cursor = "pointer";
       const tlContainer = document.getElementById("timeline-container");
       tlContainer.appendChild(scrollHint);
@@ -937,8 +937,7 @@
       `</div>`;
 
     el.addEventListener("click", () => {
-      closeTimelineModal();
-      setTimeout(() => navigateToModal(category, item.ID), 350);
+      openModal(category, item.ID);
     });
 
     return el;

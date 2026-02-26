@@ -112,7 +112,9 @@ hr {
 .scroll-hint {
   position: relative;
   margin-top: 48px;
-  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  width: fit-content;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -126,7 +128,12 @@ hr {
   cursor: pointer;
   user-select: none;
   transition: opacity 0.4s ease, color 0.25s ease;
-  animation: bounce-y 1.8s ease-in-out infinite;
+  animation: bounce-y 1.8s ease-in-out infinite, tl-glow-pulse 3s ease-in-out infinite;
+  /* Glow pill */
+  background: rgba(0, 0, 0, 0.55);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5), 0 0 40px rgba(0, 0, 0, 0.25);
+  padding: 8px 20px;
+  border-radius: 18px;
 }
 
 a.scroll-hint:hover {
@@ -154,7 +161,7 @@ a.scroll-hint:hover strong {
   transform: translateX(-50%);
   margin-top: 0;
   width: auto;
-  animation: bounce-y-hero 1.8s ease-in-out infinite;
+  animation: bounce-y-hero 1.8s ease-in-out infinite, tl-glow-pulse 3s ease-in-out infinite;
 }
 
 @keyframes bounce-y {
@@ -1160,6 +1167,11 @@ html.light-mode .card-action-badge.badge-static {
   justify-content: center;
   padding: 40px 12px;
   overflow-y: auto;
+}
+
+/* Detail modal stacks above timeline modal */
+#modal.open {
+  z-index: 210;
 }
 
 .modal-overlay.open {
@@ -2657,19 +2669,22 @@ html.light-mode .section-blurb a {
 }
 
 html.light-mode .scroll-hint {
-  color: rgba(255, 255, 255, 0.55);
+  color: rgba(0, 0, 0, 0.45);
+  background: rgba(255, 255, 255, 0.7);
+  box-shadow: 0 0 16px rgba(255, 255, 255, 0.6), 0 0 32px rgba(255, 255, 255, 0.3);
+  animation: bounce-y 1.8s ease-in-out infinite, tl-glow-pulse-light 3s ease-in-out infinite;
 }
 
 html.light-mode a.scroll-hint:hover {
-  color: rgba(255, 255, 255, 0.9);
+  color: rgba(0, 0, 0, 0.7);
 }
 
 html.light-mode a.scroll-hint strong {
-  color: rgba(255, 255, 255, 0.75);
+  color: rgba(0, 0, 0, 0.6);
 }
 
 html.light-mode a.scroll-hint:hover strong {
-  color: rgba(255, 255, 255, 1);
+  color: rgba(0, 0, 0, 0.85);
 }
 
 /* ── Section badges ───────────────────────────────────────── */
@@ -3327,7 +3342,7 @@ html.light-mode .timeline-filter.filter-pulse {
   z-index: 20;
   cursor: pointer;
   transition: opacity 0.3s ease, color 0.25s ease;
-  animation: bounce-y 1.8s ease-in-out infinite;
+  animation: bounce-y 1.8s ease-in-out infinite, tl-glow-pulse 3s ease-in-out infinite;
 }
 
 .tl-scroll-hint:hover {
