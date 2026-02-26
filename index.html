@@ -182,6 +182,7 @@
     <div class="band-content band-header">
       <h2 class="section-heading reveal" style="margin-bottom:0;">👋 About Me</h2>
       <a class="section-badge section-badge-glow" href="#" onclick="event.preventDefault(); openTimelineModal();"><i class="fa fa-clock-o"></i> Timeline</a>
+      <a class="section-badge section-badge-glow" href="#" onclick="event.preventDefault(); openKnowledgeModal();"><i class="fa fa-share-alt"></i> Graph</a>
     </div>
   </div>
 
@@ -208,6 +209,12 @@
           <div class="video-label">📅 Timeline<span class="card-action-badge badge-dive">🔍 See More!</span></div>
           <div class="video-wrap">
             <img class="theme-img" data-src-dark="images/timeline.png" data-src-light="images/timeline-light.png" src="images/timeline.png" alt="Timeline" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" loading="lazy">
+          </div>
+        </div>
+        <div class="glass-tile video-card reveal" style="cursor:pointer;" role="button" tabindex="0" aria-label="Open Graph of Knowledge" data-action="scroll-open" data-scroll-to="work" data-open="knowledgeModal">
+          <div class="video-label">🕸️ Graph<span class="card-action-badge badge-dive">🔍 See More!</span></div>
+          <div class="video-wrap" style="display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.15);">
+            <span style="font-size:64px;opacity:0.5;">🕸️</span>
           </div>
         </div>
         <div class="glass-tile video-card reveal" style="cursor:pointer;" role="button" tabindex="0" aria-label="See more about Iterate" data-action="scroll-modal" data-scroll-to="projects" data-modal-dataset="projects" data-modal-id="iterate">
@@ -978,6 +985,30 @@
 </div>
 
 <!-- ═══════════════════════════════════════════════════════════════
+     GRAPH OF KNOWLEDGE MODAL
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="modal-overlay" id="knowledge-modal">
+  <div class="glass-tile modal-card kg-modal-card" style="position:relative;">
+    <div class="modal-sticky-bar">
+      <div class="kg-filter-group tl-glow">
+        <button class="kg-filter active" data-filter="all" style="--tc:255,255,255;--tc-light:30,30,40"><span class="all-indicator">⬜</span> 🎛️ All</button>
+        <button class="kg-filter" data-filter="robotics" style="--tc:242,80,34"><span class="timeline-dot" style="background:rgba(242,80,34,0.9);"></span> 🤖 Robotics</button>
+        <button class="kg-filter" data-filter="games" style="--tc:127,186,0"><span class="timeline-dot" style="background:rgba(127,186,0,0.9);"></span> 🎮 Games</button>
+        <button class="kg-filter" data-filter="software" style="--tc:0,164,239"><span class="timeline-dot" style="background:rgba(0,164,239,0.9);"></span> 💻 Software</button>
+        <button class="kg-filter" data-filter="research" style="--tc:255,185,0"><span class="timeline-dot" style="background:rgba(255,185,0,0.9);"></span> 🔬 Research</button>
+        <button class="kg-filter" data-filter="education" style="--tc:0,120,212"><span class="timeline-dot" style="background:rgba(0,120,212,0.9);"></span> 🎓 Education</button>
+        <button class="modal-close" id="knowledgeModalClose" aria-label="Close modal">&times;</button>
+      </div>
+    </div>
+    <div class="kg-viewport" style="cursor:grab;">
+      <div class="kg-world">
+        <svg class="kg-edges" xmlns="http://www.w3.org/2000/svg"></svg>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
      TIMELINE MODAL
      ═══════════════════════════════════════════════════════════════ -->
 <div class="modal-overlay" id="timeline-modal">
@@ -1032,6 +1063,7 @@
 <script defer src="js/pdfviewer.js"></script>
 <script defer src="js/data.js"></script>
 <script defer src="js/timeline.js"></script>
+<script defer src="js/knowledge-graph.js"></script>
 <script defer src="js/radio.js"></script>
 
 </body>

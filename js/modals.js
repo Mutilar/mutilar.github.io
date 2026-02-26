@@ -143,29 +143,21 @@ function _applyGlow(dataset, id) {
 }
 
 function navigateToModal(dataset, id, imgExt) {
-  // Close any open modal without triggering glow fade
-  toggleModal(modal, false);
+  // Clear any existing glow without the fade-out animation
   if (_glowingTile) {
     _glowingTile.classList.remove('tile-glow', 'tile-glow-fade');
     _glowingTile = null;
   }
 
-  // Find the tile and scroll it into view
-  const gridId = dataset + '-grid';
-  const grid = document.getElementById(gridId);
-  const tile = grid
-    ? grid.querySelector(`[data-entry-id="${id}"]`)
-    : document.querySelector(`[data-entry-id="${id}"]`);
-
-  if (tile) {
-    tile.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  } else {
-    const section = document.getElementById(dataset);
-    if (section) section.scrollIntoView({ behavior: 'smooth' });
+  // If the modal is already open, just swap content in-place
+  // (skip the close/open cycle so the overlay stays visible)
+  if (modal.classList.contains("open")) {
+    openModal(dataset, id, imgExt);
+    return;
   }
 
-  // openModal will handle the glow
-  setTimeout(() => openModal(dataset, id, imgExt), 600);
+  // Otherwise open fresh
+  openModal(dataset, id, imgExt);
 }
 
 function _fadeOutGlow() {
@@ -191,8 +183,9 @@ window.closeDeckModal = window.closeDeckModal || function() {};
 
 // Safe no-op for timeline modal close until timeline.js loads
 window.closeTimelineModal = window.closeTimelineModal || function() {};
+window.closeKnowledgeModal = window.closeKnowledgeModal || function() {};
 
-document.addEventListener("keydown", e => { if (e.key === "Escape") { closeModal(); closePdfModal(); closeResumePdfModal(); closeGameModal(); closeMarpModal(); closeArchModal(); closeBitnaughtsModal(); closeBitnaughtsIphoneModal(); window.closeDeckModal(); window.closeTimelineModal(); } });
+document.addEventListener("keydown", e => { if (e.key === "Escape") { closeModal(); closePdfModal(); closeResumePdfModal(); closeGameModal(); closeMarpModal(); closeArchModal(); closeBitnaughtsModal(); closeBitnaughtsIphoneModal(); window.closeDeckModal(); window.closeTimelineModal(); window.closeKnowledgeModal(); } });
 
 // ── Footer year (safe alternative to document.write) ──
 const footerYear = document.getElementById("footer-year");
@@ -205,6 +198,7 @@ const _modalOpeners = {
   bitnaughtsIphoneModal: function() { openBitnaughtsIphoneModal(); },
   archModal: function() { openArchModal(); },
   timelineModal: function() { window.openTimelineModal && window.openTimelineModal(); },
+  knowledgeModal: function() { window.openKnowledgeModal && window.openKnowledgeModal(); },
 };
 
 document.addEventListener("click", function(e) {
@@ -319,9 +313,13 @@ bitnaughtsIphoneModalClose.addEventListener("click", closeBitnaughtsIphoneModal)
 bitnaughtsIphoneModal.addEventListener("click", e => { if (e.target === bitnaughtsIphoneModal) closeBitnaughtsIphoneModal(); });
 
 // Close modal when clicking an in-page anchor link (e.g. #games)
+// but NOT if the link navigates to another modal via navigateToModal
 modal.addEventListener("click", function (e) {
   const link = e.target.closest("a[href^='#']");
-  if (link) closeModal();
+  if (!link) return;
+  const onclickAttr = link.getAttribute("onclick") || "";
+  if (onclickAttr.indexOf("navigateToModal") !== -1) return;
+  closeModal();
 });
 
 // ═══════════════════════════════════════════════════════════════

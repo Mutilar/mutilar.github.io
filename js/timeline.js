@@ -52,6 +52,8 @@
     cse180: "education", cse165: "education", cse160: "education",
     cse120: "education", cse111: "education", cse100: "education",
     cse031: "education", cse030: "education", cse015: "education",
+    // Education — high school
+    ropgamedesign: "education", roparchitecture: "education", apjava: "education",
   };
 
   function getTheme(item) {
@@ -756,12 +758,12 @@
       "💰 $18K+<sup>Budget</sup>",
     ],
     "voodoo": [
-      "🎨 Pixe<sup>Art</sup>",
+      "🎨 Pixel<sup>Art</sup>",
     ],
 
     /* ── Single-whisper (coSlumn) ── */
     "microsoft|Senior SWE": [
-      "🧠 A.I. U.X.",
+      "🧠 A.I.<sup>U.X.</sup>",
     ],
     "microsoft|SWE Intern": [
       "⚡ MLOps",
@@ -861,6 +863,15 @@
     "cse015": [
       "🔢 Proofs",
     ],
+    "ropgamedesign": [
+      "🕹️ Unity",
+    ],
+    "roparchitecture": [
+      "🏗️ CAD",
+    ],
+    "apjava": [
+      "☕ Java",
+    ],
 
     /* ── Hackathon single-whispers ── */
     "gasleek": [
@@ -879,7 +890,7 @@
       "🌸 Tower<sup>Def</sup>",
     ],
     "galconq": [
-      "🌌 4X VB<sup>.NET</sup>",
+      "🌌 4<sup>X</sup> VB<sup>.NET</sup>",
     ],
     "seerauber": [
       "🥈 2<sup>ND</sup>",
