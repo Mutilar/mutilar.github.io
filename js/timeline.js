@@ -13,6 +13,7 @@
   const MIN_SPAN  = 1;    // minimum 1-month height for point events
   const MONTH_LABELS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
   const GAP = 3;          // px gap between side-by-side slivers
+  const CALENDAR_PAD = 200; // px buffer top & bottom of timeline
 
   /* ── Thematic work-stream categories ────────────────────── */
   const themeConfig = {
@@ -327,63 +328,149 @@
       whisperHUD.id = "tl-whisper-hud";
       whisperHUD.className = "tl-whisper-hud";
       whisperHUD.innerHTML =
-        '<div class="tl-whisper-col tl-whisper-left"></div>' +
-        '<div class="tl-whisper-col tl-whisper-right"></div>';
+        '<div class="tl-whisper-col tl-whisper-left">' +
+          '<span class="tl-whisper-layer"></span>' +
+          '<span class="tl-whisper-layer"></span>' +
+        '</div>' +
+        '<div class="tl-whisper-col tl-whisper-right">' +
+          '<span class="tl-whisper-layer"></span>' +
+          '<span class="tl-whisper-layer"></span>' +
+        '</div>' +
+        '<div class="tl-whisper-col tl-whisper-center">' +
+          '<span class="tl-whisper-layer"></span>' +
+          '<span class="tl-whisper-layer"></span>' +
+        '</div>';
       document.body.appendChild(whisperHUD);
     }
     whisperHUD.classList.add("tl-whisper-active");
-    const whisperL = whisperHUD.querySelector(".tl-whisper-left");
-    const whisperR = whisperHUD.querySelector(".tl-whisper-right");
+    const colL = whisperHUD.querySelector(".tl-whisper-left");
+    const colR = whisperHUD.querySelector(".tl-whisper-right");
+    const colC = whisperHUD.querySelector(".tl-whisper-center");
+    const layersL = colL.querySelectorAll(".tl-whisper-layer");
+    const layersR = colR.querySelectorAll(".tl-whisper-layer");
+    const layersC = colC.querySelectorAll(".tl-whisper-layer");
+    let _activeL = 0, _activeR = 0, _activeC = 0;
 
-    let _lastWhisperL = "", _lastWhisperR = "";
+    let _lastWhisperL = "", _lastWhisperR = "", _lastWhisperC = "";
+    const WHISPER_FADE_PX = 150;          // px of scroll over which HUD fades in/out
+
+    function crossfade(layers, activeIdx, html) {
+      // Fade out the old layer, fade in the new one
+      const outLayer = layers[activeIdx];
+      const inLayer  = layers[1 - activeIdx];
+      inLayer.innerHTML = html;
+      inLayer.classList.add("tl-whisper-show");
+      outLayer.classList.remove("tl-whisper-show");
+      return 1 - activeIdx;
+    }
+
+    function fadeOut(layers, activeIdx) {
+      layers[activeIdx].classList.remove("tl-whisper-show");
+    }
+
     function updateWhispers() {
       const rect = modalCard.getBoundingClientRect();
-      const centerY = rect.top + rect.height / 2;
-      let textL = "", textR = "";
+      const centerY = rect.top + rect.height / 2 + 10; // shift up to account for header
+
+      /* ── Align HUD to timeline-entries (same basis as sliver %) ── */
+      const entriesRect = _container.getBoundingClientRect();
+      whisperHUD.style.left  = entriesRect.left + 'px';
+      whisperHUD.style.width = entriesRect.width + 'px';
+
+      /* ── Scroll-position-based master opacity ── */
+      const st = modalCard.scrollTop;
+      const maxScroll = modalCard.scrollHeight - modalCard.clientHeight;
+      const fadeIn  = Math.min(1, st / WHISPER_FADE_PX);
+      const fadOut  = Math.min(1, Math.max(0, (maxScroll - st)) / WHISPER_FADE_PX);
+      const masterOpacity = Math.min(fadeIn, fadOut);
+      whisperHUD.style.opacity = masterOpacity;
+
+      let textL = "", textR = "", textC = "";
+      let fadeFactorL = 0, fadeFactorR = 0, fadeFactorC = 0;
+      const FADE_ZONE = MONTH_H * 0.5;   // fade over ~half a month outside sliver edges
+      const glowingSlivers = new Set();
 
       _allSlivers.forEach(s => {
         if (!s.whisperKey || s.el.classList.contains("tl-hidden")) return;
         const list = whisperData[s.whisperKey];
-        if (!list || list.length < 2) return;
+        if (!list || !list.length) return;
 
         const sr = s.el.getBoundingClientRect();
-        // Is this sliver crossing the viewport center band?
-        if (sr.bottom < centerY - 40 || sr.top > centerY + 40) return;
+        // Hard cutoff: fully outside the fade band
+        if (sr.bottom + FADE_ZONE < centerY || sr.top - FADE_ZONE > centerY) return;
 
-        // Progress through sliver (0 at top, 1 at bottom)
-        const progress = Math.max(0, Math.min(1, (centerY - sr.top) / sr.height));
-        const idx = Math.min(list.length - 1, Math.floor(progress * list.length));
-
-        // Assign to left or right based on sliver's column position
-        const sliverLeft = sr.left;
-        const mid = rect.left + rect.width / 2;
-        if (sliverLeft < mid) {
-          textL = list[idx];
-        } else {
-          textR = list[idx];
+        // Full opacity while center is inside the sliver;
+        // fade in/out over FADE_ZONE px *outside* the sliver edges
+        let fadeFactor = 1;
+        if (centerY < sr.top - 25) {
+          // Center is above the sliver — fade in as it approaches
+          fadeFactor = Math.max(0, 1 - (sr.top - 25 - centerY) / FADE_ZONE);
+        } else if (centerY > sr.bottom) {
+          // Center is below the sliver — fade out as it departs
+          fadeFactor = Math.max(0, 1 - (centerY - sr.bottom) / FADE_ZONE);
         }
+
+        // For single-entry lists, always show index 0;
+        // for multi-entry, compress so last item shows before full fade
+        let idx = 0;
+        if (list.length > 1) {
+          const effectiveH = sr.height - FADE_ZONE * 0.5;
+          const progress = Math.max(0, Math.min(1, (centerY - sr.top) / effectiveH));
+          idx = Math.min(list.length - 1, Math.floor(progress * list.length));
+        }
+
+        if (fadeFactor > 0) glowingSlivers.add(s);
+
+        // Explicitly tagged center keys go to center column;
+        // others go to left/right based on sliver position
+        if (whisperCenter.has(s.whisperKey)) {
+          textC = list[idx];
+          fadeFactorC = Math.max(fadeFactorC, fadeFactor);
+        } else {
+          const sliverLeft = sr.left;
+          const mid = entriesRect.left + entriesRect.width / 2;
+          if (sliverLeft < mid) {
+            textL = list[idx];
+            fadeFactorL = Math.max(fadeFactorL, fadeFactor);
+          } else {
+            textR = list[idx];
+            fadeFactorR = Math.max(fadeFactorR, fadeFactor);
+          }
+        }
+      });
+
+      // Apply per-column fade
+      colL.style.opacity = fadeFactorL;
+      colR.style.opacity = fadeFactorR;
+      colC.style.opacity = fadeFactorC;
+
+      // Glow tiles with active whispers
+      _allSlivers.forEach(s => {
+        s.el.classList.toggle("tl-whisper-glow", glowingSlivers.has(s));
       });
 
       if (textL !== _lastWhisperL) {
         _lastWhisperL = textL;
         if (textL) {
-          whisperL.classList.remove("tl-whisper-show");
-          void whisperL.offsetWidth;
-          whisperL.textContent = textL;
-          whisperL.classList.add("tl-whisper-show");
+          _activeL = crossfade(layersL, _activeL, textL.replace(/\n/g, '<br>'));
         } else {
-          whisperL.classList.remove("tl-whisper-show");
+          fadeOut(layersL, _activeL);
         }
       }
       if (textR !== _lastWhisperR) {
         _lastWhisperR = textR;
         if (textR) {
-          whisperR.classList.remove("tl-whisper-show");
-          void whisperR.offsetWidth;
-          whisperR.textContent = textR;
-          whisperR.classList.add("tl-whisper-show");
+          _activeR = crossfade(layersR, _activeR, textR.replace(/\n/g, '<br>'));
         } else {
-          whisperR.classList.remove("tl-whisper-show");
+          fadeOut(layersR, _activeR);
+        }
+      }
+      if (textC !== _lastWhisperC) {
+        _lastWhisperC = textC;
+        if (textC) {
+          _activeC = crossfade(layersC, _activeC, textC.replace(/\n/g, '<br>'));
+        } else {
+          fadeOut(layersC, _activeC);
         }
       }
     }
@@ -411,7 +498,7 @@
     visMin -= 1;
     visMax += 1;
 
-    const totalH = (visMax - visMin + 1) * MONTH_H;
+    const totalH = (visMax - visMin + 1) * MONTH_H + CALENDAR_PAD * 2;
     _container.style.height = totalH + "px";
 
     const SEASON_MONTHS = { 2: "Spring", 5: "Summer", 8: "Fall", 11: "Winter" };
@@ -419,7 +506,7 @@
     for (let am = visMax; am >= visMin; am--) {
       const y = Math.floor(am / 12);
       const m = am - y * 12;
-      const top = (visMax - am) * MONTH_H;
+      const top = CALENDAR_PAD + (visMax - am) * MONTH_H;
 
       if (m === 0) {
         const yl = document.createElement("div");
@@ -534,7 +621,7 @@
     const LEFT_MARGIN = 54;
     visible.forEach(s => {
       const spanMonths = s.endOff - s.startOff + 1;
-      const top    = (visMax - s.endOff) * MONTH_H;
+      const top    = CALENDAR_PAD + (visMax - s.endOff) * MONTH_H;
       const height = spanMonths * MONTH_H;
       const cols = peakN.get(s) || 1;
       const idx  = peakCol.get(s) || 0;
@@ -550,34 +637,127 @@
 
   /* ── Whisper accomplishments for tall slivers ───────────── */
   const whisperData = {
-    "microsoft|SWE I & II": [
-      "8 billion requests / day",
-      "30+ Azure regions",
-      "Envoy Proxy · C++ filters",
-      "SHA-256 auth · CORS",
-      "AAD auth · LRU cache",
-      "Global rate limiting",
-      "Azure ML · GA launch",
-      "DRI Champ",
-      "VMSS microservices",
-      "ADX telemetry · PowerBI",
-    ],
-    "microsoft|Senior SWE": [
-      "Senior SWE · E+D",
+    /* ── Multi-whisper (tall slivers) ── */
+    "microsoft|SWE I &amp; II": [
+      "🌐 8B+ inferences/day",
+      "☁️ 50+ DCs",
+      "⚙️ Envoy Proxy",
+      "🚀 GA launches",
+      "🛡️ DRI Champ",
+      "🔒 Security Champ",
     ],
     "bitnaughts": [
-      "4 Microsoft Hackathons",
-      "Unity 6.0 · C#",
-      "Custom interpreter",
-      "WebGL · bitnaughts.io",
-      "Git submodule architecture",
-      "Azure serverless backend",
-      "OOP spaceship builder",
-      "Code → gameplay",
-      "Open-source engine",
-      "Real-time OP Code eval",
+      "🎓 Programming",
+      "🧠 Interpreter",
+      "🌍 WebGL",
+      "💻 4 Hackathons",
+      "🔄 Prototyped",
+      "🎮 Code Gamified!",
+    ],
+    "redtierobotics|Electrician": [
+      "⚡ AMAX",
+    ],
+    "redtierobotics|Electrical Lead": [
+      "🔌 CAD",
+    ],
+    "redtierobotics|Treasurer": [
+      "💰 $18K+ budget",
+    ],
+    "voodoo": [
+      "🎨 Pixel Art",
+    ],
+
+    /* ── Single-whisper (coSlumn) ── */
+    "microsoft|SWE Intern": [
+      "⚡ MLOps",
+    ],
+    "marp": [
+      "🤖 Robot",
+    ],
+    "iterate": [
+      "🏆 $5,000",
+    ],
+    "ventana": [
+      "🔬 A.I. vs. cancer",
+    ],
+    "home-iot": [
+      "🔘 Tactility",
+    ],
+    "azuremlops": [
+      "⚡CI/CD",
+    ],
+    "firmi": [
+      "🚀 3D-printing",
+    ],
+    "hackmerced": [
+      "🧑‍💻 350+ hackers",
+    ],
+    "motleymoves": [
+      "🏃 A.I. exercise",
+    ],
+    "andeslab": [
+      "🔬 HVAC Research",
+    ],
+    "breeze": [
+      "💨 Aux air quality",
+    ],
+    "dogpark": [
+      "🏆 Finalist",
+    ],
+    "vicelab": [
+      "🛰️ A.I. Ag",
+    ],
+    "maces": [
+      "🚀 NASA MUREP",
+    ],
+    "citris": [
+      "🏙️ GitOps CMS",
+    ],
+    "amaxesd": [
+      "⚡ ESD",
+    ],
+    "summerofgamedesign|Instructor": [
+      "👨‍🏫 50+ students",
+    ],
+    "summerofgamedesign|Founder": [
+      "💰 $25K+ fundraised",
+    ],
+    "alamorobotics": [
+      "🤖 Lego Mindstorm",
+    ],
+    "acm": [
+      "💻 Outreach Lead",
+    ],
+    "learnbeat": [
+      "📚 STEM Education",
+    ],
+
+    /* ── Hackathon single-whispers ── */
+    "gasleek": [
+      "🏆 First Place",
+    ],
+    "sriracha": [
+      "🦿 Third Place",
+    ],
+    "smartank": [
+      "🚜 Best Hardware",
+    ],
+    "spaceninjas": [
+      "🥷 Boilerplate",
     ],
   };
+
+  // Keys that render in the full-width center column instead of left/right
+  // Only items that are truly alone in their time slot (no overlapping items)
+  const whisperCenter = new Set([
+    "iterate",                      // Winter 2016 — alone
+    "ventana",                      // Summer 2018 — alone
+    "home-iot",                     // Winter 2019 — alone
+    "redtierobotics|Electrical Lead",
+    "redtierobotics|Treasurer",
+    "summerofgamedesign|Instructor", // Summer 2016 — full width
+    "voodoo",                       // center
+  ]);
 
   function getWhisperKey(item, titleOverride) {
     const key1 = titleOverride ? `${item.ID}|${titleOverride}` : item.ID;

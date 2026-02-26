@@ -2920,12 +2920,19 @@ html.light-mode .tl-sliver:hover {
               0 0 80px rgba(var(--tc), 0.05);
 }
 
+html.light-mode .tl-sliver.tl-whisper-glow {
+  box-shadow: 0 0 10px rgba(var(--tc), 0.12),
+              0 0 25px rgba(var(--tc), 0.06);
+  border-color: rgba(var(--tc), 0.3);
+  background: rgba(var(--tc), 0.04);
+}
+
 html.light-mode .tl-sliver-name {
   color: #1a1a2e;
 }
 
-html.light-mode .tl-whisper-col.tl-whisper-show {
-  color: rgba(0, 0, 0, 0.12);
+html.light-mode .tl-whisper-layer.tl-whisper-show {
+  color: rgba(0, 0, 0, 0.18);
 }
 
 html.light-mode .tl-sliver-title {
@@ -3320,45 +3327,74 @@ html.light-mode .timeline-filter.filter-pulse {
   display: none !important;
 }
 
+.tl-sliver.tl-whisper-glow {
+  box-shadow: 0 0 12px rgba(var(--tc), 0.18),
+              0 0 30px rgba(var(--tc), 0.08);
+  border-color: rgba(var(--tc), 0.4);
+  background: rgba(var(--tc), 0.05);
+}
+
 /* ── Whisper HUD overlay ──────────────────────────────── */
 .tl-whisper-hud {
   position: fixed;
   top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: min(700px, 90vw);
+  transform: translateY(-50%);
   z-index: 9999;
   pointer-events: none;
-  display: flex;
-  gap: 40px;
+  display: none;
   opacity: 0;
-  transition: opacity 0.3s ease;
+  height: 60px;
 }
 
 .tl-whisper-hud.tl-whisper-active {
-  opacity: 1;
+  display: block;
 }
 
 .tl-whisper-col {
-  flex: 1;
-  font-size: 18px;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  min-height: 60px;
+}
+
+.tl-whisper-left {
+  left: 54px;
+  width: calc(50% - 28.5px);
+}
+
+.tl-whisper-right {
+  left: calc(50% + 28.5px);
+  width: calc(50% - 28.5px);
+}
+
+.tl-whisper-center {
+  left: 54px;
+  right: 0;
+  width: auto;
+}
+
+.tl-whisper-layer {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
   font-weight: 800;
   font-style: italic;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
+  letter-spacing: 1px;
+  line-height: 1.3;
+  text-transform: none;
+  text-align: center;
   color: rgba(255, 255, 255, 0);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  transition: color 0.35s ease, opacity 0.35s ease;
+  white-space: normal;
+  overflow: visible;
+  transition: color 0.5s ease, opacity 0.5s ease;
   opacity: 0;
 }
 
-.tl-whisper-left  { text-align: center; }
-.tl-whisper-right { text-align: center; }
-
-.tl-whisper-col.tl-whisper-show {
-  color: rgba(255, 255, 255, 0.18);
+.tl-whisper-layer.tl-whisper-show {
+  color: rgba(255, 255, 255, 0.22);
   opacity: 1;
 }
 
