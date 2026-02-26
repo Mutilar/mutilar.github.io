@@ -42,7 +42,7 @@ BitNaughts isn't just an educational programming video-game — it's code gamifi
 
 ---
 
-## 🪄 MTG
+## 🔮 MTG
 
 > *Two primordial gods: Order & Chaos, and three factions emerge: Faithful, Greedy & Defiant… except Faith does not Save, Wealth does not Protect & Rebellion does not Free… for Mortality is merely a Door, not a Wall.*
 

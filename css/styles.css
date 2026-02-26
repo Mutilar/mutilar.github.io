@@ -3670,11 +3670,20 @@ html.light-mode .timeline-filter.filter-pulse {
 /* ── Filter buttons (reuse timeline filter pattern) ─────── */
 .kg-filter-group {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
   gap: 6px;
   padding: 8px 14px;
   border-radius: 18px;
+}
+
+.kg-filter-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  min-height: 40px;
 }
 
 .kg-filter {
@@ -3769,6 +3778,7 @@ html.light-mode .timeline-filter.filter-pulse {
 
 .kg-thread-hidden {
   opacity: 0 !important;
+  transition: opacity 0.3s ease;
   animation: none;
 }
 
@@ -3885,18 +3895,18 @@ html.light-mode .timeline-filter.filter-pulse {
   font-weight: 700;
   color: rgba(255, 255, 255, 0.92);
   text-align: center;
-  max-width: 100%;
+  width: 100%;
+  overflow: visible;
 }
 
 /* Crossfade layers: name ↔ whisper */
 .kg-name-layer {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: block;
+  text-align: center;
   transition: opacity 0.4s ease;
-  line-height: 1.2;
-  word-break: break-word;
+  line-height: 1.3;
   white-space: nowrap;
+  overflow: clip;
   color: inherit;
 }
 
@@ -3917,7 +3927,10 @@ html.light-mode .timeline-filter.filter-pulse {
 /* Whisper layers: absolute overlay, crossfade pair */
 .kg-name-whisper {
   position: absolute;
-  inset: 0;
+  left: 0;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
   font-weight: 600;
   color: rgba(255, 255, 255, 0.7);
   opacity: 0;

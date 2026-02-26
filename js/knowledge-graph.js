@@ -2,8 +2,8 @@
 //  GRAPH OF KNOWLEDGE — 2D pannable/zoomable node canvas modal
 //
 //  Shows the user's experience as an interconnected node graph
-//  radiating outward from a central identity node. Directional
-//  quadrants: North=Robotics, South=Software, West=Games, East=Research.
+//  radiating outward from a central identity node. Three directional
+//  quadrants at 120° spacing: North=Robotics, SW=Games, SE=Software.
 //  Oldest items nearest the center; newest at the edges.
 // ═══════════════════════════════════════════════════════════════
 (() => {
@@ -15,27 +15,24 @@
   const themeConfig = {
     robotics:  { color: "242,80,34",   icon: "fa-cogs",           label: "Robotics",  emoji: "🤖" },
     games:     { color: "127,186,0",   icon: "fa-gamepad",        label: "Games",      emoji: "🎮" },
-    software:  { color: "0,164,239",   icon: "fa-code",           label: "Software",   emoji: "💻" },
-    research:  { color: "255,185,0",   icon: "fa-flask",          label: "Research",   emoji: "🔬" },
-    education: { color: "0,120,212",   icon: "fa-graduation-cap", label: "Education",  emoji: "🎓" },
+    software:  { color: "0,120,212",   icon: "fa-code",           label: "Software",   emoji: "💻" },
+    education: { color: "255,185,0",   icon: "fa-graduation-cap", label: "Education",  emoji: "🎓" },
     work:      { color: "0,120,212",   icon: "fa-briefcase",     label: "Work",       emoji: "💼" },
-    hacks:     { color: "255,75,120",  icon: "fa-bolt",          label: "Hacks",      emoji: "⚡" },
-    projects:  { color: "255,140,60",  icon: "fa-rocket",        label: "Projects",   emoji: "🚀" },
+    projects:  { color: "242,80,34",   icon: "fa-rocket",        label: "Projects",   emoji: "🚀" },
   };
 
   /* ── Thread (overlay-theme) colors — one thread per theme×quadrant pair ── */
   const threadConfig = {
     work:      { color: "0,120,212",  label: "Work" },       // MSFT Blue
-    education: { color: "0,200,180",  label: "Education" },  // Teal
-    hacks:     { color: "255,75,120", label: "Hacks" },      // Pink/Magenta
-    projects:  { color: "255,140,60", label: "Projects" },   // Orange
+    education: { color: "255,185,0",  label: "Education" },  // MSFT Yellow
+    projects:  { color: "242,80,34",  label: "Projects" },   // MSFT Red
   };
 
   const themeMap = {
-    marp: "projects", amaxesd: "projects", redtierobotics: "work",
+    marp: "projects", amaxesd: "projects", redtierobotics: "education",
     alamorobotics: "work", "home-iot": "projects",
     bitnaughts: "projects", voodoo: "projects", galconq: "projects", popvuj: "projects",
-    graviton: "hacks", spaceninjas: "work",
+    graviton: "projects", spaceninjas: "work",
     summerofgamedesign: "work", iterate: "projects",
     microsoft: "work", ventana: "work",
     citris: "work", hackmerced: "work",
@@ -45,9 +42,9 @@
     breeze: "projects", dogpark: "projects",
     ozone: "projects",
     firmi: "projects",
-    sriracha: "hacks", smartank: "hacks", blindsight: "hacks",
-    motorskills: "hacks", seerauber: "hacks",
-    gasleek: "hacks", chemistry: "hacks", gist: "hacks", digestquest: "hacks",
+    sriracha: "projects", smartank: "projects", blindsight: "projects",
+    motorskills: "projects", seerauber: "projects",
+    gasleek: "projects", chemistry: "projects", gist: "projects", digestquest: "projects",
     cse180: "education", cse165: "education", cse160: "education",
     cse120: "education", cse111: "education", cse100: "education",
     cse031: "education", cse030: "education", cse015: "education",
@@ -56,130 +53,127 @@
 
   /** Map education items to a directional quadrant theme */
   const eduQuadrantMap = {
-    cse180: "robotics",   // ROS → Robotics/North
-    cse165: "software",   // OOP → Software/South
-    cse160: "software",   // Networks → Software/South
-    cse120: "software",   // Software Engineering → Software/South
-    cse111: "software",   // SQL/Databases → Software/South
-    cse100: "research",   // Algorithms/BigO → Research/East
-    cse031: "robotics",   // Computer Org/MIPS → Robotics/North
-    cse030: "software",   // Data Structures/C++ → Software/South
-    cse015: "research",   // Discrete Math/Proofs → Research/East
-    ropgamedesign: "games",      // Game Design → Games/West
-    roparchitecture: "robotics", // Architecture/CAD → Robotics/North
-    apjava: "software",         // AP CS A/Java → Software/South
+    cse180: "robotics",   // ROS → Robotics
+    cse165: "software",   // OOP → Software
+    cse160: "software",   // Networks → Software
+    cse120: "software",   // Software Engineering → Software
+    cse111: "software",   // SQL/Databases → Software
+    cse100: "software",   // Algorithms/BigO → Software
+    cse031: "robotics",   // Computer Org/MIPS → Robotics
+    cse030: "software",   // Data Structures/C++ → Software
+    cse015: "software",   // Discrete Math/Proofs → Software
+    ropgamedesign: "games",      // Game Design → Games
+    roparchitecture: "robotics", // Architecture/CAD → Robotics
+    apjava: "software",         // AP CS A/Java → Software
+    redtierobotics: "robotics", // FRC 1458 → Robotics
   };
 
   /** Map work items to a directional quadrant theme */
   const workQuadrantMap = {
-    microsoft:        "software",   // SWE → Software/South
-    ventana:          "software",   // SWE Intern → Software/South
-    citris:           "software",   // Web Dev → Software/South
-    hackmerced:       "software",   // Director → Software/South
-    vicelab:          "research",   // Geospatial RA → Research/East
-    andeslab:         "research",   // Computational RA → Research/East
-    maces:            "research",   // NASA MUREP RA → Research/East
-    learnbeat:        "research",   // STEM Instructor → Research/East
-    acm:              "research",   // Outreach → Research/East
-    alamorobotics:    "robotics",   // Lego Mindstorm → Robotics/North
-    redtierobotics:   "robotics",   // FRC 1458 → Robotics/North
-    summerofgamedesign: "games",    // Game Design Camp → Games/West
-    spaceninjas:      "games",      // Teaching boilerplate → Games/West
+    microsoft:        "software",   // SWE → Software
+    ventana:          "software",   // SWE Intern → Software
+    citris:           "software",   // Web Dev → Software
+    hackmerced:       "software",   // Director → Software
+    vicelab:          "software",   // Geospatial RA → Software
+    andeslab:         "software",   // Computational RA → Software
+    maces:            "software",   // NASA MUREP RA → Software
+    learnbeat:        "software",   // STEM Instructor → Software
+    acm:              "software",   // Outreach → Software
+    alamorobotics:    "robotics",   // Lego Mindstorm → Robotics
+    summerofgamedesign: "games",    // Game Design Camp → Games
+    spaceninjas:      "games",      // Teaching boilerplate → Games
   };
 
-  /** Map hackathon items to a directional quadrant theme */
-  const hacksQuadrantMap = {
-    motorskills:  "robotics",   // IoT ML hardware → Robotics/North
-    sriracha:     "robotics",   // RC tank robot → Robotics/North
-    smartank:     "robotics",   // Autonomous robot → Robotics/North
-    blindsight:   "robotics",   // Haptic wearable → Robotics/North
-    seerauber:    "games",      // Pirate strategy game → Games/West
-    graviton:     "games",      // Tower defense game → Games/West
-    gasleek:      "research",   // ML linear regression → Research/East
-    chemistry:    "research",   // AR science education → Research/East
-    gist:         "software",   // AR Unity app → Software/South
-    digestquest:  "software",   // OCR web app → Software/South
-  };
-
-  /** Map project items to a directional quadrant theme */
+  /** Map project + hackathon items to a directional quadrant theme */
   const projectsQuadrantMap = {
-    marp:         "robotics",   // Robot platform → Robotics/North
-    amaxesd:      "robotics",   // ESD hardware → Robotics/North
-    "home-iot":   "robotics",   // IoT hardware → Robotics/North
-    iterate:      "games",      // Mobile code editor/game → Games/West
-    bitnaughts:   "games",      // Code-gamified project → Games/West
-    voodoo:       "games",      // Pixel art auto-battler → Games/West
-    galconq:      "games",      // Procedural space strategy → Games/West
-    popvuj:       "games",      // God-sim city builder → Games/West
-    azuremlops:   "software",   // CI/CD pipeline → Software/South
-    motleymoves:  "software",   // Web app → Software/South
-    dogpark:      "software",   // Mobile app → Software/South
-    ozone:        "software",   // React web app → Software/South
-    breeze:       "research",   // IoT air quality sensing → Research/East
-    firmi:        "research",   // Physics modeling → Research/East
+    // Projects
+    marp:         "robotics",   // Robot platform → Robotics
+    amaxesd:      "robotics",   // ESD hardware → Robotics
+    "home-iot":   "robotics",   // IoT hardware → Robotics
+    iterate:      "games",      // Mobile code editor/game → Games
+    bitnaughts:   "games",      // Code-gamified project → Games
+    voodoo:       "games",      // Pixel art auto-battler → Games
+    galconq:      "games",      // Procedural space strategy → Games
+    popvuj:       "games",      // God-sim city builder → Games
+    azuremlops:   "software",   // CI/CD pipeline → Software
+    motleymoves:  "software",   // Web app → Software
+    dogpark:      "software",   // Mobile app → Software
+    ozone:        "software",   // React web app → Software
+    breeze:       "software",   // IoT air quality sensing → Software
+    firmi:        "software",   // Physics modeling → Software
+    // Hackathons
+    motorskills:  "robotics",   // IoT ML hardware → Robotics
+    sriracha:     "robotics",   // RC tank robot → Robotics
+    smartank:     "robotics",   // Autonomous robot → Robotics
+    blindsight:   "robotics",   // Haptic wearable → Robotics
+    seerauber:    "games",      // Pirate strategy game → Games
+    graviton:     "games",      // Tower defense game → Games
+    gasleek:      "software",   // ML linear regression → Software
+    chemistry:    "software",   // AR science education → Software
+    gist:         "software",   // AR Unity app → Software
+    digestquest:  "software",   // OCR web app → Software
   };
 
-  /** Quadrant direction vectors (unit) */
+  /** Quadrant direction vectors (unit) — 3-way 120° triangle */
   const quadrantDir = {
-    robotics:  { x: 0, y: -1 },  // North (up)
-    software:  { x: 0, y:  1 },  // South (down)
-    games:     { x: -1, y: 0 },  // West (left)
-    research:  { x:  1, y: 0 },  // East (right)
+    robotics:  { x: 0,    y: -1    },  // North (up, 270°)
+    games:     { x: -0.866, y: 0.5 },  // South-West (210°)
+    software:  { x:  0.866, y: 0.5 },  // South-East (330°)
   };
 
   /** Whisper labels for nodes (compact accomplishments).
    *  Each value is an array — if multiple entries exist,
    *  they crossfade based on zoom level. */
   const whisperLabels = {
-    "microsoft":       ["🌐 8B+<sup>INF/DAY</sup>", "🔒 Champ<sup>SEC</sup>", "🎯 Champ<sup>DRI</sup>", "☁️ 50+<sup>DCs</sup>", "🚀 GA", "📡 Envoy", "🧠 A.I.<sup>U.X.</sup>", "⚡ MLOps"],
-    "bitnaughts":      ["🎮 Code<sup>Gamified</sup>", "👁️ See<sup>CODE</sup>", "🔄 Try<sup>CODE</sup>", "🎓 Learn<sup>CODE</sup>", "💻 4<sup>Hacks</sup>", "🌍 Play<sup>It</sup>"],
-    "marp":            ["🤖 Robot"],
-    "iterate":         ["🏆 $5,000"],
-    "ventana":         ["🔬 A.I."],
-    "home-iot":        ["🎛️ Tactility"],
-    "azuremlops":      ["⚡ CI/CD"],
-    "chemistry":       ["🧪 A.R."],
-    "firmi":           ["🧊 Fermi"],
-    "hackmerced":      ["🧑‍💻 350+"],
-    "motleymoves":     ["🏃 Running"],
-    "andeslab":        ["🏭 HVAC"],
-    "breeze":          ["💨 Aux<sup>Air</sup>"],
-    "dogpark":         ["🥈 2<sup>ND</sup>"],
-    "vicelab":         ["🛰️ Ag<sup>A.I.</sup>"],
-    "maces":           ["🚀 NASA"],
-    "citris":          ["🏙️ Cyber<sup>Aware</sup>", "🏙️ Git<sup>Ops</sup>"],
-    "amaxesd":         ["⚡ ESD"],
-    "summerofgamedesign": ["👨‍🏫 50+<sup>Students</sup>", "💰 $25K+<sup>Budget</sup>"],
-    "alamorobotics":   ["🤖 Mindstorm"],
-    "acm":             ["💻 Outreach"],
-    "learnbeat":       ["📚 Learn<sup>STEM</sup>"],
-    "redtierobotics":  ["⚡ AMAX", "🔌 CAD", "💰 $18K+<sup>Budget</sup>"],
-    "cse180":          ["🤖 ROS"],
-    "cse165":          ["📦 OOP"],
-    "cse160":          ["🌐 TCP"],
-    "cse120":          ["💻 SWE"],
-    "cse111":          ["🗃️ SQL"],
-    "cse100":          ["📊 BigO"],
-    "cse031":          ["⚙️ MIPS"],
-    "cse030":          ["📚 C<sup>++</sup>"],
-    "cse015":          ["🔢 Proofs"],
-    "ropgamedesign":   ["🕹️ Unity"],
-    "roparchitecture": ["🏗️ CAD"],
-    "apjava":          ["☕ Java"],
-    "gasleek":         ["🥇 1<sup>ST</sup>"],
-    "sriracha":        ["🥉 3<sup>RD</sup>"],
-    "smartank":        ["🥇 Hardware"],
-    "spaceninjas":     ["🥷 Platformer"],
-    "graviton":        ["🌸 Tower<sup>Def</sup>"],
-    "galconq":         ["🌌 4<sup>X</sup>"],
-    "seerauber":       ["🥈 2<sup>ND</sup>"],
-    "ozone":           ["🥈 2<sup>ND</sup>"],
-    "blindsight":      ["🥉 3<sup>RD</sup>"],
-    "motorskills":     ["🥇 GCP"],
-    "gist":            ["🥇 Environment"],
-    "digestquest":     ["🥇 Design"],
-    "voodoo":          ["🎨 Pixel<sup>Art</sup>"],
-    "popvuj":          ["🌄 Myth"],
+    "microsoft":       ["🧠<br>A.I.<br>U.X."],
+    "bitnaughts":      ["🎮<br>Code<br>Gamified"],
+    "marp":            ["🤖<br>Robot"],
+    "iterate":         ["🏆<br>$5,000"],
+    "ventana":         ["🧬<br>Big<br>Data"],
+    "home-iot":        ["🎛️<br>Control"],
+    "azuremlops":      ["⚡<br>CI/CD"],
+    "chemistry":       ["🧪<br>A.R."],
+    "firmi":           ["⚛️<br>Physics"],
+    "hackmerced":      ["🧑‍💻<br>350+<br>Hackers"],
+    "motleymoves":     ["🏃<br>SWE"],
+    "andeslab":        ["🏭<br>HVAC"],
+    "breeze":          ["💨<br>AQI"],
+    "dogpark":         ["🥈<br>2nd"],
+    "vicelab":         ["🌾<br>Ag"],
+    "maces":           ["🚀<br>NASA"],
+    "citris":          ["🏙️<br>GitOps"],
+    "amaxesd":         ["⚡<br>Wiring"],
+    "summerofgamedesign": ["💰<br>$25K+<br>Raised"],
+    "alamorobotics":   ["🤖<br>Mind<br>Storm"],
+    "acm":             ["💻<br>Outreach"],
+    "learnbeat":       ["📚<br>Learn<br>STEM"],
+    "redtierobotics":  ["💰<br>$18K+<br>Budget"],
+    "cse180":          ["🤖<br>ROS"],
+    "cse165":          ["📦<br>OOP"],
+    "cse160":          ["🌐<br>TCP"],
+    "cse120":          ["🧑‍🏫<br>SWE"],
+    "cse111":          ["🗃️<br>SQL"],
+    "cse100":          ["📊<br>BigO"],
+    "cse031":          ["⚙️<br>MIPS"],
+    "cse030":          ["📚<br>C++"],
+    "cse015":          ["🔢<br>Proofs"],
+    "ropgamedesign":   ["🕹️<br>Unity"],
+    "roparchitecture": ["🏗️<br>CAD"],
+    "apjava":          ["☕<br>Java"],
+    "gasleek":         ["🥇<br>1st"],
+    "sriracha":        ["🥉<br>3rd"],
+    "smartank":        ["🥇<br>Robot"],
+    "spaceninjas":     ["🥷<br>2D"],
+    "graviton":        ["🌸<br>Tower<br>Def"],
+    "galconq":         ["🌌<br>4X"],
+    "seerauber":       ["🥈<br>2nd"],
+    "ozone":           ["🥈<br>2nd"],
+    "blindsight":      ["🥉<br>3rd"],
+    "motorskills":     ["🥇<br>GCP"],
+    "gist":            ["🥇<br>Env."],
+    "digestquest":     ["🥇<br>Design"],
+    "voodoo":          ["🎨<br>Art"],
+    "popvuj":          ["🌄<br>Myth"],
   };
 
   function getTheme(item) { return themeMap[item.ID] || "software"; }
@@ -245,8 +239,8 @@
 
   /* ── State ────────────────────────────────────────────────── */
   let graphBuilt = false;
-  let activeFilters = new Set(["robotics", "games", "software", "research", "education", "work", "hacks", "projects"]);
-  const allThemes = ["robotics", "games", "software", "research", "education", "work", "hacks", "projects"];
+  let activeFilters = new Set(["robotics", "games", "software", "education", "work", "projects"]);
+  const allThemes = ["robotics", "games", "software", "education", "work", "projects"];
 
   let _nodes = [];       // { el, theme, quadrant, item, category, absMonth, dist }
   let _hoveredNode = null; // currently hovered node (for whisper on hover)
@@ -315,8 +309,8 @@
     });
   }
 
-  const quadrantFilters = ["robotics", "games", "software", "research"];
-  const overlayFilters  = ["education", "work", "hacks", "projects"];
+  const quadrantFilters = ["robotics", "games", "software"];
+  const overlayFilters  = ["education", "work", "projects"];
 
   themeBtns.forEach(btn => {
     btn.addEventListener("click", () => {
@@ -351,15 +345,13 @@
 
   function applyFilter() {
     // Determine which nodes are visible
-    const anyQuadrantOn = ["robotics", "games", "software", "research"].some(q => activeFilters.has(q));
+    const anyQuadrantOn = ["robotics", "games", "software"].some(q => activeFilters.has(q));
     _nodes.forEach(n => {
       const quadrantOn = activeFilters.has(n.quadrant);
       const isEdu = n.theme === "education";
       const eduOn = activeFilters.has("education");
       const isWork = n.theme === "work";
       const workOn = activeFilters.has("work");
-      const isHacks = n.theme === "hacks";
-      const hacksOn = activeFilters.has("hacks");
       const isProjects = n.theme === "projects";
       const projectsOn = activeFilters.has("projects");
       let hide;
@@ -367,8 +359,6 @@
         hide = !eduOn || (anyQuadrantOn && !quadrantOn);
       } else if (isWork) {
         hide = !workOn || (anyQuadrantOn && !quadrantOn);
-      } else if (isHacks) {
-        hide = !hacksOn || (anyQuadrantOn && !quadrantOn);
       } else if (isProjects) {
         hide = !projectsOn || (anyQuadrantOn && !quadrantOn);
       } else {
@@ -378,6 +368,10 @@
       n.el.classList.toggle("kg-hidden", hide);
     });
 
+    // Detect single-overlay mode: exactly one of education/work/projects is active
+    const activeOverlays = overlayFilters.filter(f => activeFilters.has(f));
+    const singleOverlay = activeOverlays.length === 1;
+
     // Update thread visibility: a theme×quadrant thread is visible when
     // both its theme filter AND its quadrant filter are active
     _threads.forEach(th => {
@@ -386,7 +380,27 @@
       const visible    = themeOn && quadrantOn;
       th.segments.forEach(seg => {
         seg.classList.toggle("kg-thread-hidden", !visible);
+        if (visible) {
+          seg.style.opacity = "1";
+        } else {
+          seg.style.opacity = "";
+        }
       });
+
+      // Recolor threads: single overlay → use quadrant colors; otherwise → overlay theme color
+      if (visible) {
+        const useQuadrantColor = singleOverlay;
+        const color = useQuadrantColor
+          ? themeConfig[th.quadrant].color
+          : threadConfig[th.theme].color;
+        const markerRef = useQuadrantColor
+          ? `url(#thread-arrow-${th.quadrant})`
+          : `url(#thread-arrow-${th.theme})`;
+        th.segments.forEach(seg => {
+          seg.setAttribute("stroke", `rgb(${color})`);
+          seg.setAttribute("marker-end", markerRef);
+        });
+      }
     });
 
     // Re-layout visible nodes and animate them into new positions
@@ -401,7 +415,7 @@
     if (visible.length === 0) return;
 
     // Group visible nodes by quadrant
-    const quadrants = { robotics: [], games: [], software: [], research: [] };
+    const quadrants = { robotics: [], games: [], software: [] };
     visible.forEach(n => {
       if (quadrants[n.quadrant]) quadrants[n.quadrant].push(n);
     });
@@ -411,14 +425,15 @@
       group.sort((a, b) => a.absMonth - b.absMonth);
     });
 
-    // Compute global date range across visible items
-    const absMonths = visible.map(n => n.absMonth);
-    const globalMin = Math.min(...absMonths);
-    const globalMax = Math.max(...absMonths);
+    // Use global date range across ALL nodes (not just visible) so filtered
+    // views maintain the same spatial scale as the full view
+    const allMonths = _nodes.map(n => n.absMonth);
+    const globalMin = Math.min(...allMonths);
+    const globalMax = Math.max(...allMonths);
     const dateRange = Math.max(1, globalMax - globalMin);
 
     const MIN_DIST     = 100;
-    const MAX_DIST     = 400;
+    const MAX_DIST     = 500;
     const SPREAD_ANGLE = Math.PI / 2.5;
     const CENTER_R     = 50;
     const PADDING      = 2;
@@ -609,11 +624,9 @@
     wMinX -= margin; wMaxX += margin;
     wMinY -= margin; wMaxY += margin;
     // In screen space, node at worldX appears at: worldX * scale + transform.x
-    // We want at least 15% of viewport to still show content:
-    // => wMaxX * scale + tx >= vw * 0.15   → tx >= vw*0.15 - wMaxX*scale
-    // => wMinX * scale + tx <= vw * 0.85   → tx <= vw*0.85 - wMinX*scale
+    // Keep the center of the graph close to the viewport center:
     const s = _transform.scale;
-    const pad = 0.15;
+    const pad = 0.48;
     return {
       minX: vw * pad - wMaxX * s,
       maxX: vw * (1 - pad) - wMinX * s,
@@ -658,8 +671,8 @@
       if (!viewport || _nodes.length === 0) return;
       const vw = viewport.clientWidth;
       const vh = viewport.clientHeight;
-      // Center 25% rectangle
-      const margin = 0.375; // (1 - 0.25) / 2
+      // Center 40% rectangle
+      const margin = 0.30; // (1 - 0.40) / 2
       const left   = vw * margin;
       const right  = vw * (1 - margin);
       const top    = vh * margin;
@@ -690,7 +703,7 @@
             // First frame of focus: immediately show the correct whisper
             const cur = n.whisperLayers[n.activeWhisper];
             cur.innerHTML = n.whispers[idx];
-            fitTextToCircle(cur, parseFloat(n.el.style.getPropertyValue('--kg-size')) || 70, (parseFloat(n.el.style.getPropertyValue('--kg-size')) || 70) * 0.35);
+            fitTextToCircle(cur, parseFloat(n.el.style.getPropertyValue('--kg-size')) || 70, (parseFloat(n.el.style.getPropertyValue('--kg-size')) || 70) * 0.50);
             cur.classList.add("kg-name-show");
             n.lastWhisperIdx = idx;
           } else if (idx !== n.lastWhisperIdx) {
@@ -699,7 +712,7 @@
             const inIdx    = 1 - n.activeWhisper;
             const inLayer  = n.whisperLayers[inIdx];
             inLayer.innerHTML = n.whispers[idx];
-            fitTextToCircle(inLayer, parseFloat(n.el.style.getPropertyValue('--kg-size')) || 70, (parseFloat(n.el.style.getPropertyValue('--kg-size')) || 70) * 0.35);
+            fitTextToCircle(inLayer, parseFloat(n.el.style.getPropertyValue('--kg-size')) || 70, (parseFloat(n.el.style.getPropertyValue('--kg-size')) || 70) * 0.50);
             inLayer.classList.add("kg-name-show");
             outLayer.classList.remove("kg-name-show");
             n.activeWhisper = inIdx;
@@ -888,8 +901,6 @@
           quadrant = eduQuadrantMap[item.ID] || "software";
         } else if (theme === "work") {
           quadrant = workQuadrantMap[item.ID] || "software";
-        } else if (theme === "hacks") {
-          quadrant = hacksQuadrantMap[item.ID] || "software";
         } else if (theme === "projects") {
           quadrant = projectsQuadrantMap[item.ID] || "software";
         }
@@ -901,7 +912,7 @@
     if (items.length === 0) return;
 
     // Group by quadrant
-    const quadrants = { robotics: [], games: [], software: [], research: [] };
+    const quadrants = { robotics: [], games: [], software: [] };
     items.forEach(it => {
       if (quadrants[it.quadrant]) quadrants[it.quadrant].push(it);
     });
@@ -942,7 +953,7 @@
     const dateRange = Math.max(1, globalMax - globalMin);
 
     const MIN_DIST     = 100;    // px — minimum distance from center
-    const MAX_DIST     = 400;   // px — maximum distance from center
+    const MAX_DIST     = 500;   // px — maximum distance from center
     const SPREAD_ANGLE = Math.PI / 2.5; // angular spread per quadrant (~72°)
 
     // Duration → circle size mapping
@@ -1116,8 +1127,8 @@
       _edgeSVG.prepend(defs);
     }
 
-    const overlayThemes = ["work", "education", "hacks", "projects"];
-    const quadrantKeys  = ["robotics", "games", "software", "research"];
+    const overlayThemes = ["work", "education", "projects"];
+    const quadrantKeys  = ["robotics", "games", "software"];
 
     // SVG glow filter for neon thread effect
     const glowFilter = document.createElementNS(svgNS, "filter");
@@ -1161,6 +1172,27 @@
       defs.appendChild(marker);
     });
 
+    // Create one arrowhead marker per quadrant theme (for single-overlay coloring)
+    quadrantKeys.forEach(qKey => {
+      const cfg = themeConfig[qKey];
+      if (!cfg) return;
+      const markerId = `thread-arrow-${qKey}`;
+      const marker = document.createElementNS(svgNS, "marker");
+      marker.setAttribute("id", markerId);
+      marker.setAttribute("viewBox", "0 0 10 10");
+      marker.setAttribute("refX", "10");
+      marker.setAttribute("refY", "5");
+      marker.setAttribute("markerWidth", "4");
+      marker.setAttribute("markerHeight", "4");
+      marker.setAttribute("orient", "auto-start-reverse");
+      marker.setAttribute("markerUnits", "userSpaceOnUse");
+      const arrowPath = document.createElementNS(svgNS, "path");
+      arrowPath.setAttribute("d", "M 0 1 L 10 5 L 0 9 z");
+      arrowPath.setAttribute("fill", `rgb(${cfg.color})`);
+      marker.appendChild(arrowPath);
+      defs.appendChild(marker);
+    });
+
     // Virtual center node used as the origin for every thread's stem segment.
     // Carries the same shape as real node objects so all animation paths work.
     const _centerVirtual = {
@@ -1177,7 +1209,7 @@
 
       quadrantKeys.forEach(quadrant => {
         const threadNodes = _nodes.filter(n => n.theme === theme && n.quadrant === quadrant);
-        if (threadNodes.length < 2) return;
+        if (threadNodes.length < 1) return;
 
         // Sort by end-date (oldest completion first)
         threadNodes.sort((a, b) => a.endMonth - b.endMonth);
@@ -1224,6 +1256,7 @@
           path.setAttribute("filter", "url(#thread-glow)");
           path.setAttribute("marker-end", `url(#thread-arrow-${theme})`);
           path.classList.add("kg-thread");
+          path.style.opacity = "0";
           path.dataset.theme    = theme;
           path.dataset.quadrant = quadrant;
 
@@ -1263,8 +1296,10 @@
 
   /** Fit a text layer's font-size so its content fills the circle's width.
    *  Uses a binary search with a shared offscreen canvas for measuring.
-   *  Accounts for <sup> content rendering at ~65% of base font size. */
+   *  Emoji-only lines (line 1) are excluded from width calculation so
+   *  the label text drives the font size. */
   const _fitCanvas = document.createElement("canvas").getContext("2d");
+  const _emojiOnlyRe = /^[\p{Emoji_Presentation}\p{Extended_Pictographic}\uFE0F\u200D\s]+$/u;
   function fitTextToCircle(layer, circleSize, maxFont) {
     if (!layer) return;
     // Usable width ≈ chord at ~70% of radius (text sits near center of circle)
@@ -1276,11 +1311,12 @@
     // Split into lines, then parse each line for sup vs normal segments
     const lines = withBreaks.split(/\n/).map(l => l.trim()).filter(Boolean);
     if (lines.length === 0) return;
-    // For each line, extract segments
+    // For each line, extract segments and flag emoji-only lines
     const SUP_SCALE = 0.65;
     const parsed = lines.map(line => {
+      const plainText = line.replace(/<[^>]+>/g, "");
+      const isEmoji = _emojiOnlyRe.test(plainText);
       const segs = [];
-      let rest = line;
       const supRe = /<sup[^>]*>(.*?)<\/sup>/gi;
       let lastIdx = 0, m;
       while ((m = supRe.exec(line)) !== null) {
@@ -1289,13 +1325,47 @@
         lastIdx = supRe.lastIndex;
       }
       if (lastIdx < line.length) segs.push({ text: line.slice(lastIdx).replace(/<[^>]+>/g, ""), isSup: false });
-      return segs;
+      return { segs, isEmoji };
     });
-    // Binary search: scale UP to fill, or DOWN to fit the widest line
-    let lo = 5, hi = maxFont;
-    for (let i = 0; i < 10; i++) {
+    // Only measure non-emoji lines for width fitting
+    const measurable = parsed.filter(p => !p.isEmoji);
+    if (measurable.length === 0) {
+      // All emoji — just use maxFont
+      layer.style.fontSize = Math.max(5, Math.floor(maxFont)) + "px";
+      return;
+    }
+
+    // Measure the widest line at a reference font size to get a width-based
+    // "effective character count" — this handles narrow glyphs (dots, "I")
+    // vs wide glyphs ("W", "M") fairly, so "A.I." and "HVAC" get similar
+    // visual weight despite both being 4 raw characters.
+    const REF_SIZE = 20; // reference font size for measurement
+    const refWidths = measurable.map(({ segs }) => {
+      let w = 0;
+      segs.forEach(s => {
+        _fitCanvas.font = `700 ${s.isSup ? REF_SIZE * SUP_SCALE : REF_SIZE}px sans-serif`;
+        w += _fitCanvas.measureText(s.text).width;
+      });
+      return w;
+    });
+    const maxRefWidth = Math.max(...refWidths);
+    // Average character width at reference size ≈ 12px for bold sans-serif
+    const avgCharWidth = 12;
+    const effectiveChars = maxRefWidth / avgCharWidth;
+
+    // Target fill ratio: short effective widths target well under the chord
+    // so they don't balloon; long effective widths are allowed to exceed
+    // the chord (>100%) to push the font size up for uniform visual weight.
+    const fillRatio = effectiveChars <= 2 ? 0.50
+                    : effectiveChars >= 9 ? 1.18
+                    : 0.50 + (effectiveChars - 2) / 7 * (1.18 - 0.50);
+    const targetWidth = usable * fillRatio;
+
+    // Binary search: fit the widest line to targetWidth
+    let lo = 5, hi = circleSize * 0.5;
+    for (let i = 0; i < 12; i++) {
       const mid = (lo + hi) / 2;
-      const maxW = Math.max(...parsed.map(segs => {
+      const maxW = Math.max(...measurable.map(({ segs }) => {
         let w = 0;
         segs.forEach(s => {
           _fitCanvas.font = `700 ${s.isSup ? mid * SUP_SCALE : mid}px sans-serif`;
@@ -1303,17 +1373,80 @@
         });
         return w;
       }));
-      if (maxW > usable) hi = mid;
+      if (maxW > targetWidth) hi = mid;
       else lo = mid;
     }
     layer.style.fontSize = Math.max(5, Math.floor(lo)) + "px";
   }
 
+  /** Break a plain-text label into <br>-separated lines for circle display.
+   *  Handles camelCase, parenthesized groups, &, and spaces.
+   *
+   *  "BitNaughts"              → "Bit<br>Naughts"
+   *  "MACES (NASA MUREP)"      → "MACES<br>(NASA<br>MUREP)"
+   *  "CITRIS & Banatao Institute" → "CITRIS &<br>Banatao<br>Institute"
+   *  "MotleyMoves"             → "Motley<br>Moves"
+   *  "CSE 180"                 → "CSE<br>180"
+   *  "Dog_Park"               → "Dog Park"                (underscore = non-breaking space)
+   *  "AzureMLOps"              → "Azure<br>MLOps"
+   *  "DigestQuest"             → "Digest<br>Quest"
+   *  "GasLeek"                 → "Gas<br>Leek"               (camelCase)
+   *  "Red_Tie Robotics (FRC 1458)" → "Red Tie<br>Robotics<br>(FRC 1458)"
+   *  "Summer_of Game_Design"   → "Summer of<br>Game Design"
+   */
+  function _graphBreakText(text) {
+    if (!text) return "";
+
+    // ── Explicit overrides: plain-text name → exact circle display ──
+    // When auto-breaking produces too many lines, add the name here.
+    const nameBreaks = {
+      "Red Tie Robotics (FRC 1458)":  "Red Tie<br>Robotics<br>(FRC 1458)",
+      "Summer of Game Design":        "Summer of<br>Game Design",
+      "CITRIS & Banatao Institute":   "CITRIS &<br>Banatao Institute",
+      "MACES (NASA MUREP)":           "MACES<br>(NASA MUREP)",
+      "VICE Lab (UCM)":               "VICE Lab<br>(UCM)",
+      "ANDES Lab (UCM)":              "ANDES Lab<br>(UCM)",
+      "Alamo Robotics":               "Alamo Robotics",
+      "Dog Park":                     "Dog Park",
+      "IoT Panel":                    "IoT Panel",
+      "AMAX ESD":                     "AMAX ESD",
+      "AP Java":                      "AP Java",
+      "ROP Game Design":              "ROP<br>Game Design",
+      "ROP Architecture":             "ROP Architecture",
+      "AzureMLOps":                   "Azure<br>MLOps",
+      "BitNaughts":                   "BitNaughts",
+      "GISt":                         "GISt",
+      "SpaceNinjas":                  "SpaceNinjas",
+    };
+    if (nameBreaks[text]) return nameBreaks[text];
+
+    // Step 1: Insert soft markers at camelCase boundaries (skip short ≤4 words)
+    //   lowerUpper:  "LearnBEAT" → "Learn|BEAT"
+    //   upperUpperLower: "ChemisTRY" → stays (≤8, no match)
+    let s = text.replace(/\S+/g, w => w.length <= 4 ? w
+      : w.replace(/([a-z])([A-Z])/g, "$1\x00$2")
+          .replace(/([A-Z]+)([A-Z][a-z])/g, "$1\x00$2")
+    );
+
+    // Step 2: Insert soft markers at spaces, but keep "&" glued to the word before it
+    //   "CITRIS & Banatao" → "CITRIS &|Banatao"
+    s = s.replace(/\s*&\s*/g, " &\x00");
+    s = s.replace(/\s+/g, "\x00");
+
+    // Step 3: Break before opening parens
+    //   "(NASA" stays together, but gets its own line
+    s = s.replace(/\x00?\(/g, "\x00(");
+
+    // Step 4: Split on markers, rejoin with <br>
+    const tokens = s.split("\x00").filter(Boolean);
+    return tokens.join("<br>");
+  }
+
   /** Build a single node DOM element (circular, sized by duration) */
   function buildNodeElement(it) {
     const { item, category, theme, quadrant } = it;
-    // Education nodes use education color (deeper blue) regardless of quadrant placement
-    const cfg = theme === "education" ? themeConfig.education : theme === "work" ? themeConfig.work : theme === "hacks" ? themeConfig.hacks : theme === "projects" ? themeConfig.projects : (themeConfig[quadrant] || themeConfig.software);
+    // Items from games.csv always use green; education keeps yellow; others use overlay theme color.
+    const cfg = category === "games" ? themeConfig.games : theme === "education" ? themeConfig.education : theme === "work" ? themeConfig.work : theme === "projects" ? themeConfig.projects : (themeConfig[quadrant] || themeConfig.software);
     const themeCfg = themeConfig[theme] || themeConfig.software;
     const size = it.size || 60;
 
@@ -1329,13 +1462,28 @@
     el.style.setProperty("--kg-whisper", Math.round(7 * fontScale) + "px");
     // border-color handled by CSS states (resting / in-focus / hover)
 
-    const cleanName = (item.NAME || "")
-      .replace(/<br\s*\/?>/gi, "\n")           // preserve <br> as newline
-      .replace(/<[^>]+>/g, " ")                // strip other HTML tags
-      .replace(/[ \t]+/g, " ")                 // collapse horizontal whitespace
-      .replace(/ ?\n ?/g, "\n")                // clean whitespace around newlines
-      .trim()
-      .replace(/\n/g, "<br>");                 // convert back to <br> for rendering
+    // ── Build graph-friendly multi-line name from clean CSV source ──
+    // Rules applied in order:
+    //   1. Strip all HTML tags (including <br>, <i>, etc.)
+    //   2. Split leading emoji onto its own line
+    //   3. Break at camelCase boundaries (e.g. BitNaughts → Bit Naughts)
+    //   4. Break before opening parens: "MACES (NASA MUREP)" → "MACES|(NASA|MUREP)"
+    //   5. Break at spaces, "&", and remaining word boundaries
+    const rawName = (item.NAME || "")
+      .replace(/<[^>]+>/g, " ")                    // strip ALL HTML tags
+      .replace(/[ \t]+/g, " ")                     // collapse whitespace
+      .trim();
+    // Split leading emoji(s) from the rest of the text
+    const emojiRe = /^([\p{Emoji_Presentation}\p{Extended_Pictographic}\uFE0F\u200D]+(?:\s*[\p{Emoji_Presentation}\p{Extended_Pictographic}\uFE0F\u200D]+)*)\s*/u;
+    const emojiMatch = rawName.match(emojiRe);
+    const emojiPrefix = emojiMatch ? emojiMatch[1] : "";
+    const textPart = emojiMatch ? rawName.slice(emojiMatch[0].length) : rawName;
+
+    // Break text into tokens for circle display
+    const graphName = _graphBreakText(textPart);
+    const cleanName = emojiPrefix
+      ? emojiPrefix + "<br>" + graphName
+      : graphName;
     const whispers = whisperLabels[item.ID] || [];
 
     el.innerHTML =
@@ -1356,8 +1504,8 @@
     const nameLayer = el.querySelector(".kg-name-layer:first-child");
     const whisperLayers = el.querySelectorAll(".kg-name-whisper");
     requestAnimationFrame(() => {
-      fitTextToCircle(nameLayer, size, size * 0.35);
-      whisperLayers.forEach(wl => fitTextToCircle(wl, size, size * 0.35));
+      fitTextToCircle(nameLayer, size, size * 0.50);
+      whisperLayers.forEach(wl => fitTextToCircle(wl, size, size * 0.50));
     });
 
     return el;
@@ -1373,13 +1521,9 @@
       n.el.style.transform = "translate(-50%, -50%) scale(0.3)";
     });
 
-    // Reset thread curves to center
+    // Reset threads to invisible for entrance
     _threads.forEach(th => {
       th.segments.forEach(seg => {
-        seg.setAttribute("d", _curveD(0, 0, 0, 0, 0, 0));
-        seg._cx1 = 0; seg._cy1 = 0;
-        seg._ccx = 0; seg._ccy = 0;
-        seg._cx2 = 0; seg._cy2 = 0;
         seg.style.opacity = "0";
       });
     });
@@ -1418,58 +1562,26 @@
       });
     }
 
-    // Wait until all nodes have finished positioning before animating threads
-    const nodeSettleTime = MAX_DELAY + _nodes.length * 8 + 700;
-    setTimeout(() => {
-      // Fade in thread curves once nodes are in place
+    // Fade in threads alongside nodes using JS-driven opacity
+    const fadeDur = 500;
+    const fadeStart = performance.now() + 250; // delay so nodes appear first
+    function fadeThreads(now) {
+      let t = (now - fadeStart) / fadeDur;
+      if (t < 0) t = 0;
+      if (t > 1) t = 1;
+      // Smooth ease-in-out (cubic)
+      const opacity = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
       _threads.forEach(th => {
-        const thNodes = th.nodes;
-        th.segments.forEach((seg, i) => {
-          // Segment i connects thNodes[i] → thNodes[i+1]
-          const fromNode = thNodes[i];
-          const toNode   = thNodes[i + 1];
-
-          let fx1 = fromNode.targetX;
-          let fy1 = fromNode.targetY;
-          let fx2 = toNode.targetX;
-          let fy2 = toNode.targetY;
-
-          // Shorten by radii
-          const dx  = fx2 - fx1;
-          const dy  = fy2 - fy1;
-          const len = Math.sqrt(dx * dx + dy * dy);
-          if (len > 0) {
-            const ux = dx / len, uy = dy / len;
-            const fromR = fromNode.r || 30;
-            const toR   = toNode.r || 30;
-            if (len > fromR + toR) {
-              fx1 += ux * fromR;
-              fy1 += uy * fromR;
-              fx2 -= ux * toR;
-              fy2 -= uy * toR;
-            }
+        th.segments.forEach(seg => {
+          if (!seg.classList.contains("kg-thread-hidden")) {
+            seg.style.opacity = String(opacity);
           }
-
-          const fcp = _bezierCtrl(fx1, fy1, fx2, fy2, i);
-
-          // Set final path immediately, fade in with staggered delay
-          seg.setAttribute("d", _curveD(fx1, fy1, fcp.x, fcp.y, fx2, fy2));
-          seg.style.transition = "opacity 0.6s ease";
-          const delay = i * 60;
-          setTimeout(() => {
-            seg.style.opacity = "";
-            setTimeout(() => { seg.style.transition = ""; }, 700);
-          }, delay);
-
-          // Store final coords
-          seg._cx1 = fx1; seg._cy1 = fy1;
-          seg._ccx = fcp.x; seg._ccy = fcp.y;
-          seg._cx2 = fx2; seg._cy2 = fy2;
         });
       });
-
-      // Re-check glow after thread animations settle
-      setTimeout(() => updateProximityGlow(), 800);
-    }, nodeSettleTime);
+      if (t < 1) requestAnimationFrame(fadeThreads);
+    }
+    requestAnimationFrame(fadeThreads);
+    const threadSettleTime = MAX_DELAY + _nodes.length * 8 + 600;
+    setTimeout(() => updateProximityGlow(), threadSettleTime);
   }
 })();

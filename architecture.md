@@ -99,7 +99,7 @@ graph TD
             direction TB
             MarpCSV["marp.csv\n<i>🤖 MARP</i>"]
             BNCSV["bitnaughts.csv\n<i>☄️ BitNaughts</i>"]
-            MtgCSV["mtg.csv\n<i>🪄 MTG</i>"]
+            MtgCSV["mtg.csv\n<i>🔮 MTG</i>"]
             NoblesCSV["nobles.csv\n<i>👑 Nobles</i>"]
             DemonsCSV["demons.csv\n<i>👹 Demons</i>"]
             MarpCSV ~~~ BNCSV ~~~ MtgCSV ~~~ NoblesCSV ~~~ DemonsCSV

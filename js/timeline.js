@@ -24,7 +24,7 @@
     games:     { color: "127,186,0",   icon: "fa-gamepad",        label: "Games" },
     software:  { color: "0,164,239",   icon: "fa-code",           label: "Software" },
     research:  { color: "255,185,0",   icon: "fa-flask",          label: "Research" },
-    education: { color: "0,120,212",   icon: "fa-graduation-cap", label: "Education" },
+    education: { color: "255,185,0",   icon: "fa-graduation-cap", label: "Education" },
   };
 
   /** Map each item ID → thematic work stream */
@@ -778,7 +778,7 @@
       "🔬 A.I.",
     ],
     "home-iot": [
-      "🎛️ Tactility",
+      "🎛️ Control",
     ],
     "azuremlops": [
       "⚡ CI/CD",
@@ -787,7 +787,7 @@
       "🧪 A.R.",
     ],
     "firmi": [
-      "🧊 Fermi",
+      "💎 Fermi",
     ],
     "hackmerced": [
       "🧑‍💻 350+",
@@ -875,10 +875,10 @@
 
     /* ── Hackathon single-whispers ── */
     "gasleek": [
-      "🥇 1<sup>ST</sup>",
+      "🥇 1<sup>st</sup>",
     ],
     "sriracha": [
-      "🥉 3<sup>RD</sup>",
+      "🥉 3<sup>rd</sup>",
     ],
     "smartank": [
       "🥇 Hardware",
@@ -890,16 +890,16 @@
       "🌸 Tower<sup>Def</sup>",
     ],
     "galconq": [
-      "🌌 4<sup>X</sup>",
+      "🌌 4<sup>x</sup>",
     ],
     "seerauber": [
-      "🥈 2<sup>ND</sup>",
+      "🥈 2<sup>nd</sup>",
     ],
     "ozone": [
-      "🥈 2<sup>ND</sup>",
+      "🥈 2<sup>nd</sup>",
     ],
     "blindsight": [
-      "🥉 3<sup>RD</sup>",
+      "🥉 3<sup>rd</sup>",
     ],
     "motorskills": [
       "🥇 GCP",
