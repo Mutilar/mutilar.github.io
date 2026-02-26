@@ -38,8 +38,10 @@
     bitnaughts: "games", graviton: "games", spaceninjas: "games",
     voodoo: "games", galconq: "games", popvuj: "games",
     seerauber: "games", summerofgamedesign: "games", iterate: "games",
+    "the-nobles": "games", "the-demons": "games",
     // Software — professional SWE, cloud, web apps, devops
     microsoft: "software", azuremlops: "software", ventana: "software",
+    duskrosecodex: "software",
     citris: "software", hackmerced: "software", motleymoves: "software",
     breeze: "software", dogpark: "software",
     ozone: "software", gasleek: "software", chemistry: "software",
@@ -759,6 +761,15 @@
     ],
     "voodoo": [
       "🎨 Pixel<sup>Art</sup>",
+    ],
+    "the-nobles": [
+      "👑 Mardu<sup>Vamps</sup>",
+    ],
+    "the-demons": [
+      "👹 Orzhov<sup>Aristo</sup>",
+    ],
+    "duskrosecodex": [
+      "📖 Codex",
     ],
 
     /* ── Single-whisper (coSlumn) ── */

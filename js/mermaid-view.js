@@ -387,21 +387,26 @@
 
     // Unique IDs per instance to avoid SVG marker collisions
     const uid = Math.random().toString(36).slice(2, 8);
-    const arrowId = "mm-arr-" + uid;
-    const arrowDashId = arrowId + "-d";
 
-    // Arrowhead markers
-    [{ id: arrowId, fill: "rgb(255,255,255)" }, { id: arrowDashId, fill: "rgba(255,255,255,0.6)" }].forEach(cfg => {
+    // Create arrowhead markers per color class + a default white one
+    const markerCache = {};
+    function getMarkerId(tc, dashed) {
+      const key = tc + (dashed ? "-d" : "");
+      if (markerCache[key]) return markerCache[key];
+      const mid = "mm-arr-" + uid + "-" + key.replace(/[^a-z0-9]/gi, "");
       const mk = document.createElementNS(svgNS, "marker");
-      mk.setAttribute("id", cfg.id); mk.setAttribute("viewBox", "0 0 10 10");
+      mk.setAttribute("id", mid); mk.setAttribute("viewBox", "0 0 10 10");
       mk.setAttribute("refX", "10"); mk.setAttribute("refY", "5");
       mk.setAttribute("markerWidth", "8"); mk.setAttribute("markerHeight", "8");
       mk.setAttribute("orient", "auto-start-reverse"); mk.setAttribute("markerUnits", "userSpaceOnUse");
       const ap = document.createElementNS(svgNS, "path");
       ap.setAttribute("d", "M 0 1 L 10 5 L 0 9 z");
-      ap.setAttribute("fill", cfg.fill); ap.setAttribute("class", "mm-arrow-head");
+      ap.setAttribute("fill", dashed ? "rgba(" + tc + ",0.5)" : "rgb(" + tc + ")");
+      ap.setAttribute("class", "mm-arrow-head");
       mk.appendChild(ap); defs.appendChild(mk);
-    });
+      markerCache[key] = mid;
+      return mid;
+    }
 
     // Draw edges
     const edgeElements = [];
@@ -417,24 +422,24 @@
       const edgeCls = fromPt.cls || toPt.cls || "";
       const edgeTC = colors[edgeCls] || "255,255,255";
 
-      let x1 = fromPt.x, y1 = fromPt.y, x2 = toPt.x, y2 = toPt.y;
-      const dy = y2 - y1, dx = x2 - x1;
-      const fHW = fromSg ? fromSg.w / 2 : NODE_W / 2, fHH = fromSg ? fromSg.h / 2 : NODE_H / 2;
-      const tHW = toSg   ? toSg.w / 2   : NODE_W / 2, tHH = toSg   ? toSg.h / 2   : NODE_H / 2;
+      const fHH = fromSg ? fromSg.h / 2 : NODE_H / 2;
+      const tHH = toSg   ? toSg.h / 2   : NODE_H / 2;
 
-      if (Math.abs(dy) > Math.abs(dx)) {
-        y1 += (dy > 0 ? fHH : -fHH); y2 -= (dy > 0 ? tHH : -tHH);
-      } else {
-        x1 += (dx > 0 ? fHW : -fHW); x2 -= (dx > 0 ? tHW : -tHW);
-      }
+      // Always: exit bottom-center of source, enter top-center of target
+      let x1 = fromPt.x, y1 = fromPt.y + fHH;
+      let x2 = toPt.x,   y2 = toPt.y - tHH;
 
       const path = document.createElementNS(svgNS, "path");
-      if (Math.abs(dy) > Math.abs(dx)) {
-        const midY = (y1 + y2) / 2;
-        path.setAttribute("d", "M" + x1 + "," + y1 + " C" + x1 + "," + midY + " " + x2 + "," + midY + " " + x2 + "," + y2);
+      const gap = y2 - y1;
+      if (gap > 0) {
+        // Normal downward flow — smooth vertical bezier
+        const cy = Math.max(gap * 0.45, 30);
+        path.setAttribute("d", "M" + x1 + "," + y1 + " C" + x1 + "," + (y1 + cy) + " " + x2 + "," + (y2 - cy) + " " + x2 + "," + y2);
       } else {
+        // Target is above or same row — S-curve looping down then back up
+        const loopOut = 60;
         const midX = (x1 + x2) / 2;
-        path.setAttribute("d", "M" + x1 + "," + y1 + " C" + midX + "," + y1 + " " + midX + "," + y2 + " " + x2 + "," + y2);
+        path.setAttribute("d", "M" + x1 + "," + y1 + " C" + x1 + "," + (y1 + loopOut) + " " + midX + "," + (y1 + loopOut) + " " + midX + "," + ((y1 + y2) / 2) + " S" + x2 + "," + (y2 - loopOut) + " " + x2 + "," + y2);
       }
       path.setAttribute("fill", "none");
       path.setAttribute("stroke", edge.dashed
@@ -443,7 +448,7 @@
       path.setAttribute("stroke-width", edge.dashed ? "1.5" : "2");
       path.setAttribute("stroke-linecap", "round");
       if (edge.dashed) path.setAttribute("stroke-dasharray", "6 4");
-      path.setAttribute("marker-end", "url(#" + (edge.dashed ? arrowDashId : arrowId) + ")");
+      path.setAttribute("marker-end", "url(#" + getMarkerId(edgeTC, edge.dashed) + ")");
       path.classList.add("mm-edge", "mm-thread");
       svgLayer.appendChild(path);
 
@@ -688,13 +693,17 @@
           if (!m) { console.warn("[mermaid-view] No mermaid block in", cfg.mdFile); return; }
           const ast = parseMermaid(m[1]);
           const legend = extractLegend(ast);
+          console.log("[mermaid-view] legend:", legend.legendNodes.length, "nodes,", legend.legendIds.size, "sgIds");
           _dims = buildDiagram(ast, cfg.colors, state.world, _svgLayer, legend.legendIds);
           state.built = true;
 
           // Build filter pills from legend
           const pillContainer = document.getElementById(cfg.filterId);
-          if (pillContainer) {
+          console.log("[mermaid-view] pillContainer:", cfg.filterId, pillContainer, "legendNodes:", legend.legendNodes);
+          if (pillContainer && legend.legendNodes.length) {
             buildFilters(pillContainer, legend.legendNodes, cfg.colors, _dims.nodeElements, _dims.edgeElements);
+          } else {
+            console.warn("[mermaid-view] No filter pills: container=", !!pillContainer, "nodes=", legend.legendNodes.length);
           }
 
           requestAnimationFrame(fitView);

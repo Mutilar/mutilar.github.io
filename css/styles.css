@@ -3291,7 +3291,10 @@ html.light-mode .outline-pill {
 }
 
 .mm-filter-pills {
-  display: contents;
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
 }
 
 .mm-filter {
@@ -3406,7 +3409,7 @@ html.light-mode .mm-filter.active {
 /* ── Edge lines (matches kg-thread neon glow style) ───────── */
 .mm-edge {
   transition: opacity 0.4s ease;
-  filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.6));
+  filter: drop-shadow(0 0 4px currentColor);
 }
 
 .mm-thread {
