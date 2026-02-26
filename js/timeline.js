@@ -587,7 +587,7 @@
       if (s.endOff   > visMax) visMax = s.endOff;
     });
     // Extra seasons above & below for visual breathing room
-    visMin -= 6;
+    visMin -= 3;
     visMax += 9;
 
     const totalH = (visMax - visMin + 1) * MONTH_H + CALENDAR_PAD * 2;
@@ -670,7 +670,7 @@
       if (s.endOff   > visMax) visMax = s.endOff;
     });
     // Extra seasons to match ruler
-    visMin -= 6;
+    visMin -= 3;
     visMax += 9;
 
     /* ---- 1. Build events ---- */
@@ -731,10 +731,10 @@
   const whisperData = {
     /* ── Multi-whisper (tall slivers) ── */
     "microsoft|SWE I &amp; II": [
-      "🔒 Champ<sup>SEC</sup>",
       "🌐 8B+<sup>INF/DAY</sup>",
-      "🛡️ Champ<sup>DRI</sup>",
-      "☁️ 50+<sup>DCs</sup>",
+      "🔒 Champ<sup>SEC</sup>",
+      "🎯 Champ<sup>DRI</sup>",
+      "☁️ 50+ DCs",
       "🚀 GA",
       "📡 Envoy",
     ],
@@ -812,16 +812,16 @@
       "🏙️ Cyber<sup>AWARE</sup>",
     ],
     "citris|Web Developer": [
-      "🏙️ Git<sup>OPS</sup>",
+      "🏙️ GitOPS",
     ],
     "amaxesd": [
       "⚡ ESD",
     ],
     "summerofgamedesign|Instructor": [
-      "👨‍🏫 50+",
+      "👨‍🏫 50+ Students",
     ],
     "summerofgamedesign|Founder": [
-      "💰 $25K+",
+      "💰 $25K+ Budget",
     ],
     "alamorobotics": [
       "🤖 Mindstorm",
@@ -879,7 +879,7 @@
       "🌸 Tower Def",
     ],
     "galconq": [
-      "🌌 4X VB.NET",
+      "🌌 4X VB<sup>.NET</sup>",
     ],
     "seerauber": [
       "🥈 2<sup>ND</sup>",
