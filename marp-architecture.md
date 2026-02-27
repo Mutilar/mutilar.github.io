@@ -9,12 +9,12 @@ graph TD
         direction LR
         subgraph LegendPower["⚡ CONTROL"]
             direction TB
-            L1["🔋 Battery"]:::battery
-            L2["⚡ Power"]:::control
-            L3["🔽 Regulation"]:::converter
-            L4["🔌 Drivers"]:::driver
-            L5["⚙️ Motors"]:::motor
-            L6["🧠 Compute"]:::compute
+            L1["🔋 BATTERY"]:::battery
+            L2["⚡ POWER"]:::control
+            L3["🔽 REGULATION"]:::converter
+            L4["🔌 DRIVERS"]:::driver
+            L5["⚙️ MOTORS"]:::motor
+            L6["🧠 COMPUTE"]:::compute
             L7["↔️ I/O"]:::sensor
         end
     end
@@ -25,34 +25,34 @@ graph TD
         
         subgraph BatterySupply["🔋 POWER"]
             direction LR
-            Battery["Li-ion\n<i>Aegis</i>\n240 Wh"]
-            Meter["Battery Meter\n<i>Aegis</i>\n0.5 W"]
-            Switch["Switch\n<i>FRC</i>\n30 A"]
+            Battery["LI-ION\n<i>Aegis</i>\n240 Wh"]
+            Meter["BATTERY METER\n<i>Aegis</i>\n0.5 W"]
+            Switch["SWITCH\n<i>FRC</i>\n30 A"]
         end
-        subgraph Fuses["🧯 Protection"]
+        subgraph Fuses["🧯 PROTECTION"]
             direction LR
-            FusePD["Fuse\n5.0 A"]
-            FuseBuck5["Fuse\n5.0 A"]
-            FuseStepper24["Fuse\n5.0 A"]
-            FuseBuck12["Fuse\n5.0 A"]
+            FusePD["FUSE\n5.0 A"]
+            FuseBuck5["FUSE\n5.0 A"]
+            FuseStepper24["FUSE\n5.0 A"]
+            FuseBuck12["FUSE\n5.0 A"]
         end
         subgraph PowerConversion["⚡ REGULATION"]
             direction LR
             subgraph UsbPd["🔃 20 V USB-C PD"]
                 direction LR
-                PDAdapter["<i>JacobsParts</i>\n2.2 A"]
+                PDAdapter["ADAPTER\n<i>JacobsParts</i>\n2.2 A"]
             end
             subgraph 5Bucks["🔽 5.0 V BUCK"]
                 direction LR
-                Buck5["<i>TOBSUN</i>\n5 A"]
+                Buck5["BUCK\n<i>TOBSUN</i>\n5 A"]
             end
             subgraph Boost["🔼 3.3 V BOOST"]
                 direction LR
-                LevelShifter["<i>74AHCT125N</i>\nSPIO"]
+                LevelShifter["LEVEL SHIFTER\n<i>74AHCT125N</i>\nSPIO"]
             end
             subgraph 12Buck["🔽 12 V BUCK"]
                 direction LR
-                Buck12["<i>TOBSUN</i>\n10 A"]
+                Buck12["BUCK\n<i>TOBSUN</i>\n10 A"]
             end
         end
     end
@@ -63,26 +63,26 @@ graph TD
             direction LR
             subgraph WheelLeft["⬅️ LEFT DRIVER"]
                 direction TB
-                Stepper24Left["Driver\n<i>TB6600</i>\n24 V, 1 W"]
-                LeftWheel["Motor\n<i>KH56</i>\n24 V, 60 W"]
+                Stepper24Left["DRIVER\n<i>TB6600</i>\n24 V, 1 W"]
+                LeftWheel["MOTOR\n<i>KH56</i>\n24 V, 60 W"]
             end
             subgraph WheelRight["➡️ RIGHT DRIVER"]
                 direction TB
-                Stepper24Right["Driver\n<i>TB6600</i>\n24 V, 1 W"]
-                RightWheel["Motor\n<i>KH56</i>\n24 V, 60 W"]
+                Stepper24Right["DRIVER\n<i>TB6600</i>\n24 V, 1 W"]
+                RightWheel["MOTOR\n<i>KH56</i>\n24 V, 60 W"]
             end
         end
         subgraph TurretDrive["🤖 TURRET"]
             direction LR
             subgraph TurretPan["🔄 PAN DRIVER"]
                 direction TB
-                Stepper12Pan["<i>TB6600</i>\n12 V, 0.5 W"]
-                HeadPan["<i>M55</i>\n12 V, 12 W"]
+                Stepper12Pan["DRIVER\n<i>TB6600</i>\n12 V, 0.5 W"]
+                HeadPan["MOTOR\n<i>M55</i>\n12 V, 12 W"]
             end
             subgraph TurretTilt["↕️ TILT DRIVER"]
                 direction TB
-                Stepper12Tilt["<i>TB6600</i>\n12 V, 0.5 W"]
-                HeadTilt["<i>M55</i>\n12 V, 12 W"]
+                Stepper12Tilt["DRIVER\n<i>TB6600</i>\n12 V, 0.5 W"]
+                HeadTilt["MOTOR\n<i>M55</i>\n12 V, 12 W"]
             end
         end
     end
@@ -93,32 +93,32 @@ graph TD
             direction LR
             subgraph Display["📽️ DISPLAY"]
                 direction LR
-                Projector["<i>NEBULA Capsule Air</i>\n20 V, 45 W"]
+                Projector["PROJECTOR\n<i>NEBULA Capsule Air</i>\n20 V, 45 W"]
             end
             subgraph Brain["🧠 BRAIN"]
                 direction LR
-                Pi["<i>Raspberry Pi 5</i>\n5 V, 27 W"]
+                Pi["COMPUTER\n<i>Raspberry Pi 5</i>\n5 V, 27 W"]
             end
             subgraph Ears["👂 EARS"]
                 direction TB
-                Microphone["<i>Microphone</i>\n5 V, 0.1 W"]
+                Microphone["MICROPHONE\n<i>Microphone</i>\n5 V, 0.1 W"]
             end
             subgraph Mouth["👄 MOUTH"]
                 direction LR
-                LEDs["LED Strip\n<i>WS2815, 144px</i>\n12 V, 1.0 W"]
+                LEDs["LED STRIP\n<i>WS2815, 144px</i>\n12 V, 1.0 W"]
             end
         end
         subgraph Input["👁️ EYES"]
             direction LR
             subgraph Vision["📷 IRIS"]
                 direction LR
-                Camera["Camera\n<i>Arducam, IMX708 NoIR</i>\n5 V, 1 W"]
-                IRLED["IR Light\n<i>LEDGUHON</i>\n1.2 V, 3 W"]
+                Camera["CAMERA\n<i>Arducam, IMX708 NoIR</i>\n5 V, 1 W"]
+                IRLED["IR LIGHT\n<i>LEDGUHON</i>\n1.2 V, 3 W"]
             end
             subgraph Balls["🔮 PUPILS"]
                 direction LR
-                EyeLeft["Left\n<i>QUE-T, 13 mm</i>\n5 V, 0.2 W"]
-                EyeRight["Right\n<i>QUE-T, 13 mm</i>\n5 V, 0.2 W"]
+                EyeLeft["LEFT\n<i>QUE-T, 13 mm</i>\n5 V, 0.2 W"]
+                EyeRight["RIGHT\n<i>QUE-T, 13 mm</i>\n5 V, 0.2 W"]
             end    
         end
     end

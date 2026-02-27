@@ -3,10 +3,11 @@
 // ═══════════════════════════════════════════════════════════════
 (() => {
   const playlist = [
-    { src: "radio/freemusicforvideo-digital-corporate-technology-456291.mp3", title: "Corporate" },
-    { src: "radio/freemusicforvideo-soft-background-music-401914.mp3", title: "Energetic" },
-    { src: "radio/freemusicforvideo-happy-birthday-401919.mp3", title: "Care-free" },
-    { src: "radio/freemusicforvideo-emotional-trap-beat-401962.mp3", title: "Emotional" }
+    { src: "radio/corporate.mp3", title: "Corporate" },
+    { src: "radio/electric.mp3", title: "Electric" },
+    { src: "radio/emotional.mp3", title: "Emotional" },
+    { src: "radio/ethereal.mp3", title: "Ethereal" },
+    { src: "radio/positive.mp3", title: "Positive" }
   ];
 
   let currentTrack = 0;
