@@ -69,7 +69,7 @@ graph TD
             end
             subgraph TurretTilt["↕️ TILT"]
                 direction TB
-                Stepper12Tilt["DRIVER\n<i>TB6600</i>\n12 V, 0.5 W"]
+                Stepper12Tilt["<i>TB6600</i>\n12 V, 0.5 W"]
                 HeadTilt["<i>M55</i>\n12 V, 12 W"]
             end
         end
@@ -116,9 +116,9 @@ graph TD
     BatterySupply -->|"24 V"| FuseBuck12
     BatterySupply -->|"24 V"| FusePD
     BatterySupply -->|"24 V"| FuseStepper24
-    FuseBuck5 -->|"24 V"| 5Bucks
-    FuseBuck12 -->|"24 V"| 12Buck
-    FusePD -->|"24 V"| UsbPd
+    FuseBuck5 -->|"24 V"| Buck5
+    FuseBuck12 -->|"24 V"| Buck12
+    FusePD -->|"24 V"| PDAdapter
     PDAdapter -->|"20 V"| Display 
     Buck5 -->|"5 V"| Brain 
 
@@ -139,7 +139,7 @@ graph TD
     %% Pi to face/turret subsystems
     Pi -->|"CSI"| Vision
     Pi -->|"GPIO"| Balls
-    Pi -->|"SPIO"| Boost
+    Pi -->|"SPIO"| LevelShifter
     Pi -.->|"I2C"| Microphone
     Pi -.->|"HDMI"| Projector
 
@@ -175,9 +175,7 @@ graph TD
     style Fuses fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
     style BatterySupply fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
     style PowerConversion fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
-    style Boosts fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
-    style Bucks fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
-    style UsbPd fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
+
     style Mobility fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
     style Brain fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
     style Display fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333

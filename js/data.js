@@ -81,31 +81,8 @@ sectionConfigs.forEach(({ csv, dataset, gridId, imgExt, modalImgExt }) => {
     modalState[dataset] = d;
     const g = document.getElementById(gridId);
     d.forEach(i => g.appendChild(buildEntryCard(i, dataset, { imgExt, modalImgExt })));
-    buildAboutGrid();   // attempt after each CSV loads
   });
 });
-
-// ── About Me grid (cherry-picked cards from multiple CSVs) ──
-const aboutPicks = [
-  { dataset: "work",     id: "microsoft" },
-  { dataset: "projects", id: "azuremlops" },
-  { dataset: "work",     id: "redtierobotics" },
-  { dataset: "projects", id: "amaxesd" },
-];
-let aboutBuilt = false;
-function buildAboutGrid() {
-  if (aboutBuilt) return;
-  // Wait until every needed dataset is loaded
-  if (!aboutPicks.every(p => modalState[p.dataset])) return;
-  const g = document.getElementById("about-grid");
-  if (!g) return;
-  aboutPicks.forEach(({ dataset, id }) => {
-    const item = modalState[dataset].find(d => d.ID === id);
-    if (!item) return;
-    g.appendChild(buildEntryCard(item, dataset, { imgExt: ".png", modalImgExt: ".png" }));
-  });
-  aboutBuilt = true;
-}
 
 // ── MTG (special: deck modal override) ───────────────────────
 fetchCSV("csv/mtg.csv?v=" + Date.now()).then(d => {
