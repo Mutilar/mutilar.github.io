@@ -227,6 +227,7 @@
   let _nodes = [];       // { el, theme, quadrant, item, category, absMonth, dist }
   let _hoveredNode = null; // currently hovered node (for whisper on hover)
   let _threads = [];     // { theme, quadrant, segments[], nodes[] } — theme×quadrant thread lines
+  let _staticPositions = true; // when true, nodes keep original positions on filter
   let _transform = { x: 0, y: 0, scale: 1 };
   let _graphWorld = null; // the transform container
   let _edgeSVG = null;    // the SVG for edges
@@ -261,6 +262,20 @@
 
   const quadrantFilters = ["robotics", "games", "software"];
   const overlayFilters  = ["education", "work", "projects"];
+
+  /* ── Layout toggle (Static / Dynamic) ─────────────────────── */
+  const layoutToggleBtn = document.getElementById("kgLayoutToggle");
+  if (layoutToggleBtn) {
+    layoutToggleBtn.addEventListener("click", function () {
+      _staticPositions = !_staticPositions;
+      layoutToggleBtn.classList.toggle("dynamic", !_staticPositions);
+      layoutToggleBtn.textContent = _staticPositions ? "📌 Static" : "🔀 Dynamic";
+      // If switching to dynamic, immediately relayout visible nodes
+      if (!_staticPositions && graphBuilt) {
+        relayoutAndAnimate();
+      }
+    });
+  }
 
   const _filterSys = createFilterSystem({
     allThemes: allThemes,
@@ -355,7 +370,10 @@
     });
 
     // Re-layout visible nodes and animate them into new positions
-    relayoutAndAnimate();
+    // Always relayout during tour; otherwise respect the toggle
+    if (!_staticPositions || _touring) {
+      relayoutAndAnimate();
+    }
     updateProximityGlow();
   }
 
@@ -662,7 +680,7 @@
       bounceCurve:    "cubic-bezier(0.34, 1.56, 0.64, 1)",
       bounceDuration: 380,
       rubberBandDrag: false,
-      ignoreSelector: ".kg-node",
+      ignoreSelector: ".kg-node, .kg-explore-hint",
       onUpdate:       () => updateProximityGlow(),
       getBounds:      () => {
         const vp = graphModal.querySelector(".kg-viewport");

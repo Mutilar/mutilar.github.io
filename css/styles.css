@@ -4539,6 +4539,40 @@ html.light-mode .timeline-filter.filter-pulse {
   z-index: 5;
 }
 
+/* ── Static/Dynamic layout toggle ─────────────────────────── */
+.kg-layout-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  color: rgba(255, 255, 255, 0.5);
+  background: rgba(30, 30, 40, 0.55);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.kg-layout-toggle:hover {
+  color: #fff;
+  background: rgba(50, 50, 65, 0.75);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+.kg-layout-toggle.dynamic {
+  color: rgba(120, 200, 255, 0.85);
+  border-color: rgba(120, 200, 255, 0.35);
+  background: rgba(120, 200, 255, 0.08);
+}
+.kg-layout-toggle.dynamic:hover {
+  color: rgba(120, 200, 255, 1);
+  background: rgba(120, 200, 255, 0.14);
+  border-color: rgba(120, 200, 255, 0.45);
+}
+
 .kg-node.kg-hidden {
   opacity: 0 !important;
   pointer-events: none;
@@ -4707,6 +4741,25 @@ html.light-mode .kg-filter.kg-filter-glow {
               0 0 28px rgba(var(--tc-light, var(--tc)), 0.15) !important;
 }
 
+html.light-mode .kg-layout-toggle {
+  color: rgba(0, 0, 0, 0.45);
+  background: rgba(240, 240, 245, 0.6);
+  border-color: rgba(0, 0, 0, 0.1);
+}
+html.light-mode .kg-layout-toggle:hover {
+  color: rgba(0, 0, 0, 0.7);
+  background: rgba(225, 225, 235, 0.75);
+}
+html.light-mode .kg-layout-toggle.dynamic {
+  color: rgba(0, 100, 180, 0.8);
+  border-color: rgba(0, 100, 180, 0.3);
+  background: rgba(0, 100, 180, 0.08);
+}
+html.light-mode .kg-layout-toggle.dynamic:hover {
+  color: rgba(0, 100, 180, 1);
+  background: rgba(0, 100, 180, 0.14);
+}
+
 html.light-mode .kg-explore-hint {
   animation: bounce-y-hero 1.8s ease-in-out infinite, tl-glow-pulse-light 3s ease-in-out infinite;
 }
@@ -4768,6 +4821,10 @@ html.light-mode .kg-name-whisper {
     padding: 5px 10px;
     font-size: 11px;
     gap: 4px;
+  }
+  .kg-layout-toggle {
+    padding: 3px 8px;
+    font-size: 10px;
   }
   .kg-node {
     padding: 4px;
