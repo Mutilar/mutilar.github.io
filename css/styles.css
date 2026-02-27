@@ -3440,6 +3440,36 @@ html.light-mode .mm-filter.mm-filter-glow {
   color: #fff;
 }
 
+/* ── Explore hint — Knowledge Graph (mirrors mm-explore-hint) ── */
+.kg-explore-hint {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+  margin-top: 0;
+  cursor: pointer;
+  transition: opacity 0.4s ease, color 0.25s ease;
+  animation: bounce-y-hero 1.8s ease-in-out infinite, tl-glow-pulse 3s ease-in-out infinite;
+}
+
+.kg-explore-hint.exploring {
+  animation: none;
+  color: rgba(255, 255, 255, 1);
+}
+
+.kg-explore-hint.exploring strong {
+  color: rgba(255, 255, 255, 1);
+}
+
+.kg-explore-hint:hover {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.kg-explore-hint:hover strong {
+  color: #fff;
+}
+
 /* ── World (transform container) ──────────────────────────── */
 .mm-world {
   position: absolute;
@@ -4647,6 +4677,19 @@ html.light-mode .kg-filter.active:hover {
 
 html.light-mode .kg-filter.filter-pulse {
   animation-name: filter-backoff-pulse-light;
+}
+
+html.light-mode .kg-explore-hint {
+  animation: bounce-y-hero 1.8s ease-in-out infinite, tl-glow-pulse-light 3s ease-in-out infinite;
+}
+
+html.light-mode .kg-explore-hint.exploring {
+  animation: none;
+  color: rgba(0, 0, 0, 0.85);
+}
+
+html.light-mode .kg-explore-hint.exploring strong {
+  color: rgba(0, 0, 0, 0.9);
 }
 
 html.light-mode .kg-node {

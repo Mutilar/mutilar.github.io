@@ -911,146 +911,32 @@
   }
 
   /* ═════════════════════════════════════════════════════════════
-     5. PAN & ZOOM
+     5. PAN & ZOOM  (delegates to shared initPanZoom in viz.js)
      ═════════════════════════════════════════════════════════════ */
 
-  function initPanZoom(viewport, state) {
-    let isPanning = false, startX = 0, startY = 0, startTX = 0, startTY = 0;
-
-    function update() {
-      if (!state.world) return;
-      state.world.style.transform = "translate(" + state.x + "px, " + state.y + "px) scale(" + state.scale + ")";
-    }
-    state._update = update;
-
-    // ── Pan bounds — keep content mostly visible ─────────────
-    // Returns { minX, maxX, minY, maxY } for state.x/y so you
-    // can never pan more than ~half the viewport past any edge.
-    function getPanBounds() {
-      if (!state._dims) return null;
-      const vw = viewport.clientWidth, vh = viewport.clientHeight;
-      const s = state.scale;
-      const pad = 0.75;    // content edge can't go past 25% of viewport
-      return {
-        minX: vw * pad - state._dims.svgW * s,
-        maxX: vw * (1 - pad),
-        minY: vh * pad - state._dims.svgH * s,
-        maxY: vh * (1 - pad),
-      };
-    }
-
-    // Rubber-band: the further past bounds, the harder it resists
-    function rubberBand(val, min, max) {
-      if (val >= min && val <= max) return val;
-      const limit = 60;           // max overshoot in px
-      const over = val < min ? min - val : val - max;
-      const damped = limit * (1 - Math.exp(-over / limit));  // asymptotic
-      return val < min ? min - damped : max + damped;
-    }
-
-    let _panBounceTimer = null;
-    function bounceBackIfNeeded() {
-      const bounds = getPanBounds();
-      if (!bounds) return;
-      let tx = state.x, ty = state.y, clamped = false;
-      if (tx < bounds.minX) { tx = bounds.minX; clamped = true; }
-      if (tx > bounds.maxX) { tx = bounds.maxX; clamped = true; }
-      if (ty < bounds.minY) { ty = bounds.minY; clamped = true; }
-      if (ty > bounds.maxY) { ty = bounds.maxY; clamped = true; }
-      if (clamped) {
-        state.x = tx; state.y = ty;
-        state.world.style.transition = "transform 0.3s cubic-bezier(0.25, 1, 0.5, 1)";
-        update();
-        if (_panBounceTimer) clearTimeout(_panBounceTimer);
-        _panBounceTimer = setTimeout(function () { state.world.style.transition = ""; }, 340);
-      }
-    }
-
-    viewport.addEventListener("pointerdown", e => {
-      if (e.target.closest(".mm-node") || e.target.closest(".mm-explore-hint")) return;
-      isPanning = true; startX = e.clientX; startY = e.clientY;
-      startTX = state.x; startTY = state.y;
-      viewport.style.cursor = "grabbing"; viewport.setPointerCapture(e.pointerId);
+  function _initPanZoom(viewport, state) {
+    var pz = initPanZoom(viewport, state.world, state, {
+      minScale: MIN_SCALE,
+      maxScale: MAX_SCALE,
+      getBounds: function () {
+        if (!state._dims) return null;
+        var vw = viewport.clientWidth, vh = viewport.clientHeight;
+        var s = state.scale;
+        var pad = 0.75;
+        return {
+          minX: vw * pad - state._dims.svgW * s,
+          maxX: vw * (1 - pad),
+          minY: vh * pad - state._dims.svgH * s,
+          maxY: vh * (1 - pad),
+        };
+      },
+      ignoreSelector: ".mm-node, .mm-explore-hint",
+      rubberBandDrag: true,
+      zoomStep: [0.92, 1.08],
+      bounceCurve: "cubic-bezier(0.25, 1, 0.5, 1)",
+      bounceDuration: 340,
     });
-    viewport.addEventListener("pointermove", e => {
-      if (!isPanning) return;
-      let nx = startTX + (e.clientX - startX), ny = startTY + (e.clientY - startY);
-      const bounds = getPanBounds();
-      if (bounds) { nx = rubberBand(nx, bounds.minX, bounds.maxX); ny = rubberBand(ny, bounds.minY, bounds.maxY); }
-      state.x = nx; state.y = ny; update();
-    });
-    viewport.addEventListener("pointerup", () => {
-      isPanning = false; viewport.style.cursor = "grab";
-      bounceBackIfNeeded();
-    });
-    viewport.addEventListener("pointercancel", () => {
-      isPanning = false; viewport.style.cursor = "grab";
-      bounceBackIfNeeded();
-    });
-
-    let _zoomBounceTimer = null;
-    viewport.addEventListener("wheel", e => {
-      e.preventDefault();
-      const rect = viewport.getBoundingClientRect();
-      const mx = e.clientX - rect.left, my = e.clientY - rect.top;
-      const prev = state.scale;
-      const raw = state.scale * (e.deltaY > 0 ? 0.92 : 1.08);
-      const clamped = Math.max(MIN_SCALE, Math.min(MAX_SCALE, raw));
-      const atLimit = raw !== clamped;
-      state.scale = clamped;
-      const ratio = state.scale / prev;
-      state.x = mx - ratio * (mx - state.x); state.y = my - ratio * (my - state.y);
-      update();
-
-      if (atLimit) {
-        // Elastic overshoot then spring back (matches skill-tree feel)
-        if (_zoomBounceTimer) clearTimeout(_zoomBounceTimer);
-        const overshoot = raw < MIN_SCALE ? MIN_SCALE * 0.92 : MAX_SCALE * 1.06;
-        state.scale = overshoot;
-        const oRatio = state.scale / clamped;
-        state.x = mx - oRatio * (mx - state.x); state.y = my - oRatio * (my - state.y);
-        state.world.style.transition = "transform 0.08s ease-out";
-        update();
-        _zoomBounceTimer = setTimeout(function () {
-          state.scale = clamped;
-          const bRatio = clamped / overshoot;
-          state.x = mx - bRatio * (mx - state.x); state.y = my - bRatio * (my - state.y);
-          state.world.style.transition = "transform 0.3s cubic-bezier(0.25, 1, 0.5, 1)";
-          update();
-          setTimeout(function () { state.world.style.transition = ""; bounceBackIfNeeded(); }, 320);
-        }, 80);
-      } else {
-        bounceBackIfNeeded();
-      }
-    }, { passive: false });
-
-    let lastDist = 0;
-    viewport.addEventListener("touchstart", e => {
-      if (e.touches.length === 2) {
-        const dx2 = e.touches[1].clientX - e.touches[0].clientX;
-        const dy2 = e.touches[1].clientY - e.touches[0].clientY;
-        lastDist = Math.sqrt(dx2 * dx2 + dy2 * dy2);
-      }
-    }, { passive: true });
-    viewport.addEventListener("touchmove", e => {
-      if (e.touches.length === 2) {
-        e.preventDefault();
-        const dx2 = e.touches[1].clientX - e.touches[0].clientX;
-        const dy2 = e.touches[1].clientY - e.touches[0].clientY;
-        const dist = Math.sqrt(dx2 * dx2 + dy2 * dy2);
-        if (lastDist > 0) {
-          const rect = viewport.getBoundingClientRect();
-          const cx = (e.touches[0].clientX + e.touches[1].clientX) / 2 - rect.left;
-          const cy = (e.touches[0].clientY + e.touches[1].clientY) / 2 - rect.top;
-          const prev = state.scale;
-          state.scale = Math.max(MIN_SCALE, Math.min(MAX_SCALE, state.scale * (dist / lastDist)));
-          const ratio = state.scale / prev;
-          state.x = cx - ratio * (cx - state.x); state.y = cy - ratio * (cy - state.y); update();
-        }
-        lastDist = dist;
-      }
-    }, { passive: false });
-    viewport.addEventListener("touchend", () => { bounceBackIfNeeded(); }, { passive: true });
+    state._update = pz.update;
   }
 
   /* ═════════════════════════════════════════════════════════════
@@ -1262,58 +1148,32 @@
     let _svgLayer = null, _dims = null;
     let _ast = null, _legend = null;
     let _visibleBounds = null;  // { x, y, w, h } of visible content
-    let _fitAnimId = null;      // current fitView rAF id
+    let _fitHandle = null;      // current animateCameraFit handle
 
     function fitView(animate) {
       const vp = modal.querySelector(".mm-viewport");
       if (!vp || !state.world || !_dims) return;
-      const vw = vp.clientWidth, vh = vp.clientHeight;
-      // Use visible bounds if available, else full diagram
       const bw = _visibleBounds ? _visibleBounds.w : _dims.svgW;
       const bh = _visibleBounds ? _visibleBounds.h : _dims.svgH;
       const bx = _visibleBounds ? _visibleBounds.x : 0;
       const by = _visibleBounds ? _visibleBounds.y : 0;
-      const sx = (vw - 40) / bw, sy = (vh - 40) / bh;
-      const fitScale = Math.min(sx, sy, 1);
-      const targetX = (vw - bw * fitScale) / 2 - bx * fitScale;
-      const targetY = (vh - bh * fitScale) / 2 - by * fitScale;
-      const targetS = fitScale;
-
-      if (!animate) {
-        state.x = targetX; state.y = targetY; state.scale = targetS;
-        if (state._update) state._update();
-        return;
-      }
 
       // Cancel any in-flight animation
-      if (_fitAnimId) { cancelAnimationFrame(_fitAnimId); _fitAnimId = null; }
+      if (_fitHandle) { _fitHandle.cancel(); _fitHandle = null; }
       state.world.style.transition = "";
 
-      // Smooth JS-driven camera slerp
-      const fromX = state.x, fromY = state.y, fromS = state.scale;
-      const duration = 1000; // ms
-      const startTime = performance.now();
-
-      function ease(t) {
-        // Smooth-step ease-in-out (hermite)
-        return t * t * (3 - 2 * t);
-      }
-
-      function tick(now) {
-        const elapsed = now - startTime;
-        const raw = Math.min(elapsed / duration, 1);
-        const t = ease(raw);
-        state.x     = fromX + (targetX - fromX) * t;
-        state.y     = fromY + (targetY - fromY) * t;
-        state.scale = fromS + (targetS - fromS) * t;
+      _fitHandle = animateCameraFit(state, function () {
         if (state._update) state._update();
-        if (raw < 1) {
-          _fitAnimId = requestAnimationFrame(tick);
-        } else {
-          _fitAnimId = null;
-        }
-      }
-      _fitAnimId = requestAnimationFrame(tick);
+      }, {
+        vpWidth:  vp.clientWidth,
+        vpHeight: vp.clientHeight,
+        bounds:   { x: bx, y: by, w: bw, h: bh },
+        minScale: MIN_SCALE,
+        maxScale: 1,     // never zoom past 1× for diagram fit
+        padding:  20,
+        duration: 1000,
+        animate:  animate,
+      });
     }
 
     function rebuild(activeClasses) {
@@ -1486,32 +1346,13 @@
     let _exploreStepDuration = 3000; // current step's duration (updated per step)
 
     var EXPLORE_DEFAULT = '<strong>Explore</strong><span class="scroll-arrow">\uD83D\uDD2D</span>';
-
-    // Crossfade helper: fade out → swap innerHTML → fade in
-    var _fadePending = null;
-    function crossfadeHint(hint, html, cb) {
-      if (_fadePending) clearTimeout(_fadePending);
-      hint.style.transition = "opacity 0.15s ease";
-      hint.style.opacity = "0";
-      _fadePending = setTimeout(function () {
-        hint.innerHTML = html;
-        if (cb) cb();
-        // force reflow so opacity:0 is painted before we go to 1
-        void hint.offsetWidth;
-        hint.style.opacity = "1";
-        _fadePending = setTimeout(function () {
-          hint.style.transition = "";
-          hint.style.opacity = "";
-          _fadePending = null;
-        }, 160);
-      }, 160);
-    }
+    var _hintCF = createCrossfader();
 
     function resetHintLabel() {
       var hint = modal.querySelector(".mm-explore-hint");
       if (!hint) return;
       if (_exploring) {
-        crossfadeHint(hint, EXPLORE_DEFAULT, function () { hint.classList.remove("exploring"); });
+        _hintCF.fade(hint, EXPLORE_DEFAULT, function () { hint.classList.remove("exploring"); });
       } else {
         hint.innerHTML = EXPLORE_DEFAULT;
         hint.classList.remove("exploring");
@@ -1521,12 +1362,11 @@
     function setHintLabel(label) {
       var hint = modal.querySelector(".mm-explore-hint");
       if (!hint) return;
-      // Split leading emoji from text
       var m = label.match(/^(\p{Emoji_Presentation}|\p{Emoji}\uFE0F?)\s*/u);
       var emoji = m ? m[1] : '\uD83D\uDD2D';
       var text  = m ? label.slice(m[0].length) : label;
       var html = '<strong>' + text + '</strong><span class="scroll-arrow">' + emoji + '</span>';
-      crossfadeHint(hint, html);
+      _hintCF.fade(hint, html);
     }
 
     function stopExplore() {
@@ -1640,7 +1480,7 @@
     if (vp) {
       state.world = modal.querySelector(".mm-world");
       _svgLayer   = modal.querySelector(".mm-edges");
-      if (state.world && _svgLayer) initPanZoom(vp, state);
+      if (state.world && _svgLayer) _initPanZoom(vp, state);
     }
 
     const closeBtn = document.getElementById(cfg.closeId);

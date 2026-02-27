@@ -18,45 +18,15 @@
   function _tlStopAutoScroll() { if (_tlAutoScrollRAF) { cancelAnimationFrame(_tlAutoScrollRAF); _tlAutoScrollRAF = null; } }
   const CALENDAR_PAD = 0; // px buffer top & bottom of timeline
 
-  /* ── Thematic work-stream categories ────────────────────── */
-  const themeConfig = {
-    robotics:  { color: "242,80,34",   icon: "fa-cogs",           label: "Robotics" },
-    games:     { color: "127,186,0",   icon: "fa-gamepad",        label: "Games" },
-    software:  { color: "0,164,239",   icon: "fa-code",           label: "Software" },
-    research:  { color: "255,185,0",   icon: "fa-flask",          label: "Research" },
-    education: { color: "255,185,0",   icon: "fa-graduation-cap", label: "Education" },
-  };
+  /* ── Thematic work-stream categories (from viz.js) ────────── */
+  // timeline uses VIZ_THEMES with altColor for software
+  const themeConfig = {};
+  ["robotics", "games", "software", "research", "education"].forEach(function (k) {
+    var src = VIZ_THEMES[k];
+    themeConfig[k] = { color: (k === "software" ? src.altColor : src.color) || src.color, icon: src.icon, label: src.label };
+  });
 
-  /** Map each item ID → thematic work stream */
-  const themeMap = {
-    // Robotics — hardware builds, robots, IoT devices
-    marp: "robotics", sriracha: "robotics", smartank: "robotics",
-    blindsight: "robotics", amaxesd: "robotics", redtierobotics: "robotics",
-    alamorobotics: "robotics", motorskills: "robotics",
-    "home-iot": "robotics",
-    // Games — game dev, game jams, game-adjacent coding tools
-    bitnaughts: "games", graviton: "games", spaceninjas: "games",
-    voodoo: "games", galconq: "games", popvuj: "games",
-    seerauber: "games", summerofgamedesign: "games", iterate: "games",
-    "the-nobles": "games", "the-demons": "games",
-    // Software — professional SWE, cloud, web apps, devops
-    microsoft: "software", azuremlops: "software", ventana: "software",
-    duskrosecodex: "software",
-    citris: "software", hackmerced: "software", motleymoves: "software",
-    breeze: "software", dogpark: "software",
-    ozone: "software", gasleek: "software", chemistry: "software",
-    gist: "software", digestquest: "software",
-    // Research — academic labs, science, data analysis
-    vicelab: "research", andeslab: "research", maces: "research",
-    firmi: "research",
-    learnbeat: "research", acm: "research",
-    // Education — university courses
-    cse180: "education", cse165: "education", cse160: "education",
-    cse120: "education", cse111: "education", cse100: "education",
-    cse031: "education", cse030: "education", cse015: "education",
-    // Education — high school
-    ropgamedesign: "education", roparchitecture: "education", apjava: "education",
-  };
+  const themeMap = VIZ_DOMAIN_MAP;
 
   function getTheme(item) {
     return themeMap[item.ID] || "software";
@@ -94,60 +64,17 @@
   timelineModalClose.addEventListener("click", closeTimelineModal);
   timelineModal.addEventListener("click", e => { if (e.target === timelineModal) closeTimelineModal(); });
 
-  // ── Filter buttons ─────────────────────────────────────────
+  // ── Filter buttons (via viz.js shared filter system) ────────
   const allThemes = ["robotics", "games", "software", "research", "education"];
   const allBtn = timelineModal.querySelector('.timeline-filter[data-filter="all"]');
   const themeBtns = timelineModal.querySelectorAll('.timeline-filter:not([data-filter="all"])');
 
-  function syncFilterUI() {
-    const allActive = activeFilters.size === allThemes.length;
-    allBtn.classList.toggle("active", allActive);
-    const indicator = allBtn.querySelector(".all-indicator");
-    if (indicator) {
-      const isLight = document.documentElement.classList.contains("light-mode");
-      indicator.textContent = allActive
-        ? (isLight ? "\u2b1b" : "\u2b1c")   // active:  ⬛ light / ⬜ dark
-        : (isLight ? "\u2b1c" : "\u2b1b");   // inactive: ⬜ light / ⬛ dark
-    }
-    themeBtns.forEach(b => b.classList.toggle("active", activeFilters.has(b.dataset.filter)));
-  }
-  syncFilterUI();   // set initial active state on all buttons
-
-  // Re-sync All indicator when theme toggles (⬜/⬛ swap)
-  window.addEventListener("theme-changed", () => syncFilterUI());
-
-  allBtn.addEventListener("click", () => {
-    if (activeFilters.size === allThemes.length) {
-      // Already all-active → backoff pulse
-      allBtn.classList.remove("filter-pulse");
-      void allBtn.offsetWidth;           // reflow to restart animation
-      allBtn.classList.add("filter-pulse");
-      setTimeout(() => allBtn.classList.remove("filter-pulse"), 100);
-      return;
-    }
-    allThemes.forEach(t => activeFilters.add(t));
-    syncFilterUI();
-    applyFilter();
-  });
-
-  themeBtns.forEach(btn => {
-    btn.addEventListener("click", () => {
-      const f = btn.dataset.filter;
-      if (activeFilters.size === allThemes.length) {
-        // All active → focus on the clicked one only
-        activeFilters.clear();
-        activeFilters.add(f);
-      } else if (activeFilters.has(f) && activeFilters.size === 1) {
-        // Last one standing → deselecting returns to all
-        allThemes.forEach(t => activeFilters.add(t));
-      } else if (activeFilters.has(f)) {
-        activeFilters.delete(f);
-      } else {
-        activeFilters.add(f);
-      }
-      syncFilterUI();
-      applyFilter();
-    });
+  const _filterSys = createFilterSystem({
+    allThemes: allThemes,
+    activeFilters: activeFilters,
+    allBtn: allBtn,
+    themeBtns: themeBtns,
+    onFilter: applyFilter,
   });
 
   /** All layout data is stored here after first build */

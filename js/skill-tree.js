@@ -11,15 +11,12 @@
   const graphModalClose = document.getElementById("knowledgeModalClose");
   if (!graphModal || !graphModalClose) return;
 
-  /* ── Thematic config (mirrors timeline.js) ────────────────── */
-  const themeConfig = {
-    robotics:  { color: "242,80,34",   icon: "fa-cogs",           label: "Robotics",  emoji: "🤖" },
-    games:     { color: "127,186,0",   icon: "fa-gamepad",        label: "Games",      emoji: "🎮" },
-    software:  { color: "0,120,212",   icon: "fa-code",           label: "Software",   emoji: "💻" },
-    education: { color: "255,185,0",   icon: "fa-graduation-cap", label: "Education",  emoji: "🎓" },
-    work:      { color: "0,120,212",   icon: "fa-briefcase",     label: "Work",       emoji: "💼" },
-    projects:  { color: "242,80,34",   icon: "fa-rocket",        label: "Projects",   emoji: "🚀" },
-  };
+  /* ── Thematic config (from viz.js) ──────────────────────────── */
+  const themeConfig = {};
+  ["robotics", "games", "software", "education", "work", "projects"].forEach(function (k) {
+    var src = VIZ_THEMES[k];
+    themeConfig[k] = { color: src.color, icon: src.icon, label: src.label, emoji: src.emoji };
+  });
 
   /* ── Thread (overlay-theme) colors — one thread per theme×quadrant pair ── */
   const threadConfig = {
@@ -28,29 +25,7 @@
     projects:  { color: "242,80,34",  label: "Projects" },   // MSFT Red
   };
 
-  const themeMap = {
-    marp: "projects", amaxesd: "projects", redtierobotics: "education",
-    alamorobotics: "work", "home-iot": "projects",
-    bitnaughts: "projects", voodoo: "projects", galconq: "projects", popvuj: "projects",
-    "the-nobles": "projects", "the-demons": "projects", duskrosecodex: "projects",
-    graviton: "projects", spaceninjas: "work",
-    summerofgamedesign: "work", iterate: "projects",
-    microsoft: "work", ventana: "work",
-    citris: "work", hackmerced: "work",
-    vicelab: "work", andeslab: "work", maces: "work",
-    learnbeat: "work", acm: "work",
-    azuremlops: "projects", motleymoves: "projects",
-    breeze: "projects", dogpark: "projects",
-    ozone: "projects",
-    firmi: "projects",
-    sriracha: "projects", smartank: "projects", blindsight: "projects",
-    motorskills: "projects", seerauber: "projects",
-    gasleek: "projects", chemistry: "projects", gist: "projects", digestquest: "projects",
-    cse180: "education", cse165: "education", cse160: "education",
-    cse120: "education", cse111: "education", cse100: "education",
-    cse031: "education", cse030: "education", cse015: "education",
-    ropgamedesign: "education", roparchitecture: "education", apjava: "education",
-  };
+  const themeMap = VIZ_SOURCE_MAP;
 
   /** Map education items to a directional quadrant theme */
   const eduQuadrantMap = {
@@ -280,74 +255,43 @@
     if (e.key === "Escape" && graphModal.classList.contains("open")) closeKnowledgeModal();
   });
 
-  /* ── Filter buttons ───────────────────────────────────────── */
+  /* ── Filter buttons (via viz.js shared filter system) ─────── */
   const allBtn = graphModal.querySelector('.kg-filter[data-filter="all"]');
   const themeBtns = graphModal.querySelectorAll('.kg-filter:not([data-filter="all"])');
-
-  function syncFilterUI() {
-    const allActive = activeFilters.size === allThemes.length;
-    if (allBtn) {
-      allBtn.classList.toggle("active", allActive);
-      const indicator = allBtn.querySelector(".all-indicator");
-      if (indicator) {
-        const isLight = document.documentElement.classList.contains("light-mode");
-        indicator.textContent = allActive
-          ? (isLight ? "\u2b1b" : "\u2b1c")
-          : (isLight ? "\u2b1c" : "\u2b1b");
-      }
-    }
-    themeBtns.forEach(b => b.classList.toggle("active", activeFilters.has(b.dataset.filter)));
-  }
-  syncFilterUI();
-  window.addEventListener("theme-changed", () => syncFilterUI());
-
-  if (allBtn) {
-    allBtn.addEventListener("click", () => {
-      if (activeFilters.size === allThemes.length) {
-        allBtn.classList.remove("filter-pulse");
-        void allBtn.offsetWidth;
-        allBtn.classList.add("filter-pulse");
-        setTimeout(() => allBtn.classList.remove("filter-pulse"), 100);
-        return;
-      }
-      allThemes.forEach(t => activeFilters.add(t));
-      syncFilterUI();
-      applyFilter();
-    });
-  }
 
   const quadrantFilters = ["robotics", "games", "software"];
   const overlayFilters  = ["education", "work", "projects"];
 
-  themeBtns.forEach(btn => {
-    btn.addEventListener("click", () => {
-      const f = btn.dataset.filter;
-      const isQuadrant = quadrantFilters.includes(f);
-      const sameGroup  = isQuadrant ? quadrantFilters : overlayFilters;
-      const otherGroup = isQuadrant ? overlayFilters  : quadrantFilters;
+  const _filterSys = createFilterSystem({
+    allThemes: allThemes,
+    activeFilters: activeFilters,
+    allBtn: allBtn,
+    themeBtns: themeBtns,
+    onFilter: applyFilter,
+    soloLogic: function (f, activeFilters, allThemes) {
+      var isQuadrant = quadrantFilters.indexOf(f) !== -1;
+      var sameGroup  = isQuadrant ? quadrantFilters : overlayFilters;
 
       if (activeFilters.size === allThemes.length) {
         // All on → solo within this group, keep the other group intact
-        sameGroup.forEach(t => activeFilters.delete(t));
+        sameGroup.forEach(function (t) { activeFilters.delete(t); });
         activeFilters.add(f);
       } else if (activeFilters.has(f) && activeFilters.size === 1) {
         // Last filter standing → restore all
-        allThemes.forEach(t => activeFilters.add(t));
+        allThemes.forEach(function (t) { activeFilters.add(t); });
       } else if (activeFilters.has(f)) {
         // Check if it's the last one in its group
-        const siblingsOn = sameGroup.filter(t => t !== f && activeFilters.has(t));
+        var siblingsOn = sameGroup.filter(function (t) { return t !== f && activeFilters.has(t); });
         if (siblingsOn.length === 0) {
           // Last in group → restore entire group
-          sameGroup.forEach(t => activeFilters.add(t));
+          sameGroup.forEach(function (t) { activeFilters.add(t); });
         } else {
           activeFilters.delete(f);
         }
       } else {
         activeFilters.add(f);
       }
-      syncFilterUI();
-      applyFilter();
-    });
+    },
   });
 
   function applyFilter() {
@@ -607,69 +551,14 @@
     setTimeout(() => updateProximityGlow(), totalAnimTime);
   }
 
-  /* ── Pan & Zoom ───────────────────────────────────────────── */
-  const MIN_SCALE = 1;
-  const MAX_SCALE = 4;
+  /* ── Pan & Zoom (delegates to shared initPanZoom from viz.js) ── */
+  const _KG_MIN_SCALE = 1;
+  const _KG_MAX_SCALE = 4;
 
-  /** Compute the allowed pan range so the graph content stays mostly visible.
-   *  Returns { minX, maxX, minY, maxY } for _transform.x/y. */
-  function getPanBounds() {
-    const viewport = graphModal.querySelector(".kg-viewport");
-    if (!viewport || _nodes.length === 0) return null;
-    const vw = viewport.clientWidth;
-    const vh = viewport.clientHeight;
-    // Find world-space extent of all nodes
-    let wMinX = Infinity, wMaxX = -Infinity, wMinY = Infinity, wMaxY = -Infinity;
-    _nodes.forEach(n => {
-      if (n.targetX < wMinX) wMinX = n.targetX;
-      if (n.targetX > wMaxX) wMaxX = n.targetX;
-      if (n.targetY < wMinY) wMinY = n.targetY;
-      if (n.targetY > wMaxY) wMaxY = n.targetY;
-    });
-    // Add margin for node sizes
-    const margin = 80;
-    wMinX -= margin; wMaxX += margin;
-    wMinY -= margin; wMaxY += margin;
-    // In screen space, node at worldX appears at: worldX * scale + transform.x
-    // Keep the center of the graph close to the viewport center:
-    const s = _transform.scale;
-    const pad = 0.48;
-    return {
-      minX: vw * pad - wMaxX * s,
-      maxX: vw * (1 - pad) - wMinX * s,
-      minY: vh * pad - wMaxY * s,
-      maxY: vh * (1 - pad) - wMinY * s,
-    };
-  }
+  /** Shared pan/zoom handle — set by _initPanZoom(). */
+  let _pz = null;
 
-  /** Check if current pan is out of bounds and spring back if so. */
-  let _panBounceTimer = null;
-  function bounceBackIfNeeded() {
-    const bounds = getPanBounds();
-    if (!bounds) return;
-    let tx = _transform.x, ty = _transform.y;
-    let clamped = false;
-    if (tx < bounds.minX) { tx = bounds.minX; clamped = true; }
-    if (tx > bounds.maxX) { tx = bounds.maxX; clamped = true; }
-    if (ty < bounds.minY) { ty = bounds.minY; clamped = true; }
-    if (ty > bounds.maxY) { ty = bounds.maxY; clamped = true; }
-    if (clamped) {
-      _transform.x = tx;
-      _transform.y = ty;
-      _graphWorld.style.transition = "transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1)";
-      updateTransform();
-      if (_panBounceTimer) clearTimeout(_panBounceTimer);
-      _panBounceTimer = setTimeout(() => { _graphWorld.style.transition = ""; }, 380);
-    }
-  }
-
-  function updateTransform() {
-    if (!_graphWorld) return;
-    _graphWorld.style.transform = `translate(${_transform.x}px, ${_transform.y}px) scale(${_transform.scale})`;
-    updateProximityGlow();
-  }
-
-  /** Toggle glow on nodes whose center falls within the center 25% of the viewport */
+  /** Toggle glow on nodes whose center falls within the center 40% of the viewport */
   let _glowRAF = 0;
   function updateProximityGlow() {
     cancelAnimationFrame(_glowRAF);
@@ -686,7 +575,7 @@
       const bottom = vh * (1 - margin);
 
       // Map zoom level to whisper index: evenly divide the zoom range
-      const zoomT = Math.max(0, Math.min(1, (_transform.scale - MIN_SCALE) / (MAX_SCALE - MIN_SCALE)));
+      const zoomT = Math.max(0, Math.min(1, (_transform.scale - _KG_MIN_SCALE) / (_KG_MAX_SCALE - _KG_MIN_SCALE)));
 
       _nodes.forEach(n => {
         // Node world-space position → screen-space
@@ -737,128 +626,58 @@
     });
   }
 
-  function initPanZoom() {
+  /** Apply the current _transform to the world element + trigger proximity glow.
+   *  Called from many places outside pan/zoom (entrance animations, filter relayout, etc.) */
+  function updateTransform() {
+    if (!_graphWorld) return;
+    if (_pz) { _pz.update(); return; }
+    // Fallback before _pz is initialised (first render)
+    _graphWorld.style.transform = `translate(${_transform.x}px, ${_transform.y}px) scale(${_transform.scale})`;
+    updateProximityGlow();
+  }
+
+  /** Convenience wrapper so call-sites don't need to null-check _pz. */
+  function bounceBackIfNeeded() {
+    if (_pz) _pz.bounceBackIfNeeded();
+  }
+
+  /** Wire up pointer/wheel/pinch interaction via shared initPanZoom. */
+  function _initPanZoom() {
     const viewport = graphModal.querySelector(".kg-viewport");
     if (!viewport) return;
-
-    let isPanning = false;
-    let startX = 0, startY = 0;
-    let startTX = 0, startTY = 0;
-
-    viewport.addEventListener("pointerdown", e => {
-      if (e.target.closest(".kg-node")) return; // let node clicks through
-      isPanning = true;
-      startX = e.clientX;
-      startY = e.clientY;
-      startTX = _transform.x;
-      startTY = _transform.y;
-      viewport.style.cursor = "grabbing";
-      viewport.setPointerCapture(e.pointerId);
-    });
-
-    viewport.addEventListener("pointermove", e => {
-      if (!isPanning) return;
-      _transform.x = startTX + (e.clientX - startX);
-      _transform.y = startTY + (e.clientY - startY);
-      updateTransform();
-    });
-
-    viewport.addEventListener("pointerup", () => {
-      isPanning = false;
-      viewport.style.cursor = "grab";
-      bounceBackIfNeeded();
-    });
-
-    viewport.addEventListener("pointercancel", () => {
-      isPanning = false;
-      viewport.style.cursor = "grab";
-      bounceBackIfNeeded();
-    });
-
-    // Zoom with scroll wheel
-    let _bounceTimer = null;
-    viewport.addEventListener("wheel", e => {
-      e.preventDefault();
-      const rect = viewport.getBoundingClientRect();
-      const mx = e.clientX - rect.left;
-      const my = e.clientY - rect.top;
-
-      const prevScale = _transform.scale;
-      const raw = _transform.scale * (e.deltaY > 0 ? 0.9 : 1.1);
-      const clamped = Math.max(MIN_SCALE, Math.min(MAX_SCALE, raw));
-      const atLimit = raw !== clamped;
-
-      _transform.scale = clamped;
-
-      // Zoom toward cursor position
-      const ratio = _transform.scale / prevScale;
-      _transform.x = mx - ratio * (mx - _transform.x);
-      _transform.y = my - ratio * (my - _transform.y);
-
-      updateTransform();
-
-      // Bounce if hitting a limit
-      if (atLimit) {
-        if (_bounceTimer) clearTimeout(_bounceTimer);
-        const overshoot = raw < MIN_SCALE ? MIN_SCALE * 0.92 : MAX_SCALE * 1.06;
-        _transform.scale = overshoot;
-        const oRatio = _transform.scale / clamped;
-        _transform.x = mx - oRatio * (mx - _transform.x);
-        _transform.y = my - oRatio * (my - _transform.y);
-        _graphWorld.style.transition = "transform 0.08s ease-out";
-        updateTransform();
-
-        _bounceTimer = setTimeout(() => {
-          _transform.scale = clamped;
-          const bRatio = clamped / overshoot;
-          _transform.x = mx - bRatio * (mx - _transform.x);
-          _transform.y = my - bRatio * (my - _transform.y);
-          _graphWorld.style.transition = "transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)";
-          updateTransform();
-          setTimeout(() => { _graphWorld.style.transition = ""; bounceBackIfNeeded(); }, 320);
-        }, 80);
-      } else {
-        bounceBackIfNeeded();
-      }
-    }, { passive: false });
-
-    // Touch pinch zoom
-    let lastTouchDist = 0;
-    let lastTouchCenter = null;
-
-    viewport.addEventListener("touchstart", e => {
-      if (e.touches.length === 2) {
-        const dx = e.touches[1].clientX - e.touches[0].clientX;
-        const dy = e.touches[1].clientY - e.touches[0].clientY;
-        lastTouchDist = Math.sqrt(dx * dx + dy * dy);
-        lastTouchCenter = {
-          x: (e.touches[0].clientX + e.touches[1].clientX) / 2,
-          y: (e.touches[0].clientY + e.touches[1].clientY) / 2
+    _pz = initPanZoom(viewport, _graphWorld, _transform, {
+      minScale:       _KG_MIN_SCALE,
+      maxScale:       _KG_MAX_SCALE,
+      zoomStep:       [0.9, 1.1],
+      bounceCurve:    "cubic-bezier(0.34, 1.56, 0.64, 1)",
+      bounceDuration: 380,
+      rubberBandDrag: false,
+      ignoreSelector: ".kg-node",
+      onUpdate:       () => updateProximityGlow(),
+      getBounds:      () => {
+        const vp = graphModal.querySelector(".kg-viewport");
+        if (!vp || _nodes.length === 0) return null;
+        const vw = vp.clientWidth;
+        const vh = vp.clientHeight;
+        let wMinX = Infinity, wMaxX = -Infinity, wMinY = Infinity, wMaxY = -Infinity;
+        _nodes.forEach(n => {
+          if (n.targetX < wMinX) wMinX = n.targetX;
+          if (n.targetX > wMaxX) wMaxX = n.targetX;
+          if (n.targetY < wMinY) wMinY = n.targetY;
+          if (n.targetY > wMaxY) wMaxY = n.targetY;
+        });
+        const m = 80;
+        wMinX -= m; wMaxX += m; wMinY -= m; wMaxY += m;
+        const s = _transform.scale;
+        const pad = 0.48;
+        return {
+          minX: vw * pad - wMaxX * s,
+          maxX: vw * (1 - pad) - wMinX * s,
+          minY: vh * pad - wMaxY * s,
+          maxY: vh * (1 - pad) - wMinY * s,
         };
-      }
-    }, { passive: true });
-
-    viewport.addEventListener("touchmove", e => {
-      if (e.touches.length === 2) {
-        e.preventDefault();
-        const dx = e.touches[1].clientX - e.touches[0].clientX;
-        const dy = e.touches[1].clientY - e.touches[0].clientY;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        if (lastTouchDist > 0) {
-          const rect = viewport.getBoundingClientRect();
-          const cx = (e.touches[0].clientX + e.touches[1].clientX) / 2 - rect.left;
-          const cy = (e.touches[0].clientY + e.touches[1].clientY) / 2 - rect.top;
-
-          const prevScale = _transform.scale;
-          _transform.scale = Math.max(MIN_SCALE, Math.min(MAX_SCALE, _transform.scale * (dist / lastTouchDist)));
-          const ratio = _transform.scale / prevScale;
-          _transform.x = cx - ratio * (cx - _transform.x);
-          _transform.y = cy - ratio * (cy - _transform.y);
-          updateTransform();
-        }
-        lastTouchDist = dist;
-      }
-    }, { passive: false });
+      },
+    });
   }
 
   /* ── Bézier curve helpers (used by thread build + animations) ── */
@@ -1297,7 +1116,8 @@
       });
     }
 
-    initPanZoom();
+    _initPanZoom();
+    _createExploreHint();
     graphBuilt = true;
   }
 
@@ -1604,5 +1424,246 @@
     requestAnimationFrame(fadeThreads);
     const threadSettleTime = MAX_DELAY + _nodes.length * 8 + 600;
     setTimeout(() => updateProximityGlow(), threadSettleTime);
+  }
+
+  /* ═════════════════════════════════════════════════════════════
+     CAMERA FIT — Smooth animated fit to visible nodes
+     Uses shared animateCameraFit() from viz.js
+     ═════════════════════════════════════════════════════════════ */
+  let _cameraHandle = null;  // current animateCameraFit handle
+
+  /** Compute bounding box of all visible (non-hidden) nodes, then
+   *  smoothly animate the camera to fit them in the viewport. */
+  function fitVisibleNodes(animate) {
+    const viewport = graphModal.querySelector(".kg-viewport");
+    if (!viewport || _nodes.length === 0) return;
+    const visible = _nodes.filter(n => !n._hidden);
+    if (visible.length === 0) return;
+
+    // Compute world-space bounding box
+    let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+    visible.forEach(n => {
+      const r = n.r || 30;
+      if (n.targetX - r < minX) minX = n.targetX - r;
+      if (n.targetX + r > maxX) maxX = n.targetX + r;
+      if (n.targetY - r < minY) minY = n.targetY - r;
+      if (n.targetY + r > maxY) maxY = n.targetY + r;
+    });
+    // Include center node
+    const cR = 45;
+    if (-cR < minX) minX = -cR;
+    if (cR > maxX)  maxX = cR;
+    if (-cR < minY) minY = -cR;
+    if (cR > maxY)  maxY = cR;
+
+    if (_cameraHandle) { _cameraHandle.cancel(); _cameraHandle = null; }
+
+    _cameraHandle = animateCameraFit(_transform, function () {
+      updateTransform();
+    }, {
+      vpWidth:  viewport.clientWidth,
+      vpHeight: viewport.clientHeight,
+      bounds:   { x: minX, y: minY, w: maxX - minX, h: maxY - minY },
+      minScale: _KG_MIN_SCALE,
+      maxScale: _KG_MAX_SCALE,
+      padding:  50,
+      duration: animate !== false ? 800 : 0,
+      animate:  animate !== false,
+    });
+  }
+
+  /* ═════════════════════════════════════════════════════════════
+     "TRAVERSE THE GRAPH" — Scripted tour animation
+     Progressively builds the graph by activating filters one
+     at a time, fitting the camera at each step.
+     ═════════════════════════════════════════════════════════════ */
+  let _tourTimers = [];
+  let _touring = false;
+  let _tourGen = 0;  // generation counter to invalidate stale timers
+
+  const TOUR_DEFAULT = '<strong>Traverse</strong><span class="scroll-arrow">\uD83D\uDD2D</span>';
+
+  // Tour step definitions: [quadrantFilters..., overlayFilters...]
+  // Each step adds one filter. The order tells the story:
+  // Software education → +work → +projects → Robotics edu → +work → +projects → Games edu → +work → +projects
+  const TOUR_STEPS = [
+    { add: ["software", "education"],  label: "📚 Software Education" },
+    { add: ["work"],                   label: "💼 Software Work" },
+    { add: ["projects"],               label: "🚀 Software Projects" },
+    { add: ["robotics"],               label: "🎓 Robotics Education" },
+    { add: ["work"],                   label: "💼 Robotics Work" },
+    { add: ["projects"],               label: "🚀 Robotics Projects" },
+    { add: ["games"],                  label: "🎓 Games Education" },
+    { add: ["work"],                   label: "💼 Games Work" },
+    { add: ["projects"],               label: "🚀 Games Projects" },
+  ];
+
+  var _hintCF = createCrossfader();
+
+  function setHintLabelKG(label) {
+    var hint = graphModal.querySelector(".kg-explore-hint");
+    if (!hint) return;
+    var m = label.match(/^(\p{Emoji_Presentation}|\p{Emoji}\uFE0F?)\s*/u);
+    var emoji = m ? m[1] : '\uD83D\uDD2D';
+    var text  = m ? label.slice(m[0].length) : label;
+    var html = '<strong>' + text + '</strong><span class="scroll-arrow">' + emoji + '</span>';
+    _hintCF.fade(hint, html);
+  }
+
+  function resetHintLabelKG() {
+    var hint = graphModal.querySelector(".kg-explore-hint");
+    if (!hint) return;
+    if (_touring) {
+      _hintCF.fade(hint, TOUR_DEFAULT, function () { hint.classList.remove("exploring"); });
+    } else {
+      hint.innerHTML = TOUR_DEFAULT;
+      hint.classList.remove("exploring");
+    }
+  }
+
+  function stopTour() {
+    _tourGen++;
+    _tourTimers.forEach(t => clearTimeout(t));
+    _tourTimers = [];
+    _touring = false;
+    if (_cameraHandle) { _cameraHandle.cancel(); _cameraHandle = null; }
+    // Restore all filters
+    allThemes.forEach(t => activeFilters.add(t));
+    _filterSys.syncUI();
+    applyFilter();
+    resetHintLabelKG();
+  }
+
+  function startTour() {
+    if (!graphBuilt) return;
+
+    // If already touring, cancel and reset
+    if (_touring) {
+      stopTour();
+      return;
+    }
+
+    _tourGen++;
+    var gen = _tourGen;
+    _touring = true;
+
+    var hint = graphModal.querySelector(".kg-explore-hint");
+    if (hint) hint.classList.add("exploring");
+
+    // Step timing
+    var STEP_DELAY = 2000;    // ms between steps
+    var RELAYOUT_SETTLE = 700; // ms for relayout spring animation to settle
+    var cumulative = 0;
+
+    // Start: clear all filters, hide everything
+    activeFilters.clear();
+    _filterSys.syncUI();
+    applyFilter();
+
+    // The tour uses a cumulative filter set that maps to handoff phases.
+    // We track which filters have been added so far across all steps.
+    var tourFilters = new Set();
+
+    // Execute step 0 immediately after a brief pause for entrance to clear
+    var initialDelay = 300;
+
+    TOUR_STEPS.forEach(function (step, idx) {
+      var delay = initialDelay + idx * STEP_DELAY;
+
+      _tourTimers.push(setTimeout(function () {
+        if (!_touring || gen !== _tourGen) return;
+
+        // Add this step's filters
+        step.add.forEach(function (f) {
+          tourFilters.add(f);
+          activeFilters.add(f);
+        });
+
+        // The handoff spec says overlays accumulate per-phase but reset between quadrant phases.
+        // Phase 1 (steps 0-2): software + overlays accumulating
+        // Phase 2 (steps 3-5): + robotics, overlays restart from education
+        // Phase 3 (steps 6-8): + games, overlays restart from education
+        //
+        // Rebuild activeFilters from tourFilters:
+        // Quadrant filters stay on once added. Overlay filters follow the step sequence.
+        activeFilters.clear();
+
+        // Determine which quadrants have been introduced so far
+        if (idx >= 0) activeFilters.add("software");
+        if (idx >= 3) activeFilters.add("robotics");
+        if (idx >= 6) activeFilters.add("games");
+
+        // Overlay progression within each phase (3 steps per phase)
+        var phaseStep = idx % 3;
+        activeFilters.add("education"); // always on (step 0 of each phase)
+        if (phaseStep >= 1) activeFilters.add("work");
+        if (phaseStep >= 2) activeFilters.add("projects");
+
+        _filterSys.syncUI();
+        applyFilter();
+
+        // Update hint label
+        setHintLabelKG(step.label);
+
+        // After relayout settles, fit camera to visible nodes
+        _tourTimers.push(setTimeout(function () {
+          if (!_touring || gen !== _tourGen) return;
+          fitVisibleNodes(true);
+        }, RELAYOUT_SETTLE));
+
+      }, delay));
+    });
+
+    // Final step: after all steps complete, mark tour as done
+    var totalDuration = initialDelay + TOUR_STEPS.length * STEP_DELAY + RELAYOUT_SETTLE + 800;
+    _tourTimers.push(setTimeout(function () {
+      if (!_touring || gen !== _tourGen) return;
+      _touring = false;
+      resetHintLabelKG();
+    }, totalDuration));
+  }
+
+  /* ── Create explore hint button (dynamically, matching mermaid-view pattern) ── */
+  function _createExploreHint() {
+    const viewport = graphModal.querySelector(".kg-viewport");
+    if (!viewport) return;
+
+    const hint = document.createElement("div");
+    hint.className = "kg-explore-hint scroll-hint";
+    hint.innerHTML = TOUR_DEFAULT;
+    hint.style.cursor = "pointer";
+    hint.addEventListener("click", function (e) {
+      e.preventDefault();
+      startTour();
+    });
+
+    // Stop tour on user pan/zoom interaction
+    viewport.addEventListener("pointerdown", function (e) {
+      if (_touring && !e.target.closest(".kg-explore-hint")) stopTour();
+    });
+    viewport.addEventListener("wheel", function () {
+      if (_touring) stopTour();
+    }, { passive: true });
+
+    viewport.appendChild(hint);
+  }
+
+  // Stop tour on modal close
+  const _origClose = closeKnowledgeModal;
+  window.closeKnowledgeModal = function () {
+    if (_touring) stopTour();
+    _origClose();
+  };
+
+  // Stop tour on filter button click (via user interaction, not syncUI)
+  themeBtns.forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      if (_touring) stopTour();
+    });
+  });
+  if (allBtn) {
+    allBtn.addEventListener("click", function () {
+      if (_touring) stopTour();
+    });
   }
 })();
