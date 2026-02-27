@@ -3551,9 +3551,17 @@ html.light-mode .mm-filter.mm-filter-glow {
   animation: mm-explore-edge-pop 0.6s ease both;
 }
 
+.mm-edge-label-group.mm-explore-glow {
+  opacity: 1 !important;
+}
+
 .mm-edge-label-group.mm-explore-glow rect {
   fill: rgba(15, 15, 20, 0.95) !important;
   stroke: rgba(255, 255, 255, 0.35) !important;
+}
+
+.mm-edge-label-group.mm-explore-glow text {
+  fill: rgba(255, 255, 255, 1) !important;
 }
 
 @keyframes mm-explore-pop {
@@ -3653,16 +3661,16 @@ html.light-mode .mm-filter.mm-filter-glow {
   background: rgba(15, 15, 20, 0.75);
   backdrop-filter: blur(12px) saturate(1.2);
   -webkit-backdrop-filter: blur(12px) saturate(1.2);
-  padding: 8px 12px;
+  padding: 6px 12px 6px 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 2px;
+  gap: 1px;
   z-index: 5;
   cursor: default;
   transition: opacity 0.3s ease, background 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease, transform 0.2s ease;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .mm-node:hover {
@@ -3709,9 +3717,26 @@ html.light-mode .mm-filter.mm-filter-glow {
 }
 
 .mm-node-subtitle {
+  font-size: 10px;
+  font-weight: 700;
+  font-style: italic;
+  color: rgba(255, 255, 255, 0.92);
+  text-align: center;
+  line-height: 1.2;
+  margin-top: 1px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  position: relative;
+  z-index: 1;
+}
+
+.mm-node-desc {
   font-size: 9px;
   font-weight: 500;
   font-style: italic;
+  margin-top: 2px;
   color: rgba(255, 255, 255, 0.45);
   text-align: center;
   line-height: 1.2;
@@ -3789,6 +3814,10 @@ html.light-mode .mm-node-title {
 }
 
 html.light-mode .mm-node-subtitle {
+  color: rgba(0, 0, 0, 0.85);
+}
+
+html.light-mode .mm-node-desc {
   color: rgba(0, 0, 0, 0.45);
 }
 
@@ -3838,6 +3867,11 @@ html.light-mode .mm-edge.mm-explore-glow {
   filter: drop-shadow(0 0 4px rgba(0, 0, 0, 0.4)) drop-shadow(0 0 10px rgba(0, 0, 0, 0.2)) !important;
 }
 
+html.light-mode .mm-edge-label-group.mm-explore-glow text {
+  fill: rgba(0, 0, 0, 1) !important;
+  opacity: 1 !important;
+}
+
 /* ── Mobile ───────────────────────────────────────────────── */
 @media (max-width: 600px) {
   .mm-modal-card {
@@ -3849,7 +3883,10 @@ html.light-mode .mm-edge.mm-explore-glow {
     font-size: 10px;
   }
   .mm-node-subtitle {
-    font-size: 8px;
+    font-size: 9px;
+  }
+  .mm-node-desc {
+    font-size: 7px;
   }
 }
 

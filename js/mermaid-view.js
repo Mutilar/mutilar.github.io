@@ -11,10 +11,10 @@
 (() => {
 
   /* ─── Shared constants ─────────────────────────────────────── */
-  const NODE_W = 140;
-  const NODE_H = 58;
+  const NODE_W = 150;
+  const NODE_H = 76;
   const NODE_GAP_X = 20;
-  const NODE_GAP_Y = 20;
+  const NODE_GAP_Y = 30;
   const SUBGRAPH_PAD = 16;
   const SUBGRAPH_HEADER = 32;
   const SECTION_GAP = 28;
@@ -112,12 +112,23 @@
       if (nodeMatch) {
         const id = nodeMatch[1], rawLabel = nodeMatch[2], inlineCls = nodeMatch[3] || null;
         const parts = rawLabel.split("\\n");
-        const titlePart = parts[0].replace(/<[^>]+>/g, "").trim();
-        const subtitleParts = parts.slice(1).map(p => {
-          const iMatch = p.match(/<i>(.*?)<\/i>/);
-          return iMatch ? iMatch[1].trim() : p.replace(/<[^>]+>/g, "").trim();
-        }).filter(Boolean);
-        nodes[id] = { id, label: titlePart, subtitle: subtitleParts.join(" · "), htmlLabel: rawLabel, classes: inlineCls ? [inlineCls] : [] };
+        function stripHtml(s) { return s.replace(/<[^>]+>/g, "").trim(); }
+        function extractText(s) { var m = s.match(/<i>(.*?)<\/i>/); return m ? m[1].trim() : stripHtml(s); }
+        var titlePart = stripHtml(parts[0]);
+        // For 3-line nodes: lines 1+2 = two-line title, line 3 = description
+        // For 4+ line nodes: line 1 = title, line 2 = subtitle, lines 3+ = description
+        // For 2-line nodes: line 1 = title, line 2 = subtitle only
+        var subtitle = "", description = "";
+        if (parts.length === 3) {
+          subtitle = extractText(parts[1]);
+          description = extractText(parts[2]);
+        } else if (parts.length >= 4) {
+          subtitle = extractText(parts[1]);
+          description = parts.slice(2).map(extractText).filter(Boolean).join(" · ");
+        } else if (parts.length === 2) {
+          subtitle = extractText(parts[1]);
+        }
+        nodes[id] = { id, label: titlePart, subtitle: subtitle, description: description, htmlLabel: rawLabel, classes: inlineCls ? [inlineCls] : [] };
         if (subgraphStack.length) {
           subgraphStack[subgraphStack.length - 1].children.push(id);
           subgraphStack[subgraphStack.length - 1].orderedChildren.push({ type: 'node', id });
@@ -303,9 +314,10 @@
       chunks.forEach(chunk => {
         if (chunk.type === 'sg') {
           const { sg: csg, layout } = clMap.get(chunk.id);
-          csg._layoutX = SUBGRAPH_PAD; csg._layoutY = cy;
+          const sgX = Math.max(SUBGRAPH_PAD, (maxW - layout.w) / 2);
+          csg._layoutX = sgX; csg._layoutY = cy;
           csg._layoutW = layout.w; csg._layoutH = layout.h;
-          layout.nodePositions.forEach((pos, id) => { positions.set(id, { x: SUBGRAPH_PAD + pos.x, y: cy + pos.y }); });
+          layout.nodePositions.forEach((pos, id) => { positions.set(id, { x: sgX + pos.x, y: cy + pos.y }); });
           cy += layout.h + NODE_GAP_Y;
         } else {
           const ids = chunk.ids;
@@ -484,9 +496,17 @@
       el.appendChild(tEl);
       if (node.subtitle) {
         const sEl = document.createElement("div");
-        sEl.className = "mm-node-subtitle";
+        // 3-line nodes: subtitle is a second title row (bold, not italic)
+        // 2-line or 4+ line nodes: subtitle is italic detail
+        sEl.className = node.description ? "mm-node-title" : "mm-node-subtitle";
         sEl.textContent = node.subtitle;
         el.appendChild(sEl);
+      }
+      if (node.description) {
+        const dEl = document.createElement("div");
+        dEl.className = "mm-node-desc";
+        dEl.textContent = node.description;
+        el.appendChild(dEl);
       }
       const acc = document.createElement("div");
       acc.className = "mm-node-accent";
@@ -533,6 +553,9 @@
     }
 
     // Draw edges
+    const edgePathLayer = document.createElementNS(svgNS, "g");
+    edgePathLayer.classList.add("mm-edge-path-layer");
+    edgePathLayer.style.isolation = "isolate";
     const edgeElements = [];
     let edgeCount = 0;
     ast.edges.forEach(edge => {
@@ -542,50 +565,67 @@
       if (!toPt && sgBounds.has(edge.to))     { const b = sgBounds.get(edge.to);   toPt   = { x: b.cx, y: b.cy, cls: inferSubgraphClass(edge.to, ast) };   toSg   = b; }
       if (!fromPt || !toPt) { return; }
 
-      // Determine edge color: prefer the TARGET's class so the arrow
-      // color reflects what is being accessed / consumed.
+      // Determine edge color: prefer the SOURCE's class so the arrow
+      // color reflects where the signal / power originates from.
       // Special case: if exactly one end is "hosting", use the other.
       const fCls = fromPt.cls || "";
       const tCls = toPt.cls || "";
       let edgeCls;
       if (fCls && tCls && fCls !== tCls) {
-        edgeCls = (tCls === "hosting") ? fCls : tCls;
+        edgeCls = (fCls === "hosting") ? tCls : fCls;
       } else {
-        edgeCls = tCls || fCls || "";
+        edgeCls = fCls || tCls || "";
       }
       const edgeTC = colors[edgeCls] || "255,255,255";
 
       const fHH = fromSg ? fromSg.h / 2 : NODE_H / 2;
       const tHH = toSg   ? toSg.h / 2   : NODE_H / 2;
+      const fHW = fromSg ? fromSg.w / 2 : NODE_W / 2;
+      const tHW = toSg   ? toSg.w / 2   : NODE_W / 2;
 
-      // Determine direction: if target center is above source center,
-      // exit top-center of source → enter bottom-center of target (upward arrow).
-      // Otherwise exit bottom-center of source → enter top-center of target (downward).
-      const goingUp = toPt.y < fromPt.y;
+      // Determine direction: horizontal if roughly same Y, else vertical
+      const dy = Math.abs(toPt.y - fromPt.y);
+      const sameRow = dy < Math.min(fHH, tHH);
       let x1, y1, x2, y2;
-      if (goingUp) {
-        x1 = fromPt.x; y1 = fromPt.y - fHH;   // exit top-center
-        x2 = toPt.x;   y2 = toPt.y + tHH;      // enter bottom-center
+
+      if (sameRow) {
+        // Horizontal arrow — exit/enter from sides
+        const goingRight = toPt.x >= fromPt.x;
+        x1 = fromPt.x + (goingRight ?  fHW : -fHW);
+        y1 = fromPt.y;
+        x2 = toPt.x   + (goingRight ? -tHW :  tHW);
+        y2 = toPt.y;
       } else {
-        x1 = fromPt.x; y1 = fromPt.y + fHH;    // exit bottom-center
-        x2 = toPt.x;   y2 = toPt.y - tHH;      // enter top-center
+        // Vertical arrow — exit/enter from top/bottom
+        const goingUp = toPt.y < fromPt.y;
+        if (goingUp) {
+          x1 = fromPt.x; y1 = fromPt.y - fHH;
+          x2 = toPt.x;   y2 = toPt.y + tHH;
+        } else {
+          x1 = fromPt.x; y1 = fromPt.y + fHH;
+          x2 = toPt.x;   y2 = toPt.y - tHH;
+        }
       }
 
       const path = document.createElementNS(svgNS, "path");
-      const gap = Math.abs(y2 - y1);
-      if (!goingUp && gap > 0) {
-        // Normal downward flow — smooth vertical bezier
-        const cy = Math.max(gap * 0.45, 30);
-        path.setAttribute("d", "M" + x1 + "," + y1 + " C" + x1 + "," + (y1 + cy) + " " + x2 + "," + (y2 - cy) + " " + x2 + "," + y2);
-      } else if (goingUp) {
-        // Upward flow — exit top, curve upward to enter bottom of target
-        const cy = Math.max(gap * 0.45, 30);
-        path.setAttribute("d", "M" + x1 + "," + y1 + " C" + x1 + "," + (y1 - cy) + " " + x2 + "," + (y2 + cy) + " " + x2 + "," + y2);
+      if (sameRow) {
+        // Straight horizontal line
+        path.setAttribute("d", "M" + x1 + "," + y1 + " L" + x2 + "," + y2);
       } else {
-        // Same row (gap ≈ 0) — S-curve via a side detour
-        const loopOut = 60;
-        const midX = (x1 + x2) / 2;
-        path.setAttribute("d", "M" + x1 + "," + y1 + " C" + x1 + "," + (y1 + loopOut) + " " + midX + "," + (y1 + loopOut) + " " + midX + "," + ((y1 + y2) / 2) + " S" + x2 + "," + (y2 - loopOut) + " " + x2 + "," + y2);
+        const goingUp = toPt.y < fromPt.y;
+        const gap = Math.abs(y2 - y1);
+        if (!goingUp && gap > 0) {
+          // Normal downward flow — smooth vertical bezier
+          const cy = Math.max(gap * 0.45, 30);
+          path.setAttribute("d", "M" + x1 + "," + y1 + " C" + x1 + "," + (y1 + cy) + " " + x2 + "," + (y2 - cy) + " " + x2 + "," + y2);
+        } else if (goingUp) {
+          // Upward flow — exit top, curve upward to enter bottom of target
+          const cy = Math.max(gap * 0.45, 30);
+          path.setAttribute("d", "M" + x1 + "," + y1 + " C" + x1 + "," + (y1 - cy) + " " + x2 + "," + (y2 + cy) + " " + x2 + "," + y2);
+        } else {
+          // Fallback straight line
+          path.setAttribute("d", "M" + x1 + "," + y1 + " L" + x2 + "," + y2);
+        }
       }
       path.setAttribute("fill", "none");
       path.setAttribute("stroke", edge.dashed
@@ -598,7 +638,7 @@
       path.classList.add("mm-edge", "mm-thread");
       path.dataset.mmFrom = edge.from;
       path.dataset.mmTo = edge.to;
-      svgLayer.appendChild(path);
+      edgePathLayer.appendChild(path);
 
       // Collect endpoint classes for filtering
       const fromCls = fromPt.cls || "";
@@ -623,23 +663,59 @@
         const bg = document.createElementNS(svgNS, "rect");
         bg.setAttribute("x", lx - bw / 2); bg.setAttribute("y", ly - bh / 2);
         bg.setAttribute("width", bw); bg.setAttribute("height", bh);
-        bg.setAttribute("rx", "6"); bg.setAttribute("fill", edge.dashed ? "rgba(15,15,20,0.4)" : "rgba(15,15,20,0.8)");
-        bg.setAttribute("stroke", edge.dashed ? "rgba(255,255,255,0.08)" : "rgba(255,255,255,0.15)"); bg.setAttribute("stroke-width", "0.5");
+        bg.setAttribute("rx", "6"); bg.setAttribute("fill", "rgba(15,15,20,0.95)");
+        bg.setAttribute("stroke", "rgba(255,255,255,0.25)"); bg.setAttribute("stroke-width", "0.5");
         g.appendChild(bg);
         labelLines.forEach((ln, i) => {
           const t = document.createElementNS(svgNS, "text");
           t.setAttribute("x", lx); t.setAttribute("y", ly - totalLH / 2 + i * lh + lh - 2);
-          t.setAttribute("text-anchor", "middle"); t.setAttribute("fill", edge.dashed ? "rgba(255,255,255,0.4)" : "rgba(255,255,255,0.8)");
+          t.setAttribute("text-anchor", "middle"); t.setAttribute("fill", "rgba(255,255,255,1)");
           t.setAttribute("font-size", "10"); t.setAttribute("font-family", "system-ui, sans-serif");
           t.setAttribute("font-weight", "600"); t.textContent = ln;
           g.appendChild(t);
         });
-        svgLayer.appendChild(g);
         labelGroup = g;
       }
       edgeElements.push({ path, labelGroup, classes: edgeClasses, from: edge.from, to: edge.to });
       edgeCount++;
     });
+
+    // Append label badges (rects) first, then label text on top,
+    // so text is never hidden behind another label's background.
+    // We split each label <g> into two layers while keeping the
+    // parent <g> in the DOM for visibility toggling.
+    const labelBgLayer = document.createElementNS(svgNS, "g");
+    labelBgLayer.classList.add("mm-label-bg-layer");
+    const labelTxtLayer = document.createElementNS(svgNS, "g");
+    labelTxtLayer.classList.add("mm-label-txt-layer");
+    edgeElements.forEach(({ labelGroup: lg }, idx) => {
+      if (!lg) return;
+      // Clone data attributes onto sub-wrappers for filtering
+      const bgWrap = document.createElementNS(svgNS, "g");
+      bgWrap.classList.add("mm-edge-label-group");
+      bgWrap.dataset.mmFrom = lg.dataset.mmFrom;
+      bgWrap.dataset.mmTo = lg.dataset.mmTo;
+      if (lg.classList.contains("mm-dashed-label")) bgWrap.classList.add("mm-dashed-label");
+      const txtWrap = document.createElementNS(svgNS, "g");
+      txtWrap.classList.add("mm-edge-label-group");
+      txtWrap.dataset.mmFrom = lg.dataset.mmFrom;
+      txtWrap.dataset.mmTo = lg.dataset.mmTo;
+      if (lg.classList.contains("mm-dashed-label")) txtWrap.classList.add("mm-dashed-label");
+      // Move rect to bg layer, text elements to txt layer
+      const children = Array.from(lg.children);
+      children.forEach(child => {
+        if (child.tagName === "rect") bgWrap.appendChild(child);
+        else txtWrap.appendChild(child);
+      });
+      labelBgLayer.appendChild(bgWrap);
+      labelTxtLayer.appendChild(txtWrap);
+      // Update edgeElement to reference the live DOM wrappers
+      edgeElements[idx].labelBg = bgWrap;
+      edgeElements[idx].labelTxt = txtWrap;
+    });
+    svgLayer.appendChild(edgePathLayer);
+    svgLayer.appendChild(labelBgLayer);
+    svgLayer.appendChild(labelTxtLayer);
 
     // ── World dimensions ─────────────────────────────────────
     world.style.width = svgW + "px";
@@ -663,14 +739,14 @@
     }
 
     // ── Hover interaction: highlight connected edges & nodes ──
-    // Build adjacency: nodeId/sgId → [ { path, labelGroup, peerId } ]
+    // Build adjacency: nodeId/sgId → [ { path, labelBg, labelTxt, peerId } ]
     // Uses direct references stored during edge creation (no DOM queries).
     const adjacency = {};
-    edgeElements.forEach(({ path, labelGroup, from, to }) => {
+    edgeElements.forEach(({ path, labelBg, labelTxt, from, to }) => {
       if (!adjacency[from]) adjacency[from] = [];
       if (!adjacency[to])   adjacency[to]   = [];
-      adjacency[from].push({ path, labelGroup, peerId: to });
-      adjacency[to].push({   path, labelGroup, peerId: from });
+      adjacency[from].push({ path, labelBg, labelTxt, peerId: to });
+      adjacency[to].push({   path, labelBg, labelTxt, peerId: from });
     });
 
     // Subgraph lookup helpers (built early for use in highlight logic)
@@ -771,7 +847,8 @@
           const adj = adjacency[checkId] || [];
           adj.forEach(a => {
             a.path.classList.add("mm-highlight");
-            if (a.labelGroup) a.labelGroup.classList.add("mm-highlight");
+            if (a.labelBg)  a.labelBg.classList.add("mm-highlight");
+            if (a.labelTxt) a.labelTxt.classList.add("mm-highlight");
             highlightEndpoint(a.peerId);
           });
         });
@@ -780,12 +857,13 @@
     });
 
     // Edge hover → highlight the edge + both endpoint nodes/subgraphs
-    edgeElements.forEach(({ path: pathEl, labelGroup: lblEl, from: fromId, to: toId }) => {
+    edgeElements.forEach(({ path: pathEl, labelBg, labelTxt, from: fromId, to: toId }) => {
       pathEl.addEventListener("mouseenter", () => {
         if (isExploring()) return;
         world.classList.add("mm-hovering");
         pathEl.classList.add("mm-highlight");
-        if (lblEl) lblEl.classList.add("mm-highlight");
+        if (labelBg)  labelBg.classList.add("mm-highlight");
+        if (labelTxt) labelTxt.classList.add("mm-highlight");
         highlightEndpoint(fromId);
         highlightEndpoint(toId);
       });
@@ -820,7 +898,8 @@
           const adj = adjacency[id] || [];
           adj.forEach(a => {
             a.path.classList.add("mm-highlight");
-            if (a.labelGroup) a.labelGroup.classList.add("mm-highlight");
+            if (a.labelBg)  a.labelBg.classList.add("mm-highlight");
+            if (a.labelTxt) a.labelTxt.classList.add("mm-highlight");
             highlightEndpoint(a.peerId);
           });
         });
@@ -998,13 +1077,6 @@
       return ast.classAssigns[id] || (ast.nodes[id] && ast.nodes[id].classes && ast.nodes[id].classes[0]) || inferSubgraphClass(id, ast) || "";
     }
 
-    function edgeCat(fromCls, toCls) {
-      if (fromCls && toCls && fromCls !== toCls) {
-        return (toCls === "hosting") ? fromCls : toCls;
-      }
-      return toCls || fromCls || "";
-    }
-
     // 1. Determine which edges survive based on their color-category
     const survivingEdges = [];
     const neededNodeIds = new Set();
@@ -1012,8 +1084,12 @@
     ast.edges.forEach(edge => {
       const fromCls = nodeCls(edge.from);
       const toCls   = nodeCls(edge.to);
-      const edgeCategory = edgeCat(fromCls, toCls);
-      if (!edgeCategory || keep.has(edgeCategory)) {
+      // Keep edge only if BOTH endpoints' classes are active (or unclassed).
+      // This prevents cross-category edges from prematurely revealing nodes
+      // that belong to a not-yet-active category (e.g. motors during driver step).
+      const fromOk = !fromCls || keep.has(fromCls);
+      const toOk   = !toCls   || keep.has(toCls);
+      if (fromOk && toOk) {
         survivingEdges.push(edge);
         neededNodeIds.add(edge.from);
         neededNodeIds.add(edge.to);
@@ -1186,6 +1262,7 @@
     let _svgLayer = null, _dims = null;
     let _ast = null, _legend = null;
     let _visibleBounds = null;  // { x, y, w, h } of visible content
+    let _fitAnimId = null;      // current fitView rAF id
 
     function fitView(animate) {
       const vp = modal.querySelector(".mm-viewport");
@@ -1198,15 +1275,45 @@
       const by = _visibleBounds ? _visibleBounds.y : 0;
       const sx = (vw - 40) / bw, sy = (vh - 40) / bh;
       const fitScale = Math.min(sx, sy, 1);
-      state.scale = fitScale;
-      // Center on the visible content bounding box
-      state.x = (vw - bw * state.scale) / 2 - bx * state.scale;
-      state.y = (vh - bh * state.scale) / 2 - by * state.scale;
-      if (animate) {
-        state.world.style.transition = "transform 0.5s cubic-bezier(0.25, 1, 0.5, 1)";
-        setTimeout(() => { state.world.style.transition = ""; }, 550);
+      const targetX = (vw - bw * fitScale) / 2 - bx * fitScale;
+      const targetY = (vh - bh * fitScale) / 2 - by * fitScale;
+      const targetS = fitScale;
+
+      if (!animate) {
+        state.x = targetX; state.y = targetY; state.scale = targetS;
+        if (state._update) state._update();
+        return;
       }
-      if (state._update) state._update();
+
+      // Cancel any in-flight animation
+      if (_fitAnimId) { cancelAnimationFrame(_fitAnimId); _fitAnimId = null; }
+      state.world.style.transition = "";
+
+      // Smooth JS-driven camera slerp
+      const fromX = state.x, fromY = state.y, fromS = state.scale;
+      const duration = 1000; // ms
+      const startTime = performance.now();
+
+      function ease(t) {
+        // Smooth-step ease-in-out (hermite)
+        return t * t * (3 - 2 * t);
+      }
+
+      function tick(now) {
+        const elapsed = now - startTime;
+        const raw = Math.min(elapsed / duration, 1);
+        const t = ease(raw);
+        state.x     = fromX + (targetX - fromX) * t;
+        state.y     = fromY + (targetY - fromY) * t;
+        state.scale = fromS + (targetS - fromS) * t;
+        if (state._update) state._update();
+        if (raw < 1) {
+          _fitAnimId = requestAnimationFrame(tick);
+        } else {
+          _fitAnimId = null;
+        }
+      }
+      _fitAnimId = requestAnimationFrame(tick);
     }
 
     function rebuild(activeClasses) {
@@ -1283,13 +1390,13 @@
           }
         });
 
-        // Fade out glow after 3s (matches tour step delay)
+        // Fade out glow after current step duration
         if (_exploreGlowTimer) clearTimeout(_exploreGlowTimer);
         _exploreGlowTimer = setTimeout(function () {
           state.world.querySelectorAll(".mm-explore-glow").forEach(el => el.classList.remove("mm-explore-glow"));
           _svgLayer.querySelectorAll(".mm-explore-glow").forEach(el => el.classList.remove("mm-explore-glow"));
           state.world.classList.remove("mm-explore-hovering");
-        }, 3000);
+        }, _exploreStepDuration);
       }
 
       // Compute bounding box for camera fit
@@ -1309,6 +1416,32 @@
       }
       state.world.querySelectorAll(nodeSel).forEach(accumBounds);
       state.world.querySelectorAll(sgSel).forEach(accumBounds);
+
+      // During explore, also include glowing edges (SVG paths) in bounding box
+      if (_exploring) {
+        _svgLayer.querySelectorAll(".mm-edge.mm-explore-glow").forEach(function (pathEl) {
+          try {
+            var bb = pathEl.getBBox();
+            if (bb.width > 0 || bb.height > 0) {
+              if (bb.x < minX) minX = bb.x;
+              if (bb.y < minY) minY = bb.y;
+              if (bb.x + bb.width > maxX) maxX = bb.x + bb.width;
+              if (bb.y + bb.height > maxY) maxY = bb.y + bb.height;
+            }
+          } catch (e) { /* getBBox can throw if element is not rendered */ }
+        });
+        _svgLayer.querySelectorAll(".mm-edge-label-group.mm-explore-glow").forEach(function (g) {
+          try {
+            var bb = g.getBBox();
+            if (bb.width > 0 || bb.height > 0) {
+              if (bb.x < minX) minX = bb.x;
+              if (bb.y < minY) minY = bb.y;
+              if (bb.x + bb.width > maxX) maxX = bb.x + bb.width;
+              if (bb.y + bb.height > maxY) maxY = bb.y + bb.height;
+            }
+          } catch (e) {}
+        });
+      }
 
       if (minX < Infinity) {
         const pad = 20;
@@ -1350,6 +1483,7 @@
     let _exploring = false;
     let _exploreGlowTimer = null;
     let _exploreGen = 0;  // generation counter to invalidate stale timers
+    let _exploreStepDuration = 3000; // current step's duration (updated per step)
 
     var EXPLORE_DEFAULT = '<strong>Explore</strong><span class="scroll-arrow">\uD83D\uDD2D</span>';
 
@@ -1434,7 +1568,18 @@
       if (hint) hint.classList.add("exploring");
       var classes = _filterAPI.allClasses;
       var labels = _filterAPI.labelMap;
-      var delay = 3000;
+
+      // Constant step duration (ms)
+      var stepDuration = 3000;
+      var stepDurations = [];
+      for (var fi = 0; fi < classes.length + 1; fi++) {
+        stepDurations.push(stepDuration);
+      }
+      // Cumulative times for setTimeout scheduling
+      var cumulative = [0];
+      for (var ci = 0; ci < stepDurations.length; ci++) {
+        cumulative.push(cumulative[ci] + stepDurations[ci]);
+      }
 
       // Glow the filter pill for the current explore step
       var pillContainer = document.getElementById(cfg.filterId);
@@ -1454,6 +1599,7 @@
       state.world.querySelectorAll(".mm-subgraph[data-mm-sg]").forEach(function (el) { el.classList.add("mm-hidden"); });
       _svgLayer.querySelectorAll(".mm-edge").forEach(function (el) { el.classList.add("mm-hidden"); });
       _svgLayer.querySelectorAll(".mm-edge-label-group").forEach(function (el) { el.classList.add("mm-hidden"); });
+      _exploreStepDuration = stepDurations[0];
       _filterAPI.setOnly(classes[0]);
       setHintLabel(labels[classes[0]] || classes[0]);
       glowFilterPill(classes[0]);
@@ -1463,10 +1609,11 @@
         (function (idx) {
           _exploreTimers.push(setTimeout(function () {
             if (!_exploring || gen !== _exploreGen) return;
+            _exploreStepDuration = stepDurations[idx];
             _filterAPI.addFilter(classes[idx]);
             setHintLabel(labels[classes[idx]] || classes[idx]);
             glowFilterPill(classes[idx]);
-          }, delay * idx));
+          }, cumulative[idx]));
         })(i);
       }
 
@@ -1479,7 +1626,7 @@
         // Clear pill glow
         if (pillContainer) pillContainer.querySelectorAll(".mm-filter-glow").forEach(function (el) { el.classList.remove("mm-filter-glow"); });
         resetHintLabel();
-      }, delay * classes.length));
+      }, cumulative[classes.length]));
     }
 
     function open() {
@@ -1562,7 +1709,6 @@
       driver:    "127,186,0",
       compute:   "127,186,0",
       sensor:    "0,120,212",
-      light:     "0,120,212",
       motor:     "242,80,34",
       footer:    "120,120,120",
     },

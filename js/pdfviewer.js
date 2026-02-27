@@ -7,30 +7,21 @@
 let pdfViewerReady = false;
 let pdfjsLib = null;
 
+// PDF.js is loaded via a <script type="module"> in index.html which sets
+// window.__pdfjsLib and dispatches 'pdfjsReady'. We just wait for that.
 function loadPdfJs() {
   if (pdfViewerReady) return Promise.resolve();
+  if (window.__pdfjsLib) {
+    pdfjsLib = window.__pdfjsLib;
+    pdfViewerReady = true;
+    return Promise.resolve();
+  }
   return new Promise((resolve, reject) => {
-    const script = document.createElement('script');
-    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.7.76/pdf.min.mjs';
-    script.type = 'module';
-    // pdf.js as a module can't be accessed via global scope from a classic script,
-    // so we use a dynamic import instead.
-    const loader = document.createElement('script');
-    loader.type = 'module';
-    loader.textContent = `
-      import * as pdfjsLibModule from 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.7.76/pdf.min.mjs';
-      pdfjsLibModule.GlobalWorkerOptions.workerSrc =
-        'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.7.76/pdf.worker.min.mjs';
-      window.__pdfjsLib = pdfjsLibModule;
-      window.dispatchEvent(new Event('pdfjsReady'));
-    `;
-    document.head.appendChild(loader);
     window.addEventListener('pdfjsReady', () => {
       pdfjsLib = window.__pdfjsLib;
       pdfViewerReady = true;
       resolve();
     }, { once: true });
-    // Timeout fallback
     setTimeout(() => {
       if (!pdfViewerReady) reject(new Error('PDF.js failed to load'));
     }, 15000);
