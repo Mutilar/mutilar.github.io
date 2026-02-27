@@ -3258,6 +3258,8 @@ html.light-mode .outline-pill {
   display: flex;
   flex-direction: column;
   padding: 0 !important;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 .mm-modal-card .modal-sticky-bar {
@@ -3931,6 +3933,9 @@ html.light-mode .mm-edge-label-group.mm-explore-glow text {
   max-width: 960px;
   padding-top: 0 !important;
   padding-bottom: 0 !important;
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 .timeline-modal-card .modal-sticky-bar {
@@ -4354,6 +4359,8 @@ html.light-mode .timeline-filter.filter-pulse {
   display: flex;
   flex-direction: column;
   padding: 0 !important;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 .kg-modal-card .modal-sticky-bar {
@@ -4543,24 +4550,26 @@ html.light-mode .timeline-filter.filter-pulse {
 .kg-layout-toggle {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
-  padding: 4px 12px;
-  border-radius: 12px;
-  font-size: 11px;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 14px;
+  font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.3px;
-  color: rgba(255, 255, 255, 0.5);
-  background: rgba(30, 30, 40, 0.55);
+  color: rgba(255, 255, 255, 0.6);
+  background: rgba(30, 30, 40, 0.75);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.18);
   cursor: pointer;
   transition: all 0.3s ease;
 }
 .kg-layout-toggle:hover {
   color: #fff;
-  background: rgba(50, 50, 65, 0.75);
-  border-color: rgba(255, 255, 255, 0.25);
+  background: rgba(50, 50, 65, 0.85);
+  border-color: rgba(255, 255, 255, 0.35);
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.15),
+              0 0 30px rgba(255, 255, 255, 0.06);
 }
 .kg-layout-toggle.dynamic {
   color: rgba(120, 200, 255, 0.85);
@@ -4823,8 +4832,9 @@ html.light-mode .kg-name-whisper {
     gap: 4px;
   }
   .kg-layout-toggle {
-    padding: 3px 8px;
-    font-size: 10px;
+    padding: 5px 10px;
+    font-size: 11px;
+    gap: 4px;
   }
   .kg-node {
     padding: 4px;

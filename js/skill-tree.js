@@ -126,7 +126,7 @@
     "alamorobotics":   ["🧑‍🏫"],
     "acm":             ["🤝"],
     "learnbeat":       ["🌱"],
-    "redtierobotics":  ["⚙️"],
+    "redtierobotics":  ["🛠️"],
     "cse180":          ["🤖"],
     "cse165":          ["📦"],
     "cse160":          ["🌐"],
@@ -134,10 +134,10 @@
     "cse111":          ["🗃️"],
     "cse100":          ["📈"],
     "cse031":          ["⚙️"],
-    "cse030":          ["📚"],
+    "cse030":          ["⚙️"],
     "cse015":          ["🔢"],
     "ropgamedesign":   ["⚙️"],
-    "roparchitecture": ["🛠️"],
+    "roparchitecture": ["📐"],
     "apjava":          ["♨️"],
     "gasleek":         ["🏆"],
     "sriracha":        ["🥉"],
@@ -370,8 +370,7 @@
     });
 
     // Re-layout visible nodes and animate them into new positions
-    // Always relayout during tour; otherwise respect the toggle
-    if (!_staticPositions || _touring) {
+    if (!_staticPositions) {
       relayoutAndAnimate();
     }
     updateProximityGlow();
@@ -401,8 +400,8 @@
     const globalMax = Math.max(...allMonths);
     const dateRange = Math.max(1, globalMax - globalMin);
 
-    const MIN_DIST     = 50;
-    const MAX_DIST     = 300;
+    const MIN_DIST     = 100;
+    const MAX_DIST     = 400;
     const SPREAD_ANGLE = Math.PI / 2.5;
     const CENTER_R     = 50;
     const PADDING      = 2;
@@ -806,8 +805,8 @@
     const globalMax = Math.max(...items.map(it => it.absMonth));
     const dateRange = Math.max(1, globalMax - globalMin);
 
-    const MIN_DIST     = 50;    // px — minimum distance from center
-    const MAX_DIST     = 300;   // px — maximum distance from center
+    const MIN_DIST     = 100;    // px — minimum distance from center
+    const MAX_DIST     = 400;   // px — maximum distance from center
     const SPREAD_ANGLE = Math.PI / 2.5; // angular spread per quadrant (~72°)
 
     // Duration → circle size mapping

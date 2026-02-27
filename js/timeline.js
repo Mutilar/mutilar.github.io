@@ -309,6 +309,7 @@
       function onUserScroll() { userInterrupted = true; }
       modalCard.addEventListener("wheel", onUserScroll, { once: true, passive: true });
       modalCard.addEventListener("touchstart", onUserScroll, { once: true, passive: true });
+      modalCard.addEventListener("pointerdown", onUserScroll, { once: true });
 
       function step(ts) {
         if (userInterrupted) { cleanup(); return; }
@@ -332,6 +333,7 @@
         _autoScrolling = false;
         modalCard.removeEventListener("wheel", onUserScroll);
         modalCard.removeEventListener("touchstart", onUserScroll);
+        modalCard.removeEventListener("pointerdown", onUserScroll);
         // Re-show hint if not at bottom
         const maxS = modalCard.scrollHeight - modalCard.clientHeight;
         if (modalCard.scrollTop < maxS - 1) {
@@ -500,7 +502,99 @@
 
     modalCard.addEventListener("scroll", () => { updateWhispers(); updateScrollHint(); checkOverscrollBounce(); }, { passive: true });
 
+    // ── Click-and-drag scrolling ──────────────────────────────
+    _initDragScroll(modalCard);
+
     timelineBuilt = true;
+  }
+
+  /** Click-and-drag scroll for the timeline modal card.
+   *  Pointer-based: works with mouse & touch. Includes a 4px dead-zone so
+   *  short taps still fire sliver click handlers, and adds momentum/inertia
+   *  on release for a natural feel. */
+  function _initDragScroll(card) {
+    const DEAD = 4;           // px — movement threshold before drag activates
+    const MOMENTUM_DECAY = 0.92;
+    const MOMENTUM_MIN   = 0.5; // px/frame — stop threshold
+
+    let dragging = false;
+    let startY = 0;
+    let startScrollTop = 0;
+    let hasMoved = false;
+    let velocityY = 0;
+    let lastY = 0;
+    let lastT = 0;
+    let momentumRAF = null;
+
+    function stopMomentum() {
+      if (momentumRAF) { cancelAnimationFrame(momentumRAF); momentumRAF = null; }
+    }
+
+    card.addEventListener("pointerdown", function (e) {
+      // Ignore if target is a filter button, close button, or scroll hint
+      if (e.target.closest(".timeline-filter, .modal-close, .tl-scroll-hint")) return;
+      // Only primary button
+      if (e.button !== 0) return;
+      stopMomentum();
+      dragging = true;
+      hasMoved = false;
+      startY = e.clientY;
+      lastY = e.clientY;
+      lastT = performance.now();
+      startScrollTop = card.scrollTop;
+      velocityY = 0;
+      card.setPointerCapture(e.pointerId);
+      card.style.cursor = "grab";
+    });
+
+    card.addEventListener("pointermove", function (e) {
+      if (!dragging) return;
+      var dy = e.clientY - startY;
+      if (!hasMoved && Math.abs(dy) < DEAD) return;
+      hasMoved = true;
+      card.style.cursor = "grabbing";
+      card.style.userSelect = "none";
+
+      // Track velocity
+      var now = performance.now();
+      var dt = now - lastT;
+      if (dt > 0) velocityY = (e.clientY - lastY) / dt * 16; // px per frame
+      lastY = e.clientY;
+      lastT = now;
+
+      card.scrollTop = startScrollTop - dy;
+    });
+
+    card.addEventListener("pointerup", function (e) {
+      if (!dragging) return;
+      dragging = false;
+      card.style.cursor = "";
+      card.style.userSelect = "";
+
+      if (hasMoved) {
+        // Suppress the click that follows this pointerup
+        card.addEventListener("click", function suppress(ev) {
+          ev.stopPropagation();
+          ev.preventDefault();
+        }, { capture: true, once: true });
+
+        // Momentum coast
+        if (Math.abs(velocityY) > MOMENTUM_MIN) {
+          (function coast() {
+            velocityY *= MOMENTUM_DECAY;
+            if (Math.abs(velocityY) < MOMENTUM_MIN) return;
+            card.scrollTop -= velocityY;
+            momentumRAF = requestAnimationFrame(coast);
+          })();
+        }
+      }
+    });
+
+    card.addEventListener("pointercancel", function () {
+      dragging = false;
+      card.style.cursor = "";
+      card.style.userSelect = "";
+    });
   }
 
   /** Rebuild ruler marks and gridlines for the current visible range */
