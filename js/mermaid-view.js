@@ -66,7 +66,6 @@
     // Main pass
     for (const rawLine of lines) {
       const line = rawLine.trim();
-      if (line.includes("CNAME") && line.includes("-->")) console.log("[mm] CNAME edge line found:", JSON.stringify(line));
       if (!line || line.startsWith("%%") || line.startsWith("---") || line === "``" + "`mermaid" || line === "``" + "`") continue;
       if (line.startsWith("graph ") || line.startsWith("title:")) continue;
       if (line.startsWith("classDef ") || line.startsWith("class ") || line.startsWith("style ")) continue;
@@ -83,10 +82,13 @@
       if (sgMatch) {
         const sg = {
           id: sgMatch[1], label: sgMatch[2] || sgMatch[1],
-          direction: "TB", children: [], childSubgraphs: [],
+          direction: "TB", children: [], childSubgraphs: [], orderedChildren: [],
           parent: subgraphStack.length ? subgraphStack[subgraphStack.length - 1].id : null,
         };
-        if (subgraphStack.length) subgraphStack[subgraphStack.length - 1].childSubgraphs.push(sg.id);
+        if (subgraphStack.length) {
+          subgraphStack[subgraphStack.length - 1].childSubgraphs.push(sg.id);
+          subgraphStack[subgraphStack.length - 1].orderedChildren.push({ type: 'sg', id: sg.id });
+        }
         subgraphs.push(sg);
         subgraphStack.push(sg);
         continue;
@@ -98,7 +100,6 @@
       // Edge
       const edgeMatch = line.match(/^(\w+)\s+(-->|-.->)\s*(?:\|"?([^"|]*)"?\|\s*)?(\w+)\s*$/);
       if (edgeMatch) {
-        console.log("[mm] parsed edge:", edgeMatch[1], "->", edgeMatch[4], "label:", edgeMatch[3]);
         edges.push({ from: edgeMatch[1], to: edgeMatch[4], label: (edgeMatch[3] || "").replace(/\\n/g, "\n"), dashed: edgeMatch[2] === "-.->" });
         [edgeMatch[1], edgeMatch[4]].forEach(id => {
           if (!nodes[id] && !subgraphIdSet.has(id)) nodes[id] = { id, label: id, htmlLabel: "", classes: [] };
@@ -117,7 +118,10 @@
           return iMatch ? iMatch[1].trim() : p.replace(/<[^>]+>/g, "").trim();
         }).filter(Boolean);
         nodes[id] = { id, label: titlePart, subtitle: subtitleParts.join(" · "), htmlLabel: rawLabel, classes: inlineCls ? [inlineCls] : [] };
-        if (subgraphStack.length) subgraphStack[subgraphStack.length - 1].children.push(id);
+        if (subgraphStack.length) {
+          subgraphStack[subgraphStack.length - 1].children.push(id);
+          subgraphStack[subgraphStack.length - 1].orderedChildren.push({ type: 'node', id });
+        }
         if (inlineCls) classAssigns[id] = inlineCls;
         continue;
       }
@@ -128,7 +132,7 @@
         const id = bareMatch[1];
         if (nodes[id]) subgraphStack[subgraphStack.length - 1].children.push(id);
       } else if (!bareMatch) {
-        console.log("[mm] UNMATCHED line:", JSON.stringify(line));
+        // unmatched line — silently skip
       }
     }
 
@@ -149,7 +153,10 @@
     const sg = sgMap.get(sgId);
     if (!sg) return "";
     const childClasses = new Set();
+    const visited = new Set();
     function walk(s) {
+      if (visited.has(s.id)) return;
+      visited.add(s.id);
       (s.children || []).forEach(id => {
         const cls = ast.classAssigns[id] || (ast.nodes[id] && ast.nodes[id].classes && ast.nodes[id].classes[0]) || "";
         if (cls && cls !== "footer") childClasses.add(cls);
@@ -174,7 +181,10 @@
     });
     const legendNodes = [];
     const legendNodeIds = new Set();
+    const legendVisited = new Set();
     function walkLegend(sg) {
+      if (legendVisited.has(sg.id)) return;
+      legendVisited.add(sg.id);
       // Recurse into child subgraphs FIRST so nested legend items
       // (Hosting, Config, …) appear before direct children (Output),
       // matching the visual top-to-bottom order in the .md source.
@@ -201,28 +211,34 @@
      3. LAYOUT ENGINE
      ═════════════════════════════════════════════════════════════ */
 
-  function collectAllNodes(sg, sgMap, set) {
+  function collectAllNodes(sg, sgMap, set, _visited) {
+    if (!_visited) _visited = new Set();
+    if (_visited.has(sg.id)) return;
+    _visited.add(sg.id);
     (sg.children || []).forEach(id => set.add(id));
     (sg.childSubgraphs || []).forEach(id => {
       const child = sgMap.get(id);
-      if (child) collectAllNodes(child, sgMap, set);
+      if (child) collectAllNodes(child, sgMap, set, _visited);
     });
   }
 
-  function layoutSubgraph(sg, ast, sgMap) {
+  function layoutSubgraph(sg, ast, sgMap, _visited) {
+    if (!_visited) _visited = new Set();
+    if (_visited.has(sg.id)) return { w: 0, h: 0, nodePositions: new Map() };
+    _visited.add(sg.id);
     const dir = sg.direction || "TB";
     const isHoriz = dir === "LR" || dir === "RL";
     const childSGs = (sg.childSubgraphs || []).map(id => sgMap.get(id)).filter(Boolean);
     const childSGNodeIds = new Set();
     childSGs.forEach(csg => collectAllNodes(csg, sgMap, childSGNodeIds));
     const directNodes = (sg.children || []).filter(id => !childSGNodeIds.has(id) && ast.nodes[id]);
-    const childLayouts = childSGs.map(csg => ({ sg: csg, layout: layoutSubgraph(csg, ast, sgMap) }));
+    const childLayouts = childSGs.map(csg => ({ sg: csg, layout: layoutSubgraph(csg, ast, sgMap, _visited) }));
     const positions = new Map();
     let contentW = 0, contentH = 0;
 
     if (isHoriz) {
       const cy = SUBGRAPH_PAD + SUBGRAPH_HEADER;
-      const maxPerRow = childLayouts.length > 3 ? 2 : childLayouts.length;
+      const maxPerRow = childLayouts.length;
       let cx = SUBGRAPH_PAD, rowY = cy, rowH = 0, rowMaxW = 0;
 
       childLayouts.forEach(({ sg: csg, layout }, idx) => {
@@ -252,44 +268,62 @@
       contentH = rowY + rowH + SUBGRAPH_PAD;
     } else {
       let cy = SUBGRAPH_PAD + SUBGRAPH_HEADER, maxW = 0;
-      if (childLayouts.length) {
-        const hasLRChildren = childLayouts.some(cl => cl.sg.direction === "LR");
-        if (hasLRChildren || childLayouts.length <= 2) {
-          let cx = SUBGRAPH_PAD, rowH = 0;
-          childLayouts.forEach(({ sg: csg, layout }) => {
-            csg._layoutX = cx; csg._layoutY = cy;
-            csg._layoutW = layout.w; csg._layoutH = layout.h;
-            layout.nodePositions.forEach((pos, id) => { positions.set(id, { x: cx + pos.x, y: cy + pos.y }); });
-            cx += layout.w + NODE_GAP_X;
-            rowH = Math.max(rowH, layout.h);
-          });
-          maxW = Math.max(maxW, cx - NODE_GAP_X + SUBGRAPH_PAD);
-          cy += rowH + NODE_GAP_Y;
-        } else {
-          childLayouts.forEach(({ sg: csg, layout }) => {
-            csg._layoutX = SUBGRAPH_PAD; csg._layoutY = cy;
-            csg._layoutW = layout.w; csg._layoutH = layout.h;
-            layout.nodePositions.forEach((pos, id) => { positions.set(id, { x: SUBGRAPH_PAD + pos.x, y: cy + pos.y }); });
-            maxW = Math.max(maxW, layout.w + SUBGRAPH_PAD * 2);
-            cy += layout.h + NODE_GAP_Y;
-          });
+      // Build a lookup for child subgraph layouts
+      const clMap = new Map();
+      childLayouts.forEach(cl => clMap.set(cl.sg.id, cl));
+      // Walk items in declaration order, grouping consecutive direct nodes
+      const ordered = sg.orderedChildren || [];
+      const directNodeSet = new Set(directNodes);
+
+      // ── Pass 1: compute total maxW across all items ──
+      const chunks = []; // { type:'nodes', ids:[] } or { type:'sg', id }
+      let curNodes = [];
+      ordered.forEach(item => {
+        if (item.type === 'node' && directNodeSet.has(item.id)) {
+          curNodes.push(item.id);
+        } else if (item.type === 'sg' && clMap.has(item.id)) {
+          if (curNodes.length) { chunks.push({ type: 'nodes', ids: curNodes }); curNodes = []; }
+          chunks.push({ type: 'sg', id: item.id });
         }
-      }
-      if (directNodes.length) {
-        const cols = Math.min(3, directNodes.length);
-        const rows = Math.ceil(directNodes.length / cols);
-        const gridW = cols * NODE_W + (cols - 1) * NODE_GAP_X;
-        const startX = SUBGRAPH_PAD + (Math.max(maxW, gridW + SUBGRAPH_PAD * 2) - gridW) / 2 - SUBGRAPH_PAD;
-        directNodes.forEach((nodeId, idx) => {
-          const col = idx % cols, row = Math.floor(idx / cols);
-          positions.set(nodeId, {
-            x: Math.max(SUBGRAPH_PAD, startX) + col * (NODE_W + NODE_GAP_X) + NODE_W / 2,
-            y: cy + row * (NODE_H + NODE_GAP_Y) + NODE_H / 2,
+      });
+      if (curNodes.length) chunks.push({ type: 'nodes', ids: curNodes });
+
+      chunks.forEach(chunk => {
+        if (chunk.type === 'sg') {
+          const { layout } = clMap.get(chunk.id);
+          maxW = Math.max(maxW, layout.w + SUBGRAPH_PAD * 2);
+        } else {
+          const cols = isHoriz ? Math.min(3, chunk.ids.length) : 1;
+          const gridW = cols * NODE_W + (cols - 1) * NODE_GAP_X;
+          maxW = Math.max(maxW, gridW + SUBGRAPH_PAD * 2);
+        }
+      });
+
+      // ── Pass 2: position everything, centering nodes within final maxW ──
+      chunks.forEach(chunk => {
+        if (chunk.type === 'sg') {
+          const { sg: csg, layout } = clMap.get(chunk.id);
+          csg._layoutX = SUBGRAPH_PAD; csg._layoutY = cy;
+          csg._layoutW = layout.w; csg._layoutH = layout.h;
+          layout.nodePositions.forEach((pos, id) => { positions.set(id, { x: SUBGRAPH_PAD + pos.x, y: cy + pos.y }); });
+          cy += layout.h + NODE_GAP_Y;
+        } else {
+          const ids = chunk.ids;
+          const cols = isHoriz ? Math.min(3, ids.length) : 1;
+          const rows = Math.ceil(ids.length / cols);
+          const gridW = cols * NODE_W + (cols - 1) * NODE_GAP_X;
+          const startX = (maxW - gridW) / 2;
+          ids.forEach((nodeId, idx) => {
+            const col = idx % cols, row = Math.floor(idx / cols);
+            positions.set(nodeId, {
+              x: Math.max(SUBGRAPH_PAD, startX) + col * (NODE_W + NODE_GAP_X) + NODE_W / 2,
+              y: cy + row * (NODE_H + NODE_GAP_Y) + NODE_H / 2,
+            });
           });
-        });
-        maxW = Math.max(maxW, gridW + SUBGRAPH_PAD * 2);
-        cy += rows * NODE_H + (rows - 1) * NODE_GAP_Y + NODE_GAP_Y;
-      }
+          cy += rows * NODE_H + (rows - 1) * NODE_GAP_Y + NODE_GAP_Y;
+        }
+      });
+
       contentW = Math.max(maxW, SUBGRAPH_PAD * 2 + NODE_W);
       contentH = cy - NODE_GAP_Y + SUBGRAPH_PAD;
     }
@@ -305,7 +339,8 @@
      4. RENDERER
      ═════════════════════════════════════════════════════════════ */
 
-  function buildDiagram(ast, colors, world, svgLayer, legendIds) {
+  function buildDiagram(ast, colors, world, svgLayer, legendIds, isExploring) {
+    if (!isExploring) isExploring = function() { return false; };
     world.innerHTML = "";
     svgLayer.innerHTML = "";
     world.appendChild(svgLayer);
@@ -316,12 +351,48 @@
     const topLevel = ast.subgraphs.filter(sg => !sg.parent && !legendIds.has(sg.id));
     const topLayouts = topLevel.map(sg => ({ sg, layout: layoutSubgraph(sg, ast, sgMap) }));
 
+    // Find orphan nodes (not inside any subgraph)
+    const ownedNodes = new Set();
+    ast.subgraphs.forEach(sg => {
+      const allNodes = new Set();
+      collectAllNodes(sg, sgMap, allNodes);
+      allNodes.forEach(id => ownedNodes.add(id));
+    });
+    const orphanNodes = Object.keys(ast.nodes).filter(id => !ownedNodes.has(id) && !legendIds.has(id));
+
     let maxW = 0;
     topLayouts.forEach(tl => { maxW = Math.max(maxW, tl.layout.w); });
+    if (orphanNodes.length) {
+      const orphanGridW = orphanNodes.length * NODE_W + (orphanNodes.length - 1) * NODE_GAP_X + SUBGRAPH_PAD * 2;
+      maxW = Math.max(maxW, orphanGridW);
+    }
 
     const globalPositions = new Map();
     let offsetY = SECTION_GAP;
-    topLayouts.forEach(tl => {
+
+    // Build a top-level ordering that interleaves subgraphs and orphan nodes
+    // by tracking their declaration order in the source
+    const topSgSet = new Set(topLevel.map(sg => sg.id));
+    const topSgLayoutMap = new Map();
+    topLayouts.forEach(tl => topSgLayoutMap.set(tl.sg.id, tl));
+    const orphanSet = new Set(orphanNodes);
+
+    // Walk all parsed items in order: subgraphs (by first appearance) and orphan nodes
+    const topOrder = [];
+    const seenSgs = new Set();
+    // Subgraphs appear in ast.subgraphs in declaration order
+    // Orphan nodes appear in ast.nodes in insertion order (declaration order)
+    // We need to interleave them. Use a combined approach:
+    // Walk the source order from the parser. Subgraphs are in ast.subgraphs order.
+    // Orphan nodes are in Object.keys(ast.nodes) order.
+    // Since the parser processes lines top-to-bottom, both preserve source order.
+    // Merge them by checking edges or just appending subgraphs then placing orphans after related subgraphs.
+    // Simple approach: place each top-level subgraph, then after it place any orphan nodes that connect to it.
+    // Simplest correct approach: subgraphs in order, orphan nodes grouped as a row between them based on declaration.
+
+    // For now, just place top-level subgraphs and orphans in ast order
+    topLevel.forEach(sg => {
+      const tl = topSgLayoutMap.get(sg.id);
       const xOff = (maxW - tl.layout.w) / 2;
       tl.sg._globalX = xOff; tl.sg._globalY = offsetY;
       tl.sg._globalW = tl.layout.w; tl.sg._globalH = tl.layout.h;
@@ -330,10 +401,27 @@
       });
       offsetY += tl.layout.h + SECTION_GAP;
     });
+
+    // Place orphan nodes as a centered row
+    if (orphanNodes.length) {
+      const totalNodesW = orphanNodes.length * NODE_W + (orphanNodes.length - 1) * NODE_GAP_X;
+      const startX = (maxW - totalNodesW) / 2;
+      orphanNodes.forEach((nodeId, idx) => {
+        globalPositions.set(nodeId, {
+          x: startX + idx * (NODE_W + NODE_GAP_X) + NODE_W / 2,
+          y: offsetY + NODE_H / 2,
+        });
+      });
+      offsetY += NODE_H + SECTION_GAP;
+    }
+
     const totalH = offsetY;
 
     // ── Subgraph containers ──────────────────────────────────
+    const renderVisited = new Set();
     function renderSubgraph(sg, parentX, parentY) {
+      if (renderVisited.has(sg.id)) return;
+      renderVisited.add(sg.id);
       const gx = sg._globalX !== undefined ? sg._globalX : (sg._layoutX || 0) + parentX;
       const gy = sg._globalY !== undefined ? sg._globalY : (sg._layoutY || 0) + parentY;
       const gw = sg._globalW !== undefined ? sg._globalW : sg._layoutW || 200;
@@ -359,7 +447,10 @@
 
     // ── Subgraph bounds for edge routing ─────────────────────
     const sgBounds = new Map();
+    const boundsVisited = new Set();
     function collectSgBounds(sg, px, py) {
+      if (boundsVisited.has(sg.id)) return;
+      boundsVisited.add(sg.id);
       const gx = sg._globalX !== undefined ? sg._globalX : (sg._layoutX || 0) + px;
       const gy = sg._globalY !== undefined ? sg._globalY : (sg._layoutY || 0) + py;
       const gw = sg._globalW !== undefined ? sg._globalW : sg._layoutW || 200;
@@ -444,13 +535,12 @@
     // Draw edges
     const edgeElements = [];
     let edgeCount = 0;
-    console.log("[mm] edges to draw:", ast.edges.length, ast.edges.map(e => e.from + "->" + e.to));
     ast.edges.forEach(edge => {
       let fromPt = nodeElements[edge.from], toPt = nodeElements[edge.to];
       let fromSg = null, toSg = null;
       if (!fromPt && sgBounds.has(edge.from)) { const b = sgBounds.get(edge.from); fromPt = { x: b.cx, y: b.cy, cls: inferSubgraphClass(edge.from, ast) }; fromSg = b; }
       if (!toPt && sgBounds.has(edge.to))     { const b = sgBounds.get(edge.to);   toPt   = { x: b.cx, y: b.cy, cls: inferSubgraphClass(edge.to, ast) };   toSg   = b; }
-      if (!fromPt || !toPt) { console.log("[mm] SKIP edge", edge.from, "->", edge.to, "fromPt:", !!fromPt, "toPt:", !!toPt); return; }
+      if (!fromPt || !toPt) { return; }
 
       // Determine edge color: prefer the TARGET's class so the arrow
       // color reflects what is being accessed / consumed.
@@ -547,7 +637,7 @@
         svgLayer.appendChild(g);
         labelGroup = g;
       }
-      edgeElements.push({ path, labelGroup, classes: edgeClasses });
+      edgeElements.push({ path, labelGroup, classes: edgeClasses, from: edge.from, to: edge.to });
       edgeCount++;
     });
 
@@ -574,15 +664,13 @@
 
     // ── Hover interaction: highlight connected edges & nodes ──
     // Build adjacency: nodeId/sgId → [ { path, labelGroup, peerId } ]
+    // Uses direct references stored during edge creation (no DOM queries).
     const adjacency = {};
-    ast.edges.forEach(edge => {
-      const pathEl = svgLayer.querySelector('.mm-edge[data-mm-from="' + edge.from + '"][data-mm-to="' + edge.to + '"]');
-      const lblEl  = svgLayer.querySelector('.mm-edge-label-group[data-mm-from="' + edge.from + '"][data-mm-to="' + edge.to + '"]');
-      if (!pathEl) return;
-      if (!adjacency[edge.from]) adjacency[edge.from] = [];
-      if (!adjacency[edge.to])   adjacency[edge.to]   = [];
-      adjacency[edge.from].push({ path: pathEl, labelGroup: lblEl, peerId: edge.to });
-      adjacency[edge.to].push({   path: pathEl, labelGroup: lblEl, peerId: edge.from });
+    edgeElements.forEach(({ path, labelGroup, from, to }) => {
+      if (!adjacency[from]) adjacency[from] = [];
+      if (!adjacency[to])   adjacency[to]   = [];
+      adjacency[from].push({ path, labelGroup, peerId: to });
+      adjacency[to].push({   path, labelGroup, peerId: from });
     });
 
     // Subgraph lookup helpers (built early for use in highlight logic)
@@ -594,6 +682,7 @@
     });
 
     function collectChildSgs(sgId, out) {
+      if (out.has(sgId)) return;
       const sg = sgMap.get(sgId);
       if (!sg) return;
       (sg.childSubgraphs || []).forEach(cid => {
@@ -603,14 +692,34 @@
     }
 
     // Highlight an endpoint (could be a node OR a subgraph)
+    // Also highlights all ancestor subgraphs so parent opacity doesn't dim children.
+    function highlightAncestorSgs(sgId) {
+      const sg = sgMap.get(sgId);
+      if (!sg || !sg.parent) return;
+      let pid = sg.parent;
+      while (pid) {
+        const pEl = world.querySelector('.mm-subgraph[data-mm-sg="' + pid + '"]');
+        if (pEl) pEl.classList.add("mm-highlight");
+        const pSg = sgMap.get(pid);
+        pid = pSg ? pSg.parent : null;
+      }
+    }
+
     function highlightEndpoint(id) {
       if (nodeElements[id]) {
         nodeElements[id].el.classList.add("mm-highlight");
+        // Highlight ancestor subgraphs of this node so they don't dim it
+        const ancestors = nodeAncestorSgs[id] || [];
+        ancestors.forEach(sgId => {
+          const sgEl = world.querySelector('.mm-subgraph[data-mm-sg="' + sgId + '"]');
+          if (sgEl) sgEl.classList.add("mm-highlight");
+        });
       }
       // If this id is a subgraph, highlight the container + children + descendant nodes
       const sgEl = world.querySelector('.mm-subgraph[data-mm-sg="' + id + '"]');
       if (sgEl) {
         sgEl.classList.add("mm-highlight");
+        highlightAncestorSgs(id);
         const childSgs = new Set();
         collectChildSgs(id, childSgs);
         childSgs.forEach(cid => {
@@ -632,30 +741,48 @@
       svgLayer.querySelectorAll(".mm-highlight").forEach(el => el.classList.remove("mm-highlight"));
     }
 
+    // Build reverse lookup: nodeId → list of ancestor subgraph IDs
+    const nodeAncestorSgs = {};
+    ast.subgraphs.forEach(sg => {
+      const nodeSet = sgNodeMap[sg.id];
+      if (!nodeSet) return;
+      nodeSet.forEach(nid => {
+        if (!nodeAncestorSgs[nid]) nodeAncestorSgs[nid] = [];
+        nodeAncestorSgs[nid].push(sg.id);
+      });
+    });
+
     // Node hover → highlight self + connected edges + peer nodes/subgraphs
+    // Also checks edges targeting ancestor subgraphs of the hovered node.
     Object.values(nodeElements).forEach(({ el, x, y, cls }) => {
       const id = el.dataset.mmId;
       el.addEventListener("mouseenter", () => {
-        if (_exploring) return;
+        if (isExploring()) return;
         world.classList.add("mm-hovering");
         el.classList.add("mm-highlight");
-        const adj = adjacency[id] || [];
-        adj.forEach(a => {
-          a.path.classList.add("mm-highlight");
-          if (a.labelGroup) a.labelGroup.classList.add("mm-highlight");
-          highlightEndpoint(a.peerId);
+        // Highlight ancestor subgraphs so parent opacity doesn't dim this node
+        (nodeAncestorSgs[id] || []).forEach(sgId => {
+          const sgEl = world.querySelector('.mm-subgraph[data-mm-sg="' + sgId + '"]');
+          if (sgEl) sgEl.classList.add("mm-highlight");
+        });
+        // Collect adjacency for the node itself and all its ancestor subgraphs
+        const idsToCheck = [id].concat(nodeAncestorSgs[id] || []);
+        idsToCheck.forEach(checkId => {
+          const adj = adjacency[checkId] || [];
+          adj.forEach(a => {
+            a.path.classList.add("mm-highlight");
+            if (a.labelGroup) a.labelGroup.classList.add("mm-highlight");
+            highlightEndpoint(a.peerId);
+          });
         });
       });
       el.addEventListener("mouseleave", clearHighlights);
     });
 
     // Edge hover → highlight the edge + both endpoint nodes/subgraphs
-    svgLayer.querySelectorAll(".mm-edge[data-mm-from]").forEach(pathEl => {
-      const fromId = pathEl.dataset.mmFrom;
-      const toId   = pathEl.dataset.mmTo;
-      const lblEl  = svgLayer.querySelector('.mm-edge-label-group[data-mm-from="' + fromId + '"][data-mm-to="' + toId + '"]');
+    edgeElements.forEach(({ path: pathEl, labelGroup: lblEl, from: fromId, to: toId }) => {
       pathEl.addEventListener("mouseenter", () => {
-        if (_exploring) return;
+        if (isExploring()) return;
         world.classList.add("mm-hovering");
         pathEl.classList.add("mm-highlight");
         if (lblEl) lblEl.classList.add("mm-highlight");
@@ -674,12 +801,23 @@
       if (!descendantNodes || descendantNodes.size === 0) return;
 
       header.addEventListener("mouseenter", () => {
-        if (_exploring) return;
+        if (isExploring()) return;
         world.classList.add("mm-hovering");
         highlightEndpoint(sgId);
+
+        // Collect all IDs to check adjacency for: the subgraph itself,
+        // all descendant subgraphs, and all descendant nodes.
+        const idsToCheck = [sgId];
+        const childSgs = new Set();
+        collectChildSgs(sgId, childSgs);
+        childSgs.forEach(cid => idsToCheck.push(cid));
         descendantNodes.forEach(nodeId => {
           if (nodeElements[nodeId]) nodeElements[nodeId].el.classList.add("mm-highlight");
-          const adj = adjacency[nodeId] || [];
+          idsToCheck.push(nodeId);
+        });
+
+        idsToCheck.forEach(id => {
+          const adj = adjacency[id] || [];
           adj.forEach(a => {
             a.path.classList.add("mm-highlight");
             if (a.labelGroup) a.labelGroup.classList.add("mm-highlight");
@@ -910,11 +1048,14 @@
     // 6. Collapse empty subgraphs
     const sgMap = new Map();
     subgraphs.forEach(sg => sgMap.set(sg.id, sg));
-    function hasContent(sg) {
+    function hasContent(sg, _visited) {
+      if (!_visited) _visited = new Set();
+      if (_visited.has(sg.id)) return false;
+      _visited.add(sg.id);
       if (sg.children.length > 0) return true;
       return (sg.childSubgraphs || []).some(cid => {
         const ch = sgMap.get(cid);
-        return ch && hasContent(ch);
+        return ch && hasContent(ch, _visited);
       });
     }
     subgraphs.forEach(sg => {
@@ -932,7 +1073,7 @@
     return { title: ast.title, nodes, edges, subgraphs: liveSubgraphs, classDefs: ast.classDefs, classAssigns: ast.classAssigns };
   }
 
-  function buildFilters(pillContainer, legendNodes, colors, rebuild) {
+  function buildFilters(pillContainer, legendNodes, colors, rebuild, onManualFilter) {
     if (!pillContainer || !legendNodes.length) return null;
     pillContainer.innerHTML = "";
 
@@ -1002,12 +1143,14 @@
     }
 
     allBtn.addEventListener("click", () => {
+      if (onManualFilter) onManualFilter();
       if (activeFilters.size === allClasses.length) return;
       setAll();
     });
 
     themeBtns.forEach(btn => {
       btn.addEventListener("click", () => {
+        if (onManualFilter) onManualFilter();
         const f = btn.dataset.filter;
         if (activeFilters.size === allClasses.length) {
           activeFilters.clear(); activeFilters.add(f);
@@ -1149,24 +1292,23 @@
         }, 3000);
       }
 
-      // Compute bounding box of visible elements for camera fit
+      // Compute bounding box for camera fit
+      // During explore: frame only the glowing (newly revealed) elements
+      // Otherwise: frame all visible elements
       let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
-      state.world.querySelectorAll(".mm-node[data-mm-id]:not(.mm-hidden)").forEach(el => {
+      const glowSuffix = _exploring ? ".mm-explore-glow" : "";
+      const nodeSel = ".mm-node[data-mm-id]:not(.mm-hidden)" + glowSuffix;
+      const sgSel   = ".mm-subgraph[data-mm-sg]:not(.mm-hidden)" + glowSuffix;
+      function accumBounds(el) {
         const x = parseFloat(el.style.left), y = parseFloat(el.style.top);
         const w = parseFloat(el.style.width), h = parseFloat(el.style.height);
         if (x < minX) minX = x;
         if (y < minY) minY = y;
         if (x + w > maxX) maxX = x + w;
         if (y + h > maxY) maxY = y + h;
-      });
-      state.world.querySelectorAll(".mm-subgraph[data-mm-sg]:not(.mm-hidden)").forEach(el => {
-        const x = parseFloat(el.style.left), y = parseFloat(el.style.top);
-        const w = parseFloat(el.style.width), h = parseFloat(el.style.height);
-        if (x < minX) minX = x;
-        if (y < minY) minY = y;
-        if (x + w > maxX) maxX = x + w;
-        if (y + h > maxY) maxY = y + h;
-      });
+      }
+      state.world.querySelectorAll(nodeSel).forEach(accumBounds);
+      state.world.querySelectorAll(sgSel).forEach(accumBounds);
 
       if (minX < Infinity) {
         const pad = 20;
@@ -1180,21 +1322,21 @@
 
     function load() {
       if (state.built) return;
-      fetch(cfg.mdFile + "?v=" + (typeof CACHE_VERSION !== "undefined" ? CACHE_VERSION : Date.now()))
+      fetch(cfg.mdFile + "?v=" + Date.now())
         .then(r => { if (!r.ok) throw new Error("HTTP " + r.status); return r.text(); })
         .then(md => {
           const m = md.match(/```mermaid\s*\n([\s\S]*?)```/);
           if (!m) { console.warn("[mermaid-view] No mermaid block in", cfg.mdFile); return; }
           _ast = parseMermaid(m[1]);
           _legend = extractLegend(_ast);
-          _dims = buildDiagram(_ast, cfg.colors, state.world, _svgLayer, _legend.legendIds);
+          _dims = buildDiagram(_ast, cfg.colors, state.world, _svgLayer, _legend.legendIds, function() { return _exploring; });
           state._dims = _dims;
           state.built = true;
 
           // Build filter pills from legend
           const pillContainer = document.getElementById(cfg.filterId);
           if (pillContainer && _legend.legendNodes.length) {
-            _filterAPI = buildFilters(pillContainer, _legend.legendNodes, cfg.colors, rebuild);
+            _filterAPI = buildFilters(pillContainer, _legend.legendNodes, cfg.colors, rebuild, stopExplore);
           }
 
           requestAnimationFrame(() => fitView(false));
@@ -1207,6 +1349,7 @@
     let _exploreTimers = [];
     let _exploring = false;
     let _exploreGlowTimer = null;
+    let _exploreGen = 0;  // generation counter to invalidate stale timers
 
     var EXPLORE_DEFAULT = '<strong>Explore</strong><span class="scroll-arrow">\uD83D\uDD2D</span>';
 
@@ -1253,6 +1396,7 @@
     }
 
     function stopExplore() {
+      _exploreGen++;
       _exploreTimers.forEach(t => clearTimeout(t));
       _exploreTimers = [];
       _exploring = false;
@@ -1282,6 +1426,8 @@
         return;
       }
 
+      _exploreGen++;
+      var gen = _exploreGen;
       _exploring = true;
       if (state.world) state.world.classList.add("mm-exploring");
       var hint = modal.querySelector(".mm-explore-hint");
@@ -1301,10 +1447,13 @@
         if (pill) pill.classList.add("mm-filter-glow");
       }
 
-      // Hide everything first so the first setOnly reveals into an empty canvas
-      _filterAPI.setNone();
-
       // Start with first category only
+      // First, hide everything so the glow diff treats all first-step
+      // elements as "newly revealed" (matching subsequent steps).
+      state.world.querySelectorAll(".mm-node[data-mm-id]").forEach(function (el) { el.classList.add("mm-hidden"); });
+      state.world.querySelectorAll(".mm-subgraph[data-mm-sg]").forEach(function (el) { el.classList.add("mm-hidden"); });
+      _svgLayer.querySelectorAll(".mm-edge").forEach(function (el) { el.classList.add("mm-hidden"); });
+      _svgLayer.querySelectorAll(".mm-edge-label-group").forEach(function (el) { el.classList.add("mm-hidden"); });
       _filterAPI.setOnly(classes[0]);
       setHintLabel(labels[classes[0]] || classes[0]);
       glowFilterPill(classes[0]);
@@ -1313,7 +1462,7 @@
       for (var i = 1; i < classes.length; i++) {
         (function (idx) {
           _exploreTimers.push(setTimeout(function () {
-            if (!_exploring) return;
+            if (!_exploring || gen !== _exploreGen) return;
             _filterAPI.addFilter(classes[idx]);
             setHintLabel(labels[classes[idx]] || classes[idx]);
             glowFilterPill(classes[idx]);
@@ -1323,7 +1472,7 @@
 
       // Final: show all and reset hint to Explore
       _exploreTimers.push(setTimeout(function () {
-        if (!_exploring) return;
+        if (!_exploring || gen !== _exploreGen) return;
         _filterAPI.setAll();
         _exploring = false;
         if (state.world) state.world.classList.remove("mm-exploring");
@@ -1407,14 +1556,14 @@
     openGlobal:  "openMarpModal",
     closeGlobal: "closeMarpModal",
     colors: {
-      battery:   "231,76,60",
-      control:   "249,168,37",
-      converter: "194,181,244",
-      driver:    "136,179,225",
-      compute:   "141,211,199",
-      sensor:    "205,225,247",
-      light:     "217,140,179",
-      motor:     "253,216,53",
+      battery:   "242,80,34",
+      control:   "242,80,34",
+      converter: "255,185,0",
+      driver:    "127,186,0",
+      compute:   "127,186,0",
+      sensor:    "0,120,212",
+      light:     "0,120,212",
+      motor:     "242,80,34",
       footer:    "120,120,120",
     },
   });

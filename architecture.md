@@ -83,7 +83,7 @@ graph TD
     end
 
     subgraph Scripts["⚙️ VANILLA JS"]
-        direction TB
+        direction LR
         subgraph Render["🎬 RENDER"]
             direction TB
             ParallaxJS["parallax.js\n<i>🎨 Orbs & Glint</i>"]
@@ -103,7 +103,7 @@ graph TD
     end
 
     subgraph View["🧠 USER EXPERIENCE"]
-        direction TB
+        direction LR
         subgraph Layers["👁️ Elements"]
             direction TB
             ParallaxBG["Parallax\n<i>🌌 Glowing Background</i>"]

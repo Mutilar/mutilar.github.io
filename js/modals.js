@@ -1,7 +1,6 @@
 // ═════════════════════════════════════════════════════════════════
-//  CACHE VERSION & CSV HELPER (shared by modals.js & data.js)
+//  CSV HELPER (shared by modals.js & data.js)
 // ═════════════════════════════════════════════════════════════════
-const CACHE_VERSION = "2026.2";
 
 function fetchCSV(url) {
   return fetch(url).then(r => {
@@ -437,7 +436,7 @@ gameModal.addEventListener("click", e => { if (e.target === gameModal) closeGame
     if (deckCache[deckFile]) {
       renderDeckModal(item, deckCache[deckFile]);
     } else {
-      fetchCSV(deckFile + "?v=" + CACHE_VERSION).then(function (cards) {
+      fetchCSV(deckFile + "?v=" + Date.now()).then(function (cards) {
         deckCache[deckFile] = cards;
         renderDeckModal(item, cards);
       });

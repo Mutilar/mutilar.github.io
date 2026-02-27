@@ -52,7 +52,7 @@ const sectionConfigs = [
 ];
 
 sectionConfigs.forEach(({ csv, dataset, gridId, imgExt, modalImgExt }) => {
-  fetchCSV(csv + "?v=" + CACHE_VERSION).then(d => {
+  fetchCSV(csv + "?v=" + Date.now()).then(d => {
     if (!d.length) {
       const g = document.getElementById(gridId);
       if (g) g.innerHTML = '<p style="color:rgba(255,255,255,0.5);font-style:italic;padding:16px;">Failed to load data. Please refresh.</p>';
@@ -88,7 +88,7 @@ function buildAboutGrid() {
 }
 
 // ── MTG (special: deck modal override) ───────────────────────
-fetchCSV("csv/mtg.csv?v=" + CACHE_VERSION).then(d => {
+fetchCSV("csv/mtg.csv?v=" + Date.now()).then(d => {
   modalState.mtg = d;
   const g = document.getElementById("mtg-grid");
   d.forEach(function (i) {
@@ -114,7 +114,7 @@ window.openMarpModal = function() {
   const container = document.getElementById("marp-bom");
   if (!container) return;
   container.innerHTML = '<p style="color:rgba(255,255,255,0.5);font-style:italic;">Loading BOM…</p>';
-  fetch("csv/marp-bom.json?v=" + CACHE_VERSION).then(r => {
+  fetch("csv/marp-bom.json?v=" + Date.now()).then(r => {
     if (!r.ok) throw new Error(`HTTP ${r.status}`);
     return r.json();
   }).then(bom => {
