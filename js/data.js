@@ -1,4 +1,24 @@
 // ═══════════════════════════════════════════════════════════════
+//  CSV HELPER  —  shared global used by data.js & modals.js
+// ═══════════════════════════════════════════════════════════════
+function fetchCSV(url) {
+  return fetch(url).then(r => {
+    if (!r.ok) throw new Error(`HTTP ${r.status} for ${url}`);
+    return r.text();
+  }).then(text =>
+    Papa.parse(text, { header: true, skipEmptyLines: true }).data
+  ).catch(err => {
+    console.error("[fetchCSV]", err);
+    return [];
+  });
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  MODAL STATE  —  shared global written here, read by modals.js
+// ═══════════════════════════════════════════════════════════════
+const modalState = { work: null, education: null, projects: null, hackathons: null, games: null, marp: null, bitnaughts: null, mtg: null };
+
+// ═══════════════════════════════════════════════════════════════
 //  CSV DATA LOADING
 // ═══════════════════════════════════════════════════════════════
 function buildEntryCard(item, dataset, opts) {
@@ -106,9 +126,9 @@ fetchCSV("csv/mtg.csv?v=" + Date.now()).then(d => {
 
 // ── MARP BOM (Bill of Materials) — deferred until modal opens ──
 let _bomLoaded = false;
-const _origOpenMarpModal = window.openMarpModal || openMarpModal;
+const _origOpenMarpModal = window.openMarpModal;
 window.openMarpModal = function() {
-  _origOpenMarpModal();
+  if (_origOpenMarpModal) _origOpenMarpModal();
   if (_bomLoaded) return;
   _bomLoaded = true;
   const container = document.getElementById("marp-bom");

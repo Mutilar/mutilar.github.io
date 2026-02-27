@@ -6,244 +6,199 @@ title: 🏗️ MUTILAR.GITHUB.IO
 graph TD
     subgraph Legend["🎨 COLOR LEGEND"]
         direction LR
-        subgraph LegendRow["🗺️ TYPES"]
+        subgraph LEGENDROW["🗺️ TYPES"]
             direction TB
-            L1["🌐 HOSTING"]:::hosting
-            L2["🔧 CONFIG"]:::config
-            L3["🎨 STYLE"]:::styling
-            L4["📦 ASSET"]:::asset
-            L6["📊 DATA"]:::data
-            L5["⚙️ SCRIPT"]:::script
-            L7["🧠 OUTPUT"]:::output
+            L1["🌐 HOST"]:::hosting
+            L2["🔧 CDN"]:::config
+            L3["🎨 STYLE"]:::style
+            L4["📦 DATA"]:::data
+            L5["🔩 ENGINE"]:::engine
+            L6["🌌 U.I."]:::aes
+            L7["🧠 U.X."]:::ux
         end
     end
 
-    subgraph Cloud["☁️ Cloud"]
+    subgraph CLOUD["☁️ CLOUD"]
         direction LR
-        subgraph Hosting["☁️ HOSTING"]
+        subgraph HOSTING["☁️ HOSTING"]
             direction LR
-            GitHub["🐙 GITHUB PAGES\n<i>mutilar.github.io</i>"]
-            CNAME["🌐 ROUTE 53\n<i>brianhungerman.com</i>"]
-            CNAMEFile["🔗 CNAME\n<i>DNS RECORD</i>"]
+            GITHUB["🐙 GITHUB PAGES"]
+            CNAME["🌐 ROUTE 53"]
+            CNAMEFILE["🔗 CNAME"]
         end
         subgraph CDN["📦 CDN"]
             direction LR
-            PapaParse["🕵️ PapaParse\n<i>*.CSV</i>"]
-            PDFjs["📰 PDF.js\n<i>*.PDF</i>"]
+            PAPAPARSE["🕵️ PapaParse.JS"]
+            PDFJS["📰 PDF.JS"]
+            FONTAWESOME["🔣 FontAwesome.SVG"]
         end
     end
 
-    subgraph Shell["<SHELL ICO, NOT LITERALLY BUT TECH SHELL> SHELL"]
+    subgraph SHELL["🗂️ SHELL"]
         direction LR
-        subgraph Docs["📎 DOCS"]
+        subgraph ENTRY["🏠 ENTRY"]
             direction LR
-            ReadmeMD["📖 README\n<i>README.md</i>"]
-            ArchMD["🧜‍♀️ DIAGRAMS\n<i>*.md</i>"]
-            Resume["📄 PRINT\n<i>*.pdf, *.tex</i>"]
+            READMEMD["📖 README.MD"]
+            LICENSETXT["📜 LICENSE.TXT"]
+            INDEXHTML["📄 INDEX.HTML"]
         end
-        subgraph <WHAT SHOULD WE CALL THIS?>["<ICON> <LABEL>"]
+        subgraph GUIDE["🎨 GUIDE"]
             direction LR
-            IndexHTML["📄 INDEX.html\n<i>1K LOC</i>"]
-            StylesCSS["🎨 STYLE.css\n<i>GLASSMORPHISM</i>"]
-            LicenseTxt["📜 LICENSE.txt\n<i>MIT LICS.</i>"]
+            STYLESCSS["🎨 STYLE.CSS"]
+        end
+        subgraph DOCS["📎 DOCS"]
+            direction LR
+            RESUME["📄 *.PDF, *.TEX"]
+            ARCHMD["🧜‍♀️ *.MD"]
         end
     end
-    subgraph Folders["<FOLDER ICO> FOLDERS (8)"]
+    subgraph MEDIA["🖼️ MEDIA"]
         direction LR
-        subgraph Media["🖼️ MEDIA (348)"]
-            direction LR
-            ImagePngs["📸 316 PICS\n<i>*.png, *.gif</i>"]
-            GameBuilds["🎮 5 GAMES\n<i>*.unityweb</i>"]
-            AudioFiles["🎵 5 SONGS\n<i>*.mp3</i>"]
-        end
-        subgraph CsvData["📊 ENTRIES (62)"]
-            direction LR
-            WorkCSV["💼 12 EXPERIENCES\n<i>work.csv</i>"]
-            EduCSV["🎓 12 CLASSES\n<i>education.csv</i>"]
-            ProjectsCSV["🚀 28 PROJECTS\n<i>*.csv</i>"]
-        end
+        WORKCSV["💼 WORK.CSV"]
+        EDUCSV["🎓 CLASSES.CSV"]
+        PROJECTSCSV["🚀 PROJECTS.CSV"]
+        IMAGEPNGS["📸 316 *.PNG, *.GIF"]
+        GAMEBUILDS["🎮 5 *.UNITYWEB"]
+        AUDIOFILES["🎵 5 *.MP3"]
     end
-    subgraph Scripts["⚙️ SCRIPTS"]
+    subgraph SCRIPTS["⚙️ SCRIPTS"]
         direction TB
-        subgraph THINGONE["🔩 ENGINE"]
+        subgraph ENGINE["🔩 ENGINE"]
             direction LR
-            subgraph Core["🧠 CORE"]
-                direction LR
-                DataJS["📊 DATA\n<i>data.js</i>"]
-                VizJS["📈 VIZ\n<i>viz.js</i>"]
-                PdfViewerJS["📕 PDF\n<i>pdf.js</i>"]
-            end
-            subgraph DataViz["📊 VIZ"]
-                direction LR
-                MermaidViewJS["🧜 GRAPHS\n<i>mermaid.js</i>"]
-                SkillTreeJS["🧭 SPECS\n<i>skilltree.js</i>"]
-                TimelineJS["🕰️ EVENTS\n<i>timeline.js</i>"]
-            end
+            SCROLLJS["📜 SCROLL.JS"]
+            DATAJS["📊 DATA.JS"]
+            CONSOLEJS["🔎 CONSOLE.JS"]
+            PDFVIEWERJS["📕 PDF.JS"]
+            VIZJS["📈 VIZ.JS"]
+            RADIOJS["🎵 RADIO.JS"]
         end
-        subgraph THINGTWO["🎭 STAGE"]
+        subgraph UI["🌌 U.I."]
             direction LR
-            subgraph UI["🖥️ UI"]
-                direction LR
-                ScrollJS["📜 SCROLL\n<i>scroll.js</i>"]
-                ModalsJS["🪟 MODAL\n<i>modal.js</i>"]
-                ConsoleJS["🔎 DEBUG\n<i>console.js</i>"]
-            end
-            subgraph Ambient["🌌 AESTHETICS"]
-                direction LR
-                ThemeJS["🌓 THEME\n<i>theme.js</i>"]
-                ParallaxJS["✨ PARALLAX\n<i>parallax.js</i>"]
-                RadioJS["🎵 MUSIC\n<i>radio.js</i>"]
-            end
+            THEMEJS["🌓 THEME.JS"]
+            MODALSJS["🪟 MODAL.JS"]
+            PARALLAXJS["🫧 PARALLAX.JS"]
+            SKILLTREEJS["🧭 SKILLTREE.JS"]
+            MERMAIDVIEWJS["🧜 MERMAID.JS"]
+            TIMELINEJS["🕰️ TIMELINE.JS"]
         end
     end
 
-    subgraph Layers["🧠 U.X."]
-        direction TB            
-        subgraph Interact["👆 INTERACTION"]
-            direction LR
-            subgraph Canvas["🌀 CANVAS"]
-                direction LR
-                OrbCanvas["🫧 ORBS"]
-                GlintCanvas["💫 GLINT"]
-                ScrollHints["👆 HINTS"]
-            end
-            subgraph Play["🕹️ PLAY"]
-                direction LR
-                GameModal["🎮 GAME\n<i>Unity WebGL</i>"]
-            end
-            subgraph Read["📖 READ"]
-                direction LR
-                PdfModal["📕 DUSK ROSE CODEX\n<i>Vorthos Scripture</i>"]
-                DeckModal["🃏 GALLERY\n<i>Magic: The Gathering</i>"]
-            end
-        end
-        subgraph Modals["🪟 VIEWS"]
-            direction LR
-            subgraph Content["📜 CONTENT"]
-                direction LR
-                Cards["💎 CARDS\n<i>Glassy Tiles</i>"]
-                Overlays["🪟 MODALS\n<i>Overlays</i>"]
-                Player["🎵 RADIO\n<i>Equalizer</i>"]
-            end
-            subgraph Viz["📊 VIZ"]
-                direction LR
-                ArchModal["🧜 MERMAID\n<i>Diagrams</i>"]
-                KnowledgeModal["🌳 SKILLTREE\n<i>Life Arcs</i>"]
-                TimelineModal["📅 TIMELINE\n<i>History</i>"]
-            end
-        end
+    subgraph UX["🧠 U.X."]
+        direction LR
+        HINT["👆 HINT"]
+        TILES["💎 TILES"]
+        VIEW["🧭 VIEW"]
+        EMB["🕹️ EMB"]
+        MAP["📋 MAP"]
+        RADIO["🎵 RADIO"]
     end
     
 
     %% ── 1. HOSTING → ENTRY ──────────────────────────────────
 
-    GitHub -->|"HTTPS"| IndexHTML
-    IndexHTML -->|"DNS"| CNAME
-    CNAMEFile -.->|"ALIAS"| CNAME
+    GITHUB -->|"HTTPS"| INDEXHTML
+    INDEXHTML -->|"DNS"| CNAME
+    CNAMEFILE -.->|"ALIAS"| CNAME
 
     %% ── 2. INDEX → CDN (loads external libs) ────────────────
 
-    IndexHTML -->|"LINK"| StylesCSS
-    IndexHTML -.->|"DEFER"| PapaParse
-    IndexHTML -->|"MODULE"| PDFjs
+    INDEXHTML -->|"LINK"| STYLESCSS
+    INDEXHTML -->|"LINK"| FONTAWESOME
+    INDEXHTML -.->|"DEFER"| PAPAPARSE
+    INDEXHTML -->|"MODULE"| PDFJS
 
     %% ── 3. INDEX → SCRIPTS (deferred script tags) ──────────
 
-    IndexHTML -->|"DEFER"| Scripts
+    INDEXHTML -->|"DEFER"| SCRIPTS
 
     %% ── 4. CDN → SCRIPTS (libs consumed by JS) ─────────────
 
-    PapaParse -.->|"Papa.parse()"| DataJS
-    PDFjs -.->|"pdfjsLib"| PdfViewerJS
+    PAPAPARSE -.->|"parse()"| DATAJS
+    PDFJS -.->|"pdf()"| PDFVIEWERJS
+
+    %% ── 4b. DATA.JS → MODALS.JS (shared globals) ───────────
+
+    DATAJS -->|"fetch()"| MODALSJS
 
     %% ── 5. VIZ.JS → RENDER (shared utilities) ──────────────
 
-    VizJS -.->|"initPanZoom()"| MermaidViewJS
-    VizJS -.->|"initPanZoom()\ncreateFilterSystem()"| SkillTreeJS
-    VizJS -.->|"createFilterSystem()"| TimelineJS
+    VIZJS -.->|"diagram()"| MERMAIDVIEWJS
+    VIZJS -.->|"graph()"| SKILLTREEJS
+    VIZJS -.->|"timeline()"| TIMELINEJS
 
     %% ── 6. SCRIPTS → DATA & ASSETS ─────────────────────────
 
-    DataJS -->|"fetch()"| CsvData
-    DataJS -.->|"url()"| ImagePngs
-    PdfViewerJS -.->|"fetch()"| Resume
-    RadioJS -.->|"fetch()"| AudioFiles
-    ModalsJS -.->|"fetch()"| GameBuilds
-    MermaidViewJS -.->|"fetch()"| ArchMD
+    DATAJS -->|"fetch()"| WORKCSV
+    DATAJS -->|"fetch()"| EDUCSV
+    DATAJS -->|"fetch()"| PROJECTSCSV
+    PDFVIEWERJS -.->|"fetch()"| RESUME
+    RADIOJS -.->|"fetch()"| AUDIOFILES
+    MERMAIDVIEWJS -.->|"fetch()"| ARCHMD
 
     %% ── 7. SCRIPTS → VIEW (render pipeline) ────────────────
 
-    ThemeJS -->|"toggle()"| Layers
-    ParallaxJS -->|"render()"| OrbCanvas
-    ParallaxJS -->|"render()"| GlintCanvas
-    ScrollJS -->|"fadeHint()"| ScrollHints
-    DataJS -->|"buildCard()"| Cards
-    ConsoleJS -->|"intercept()"| ScrollHints
-    RadioJS -.->|"createAnalyser()"| Player
+    PARALLAXJS -->|"render()"| UX
+    SCROLLJS -->|"hint()"| HINT
+    CONSOLEJS -->|"warn()"| HINT
+    DATAJS -->|"card()"| TILES
+    THEMEJS -->|"toggle()"| UX
+    RADIOJS -.->|"analyser()"| RADIO
 
     %% ── 8. SCRIPTS → MODALS ────────────────────────────────
 
-    ModalsJS -->|"toggleModal()"| Overlays
-    MermaidViewJS -.->|"createDiagram()"| ArchModal
-    SkillTreeJS -.->|"buildGraph()"| KnowledgeModal
-    TimelineJS -.->|"buildTimeline()"| TimelineModal
-    PdfViewerJS -.->|"getDocument()"| PdfModal
-    DataJS -.->|"openDeckModal()"| DeckModal
-    ModalsJS -.->|"openGameModal()"| GameModal
+    MERMAIDVIEWJS -.->|"diagram()"| MAP
+    SKILLTREEJS -.->|"graph()"| MAP
+    TIMELINEJS -.->|"timeline()"| MAP
+    PDFVIEWERJS -.->|"getDocument()"| VIEW
+    MODALSJS -.->|"open()"| EMB
+    MODALSJS -.->|"open()"| VIEW
 
     %% ── NODE CLASSES ────────────────────────────────────────
 
-    class GitHub,IndexHTML,LicenseTxt hosting
-    class CNAME,CNAMEFile config
-    class StylesCSS styling
-    class PapaParse,PDFjs script
-    class ModalsJS,DataJS,ScrollJS,ThemeJS,ConsoleJS,VizJS script
-    class ParallaxJS,RadioJS,PdfViewerJS,MermaidViewJS,SkillTreeJS,TimelineJS script
-    class WorkCSV,EduCSV,ProjectsCSV data
-    class ReadmeMD,ArchMD asset
-    class ImagePngs asset
-    class Resume,GameBuilds,AudioFiles asset
-    class OrbCanvas,GlintCanvas,ScrollHints,Cards,Overlays,Player,Toast output
-    class ArchModal,KnowledgeModal,TimelineModal output
-    class PdfModal,DeckModal,GameModal output
+    class GITHUB,INDEXHTML,READMEMD,LICENSETXT hosting
+    class PAPAPARSE,PDFJS,CNAME,CNAMEFILE config
+    class STYLESCSS,FONTAWESOME style
+    class CONSOLEJS,SCROLLJS,DATAJS engine
+    class VIZJS,PDFVIEWERJS,RADIOJS engine
+    class MODALSJS,PARALLAXJS,THEMEJS aes
+    class MERMAIDVIEWJS,SKILLTREEJS,TIMELINEJS aes
+    class WORKCSV,EDUCSV,PROJECTSCSV data
+    class ARCHMD data
+    class IMAGEPNGS data
+    class RESUME,GAMEBUILDS,AUDIOFILES data
+    class TILES,RADIO,VIEW ux
+    class MAP,HINT,EMB ux
 
     %% ── CLASS DEFINITIONS ───────────────────────────────────
 
     classDef hosting fill:#f7a799,stroke:#f25022,color:#5a1000,stroke-width:2px
-    classDef config fill:#ffe49a,stroke:#ffb900,color:#4a3200,stroke-width:1.5px
-    classDef styling fill:#e8d0f0,stroke:#8b5cf6,color:#3b1470,stroke-width:1.5px
-    classDef script fill:#c8e6a0,stroke:#7fba00,color:#2d4a00,stroke-width:1.5px
-    classDef data fill:#a0cfff,stroke:#0078d4,color:#002050,stroke-width:1.5px
-    classDef asset fill:#d0e8ff,stroke:#0078d4,color:#002050,stroke-width:1.5px
-    classDef output fill:#ffe49a,stroke:#ffb900,color:#4a3200,stroke-width:2px
+    classDef config fill:#f7a799,stroke:#f25022,color:#5a1000,stroke-width:1.5px
+    classDef style fill:#e0f0ff,stroke:#0078d4,color:#002050,stroke-width:1.5px
+    classDef data fill:#e0f0ff,stroke:#0078d4,color:#002050,stroke-width:1.5px
+    classDef engine fill:#c8e6a0,stroke:#7fba00,color:#2d4a00,stroke-width:1.5px
+    classDef aes fill:#c8e6a0,stroke:#7fba00,color:#2d4a00,stroke-width:1.5px
+    classDef ux fill:#fff3c4,stroke:#ffb900,color:#4a3200,stroke-width:2px
 
     %% ── SUBGRAPH STYLES ────────────────────────────────────
 
-    style Hosting fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
-    style Shell fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
-    style Entry fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
+    style CLOUD fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
+    style HOSTING fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
     style CDN fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
-    style Assets fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
-    style AssetFiles fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
-    style Media fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
 
-    style CsvData fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
+    style SHELL fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
+    style DOCS fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
+    style ENTRY fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
 
-    style Scripts fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
-    style Core fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
+    style FOLDERS fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
+    style MEDIA fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
+    style CSVDATA fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
+
+    style SCRIPTS fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
+    style ENGINE fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
     style UI fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
-    style Ambient fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
-    style DataViz fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
-    style View fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
-    style Layers fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
-    style Canvas fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
-    style Chrome fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
-    style Content fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
-    style Modals fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
-    style Viz fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
-    style Play fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
-    style Read fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
-    style Interact fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
-    style Legend fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
-    style LegendRow fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
+
+    style UX fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
+
+    style LEGEND fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
+    style LEGENDROW fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
 ```

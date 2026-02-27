@@ -21,6 +21,19 @@
   const MIN_SCALE = 0.5;
   const MAX_SCALE = 1.5;
 
+  /* ─── Derive color map from classDef stroke values ────────── */
+  function colorsFromAST(classDefs) {
+    var colors = {};
+    Object.keys(classDefs).forEach(function(cls) {
+      var hex = (classDefs[cls].stroke || "").replace(/^#/, "");
+      if (hex.length === 3) hex = hex[0]+hex[0]+hex[1]+hex[1]+hex[2]+hex[2];
+      if (hex.length === 6) {
+        colors[cls] = parseInt(hex.slice(0,2),16)+","+parseInt(hex.slice(2,4),16)+","+parseInt(hex.slice(4,6),16);
+      }
+    });
+    return colors;
+  }
+
   /* ═════════════════════════════════════════════════════════════
      1. MERMAID PARSER — Lightweight subset for `graph TD`
      ═════════════════════════════════════════════════════════════ */
@@ -1322,14 +1335,15 @@
           if (!m) { console.warn("[mermaid-view] No mermaid block in", cfg.mdFile); return; }
           _ast = parseMermaid(m[1]);
           _legend = extractLegend(_ast);
-          _dims = buildDiagram(_ast, cfg.colors, state.world, _svgLayer, _legend.legendIds, function() { return _exploring; });
+          var _colors = colorsFromAST(_ast.classDefs);
+          _dims = buildDiagram(_ast, _colors, state.world, _svgLayer, _legend.legendIds, function() { return _exploring; });
           state._dims = _dims;
           state.built = true;
 
           // Build filter pills from legend
           const pillContainer = document.getElementById(cfg.filterId);
           if (pillContainer && _legend.legendNodes.length) {
-            _filterAPI = buildFilters(pillContainer, _legend.legendNodes, cfg.colors, rebuild, stopExplore);
+            _filterAPI = buildFilters(pillContainer, _legend.legendNodes, _colors, rebuild, stopExplore);
           }
 
           requestAnimationFrame(() => fitView(false));
@@ -1522,16 +1536,6 @@
     mdFile:      "architecture.md",
     openGlobal:  "openArchModal",
     closeGlobal: "closeArchModal",
-    colors: {
-      hosting: "242,80,34",
-      config:  "255,185,0",
-      styling: "242,80,34",
-      script:  "127,186,0",
-      data:    "0,120,212",
-      asset:   "0,120,212",
-      output:  "255,185,0",
-      footer:  "120,120,120",
-    },
   });
 
   // ── MARP Wiring Diagram ────────────────────────────────────
@@ -1542,16 +1546,6 @@
     mdFile:      "marp-architecture.md",
     openGlobal:  "openMarpModal",
     closeGlobal: "closeMarpModal",
-    colors: {
-      battery:   "242,80,34",
-      control:   "242,80,34",
-      converter: "255,185,0",
-      driver:    "127,186,0",
-      compute:   "127,186,0",
-      sensor:    "0,120,212",
-      motor:     "242,80,34",
-      footer:    "120,120,120",
-    },
   });
 
 })();

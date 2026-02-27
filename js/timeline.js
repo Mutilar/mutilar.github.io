@@ -719,7 +719,7 @@
       "🎛️ Control",
     ],
     "azuremlops": [
-      "⚡ CI/CD",
+      "🏗️ CI/CD",
     ],
     "chemistry": [
       "🧪 A.R.",

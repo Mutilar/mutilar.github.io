@@ -406,8 +406,9 @@ function animateCameraFit(transform, updateFn, opts) {
   var cancelled = false;
 
   function ease(t) {
-    // Smooth-step ease-in-out (hermite)
-    return t * t * (3 - 2 * t);
+    // Ease-out quint — fast start, long gentle deceleration ("slerpy")
+    var t1 = 1 - t;
+    return 1 - t1 * t1 * t1 * t1 * t1;
   }
 
   function tick(now) {

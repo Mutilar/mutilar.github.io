@@ -176,12 +176,12 @@ graph TD
     class LeftWheel,RightWheel,HeadPan,HeadTilt motor
 
     classDef battery fill:#f7a799,stroke:#f25022,color:#5a1000,stroke-width:2px
-    classDef control fill:#f9c9bb,stroke:#f25022,color:#5a1000,stroke-width:1.5px
+    classDef control fill:#f7a799,stroke:#f25022,color:#5a1000,stroke-width:1.5px
     classDef driver fill:#c8e6a0,stroke:#7fba00,color:#2d4a00,stroke-width:1.5px
     classDef converter fill:#fff3c4,stroke:#ffb900,color:#4a3200,stroke-width:1.5px
     classDef compute fill:#c8e6a0,stroke:#7fba00,color:#2d4a00,stroke-width:1.5px
     classDef sensor fill:#e0f0ff,stroke:#0078d4,color:#002050,stroke-width:1.5px
-    classDef motor fill:#f9c9bb,stroke:#f25022,color:#5a1000,stroke-width:2px
+    classDef motor fill:#f7a799,stroke:#f25022,color:#5a1000,stroke-width:2px
 
     style FuseDistribution fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
     style Fuses fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333

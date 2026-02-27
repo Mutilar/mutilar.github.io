@@ -122,11 +122,11 @@
     "maces":           ["🚀"],
     "citris":          ["🏙️"],
     "amaxesd":         ["⚡"],
-    "summerofgamedesign": ["💰<br>$25K"],
+    "summerofgamedesign": ["🧑‍🏫"],
     "alamorobotics":   ["🤖"],
     "acm":             ["🤝"],
     "learnbeat":       ["🌱"],
-    "redtierobotics":  ["💰<br>$18K"],
+    "redtierobotics":  ["⚙️"],
     "cse180":          ["🤖"],
     "cse165":          ["📦"],
     "cse160":          ["🌐"],
@@ -583,12 +583,22 @@
         const sy = n.targetY * _transform.scale + _transform.y;
         const inCenter = sx >= left && sx <= right && sy >= top && sy <= bottom;
         const hovered = n === _hoveredNode;
-        const focused = (inCenter || hovered) && !n.el.classList.contains("kg-hidden");
+        // During tour, all visible nodes glow
+        const tourFocus = _touring && !n._hidden;
+        const focused = (inCenter || hovered || tourFocus) && !n.el.classList.contains("kg-hidden");
         n.el.classList.toggle("kg-in-focus", focused);
 
         if (!n.nameLayer || !n.whisperLayers || n.whisperLayers.length < 2) return;
 
         if (focused && n.whispers.length) {
+          // During tour name phase: show title, hide whispers, keep glow
+          if (_touring && _tourShowNames) {
+            n.nameLayer.classList.add("kg-name-show");
+            n.whisperLayers[0].classList.remove("kg-name-show");
+            n.whisperLayers[1].classList.remove("kg-name-show");
+            n.wasFocused = false;
+            return;
+          }
           // Hide name, ensure a whisper layer is visible
           n.nameLayer.classList.remove("kg-name-show");
 
@@ -1467,7 +1477,7 @@
       minScale: _KG_MIN_SCALE,
       maxScale: _KG_MAX_SCALE,
       padding:  50,
-      duration: animate !== false ? 800 : 0,
+      duration: animate !== false ? 500 : 0,
       animate:  animate !== false,
     });
   }
@@ -1479,6 +1489,7 @@
      ═════════════════════════════════════════════════════════════ */
   let _tourTimers = [];
   let _touring = false;
+  let _tourShowNames = false; // when true during tour, show titles instead of whispers
   let _tourGen = 0;  // generation counter to invalidate stale timers
 
   const TOUR_DEFAULT = '<strong>Traverse</strong><span class="scroll-arrow">\uD83D\uDD2D</span>';
@@ -1487,15 +1498,15 @@
   // Each step adds one filter. The order tells the story:
   // Software education → +work → +projects → Robotics edu → +work → +projects → Games edu → +work → +projects
   const TOUR_STEPS = [
-    { add: ["software", "education"],  label: "📚 Software Education" },
-    { add: ["work"],                   label: "💼 Software Work" },
-    { add: ["projects"],               label: "🚀 Software Projects" },
-    { add: ["robotics"],               label: "🎓 Robotics Education" },
-    { add: ["work"],                   label: "💼 Robotics Work" },
-    { add: ["projects"],               label: "🚀 Robotics Projects" },
-    { add: ["games"],                  label: "🎓 Games Education" },
-    { add: ["work"],                   label: "💼 Games Work" },
-    { add: ["projects"],               label: "🚀 Games Projects" },
+    { add: ["software", "education"],  label: "📚 Education" },
+    { add: ["work"],                   label: "💼 Work" },
+    { add: ["projects"],               label: "🚀 Projects" },
+    { add: ["robotics"],               label: "📚 Education" },
+    { add: ["work"],                   label: "💼 Work" },
+    { add: ["projects"],               label: "🚀 Projects" },
+    { add: ["games"],                  label: "📚 Education" },
+    { add: ["work"],                   label: "💼 Work" },
+    { add: ["projects"],               label: "🚀 Projects" },
   ];
 
   var _hintCF = createCrossfader();
@@ -1526,6 +1537,7 @@
     _tourTimers.forEach(t => clearTimeout(t));
     _tourTimers = [];
     _touring = false;
+    _tourShowNames = false;
     if (_cameraHandle) { _cameraHandle.cancel(); _cameraHandle = null; }
     // Restore all filters
     allThemes.forEach(t => activeFilters.add(t));
@@ -1551,18 +1563,17 @@
     if (hint) hint.classList.add("exploring");
 
     // Step timing
-    var STEP_DELAY = 2000;    // ms between steps
+    var STEP_DELAY = 4000;    // ms between steps
     var RELAYOUT_SETTLE = 700; // ms for relayout spring animation to settle
     var cumulative = 0;
 
-    // Start: clear all filters, hide everything
-    activeFilters.clear();
+    // Start: show only the first step's state (software + education)
+    // Avoid clearing all filters (impossible UI state). Instead, set exact state.
+    allThemes.forEach(function (t) { activeFilters.delete(t); });
+    activeFilters.add("software");
+    activeFilters.add("education");
     _filterSys.syncUI();
     applyFilter();
-
-    // The tour uses a cumulative filter set that maps to handoff phases.
-    // We track which filters have been added so far across all steps.
-    var tourFilters = new Set();
 
     // Execute step 0 immediately after a brief pause for entrance to clear
     var initialDelay = 300;
@@ -1573,32 +1584,22 @@
       _tourTimers.push(setTimeout(function () {
         if (!_touring || gen !== _tourGen) return;
 
-        // Add this step's filters
-        step.add.forEach(function (f) {
-          tourFilters.add(f);
-          activeFilters.add(f);
-        });
+        // Set exact filter state for this step (no clear → always valid UI state):
+        // Remove all first, then add only what this step needs.
+        allThemes.forEach(function (t) { activeFilters.delete(t); });
 
-        // The handoff spec says overlays accumulate per-phase but reset between quadrant phases.
-        // Phase 1 (steps 0-2): software + overlays accumulating
-        // Phase 2 (steps 3-5): + robotics, overlays restart from education
-        // Phase 3 (steps 6-8): + games, overlays restart from education
-        //
-        // Rebuild activeFilters from tourFilters:
-        // Quadrant filters stay on once added. Overlay filters follow the step sequence.
-        activeFilters.clear();
+        // Determine which quadrant is active (only one at a time)
+        if (idx < 3)       activeFilters.add("software");
+        else if (idx < 6)  activeFilters.add("robotics");
+        else               activeFilters.add("games");
 
-        // Determine which quadrants have been introduced so far
-        if (idx >= 0) activeFilters.add("software");
-        if (idx >= 3) activeFilters.add("robotics");
-        if (idx >= 6) activeFilters.add("games");
-
-        // Overlay progression within each phase (3 steps per phase)
+        // Overlay: one at a time per step within each phase
         var phaseStep = idx % 3;
-        activeFilters.add("education"); // always on (step 0 of each phase)
-        if (phaseStep >= 1) activeFilters.add("work");
-        if (phaseStep >= 2) activeFilters.add("projects");
+        if (phaseStep === 0) activeFilters.add("education");
+        else if (phaseStep === 1) activeFilters.add("work");
+        else activeFilters.add("projects");
 
+        _tourShowNames = false;
         _filterSys.syncUI();
         applyFilter();
 
@@ -1611,6 +1612,13 @@
           fitVisibleNodes(true);
         }, RELAYOUT_SETTLE));
 
+        // At 1.75s: crossfade from whisper back to title (keep glow)
+        _tourTimers.push(setTimeout(function () {
+          if (!_touring || gen !== _tourGen) return;
+          _tourShowNames = true;
+          updateProximityGlow();
+        }, 1750));
+
       }, delay));
     });
 
@@ -1619,7 +1627,14 @@
     _tourTimers.push(setTimeout(function () {
       if (!_touring || gen !== _tourGen) return;
       _touring = false;
+      _tourShowNames = false;
+      // Restore all filters after tour completes
+      allThemes.forEach(function (t) { activeFilters.add(t); });
+      _filterSys.syncUI();
+      applyFilter();
       resetHintLabelKG();
+      // Smooth camera pull-back to show the full graph
+      setTimeout(function () { fitVisibleNodes(true); }, 400);
     }, totalDuration));
   }
 

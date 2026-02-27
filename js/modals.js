@@ -1,18 +1,7 @@
 // ═════════════════════════════════════════════════════════════════
-//  CSV HELPER (shared by modals.js & data.js)
+//  GLOBALS FROM DATA.JS  —  fetchCSV(), modalState
+//  (data.js is loaded before modals.js)
 // ═════════════════════════════════════════════════════════════════
-
-function fetchCSV(url) {
-  return fetch(url).then(r => {
-    if (!r.ok) throw new Error(`HTTP ${r.status} for ${url}`);
-    return r.text();
-  }).then(text =>
-    Papa.parse(text, { header: true, skipEmptyLines: true }).data
-  ).catch(err => {
-    console.error("[fetchCSV]", err);
-    return [];
-  });
-}
 
 // ═════════════════════════════════════════════════════════════════
 //  MODAL TOGGLE HELPER (with stack counter)
@@ -71,9 +60,8 @@ function _trapFocus(e) {
 document.addEventListener("keydown", _trapFocus);
 
 // ═══════════════════════════════════════════════════════════════
-//  MODAL SYSTEM
+//  MODAL SYSTEM  (modalState provided by data.js)
 // ═══════════════════════════════════════════════════════════════
-const modalState = { work: null, education: null, projects: null, hackathons: null, games: null, marp: null, bitnaughts: null, mtg: null };
 const modal = document.getElementById("modal");
 const modalClose = document.getElementById("modalClose");
 

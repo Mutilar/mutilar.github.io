@@ -91,18 +91,6 @@
     window.addEventListener("scroll", updateToggleVisibility, { passive: true });
     updateToggleVisibility();
 
-    // ── Theme-aware image swapping ──────────────────────
-    function swapThemeImages() {
-      const key = isLightMode() ? "srcLight" : "srcDark";
-      document.querySelectorAll(".theme-img").forEach(img => {
-        const src = img.dataset[key];
-        if (src && img.src !== src) img.src = src;
-      });
-    }
-
-    window.addEventListener("theme-changed", swapThemeImages);
-    swapThemeImages(); // set correct images on load
-
     // ── Initial icon sync ───────────────────────────────
     syncIcons();
   });
