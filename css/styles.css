@@ -3458,6 +3458,10 @@ html.light-mode .mm-filter.mm-filter-glow {
   color: rgba(255, 255, 255, 1);
 }
 
+.kg-explore-hint.exploring .scroll-arrow {
+  font-size: 40px;
+}
+
 .kg-explore-hint.exploring strong {
   color: rgba(255, 255, 255, 1);
 }

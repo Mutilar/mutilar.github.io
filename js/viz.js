@@ -448,7 +448,7 @@ function createCrossfader() {
   return {
     fade: function (hint, html, cb) {
       if (_pending) clearTimeout(_pending);
-      hint.style.transition = "opacity 0.15s ease";
+      hint.style.transition = "opacity 0.4s ease";
       hint.style.opacity = "0";
       _pending = setTimeout(function () {
         hint.innerHTML = html;
@@ -459,8 +459,8 @@ function createCrossfader() {
           hint.style.transition = "";
           hint.style.opacity = "";
           _pending = null;
-        }, 160);
-      }, 160);
+        }, 420);
+      }, 420);
     }
   };
 }

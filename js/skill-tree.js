@@ -1246,15 +1246,15 @@
       "Dog Park":                     "Dog<br>Park",
       "IoT Panel":                    "IoT<br>Panel",
       "AMAX ESD":                     "AMAX<br>ESD",
-      "CSE 180":                     "#180",
-      "CSE 165":                     "#165",
-      "CSE 160":                     "#160",
-      "CSE 120":                     "#120",
-      "CSE 111":                     "#111",
-      "CSE 100":                     "#100",
-      "CSE 31":                      "#31",
-      "CSE 30":                      "#30",
-      "CSE 15":                      "#15",
+      "CSE 180":                     "CSE<br>180",
+      "CSE 165":                     "CSE<br>165",
+      "CSE 160":                     "CSE<br>160",
+      "CSE 120":                     "CSE<br>120",
+      "CSE 111":                     "CSE<br>111",
+      "CSE 100":                     "CSE<br>100",
+      "CSE 31":                      "CSE<br>31",
+      "CSE 30":                      "CSE<br>30",
+      "CSE 15":                      "CSE<br>15",
       "AP Java":                     "Java",
       "ROP Game Design":             "Game<br>Design",
       "ROP Architecture":            "Archi-<br>tecture",
@@ -1498,15 +1498,15 @@
   // Each step adds one filter. The order tells the story:
   // Software education → +work → +projects → Robotics edu → +work → +projects → Games edu → +work → +projects
   const TOUR_STEPS = [
-    { add: ["software", "education"],  label: "🎓 Education" },
-    { add: ["work"],                   label: "💼 Work" },
-    { add: ["projects"],               label: "🚀 Projects" },
-    { add: ["robotics"],               label: "🎓 Education" },
-    { add: ["work"],                   label: "💼 Work" },
-    { add: ["projects"],               label: "🚀 Projects" },
-    { add: ["games"],                  label: "🎓 Education" },
-    { add: ["work"],                   label: "💼 Work" },
-    { add: ["projects"],               label: "🚀 Projects" },
+    { add: ["software", "education"],  label: "💻🎓" },
+    { add: ["work"],                   label: "💻💼" },
+    { add: ["projects"],               label: "💻🚀" },
+    { add: ["robotics"],               label: "🤖🎓" },
+    { add: ["work"],                   label: "🤖💼" },
+    { add: ["projects"],               label: "🤖🚀" },
+    { add: ["games"],                  label: "🎮🎓" },
+    { add: ["work"],                   label: "🎮💼" },
+    { add: ["projects"],               label: "🎮🚀" },
   ];
 
   var _hintCF = createCrossfader();
@@ -1514,10 +1514,7 @@
   function setHintLabelKG(label) {
     var hint = graphModal.querySelector(".kg-explore-hint");
     if (!hint) return;
-    var m = label.match(/^(\p{Emoji_Presentation}|\p{Emoji}\uFE0F?)\s*/u);
-    var emoji = m ? m[1] : '\uD83D\uDD2D';
-    var text  = m ? label.slice(m[0].length) : label;
-    var html = '<strong>' + text + '</strong><span class="scroll-arrow">' + emoji + '</span>';
+    var html = '<span class="scroll-arrow">' + label + '</span>';
     _hintCF.fade(hint, html);
   }
 
@@ -1579,7 +1576,10 @@
     _touring = true;
 
     var hint = graphModal.querySelector(".kg-explore-hint");
-    if (hint) hint.classList.add("exploring");
+    if (hint) {
+      hint.innerHTML = "";
+      hint.classList.add("exploring");
+    }
 
     // Step timing
     var STEP_DELAY = 6000;    // ms between steps (4s titles + 1s crossfade + 1s whispers)
