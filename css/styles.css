@@ -1628,6 +1628,41 @@ html.light-mode .card-action-badge.badge-static {
 }
 
 /* ═══════════════════════════════════════════════════════════════
+   EXTERNAL LINK IFRAME MODAL
+   ═══════════════════════════════════════════════════════════════ */
+.link-modal-card {
+  max-width: 1100px;
+  width: 95vw;
+  height: 90vh;
+  overflow-y: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.link-modal-card .modal-sticky-title {
+  color: rgba(100, 200, 255, 0.9);
+}
+
+.link-embed-wrap {
+  flex: 1;
+  min-height: 0;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: #fff;
+  position: relative;
+}
+
+.link-embed-wrap iframe {
+  border: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  inset: 0;
+}
+
+/* ═══════════════════════════════════════════════════════════════
    BITNAUGHTS GALLERY MODAL
    ═══════════════════════════════════════════════════════════════ */
 .bitnaughts-modal-card {
@@ -2924,6 +2959,10 @@ html.light-mode .game-modal-card .modal-sticky-title {
   color: rgba(180, 130, 0, 0.95);
 }
 
+html.light-mode .link-modal-card .modal-sticky-title {
+  color: rgba(0, 120, 180, 0.95);
+}
+
 html.light-mode .modal-sticky-link {
   color: rgba(0, 100, 200, 0.85);
   background: rgba(240, 240, 245, 0.75);
@@ -3144,6 +3183,7 @@ html.light-mode .outline-pill {
 @media (max-width: 600px) {
   .pdf-modal-card { max-height: 88vh; width: 98vw; }
   .game-modal-card { max-height: 88vh; width: 98vw; }
+  .link-modal-card { max-height: 88vh; width: 98vw; }
   .marp-modal-card { width: 98vw; }
   .bitnaughts-modal-card { width: 98vw; }
   .marp-bom table { display: block; overflow-x: auto; white-space: nowrap; }
@@ -3355,6 +3395,21 @@ html.light-mode .outline-pill {
   height: 8px;
   border-radius: 50%;
   flex-shrink: 0;
+  box-sizing: border-box;
+  border: 1px solid transparent;
+  transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+/* Inactive filter: black dot (dark mode) */
+.mm-filter:not(.active) .mm-dot {
+  background: rgba(20, 20, 25, 0.9) !important;
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+/* Inactive filter: white dot (light mode) */
+html.light-mode .mm-filter:not(.active) .mm-dot {
+  background: rgba(240, 240, 245, 0.9) !important;
+  border-color: rgba(0, 0, 0, 0.12);
 }
 
 html.light-mode .mm-filter {
@@ -3623,6 +3678,26 @@ html.light-mode .mm-filter.mm-filter-glow {
 .mm-world.mm-exploring ~ .mm-edges .mm-edge {
   pointer-events: none !important;
   cursor: default;
+}
+
+/* ── Neighbour dimming — visible but not primary in filter ── */
+.mm-node.mm-neighbour {
+  opacity: 0.35;
+  filter: saturate(0.3);
+  transition: opacity 0.3s ease, filter 0.3s ease;
+}
+.mm-subgraph.mm-neighbour {
+  opacity: 0.3;
+  transition: opacity 0.3s ease;
+}
+.mm-edge.mm-neighbour {
+  opacity: 0.18;
+  animation: none !important;
+  transition: opacity 0.3s ease;
+}
+.mm-edge-label-group.mm-neighbour {
+  opacity: 0.18;
+  transition: opacity 0.3s ease;
 }
 
 .mm-node.mm-hidden,
@@ -4027,6 +4102,23 @@ html.light-mode .timeline-filter.filter-pulse {
   border-radius: 50%;
   display: inline-block;
   flex-shrink: 0;
+  box-sizing: border-box;
+  border: 1px solid transparent;
+  transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+/* Inactive filter: black dot (dark mode) */
+.timeline-filter:not(.active) .timeline-dot,
+.kg-filter:not(.active) .timeline-dot {
+  background: rgba(20, 20, 25, 0.9) !important;
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+/* Inactive filter: white dot (light mode) */
+html.light-mode .timeline-filter:not(.active) .timeline-dot,
+html.light-mode .kg-filter:not(.active) .timeline-dot {
+  background: rgba(240, 240, 245, 0.9) !important;
+  border-color: rgba(0, 0, 0, 0.12);
 }
 
 /* ── Timeline scroll hint ─────────────────────────────────── */
@@ -4572,14 +4664,18 @@ html.light-mode .timeline-filter.filter-pulse {
               0 0 30px rgba(255, 255, 255, 0.06);
 }
 .kg-layout-toggle.dynamic {
-  color: rgba(120, 200, 255, 0.85);
+  color: rgba(255, 255, 255, 0.6);
   border-color: rgba(120, 200, 255, 0.35);
   background: rgba(120, 200, 255, 0.08);
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.5),
+              0 0 20px rgba(120, 200, 255, 0.15);
 }
 .kg-layout-toggle.dynamic:hover {
-  color: rgba(120, 200, 255, 1);
+  color: #fff;
   background: rgba(120, 200, 255, 0.14);
   border-color: rgba(120, 200, 255, 0.45);
+  box-shadow: 0 0 12px rgba(120, 200, 255, 0.25),
+              0 0 30px rgba(120, 200, 255, 0.10);
 }
 
 .kg-node.kg-hidden {
@@ -4760,13 +4856,16 @@ html.light-mode .kg-layout-toggle:hover {
   background: rgba(225, 225, 235, 0.75);
 }
 html.light-mode .kg-layout-toggle.dynamic {
-  color: rgba(0, 100, 180, 0.8);
+  color: rgba(0, 0, 0, 0.5);
   border-color: rgba(0, 100, 180, 0.3);
   background: rgba(0, 100, 180, 0.08);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.4),
+              0 0 16px rgba(0, 100, 180, 0.12);
 }
 html.light-mode .kg-layout-toggle.dynamic:hover {
-  color: rgba(0, 100, 180, 1);
+  color: rgba(0, 0, 0, 0.7);
   background: rgba(0, 100, 180, 0.14);
+  border-color: rgba(0, 100, 180, 0.4);
 }
 
 html.light-mode .kg-explore-hint {

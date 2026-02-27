@@ -28,7 +28,6 @@ graph TD
         end
         subgraph CDN["📦 CDN"]
             direction LR
-            PAPAPARSE["🕵️ PapaParse.JS"]
             PDFJS["📰 PDF.JS"]
             FONTAWESOME["🔣 FontAwesome.SVG"]
         end
@@ -48,17 +47,16 @@ graph TD
         end
         subgraph DOCS["📎 DOCS"]
             direction LR
-            RESUME["📄 *.PDF, *.TEX"]
+            RESUME["📄 12 *.PDF"]
             ARCHMD["🧜‍♀️ *.MD"]
         end
     end
     subgraph MEDIA["🖼️ MEDIA"]
         direction LR
-        WORKCSV["💼 WORK.CSV"]
-        EDUCSV["🎓 CLASSES.CSV"]
-        PROJECTSCSV["🚀 PROJECTS.CSV"]
-        IMAGEPNGS["📸 316 *.PNG, *.GIF"]
-        GAMEBUILDS["🎮 5 *.UNITYWEB"]
+        PORTFOLIOJSON["📋 PORTFOLIO.JSON"]
+        CARDSCSV["🃏 CARDS.CSV"]
+        IMAGEPNGS["📸 350 *.PNG, *.GIF"]
+        GAMEBUILDS["🎮 16 *.UNITYWEB"]
         AUDIOFILES["🎵 5 *.MP3"]
     end
     subgraph SCRIPTS["⚙️ SCRIPTS"]
@@ -89,6 +87,7 @@ graph TD
         TILES["💎 TILES"]
         VIEW["🧭 VIEW"]
         EMB["🕹️ EMB"]
+        LINK["🔗 LINK"]
         MAP["📋 MAP"]
         RADIO["🎵 RADIO"]
     end
@@ -104,7 +103,6 @@ graph TD
 
     INDEXHTML -->|"LINK"| STYLESCSS
     INDEXHTML -->|"LINK"| FONTAWESOME
-    INDEXHTML -.->|"DEFER"| PAPAPARSE
     INDEXHTML -->|"MODULE"| PDFJS
 
     %% ── 3. INDEX → SCRIPTS (deferred script tags) ──────────
@@ -113,24 +111,25 @@ graph TD
 
     %% ── 4. CDN → SCRIPTS (libs consumed by JS) ─────────────
 
-    PAPAPARSE -.->|"parse()"| DATAJS
     PDFJS -.->|"pdf()"| PDFVIEWERJS
 
-    %% ── 4b. DATA.JS → MODALS.JS (shared globals) ───────────
+    %% ── 4b. DATA.JS → shared globals ───────────────────────
 
-    DATAJS -->|"fetch()"| MODALSJS
+    DATAJS -->|"modalState"| MODALSJS
+    DATAJS -->|"VIZ_*_MAP"| VIZJS
 
-    %% ── 5. VIZ.JS → RENDER (shared utilities) ──────────────
+    %% ── 5. VIZ.JS → RENDER (shared utilities + maps) ───────
 
-    VIZJS -.->|"diagram()"| MERMAIDVIEWJS
-    VIZJS -.->|"graph()"| SKILLTREEJS
-    VIZJS -.->|"timeline()"| TIMELINEJS
+    VIZJS -.->|"pan/zoom"| MERMAIDVIEWJS
+    VIZJS -.->|"pan/zoom"| SKILLTREEJS
+    VIZJS -.->|"pan/zoom"| TIMELINEJS
+    VIZJS -.->|"VIZ_THEMES"| SKILLTREEJS
+    VIZJS -.->|"VIZ_THEMES"| TIMELINEJS
 
     %% ── 6. SCRIPTS → DATA & ASSETS ─────────────────────────
 
-    DATAJS -->|"fetch()"| WORKCSV
-    DATAJS -->|"fetch()"| EDUCSV
-    DATAJS -->|"fetch()"| PROJECTSCSV
+    DATAJS -->|"fetch()"| PORTFOLIOJSON
+    MODALSJS -->|"fetchCSV()"| CARDSCSV
     PDFVIEWERJS -.->|"fetch()"| RESUME
     RADIOJS -.->|"fetch()"| AUDIOFILES
     MERMAIDVIEWJS -.->|"fetch()"| ARCHMD
@@ -152,22 +151,23 @@ graph TD
     PDFVIEWERJS -.->|"getDocument()"| VIEW
     MODALSJS -.->|"open()"| EMB
     MODALSJS -.->|"open()"| VIEW
+    MODALSJS -.->|"iframe()"| LINK
 
     %% ── NODE CLASSES ────────────────────────────────────────
 
     class GITHUB,INDEXHTML,READMEMD,LICENSETXT hosting
-    class PAPAPARSE,PDFJS,CNAME,CNAMEFILE config
+    class PDFJS,CNAME,CNAMEFILE config
     class STYLESCSS,FONTAWESOME style
     class CONSOLEJS,SCROLLJS,DATAJS engine
     class VIZJS,PDFVIEWERJS,RADIOJS engine
     class MODALSJS,PARALLAXJS,THEMEJS aes
     class MERMAIDVIEWJS,SKILLTREEJS,TIMELINEJS aes
-    class WORKCSV,EDUCSV,PROJECTSCSV data
+    class PORTFOLIOJSON,CARDSCSV data
     class ARCHMD data
     class IMAGEPNGS data
     class RESUME,GAMEBUILDS,AUDIOFILES data
     class TILES,RADIO,VIEW ux
-    class MAP,HINT,EMB ux
+    class MAP,HINT,EMB,LINK ux
 
     %% ── CLASS DEFINITIONS ───────────────────────────────────
 
@@ -189,13 +189,13 @@ graph TD
     style DOCS fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
     style ENTRY fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
 
-    style FOLDERS fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
     style MEDIA fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
-    style CSVDATA fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
 
     style SCRIPTS fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
     style ENGINE fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
     style UI fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
+
+    style TOOLS fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
 
     style UX fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
 

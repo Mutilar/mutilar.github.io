@@ -172,7 +172,7 @@ window.closeDeckModal = window.closeDeckModal || function() {};
 window.closeTimelineModal = window.closeTimelineModal || function() {};
 window.closeKnowledgeModal = window.closeKnowledgeModal || function() {};
 
-document.addEventListener("keydown", e => { if (e.key === "Escape") { closeModal(); closePdfModal(); closeResumePdfModal(); closeGameModal(); window.closeMarpModal(); window.closeArchModal(); closeBitnaughtsModal(); closeBitnaughtsIphoneModal(); window.closeDeckModal(); window.closeTimelineModal(); window.closeKnowledgeModal(); } });
+document.addEventListener("keydown", e => { if (e.key === "Escape") { closeModal(); closePdfModal(); closeResumePdfModal(); closeLinkModal(); closeGameModal(); window.closeMarpModal(); window.closeArchModal(); closeBitnaughtsModal(); closeBitnaughtsIphoneModal(); window.closeDeckModal(); window.closeTimelineModal(); window.closeKnowledgeModal(); } });
 
 // ── Footer year (safe alternative to document.write) ──
 const footerYear = document.getElementById("footer-year");
@@ -328,6 +328,31 @@ resumePdfModalClose.addEventListener("click", closeResumePdfModal);
 resumePdfModal.addEventListener("click", e => { if (e.target === resumePdfModal) closeResumePdfModal(); });
 
 // ═══════════════════════════════════════════════════════════════
+//  EXTERNAL LINK IFRAME MODAL
+// ═══════════════════════════════════════════════════════════════
+const linkModal = document.getElementById("link-modal");
+const linkModalClose = document.getElementById("linkModalClose");
+const linkIframe = document.getElementById("link-iframe");
+
+function openLinkModal(url, title) {
+  document.getElementById("link-modal-title").innerHTML = '<i class="fa fa-globe"></i> ' + (title || 'Link');
+  document.getElementById("link-modal-link").href = url;
+
+  toggleModal(linkModal, true);
+
+  // Load src after modal opens
+  linkIframe.src = url;
+}
+
+function closeLinkModal() {
+  toggleModal(linkModal, false);
+  linkIframe.src = "";
+}
+
+linkModalClose.addEventListener("click", closeLinkModal);
+linkModal.addEventListener("click", e => { if (e.target === linkModal) closeLinkModal(); });
+
+// ═══════════════════════════════════════════════════════════════
 //  GAME PLAYER MODAL
 // ═══════════════════════════════════════════════════════════════
 const gameModal = document.getElementById("game-modal");
@@ -408,7 +433,8 @@ gameModal.addEventListener("click", e => { if (e.target === gameModal) closeGame
   const typeOrder = ["Planeswalker", "Creature", "Artifact", "Enchantment", "Instant", "Sorcery", "Land", "Token"];
 
   let sectionStates = [];
-  let deckCache = {};
+  let _allCards = null;   // loaded once from CARDS.csv
+  let _cardsLoading = null;
 
   function closeDeckModal() {
     toggleModal(deckModal, false);
@@ -419,16 +445,23 @@ gameModal.addEventListener("click", e => { if (e.target === gameModal) closeGame
   deckModal.addEventListener("click", function (e) { if (e.target === deckModal) closeDeckModal(); });
   // Note: Escape key handled by the global keydown listener above
 
+  /** Load CARDS.csv once, return promise of all card rows */
+  function _loadCards() {
+    if (_allCards) return Promise.resolve(_allCards);
+    if (_cardsLoading) return _cardsLoading;
+    _cardsLoading = fetchCSV("CARDS.csv?v=" + Date.now()).then(function (cards) {
+      _allCards = cards;
+      return cards;
+    });
+    return _cardsLoading;
+  }
+
   window.openDeckModal = function (item) {
-    const deckFile = item.DECK.trim();
-    if (deckCache[deckFile]) {
-      renderDeckModal(item, deckCache[deckFile]);
-    } else {
-      fetchCSV(deckFile + "?v=" + Date.now()).then(function (cards) {
-        deckCache[deckFile] = cards;
-        renderDeckModal(item, cards);
-      });
-    }
+    const deckId = item.DECK.trim();
+    _loadCards().then(function (allCards) {
+      var cards = allCards.filter(function (c) { return c.deck === deckId; });
+      renderDeckModal(item, cards);
+    });
   };
 
   function pluralize(type) {

@@ -23,7 +23,7 @@ const VIZ_THEMES = {
   projects:  { color: "242,80,34",   icon: "fa-rocket",         label: "Projects",   emoji: "🚀" },
 };
 
-// ── Item → category mappings (single source of truth) ────────
+// ── Item → category mappings ─────────────────────────────────
 //
 // Two classification axes exist:
 //
@@ -33,61 +33,23 @@ const VIZ_THEMES = {
 //  2. SOURCE — where the item originated (used by skill-tree.js)
 //     Categories: work, education, projects
 //
-// VIZ_DOMAIN_MAP is the primary map. VIZ_SOURCE_MAP provides the
-// "origin" overlay used by the knowledge graph.
+//  3. QUADRANT — spatial direction on the knowledge graph
+//     Categories: robotics, games, software
+//     (Only needed when quadrant ≠ domain, e.g. education items
+//      that lean toward robotics or games.)
+//
+// These maps are populated at runtime from PORTFOLIO.json
+// by data.js. Items without an entry default to "software".
 
-const VIZ_DOMAIN_MAP = {
-  // Robotics — hardware builds, robots, IoT devices
-  marp: "robotics", sriracha: "robotics", smartank: "robotics",
-  blindsight: "robotics", amaxesd: "robotics", redtierobotics: "robotics",
-  alamorobotics: "robotics", motorskills: "robotics",
-  "home-iot": "robotics",
-  // Games — game dev, game jams, game-adjacent coding tools
-  bitnaughts: "games", graviton: "games", spaceninjas: "games",
-  voodoo: "games", galconq: "games", popvuj: "games",
-  seerauber: "games", summerofgamedesign: "games", iterate: "games",
-  "the-nobles": "games", "the-demons": "games",
-  // Software — professional SWE, cloud, web apps, devops
-  microsoft: "software", azuremlops: "software", ventana: "software",
-  duskrosecodex: "software",
-  citris: "software", hackmerced: "software", motleymoves: "software",
-  breeze: "software", dogpark: "software",
-  ozone: "software", gasleek: "software", chemistry: "software",
-  gist: "software", digestquest: "software",
-  // Research — academic labs, science, data analysis
-  vicelab: "research", andeslab: "research", maces: "research",
-  firmi: "research",
-  learnbeat: "research", acm: "research",
-  // Education — university courses
-  cse180: "education", cse165: "education", cse160: "education",
-  cse120: "education", cse111: "education", cse100: "education",
-  cse031: "education", cse030: "education", cse015: "education",
-  // Education — high school
-  ropgamedesign: "education", roparchitecture: "education", apjava: "education",
-};
-
-const VIZ_SOURCE_MAP = {
-  marp: "projects", amaxesd: "projects", redtierobotics: "education",
-  alamorobotics: "work", "home-iot": "projects",
-  bitnaughts: "projects", voodoo: "projects", galconq: "projects", popvuj: "projects",
-  "the-nobles": "projects", "the-demons": "projects", duskrosecodex: "projects",
-  graviton: "projects", spaceninjas: "work",
-  summerofgamedesign: "work", iterate: "projects",
-  microsoft: "work", ventana: "work",
-  citris: "work", hackmerced: "work",
-  vicelab: "work", andeslab: "work", maces: "work",
-  learnbeat: "work", acm: "work",
-  azuremlops: "projects", motleymoves: "projects",
-  breeze: "projects", dogpark: "projects",
-  ozone: "projects",
-  firmi: "projects",
-  sriracha: "projects", smartank: "projects", blindsight: "projects",
-  motorskills: "projects", seerauber: "projects",
-  gasleek: "projects", chemistry: "projects", gist: "projects", digestquest: "projects",
-  cse180: "education", cse165: "education", cse160: "education",
-  cse120: "education", cse111: "education", cse100: "education",
-  cse031: "education", cse030: "education", cse015: "education",
-  ropgamedesign: "education", roparchitecture: "education", apjava: "education",
+const VIZ_DOMAIN_MAP = {};
+const VIZ_SOURCE_MAP = {};
+const VIZ_QUADRANT_MAP = {};
+const VIZ_WHISPER_MAP = {};      // skill-tree whisper emoji per item
+const VIZ_SHORTNAME_MAP = {};    // skill-tree circle label overrides
+const VIZ_TIMELINE = {           // timeline whispers, name/title overrides
+  whispers: {},
+  nameOverrides: {},
+  titleOverrides: {},
 };
 
 // ═══════════════════════════════════════════════════════════════
@@ -433,6 +395,50 @@ function animateCameraFit(transform, updateFn, opts) {
       cancelled = true;
       if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
     }
+  };
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  LAYOUT TOGGLE — Shared static/dynamic positioning toggle
+//
+//  Usage:
+//    var lt = createLayoutToggle({
+//      btn,            // DOM button element (or id string)
+//      onDynamic,      // () => void — called when switching TO dynamic
+//      onStatic,       // () => void — called when switching TO static
+//      staticLabel,    // optional (default "📌 Static")
+//      dynamicLabel,   // optional (default "🔀 Dynamic")
+//      startStatic,    // optional (default true)
+//    });
+//    // Returns { isStatic(), setStatic(bool) }
+// ═══════════════════════════════════════════════════════════════
+function createLayoutToggle(cfg) {
+  var btn = typeof cfg.btn === "string" ? document.getElementById(cfg.btn) : cfg.btn;
+  var onDynamic    = cfg.onDynamic    || function () {};
+  var onStatic     = cfg.onStatic     || function () {};
+  var staticLabel  = cfg.staticLabel  || "\uD83D\uDCCC Static";
+  var dynamicLabel = cfg.dynamicLabel || "\uD83D\uDD00 Dynamic";
+  var _static      = cfg.startStatic !== undefined ? cfg.startStatic : true;
+
+  function syncUI() {
+    if (!btn) return;
+    btn.classList.toggle("dynamic", !_static);
+    btn.textContent = _static ? staticLabel : dynamicLabel;
+  }
+
+  syncUI();
+
+  if (btn) {
+    btn.addEventListener("click", function () {
+      _static = !_static;
+      syncUI();
+      if (_static) onStatic(); else onDynamic();
+    });
+  }
+
+  return {
+    isStatic: function () { return _static; },
+    setStatic: function (v) { _static = !!v; syncUI(); },
   };
 }
 

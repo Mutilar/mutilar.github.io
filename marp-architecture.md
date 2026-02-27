@@ -26,7 +26,7 @@ graph TD
         subgraph BatterySupply["🔋 POWER"]
             direction LR
             Battery["LI-ION\n<i>Aegis</i>\n240 Wh"]
-            Meter["BATTERY METER\n<i>Aegis</i>\n0.5 W"]
+            Meter["BATTERY METER\n<i>Aegis</i>\n0.1 W"]
             Switch["SWITCH\n<i>FRC</i>\n30 A"]
         end
         subgraph Fuses["🧯 PROTECTION"]
@@ -51,26 +51,26 @@ graph TD
             direction LR
             subgraph WheelLeft["⬅️ LEFT"]
                 direction TB
-                Stepper24Left["<i>TB6600</i>\n24 V, 1 W"]
-                LeftWheel["<i>KH56</i>\n24 V, 60 W"]
+                Stepper24Left["<i>TB6600</i>\n2.4 W"]
+                LeftWheel["<i>KH56</i>\n24 W"]
             end
             subgraph WheelRight["➡️ RIGHT"]
                 direction TB
-                Stepper24Right["<i>TB6600</i>\n24 V, 1 W"]
-                RightWheel["<i>KH56</i>\n24 V, 60 W"]
+                Stepper24Right["<i>TB6600</i>\n2.4 W"]
+                RightWheel["<i>KH56</i>\n24 W"]
             end
         end
         subgraph TurretDrive["🤖 TURRET"]
             direction LR
             subgraph TurretPan["🔄 PAN"]
                 direction TB
-                Stepper12Pan["<i>TB6600</i>\n12 V, 0.5 W"]
-                HeadPan["<i>M55</i>\n12 V, 12 W"]
+                Stepper12Pan["<i>TB6600</i>1.2 W"]
+                HeadPan["<i>M55</i>\12 W"]
             end
             subgraph TurretTilt["↕️ TILT"]
                 direction TB
-                Stepper12Tilt["<i>TB6600</i>\n12 V, 0.5 W"]
-                HeadTilt["<i>M55</i>\n12 V, 12 W"]
+                Stepper12Tilt["<i>TB6600</i>\n1.2 W"]
+                HeadTilt["<i>M55</i>\12 W"]
             end
         end
     end
@@ -119,15 +119,15 @@ graph TD
     FuseBuck5 -->|"24 V"| Buck5
     FuseBuck12 -->|"24 V"| Buck12
     FusePD -->|"24 V"| PDAdapter
-    PDAdapter -->|"20 V"| Display 
-    Buck5 -->|"5 V"| Brain 
+    PDAdapter -->|"20 V"| Projector 
+    Buck5 -->|"5 V"| Pi 
 
     %% Converters to specific drivers / devices
     Buck12 -->|"1.0 A"| Mouth
-    Buck12 -->|"1.1 A"| TurretPan
-    Buck12 -->|"1.1 A"| TurretTilt
-    FuseStepper24 -->|"1.1 A"| WheelRight
-    FuseStepper24 -->|"1.1 A"| WheelLeft
+    Buck12 -->|"1.1 A"| Stepper12Pan
+    Buck12 -->|"1.1 A"| Stepper12Tilt
+    FuseStepper24 -->|"1.1 A"| Stepper24Right
+    FuseStepper24 -->|"1.1 A"| Stepper24Left
     Pi -.->|"1.2 V\n1.5 Ω"| IRLED
 
     %% Pi control signals

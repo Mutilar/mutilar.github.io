@@ -1,0 +1,223 @@
+%------------------------------------------------------------
+% resume.tex — Brian Hungerman
+% Compile: pdflatex resume.tex
+%------------------------------------------------------------
+\documentclass[10pt,letterpaper]{article}
+
+\usepackage[top=0.3in, bottom=0.25in, left=0.4in, right=0.4in]{geometry}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{hyperref}
+\usepackage{paracol}
+\usepackage[T1]{fontenc}
+\usepackage{helvet}
+\usepackage{microtype}
+
+% ── Use Helvetica (sans-serif) as default ─────────────────
+\renewcommand{\familydefault}{\sfdefault}
+
+% ── All text black, all links black ───────────────────────
+\hypersetup{
+  colorlinks=false,
+  pdfborder={0 0 0},
+  pdfauthor={Brian Hungerman},
+  pdftitle={Brian Hungerman -- Resume}
+}
+
+% ── Section headers: BOLD + thin black underline ──────────
+\titleformat{\section}
+  {\large\bfseries\MakeUppercase}
+  {}
+  {0pt}
+  {}
+  [\vspace{-6pt}{\hrule height 0.4pt}\vspace{2pt}]
+
+\titlespacing*{\section}{0pt}{6pt}{3pt}
+
+% ── Compact bullet lists ─────────────────────────────────
+\setlist[itemize]{
+  nosep, topsep=1pt, partopsep=0pt, parsep=0pt,
+  itemsep=0pt, left=10pt, label={\small\textbullet}
+}
+
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+\setlength{\columnsep}{12pt}
+
+% ══════════════════════════════════════════════════════════
+\begin{document}
+
+% ── HEADER ────────────────────────────────────────────────
+\begin{minipage}[t]{0.58\textwidth}
+  \vspace{0pt}
+  {\fontsize{26}{30}\selectfont\bfseries Brian Hungerman}
+\end{minipage}%
+\hfill
+\begin{minipage}[t]{0.38\textwidth}
+  \vspace{2pt}
+  \raggedleft\small
+  https://brianhungerman.com\\
+  brianhungerman@gmail.com\\
+  1 (425) 389-9642
+\end{minipage}
+
+\vspace{4pt}
+
+% ── TWO COLUMNS ──────────────────────────────────────────
+\columnratio{0.72}
+\begin{paracol}{2}
+
+% ══════════════ LEFT COLUMN ══════════════════════════════
+
+\section*{Experience}
+
+\textbf{Senior Software Engineer @ Applied Sciences (Microsoft)}\hfill Jan 2025 -- Present
+\begin{itemize}
+  \item Incubating novel A.I.\ user experiences with collaboration across W+D, MSR \& ID.
+  \item Developing full-stack functional prototypes across web \& mobile platforms.
+\end{itemize}
+\vspace{1pt}
+
+\textbf{Software Engineer @ A.I.\ Platform (Microsoft)}\hfill Jan 2020 -- Jan 2025
+\begin{itemize}
+  \item Shipped Online Endpoints to 50+ regions for Azure OpenAI, Copilot, Office \& 3p.
+  \item Scaled cloud infrastructure to serve trillions of inferences/month w/ 6 9's SLA.
+  \item Optimized Network Address Translation to reduce COGS by \$10 million/year.
+  \item Completed security, privacy \& component governance audits as Security Champ.
+  \item Spearheaded livesite process improvements via TSGs \& SOPs as DRI Champ.
+  \item Implemented Envoy Proxy build pipeline w/ Bazel \& custom C++ filters, e.g.:
+    \begin{itemize}[label={\small$\cdot$}, left=8pt, nosep, itemsep=0pt]
+      \item SHA-256 Key-Based Authentication (KBA) filter w/ CORS preflight support.
+      \item Azure Active Directory (AAD) authentication filter w/ LRU decision cache.
+      \item Global Rate Limiting filter w/ Go microservice to pub/sub to Redis cache.
+    \end{itemize}
+  \item Set up runners \& telemetry pipelines in Azure Data Explorer, Kusto \& SQL.
+  \item Shipped PowerBI \& Grafana dashboards to track platform metrics \& logs.
+\end{itemize}
+\vspace{1pt}
+
+\textbf{Software Engineer Intern @ A.I.\ Platform (Microsoft)}\hfill May 2019 -- Aug 2019
+\begin{itemize}
+  \item Designed Jupyter notebook CI pipeline w/ Azure DevOps, ML SDK \& Functions.
+\end{itemize}
+\vspace{1pt}
+
+\textbf{Software Engineer Intern @ Ventana (Roche)}\hfill May 2018 -- Dec 2018
+\begin{itemize}
+  \item Pushed feature-adds \& bug-fixes for MEAN stack digital pathology web app.
+  \item Prototyped OpenSeaDragon-esque image renderer \& annotator in Pixi.JS.
+  \item Modernized Nagios server monitoring w/ Icinga, Graphite \& Grafana.
+\end{itemize}
+\vspace{1pt}
+
+\textbf{Director @ HackMerced IV (MLH)}\hfill May 2018 -- May 2019
+\begin{itemize}
+  \item Hosted non-profit collegiate hackathon for 300 students, fundraising \$20,000!
+\end{itemize}
+\vspace{1pt}
+
+\textbf{Web Developer @ CITRIS \& Banatao Institute (UCM)}\hfill May 2017 -- Dec 2018
+\begin{itemize}
+  \item Developed GitOps content management system (CMS) via jQuery \& CSV files to
+        replace Drupal CMS, hosting via GitHub Pages: https://citris.ucmerced.edu.
+\end{itemize}
+\vspace{1pt}
+
+\textbf{Instructor @ Summer of Game Design (MVHS)}\hfill Jun 2015 -- Jul 2016
+\begin{itemize}
+  \item Co-founded non-profit game programming summer camp, fundraising \$25,000!
+\end{itemize}
+
+% ── RESEARCH & EDUCATION ─────────────────────────────────
+\section*{Research \& Education}
+
+\textbf{Bachelor of Science @ University of California, Merced}\hfill Aug 2016 -- Dec 2019
+\begin{itemize}
+  \item Computer Science \& Engineering, \textit{magna cum laude} (GPA 3.74)
+\end{itemize}
+\vspace{1pt}
+
+\textbf{Lead Research Assistant @ VICE Lab (UCM)}\hfill Aug 2018 -- Dec 2019
+\begin{itemize}
+  \item Led team to develop heuristic \& ML scripts in Google Earth Engine to model \&
+        predict California's agricultural fallowing via Earth observation satellite data.
+  \item Onboarded lab to GitHub \& wrote open-sourced scripts in Python, C\# \& R.
+  \item Refurbished lab's website, hosting via GitHub Pages: https://vicelab.net.
+\end{itemize}
+\vspace{1pt}
+
+\textbf{Research Assistant @ ANDES Lab (UCM)}\hfill Jan 2019 -- May 2019
+\begin{itemize}
+  \item Visualized InfluxDB data for HVAC predictive control system in Python, Grafana.
+\end{itemize}
+\vspace{1pt}
+
+\textbf{Research Assistant @ SAIL + MACES (UCM \& NASA MUREP)}\hfill Aug 2017 -- May 2018
+\begin{itemize}
+  \item Debugged code to 3D-print Fermi surfaces via Marching cubes in Fortran90.
+\end{itemize}
+
+% ══════════════ RIGHT COLUMN ═════════════════════════════
+\switchcolumn
+
+\section*{Skills}
+
+\small
+
+\textbf{Languages}\hfill\textit{years}\\[2pt]
+\hspace{4pt}C / C++ / C\#\hfill 8\\
+\hspace{4pt}Python\hfill 6\\
+\hspace{4pt}JavaScript / TS\hfill 4\\
+\hspace{4pt}Golang / Rust\hfill 2\\
+\hspace{4pt}Java / Kotlin\hfill 2\\[4pt]
+\textbf{Frameworks}\hfill\textit{years}\\[2pt]
+\hspace{4pt}Azure / .NET\hfill 6\\
+\hspace{4pt}MEAN / MERN\hfill 2\\
+\hspace{4pt}LAMP / Drupal\hfill 2\\[4pt]
+\textbf{Programs}\hfill\textit{years}\\[2pt]
+\hspace{4pt}Unity3D\hfill 8\\
+\hspace{4pt}Docker / K8s\hfill 4\\
+\hspace{4pt}Android Studio\hfill 2
+
+\section*{Projects}
+
+\small
+
+\hspace{4pt}\textbf{Iterate}\\
+\hspace{4pt}\textit{``Code Mobilized''}\\[3pt]
+\hspace{4pt}\textbf{BitNaughts}\\
+\hspace{4pt}\textit{``Code Gamified''}\\[3pt]
+\hspace{4pt}\textbf{MARP}\\
+\hspace{4pt}\textit{``\ldots''}
+
+\section*{Awards}
+
+\small
+
+\hspace{4pt}\textbf{Microsoft Hackathon '20}\\
+\hspace{4pt}\textit{HackADuo Finalist}\\[2pt]
+\hspace{4pt}\textbf{ValleyHacks '19}\\
+\hspace{4pt}\textit{First Place}\\[2pt]
+\hspace{4pt}\textbf{SLOHacks '19}\\
+\hspace{4pt}\textit{Best Google Cloud}\\[2pt]
+\hspace{4pt}\textbf{Mobile App Challenge '18}\\
+\hspace{4pt}\textit{\$2,000 Finalist Prize}\\[2pt]
+\hspace{4pt}\textbf{CitrusHack '18}\\
+\hspace{4pt}\textit{Third Place}\\[2pt]
+\hspace{4pt}\textbf{SDHacks '18}\\
+\hspace{4pt}\textit{Third Place}\\[2pt]
+\hspace{4pt}\textbf{SacHacks '18}\\
+\hspace{4pt}\textit{Second Place}\\[2pt]
+\hspace{4pt}\textbf{HackDavis '18}\\
+\hspace{4pt}\textit{Best Environment}\\[2pt]
+\hspace{4pt}\textbf{HackFresno '18}\\
+\hspace{4pt}\textit{Best Hardware}\\[2pt]
+\hspace{4pt}\textbf{Mobile App Challenge '17}\\
+\hspace{4pt}\textit{\$5,000 Grand Prize}\\[2pt]
+\hspace{4pt}\textbf{HackMerced '17}\\
+\hspace{4pt}\textit{Best Design}
+
+\end{paracol}
+
+\end{document}

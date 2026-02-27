@@ -1,0 +1,221 @@
+%------------------------------------------------------------
+% resume2.tex — Brian Hungerman
+% Compile: pdflatex resume2.tex
+%------------------------------------------------------------
+\documentclass[10pt,letterpaper]{article}
+
+\usepackage[top=0.2in, bottom=0.2in, left=0.38in, right=0.38in]{geometry}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{hyperref}
+\usepackage{paracol}
+\usepackage[T1]{fontenc}
+\usepackage[default]{opensans}
+\usepackage{microtype}
+\usepackage{calc}
+
+% Open Sans is now the default font (has sb/semi-bold weight)
+
+% \sb = semi-bold for proper nouns & acronyms in descriptions
+\newcommand{\sb}[1]{{\fontseries{sb}\selectfont #1}}
+
+\hypersetup{
+  colorlinks=false,
+  pdfborder={0 0 0},
+  pdfauthor={Brian Hungerman},
+  pdftitle={Brian Hungerman -- Resume}
+}
+
+% ── Section headers: black rule ABOVE, then BOLD text ─────
+\titleformat{\section}
+  {\fontsize{10}{12}\selectfont\bfseries}
+  {}
+  {0pt}
+  {\vspace{-2pt}\hrule height 0.5pt\vspace{4pt}\MakeUppercase}
+
+\titlespacing*{\section}{0pt}{8pt}{2pt}
+
+% ── Tight bullet lists ───────────────────────────────────
+\setlist[itemize]{
+  nosep, topsep=0pt, partopsep=0pt, parsep=0pt,
+  itemsep=0pt, left=8pt, label={\textbullet},
+  before=\vspace{-2pt}, after=\vspace{0pt}
+}
+\setlist[itemize,2]{
+  nosep, topsep=0pt, partopsep=0pt, parsep=0pt,
+  itemsep=0pt, left=10pt, label={$\cdot$}
+}
+
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+\setlength{\columnsep}{10pt}
+
+\setlength{\columnseprule}{0.4pt}
+
+% ══════════════════════════════════════════════════════════
+\begin{document}
+
+% ── HEADER ────────────────────────────────────────────────
+\begin{minipage}[t]{0.62\textwidth}
+  \vspace{0pt}
+  {\fontsize{24}{28}\selectfont\bfseries Brian Hungerman}
+\end{minipage}%
+\hfill
+\begin{minipage}[t]{0.34\textwidth}
+  \vspace{0pt}
+  \raggedleft\small
+  https://brianhungerman.com\\
+  brianhungerman@gmail.com\\
+  1 (425) 389-9642
+\end{minipage}
+
+\vspace{1pt}
+
+% ── TWO COLUMNS ──────────────────────────────────────────
+\columnratio{0.77}
+\begin{paracol}{2}
+
+% ══════════════ LEFT COLUMN ══════════════════════════════
+
+\section*{Experience}
+
+\textbf{Senior Software Engineer @ Applied Sciences (Microsoft)} \hfill {\mdseries\small Jan 2025 -- Present}
+\begin{itemize}
+  \item Incubating novel A.I.\ user experiences with collaboration across W+D, MSR \& ID.
+  \item Developing full-stack functional prototypes across web \& mobile platforms.
+\end{itemize}
+\vspace{3pt}
+\textbf{Software Engineer @ A.I.\ Platform (Microsoft)} \hfill {\mdseries\small Jan 2020 -- Jan 2025}
+\begin{itemize}
+  \item Shipped \sb{Online Endpoints} to 50+ regions for \sb{Azure OpenAI}, \sb{Copilot}, \sb{Office} \& 3p.
+  \item Scaled cloud infrastructure to serve trillions of inferences/month w/ 6 9's \sb{SLA}.
+  \item Optimized \sb{Network Address Translation} to reduce \sb{COGS} by \$10 million/year.
+  \item Completed security, privacy \& component governance audits as \sb{Security Champ}.
+  \item Spearheaded livesite process improvements via \sb{TSGs} \& \sb{SOPs} as \sb{DRI Champ}.
+  \item Implemented \sb{Envoy Proxy} build pipeline w/ \sb{Bazel} \& custom \sb{C++} filters, e.g.:
+  \begin{itemize}
+      \item \sb{SHA-256 Key-Based Authentication (KBA)} filter w/ \sb{CORS} preflight support.
+      \item \sb{Azure Active Directory (AAD)} authentication filter w/ \sb{LRU} decision cache.
+      \item \sb{Global Rate Limiting} filter w/ \sb{Go} microservice to pub/sub to \sb{Redis} cache.
+  \end{itemize}
+  \item Set up runners \& telemetry pipelines in \sb{Azure Data Explorer}, \sb{Kusto} \& \sb{SQL}.
+  \item Shipped \sb{PowerBI} \& \sb{Grafana} dashboards to track platform metrics \& logs.
+\end{itemize}
+\vspace{3pt}
+\textbf{Software Engineer Intern @ A.I.\ Platform (Microsoft)} \hfill {\mdseries\small May 2019 -- Aug 2019}
+\begin{itemize}
+  \item Designed \sb{Jupyter} notebook \sb{CI} pipeline w/ \sb{Azure DevOps}, \sb{ML SDK} \& \sb{Functions}.
+\end{itemize}
+\vspace{3pt}
+\textbf{Software Engineer Intern @ Ventana (Roche)} \hfill {\mdseries\small May 2018 -- Dec 2018}
+\begin{itemize}
+  \item Pushed feature-adds \& bug-fixes for \sb{MEAN} stack digital pathology web app.
+  \item Prototyped \sb{OpenSeaDragon}-esque image renderer \& annotator in \sb{Pixi.JS}.
+  \item Modernized \sb{Nagios} server monitoring w/ \sb{Icinga}, \sb{Graphite} \& \sb{Grafana}.
+\end{itemize}
+\vspace{3pt}
+\textbf{Director @ HackMerced IV (MLH)} \hfill {\mdseries\small May 2018 -- May 2019}
+\begin{itemize}
+  \item Hosted non-profit collegiate hackathon for 300 students, fundraising \$20,000!
+\end{itemize}
+\vspace{3pt}
+\textbf{Web Developer @ CITRIS \& Banatao Institute (UCM)} \hfill {\mdseries\small May 2017 -- Dec 2018}
+\begin{itemize}
+  \item Developed \sb{GitOps} content management system (\sb{CMS}) via \sb{jQuery} \& \sb{CSV} files to replace \sb{Drupal} \sb{CMS}, hosting via \sb{GitHub Pages}: https://citris.ucmerced.edu.
+\end{itemize}
+\vspace{3pt}
+\textbf{Instructor @ Summer of Game Design (MVHS)} \hfill {\mdseries\small Jun 2015 -- Jul 2016}
+\begin{itemize}
+  \item Co-founded non-profit game programming summer camp, fundraising \$25,000!
+\end{itemize}
+
+\section*{Research \& Education}
+
+\textbf{Bachelor of Science @ University of California, Merced} \hfill {\mdseries\small Aug 2016 -- Dec 2019}
+\begin{itemize}
+  \item Computer Science \& Engineering, \textit{magna cum laude} (GPA 3.74)
+\end{itemize}
+\vspace{3pt}
+\textbf{Lead Research Assistant @ VICE Lab (UCM)} \hfill {\mdseries\small Aug 2018 -- Dec 2019}
+\begin{itemize}
+  \item Led team to develop heuristic \& \sb{ML} scripts in \sb{Google Earth Engine} to model \& predict California's agricultural fallowing via Earth observation satellite data.
+  \item Onboarded lab to \sb{GitHub} \& wrote open-sourced scripts in \sb{Python}, \sb{C\#} \& \sb{R}.
+  \item Refurbished lab's website, hosting via \sb{GitHub Pages}: https://vicelab.net.
+\end{itemize}
+\vspace{3pt}
+\textbf{Research Assistant @ ANDES Lab (UCM)} \hfill {\mdseries\small Jan 2019 -- May 2019}
+\begin{itemize}
+  \item Visualized \sb{InfluxDB} data for \sb{HVAC} predictive control system in \sb{Python}, \sb{Grafana}.
+\end{itemize}
+\vspace{3pt}
+\textbf{Research Assistant @ SAIL + MACES (UCM \& NASA MUREP)} \hfill {\mdseries\small Aug 2017 -- May 2018}
+\begin{itemize}
+  \item Debugged code to 3D-print \sb{Fermi} surfaces via \sb{Marching cubes} in \sb{Fortran90}.
+\end{itemize}
+
+% ══════════════ RIGHT COLUMN ═════════════════════════════
+\switchcolumn
+
+\section*{Skills}
+
+\scriptsize
+\begin{tabular*}{\linewidth}{@{}l@{\extracolsep{\fill}}r@{}}
+\textbf{Languages} & \textit{years} \\[1pt]
+C / C++ / C\#       & 8 \\
+Python              & 6 \\
+JavaScript / TS     & 4 \\
+Golang / Rust       & 2 \\
+Java / Kotlin       & 2 \\[4pt]
+\textbf{Frameworks} & \textit{years} \\[1pt]
+Azure / .NET        & 6 \\
+MEAN / MERN         & 2 \\
+LAMP / Drupal       & 2 \\[4pt]
+\textbf{Programs}   & \textit{years} \\[1pt]
+Unity3D             & 8 \\
+Docker / K8s        & 4 \\
+Android Studio      & 2 \\
+\end{tabular*}
+\normalsize
+
+\section*{Projects}
+
+\scriptsize
+\textbf{Iterate}\\
+\textit{``Code Mobilized''}\\[2pt]
+\textbf{BitNaughts}\\
+\textit{``Code Gamified''}\\[2pt]
+\textbf{MARP}\\
+\textit{``\ldots''}
+\normalsize
+
+\section*{Awards}
+
+\scriptsize
+\textbf{Microsoft Hackathon '20}\\
+\textit{HackADuo Finalist}\\[1pt]
+\textbf{ValleyHacks '19}\\
+\textit{First Place}\\[1pt]
+\textbf{SLOHacks '19}\\
+\textit{Best Google Cloud}\\[1pt]
+\textbf{Mobile App Challenge '18}\\
+\textit{\$2,000 Finalist Prize}\\[1pt]
+\textbf{CitrusHack '18}\\
+\textit{Third Place}\\[1pt]
+\textbf{SDHacks '18}\\
+\textit{Third Place}\\[1pt]
+\textbf{SacHacks '18}\\
+\textit{Second Place}\\[1pt]
+\textbf{HackDavis '18}\\
+\textit{Best Environment}\\[1pt]
+\textbf{HackFresno '18}\\
+\textit{Best Hardware}\\[1pt]
+\textbf{Mobile App Challenge '17}\\
+\textit{\$5,000 Grand Prize}\\[1pt]
+\textbf{HackMerced '17}\\
+\textit{Best Design}
+\normalsize
+
+\end{paracol}
+
+\end{document}

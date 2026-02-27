@@ -1,16 +1,63 @@
 // ═══════════════════════════════════════════════════════════════
-//  CSV HELPER  —  shared global used by data.js & modals.js
+//  JSON DATA LOADER — replaces CSV + PapaParse
+//
+//  Loads PORTFOLIO.json, populates modalState for modals.js,
+//  builds VIZ_DOMAIN_MAP & VIZ_SOURCE_MAP for viz.js consumers,
+//  and renders entry-card grids.
 // ═══════════════════════════════════════════════════════════════
+
+// ── CSV helper — kept only for on-demand MTG deck card lists ──
 function fetchCSV(url) {
   return fetch(url).then(r => {
     if (!r.ok) throw new Error(`HTTP ${r.status} for ${url}`);
     return r.text();
-  }).then(text =>
-    Papa.parse(text, { header: true, skipEmptyLines: true }).data
-  ).catch(err => {
+  }).then(text => {
+    // Lightweight CSV parser (header row + data rows) — replaces PapaParse
+    const lines = [];
+    let cur = "", inQuote = false;
+    for (let i = 0; i < text.length; i++) {
+      const ch = text[i];
+      if (ch === '"') { inQuote = !inQuote; cur += ch; }
+      else if (ch === '\n' && !inQuote) { lines.push(cur); cur = ""; }
+      else if (ch === '\r' && !inQuote) { /* skip */ }
+      else { cur += ch; }
+    }
+    if (cur.trim()) lines.push(cur);
+    if (lines.length < 2) return [];
+    // Parse header
+    const headers = _splitCSVRow(lines[0]);
+    const result = [];
+    for (let r = 1; r < lines.length; r++) {
+      if (!lines[r].trim()) continue;
+      const vals = _splitCSVRow(lines[r]);
+      const obj = {};
+      headers.forEach((h, i) => { obj[h] = (vals[i] || "").trim(); });
+      result.push(obj);
+    }
+    return result;
+  }).catch(err => {
     console.error("[fetchCSV]", err);
     return [];
   });
+}
+
+/** Split a single CSV row respecting quoted fields */
+function _splitCSVRow(line) {
+  const fields = [];
+  let cur = "", inQuote = false;
+  for (let i = 0; i < line.length; i++) {
+    const ch = line[i];
+    if (ch === '"') {
+      if (inQuote && line[i + 1] === '"') { cur += '"'; i++; }
+      else { inQuote = !inQuote; }
+    } else if (ch === ',' && !inQuote) {
+      fields.push(cur); cur = "";
+    } else {
+      cur += ch;
+    }
+  }
+  fields.push(cur);
+  return fields;
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -19,7 +66,7 @@ function fetchCSV(url) {
 const modalState = { work: null, education: null, projects: null, hackathons: null, games: null, marp: null, bitnaughts: null, mtg: null };
 
 // ═══════════════════════════════════════════════════════════════
-//  CSV DATA LOADING
+//  ENTRY CARD BUILDER
 // ═══════════════════════════════════════════════════════════════
 function buildEntryCard(item, dataset, opts) {
   const hasGithub = item.GITHUB && item.GITHUB.trim() && item.GITHUB.trim() !== " ";
@@ -60,43 +107,87 @@ function buildEntryCard(item, dataset, opts) {
   return card;
 }
 
-// ── Section data loaders ─────────────────────────────────────
-const sectionConfigs = [
-  { csv: "csv/marp.csv",       dataset: "marp",       gridId: "marp-grid",       imgExt: ".png", modalImgExt: ".png" },
-  { csv: "csv/bitnaughts.csv", dataset: "bitnaughts", gridId: "bitnaughts-grid", imgExt: ".png", modalImgExt: ".png" },
-  { csv: "csv/work.csv",       dataset: "work",       gridId: "work-grid",       imgExt: ".png", modalImgExt: ".png" },
-  { csv: "csv/education.csv",  dataset: "education",  gridId: "education-grid",  imgExt: ".png", modalImgExt: ".png" },
-  { csv: "csv/projects.csv",   dataset: "projects",   gridId: "projects-grid",   imgExt: ".png", modalImgExt: ".png" },
-  { csv: "csv/hackathons.csv", dataset: "hackathons", gridId: "hackathons-grid", imgExt: ".png", modalImgExt: ".png" },
-  { csv: "csv/games.csv",      dataset: "games",      gridId: "games-grid",      imgExt: ".png", modalImgExt: ".png" },
-];
+// ═══════════════════════════════════════════════════════════════
+//  JSON DATA LOADING  —  single fetch replaces 8 CSV fetches
+// ═══════════════════════════════════════════════════════════════
 
-sectionConfigs.forEach(({ csv, dataset, gridId, imgExt, modalImgExt }) => {
-  fetchCSV(csv + "?v=" + Date.now()).then(d => {
-    if (!d.length) {
-      const g = document.getElementById(gridId);
-      if (g) g.innerHTML = '<p style="color:rgba(255,255,255,0.5);font-style:italic;padding:16px;">Failed to load data. Please refresh.</p>';
+// Grid configs — maps section id to its DOM grid element
+const _gridConfigs = {
+  marp:       { gridId: "marp-grid",       imgExt: ".png", modalImgExt: ".png" },
+  bitnaughts: { gridId: "bitnaughts-grid", imgExt: ".png", modalImgExt: ".png" },
+  work:       { gridId: "work-grid",       imgExt: ".png", modalImgExt: ".png" },
+  education:  { gridId: "education-grid",  imgExt: ".png", modalImgExt: ".png" },
+  projects:   { gridId: "projects-grid",   imgExt: ".png", modalImgExt: ".png" },
+  hackathons: { gridId: "hackathons-grid", imgExt: ".png", modalImgExt: ".png" },
+  games:      { gridId: "games-grid",      imgExt: ".png", modalImgExt: ".png" },
+  mtg:        { gridId: "mtg-grid",        imgExt: ".png", modalImgExt: ".png" },
+};
+
+fetch("PORTFOLIO.json?v=" + Date.now()).then(r => {
+  if (!r.ok) throw new Error(`HTTP ${r.status}`);
+  return r.json();
+}).then(data => {
+  // Build VIZ maps from item fields
+  // These globals are consumed by viz.js, timeline.js, skill-tree.js
+  data.sections.forEach(section => {
+    section.items.forEach(item => {
+      if (item.domain)    VIZ_DOMAIN_MAP[item.ID] = item.domain;
+      // source: explicit field, or fall back to section id
+      VIZ_SOURCE_MAP[item.ID] = item.source || section.id;
+      if (item.quadrant)  VIZ_QUADRANT_MAP[item.ID] = item.quadrant;
+      if (item.whisper)   VIZ_WHISPER_MAP[item.ID] = item.whisper;
+      if (item.shortname) VIZ_SHORTNAME_MAP[item.ID] = item.shortname;
+    });
+  });
+
+  // Populate timeline metadata
+  if (data.timeline) {
+    Object.assign(VIZ_TIMELINE.whispers, data.timeline.whispers || {});
+    Object.assign(VIZ_TIMELINE.nameOverrides, data.timeline.nameOverrides || {});
+    Object.assign(VIZ_TIMELINE.titleOverrides, data.timeline.titleOverrides || {});
+  }
+
+  // Populate modalState and render grids
+  data.sections.forEach(section => {
+    const sectionId = section.id;
+    const cfg = _gridConfigs[sectionId];
+    if (!cfg) return;
+
+    modalState[sectionId] = section.items;
+    const g = document.getElementById(cfg.gridId);
+    if (!g) return;
+
+    if (!section.items.length) {
+      g.innerHTML = '<p style="color:rgba(255,255,255,0.5);font-style:italic;padding:16px;">Failed to load data. Please refresh.</p>';
       return;
     }
-    modalState[dataset] = d;
-    const g = document.getElementById(gridId);
-    d.forEach(i => g.appendChild(buildEntryCard(i, dataset, { imgExt, modalImgExt })));
-  });
-});
 
-// ── MTG (special: deck modal override) ───────────────────────
-fetchCSV("csv/mtg.csv?v=" + Date.now()).then(d => {
-  modalState.mtg = d;
-  const g = document.getElementById("mtg-grid");
-  d.forEach(function (i) {
-    const card = buildEntryCard(i, "mtg", { imgExt: ".png", modalImgExt: ".png" });
-    if (i.DECK && i.DECK.trim()) {
-      const newCard = card.cloneNode(true);
-      if (window._revealObserver) window._revealObserver.observe(newCard);
-      newCard.addEventListener("click", function () { openDeckModal(i); });
-      g.appendChild(newCard);
+    // MTG section: deck items get deck modal click override
+    if (sectionId === "mtg") {
+      section.items.forEach(function (i) {
+        const card = buildEntryCard(i, "mtg", cfg);
+        if (i.DECK && i.DECK.trim()) {
+          const newCard = card.cloneNode(true);
+          if (window._revealObserver) window._revealObserver.observe(newCard);
+          newCard.addEventListener("click", function () { openDeckModal(i); });
+          g.appendChild(newCard);
+        } else {
+          g.appendChild(card);
+        }
+      });
     } else {
-      g.appendChild(card);
+      section.items.forEach(i => g.appendChild(buildEntryCard(i, sectionId, cfg)));
+    }
+  });
+
+  // Signal that data is loaded (for consumers that poll modalState)
+  window.dispatchEvent(new Event("portfolioDataReady"));
+}).catch(err => {
+  console.error("[portfolio.json]", err);
+  Object.values(_gridConfigs).forEach(cfg => {
+    const g = document.getElementById(cfg.gridId);
+    if (g && !g.children.length) {
+      g.innerHTML = '<p style="color:rgba(255,255,255,0.5);font-style:italic;padding:16px;">Failed to load data. Please refresh.</p>';
     }
   });
 });
@@ -111,7 +202,7 @@ window.openMarpModal = function() {
   const container = document.getElementById("marp-bom");
   if (!container) return;
   container.innerHTML = '<p style="color:rgba(255,255,255,0.5);font-style:italic;">Loading BOM…</p>';
-  fetch("csv/marp-bom.json?v=" + Date.now()).then(r => {
+  fetch("archive/csv/marp-bom.json?v=" + Date.now()).then(r => {
     if (!r.ok) throw new Error(`HTTP ${r.status}`);
     return r.json();
   }).then(bom => {

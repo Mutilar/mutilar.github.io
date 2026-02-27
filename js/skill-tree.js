@@ -27,72 +27,6 @@
 
   const themeMap = VIZ_SOURCE_MAP;
 
-  /** Map education items to a directional quadrant theme */
-  const eduQuadrantMap = {
-    cse180: "robotics",   // ROS → Robotics
-    cse165: "software",   // OOP → Software
-    cse160: "software",   // Networks → Software
-    cse120: "software",   // Software Engineering → Software
-    cse111: "software",   // SQL/Databases → Software
-    cse100: "software",   // Algorithms/BigO → Software
-    cse031: "robotics",   // Computer Org/MIPS → Robotics
-    cse030: "software",   // Data Structures/C++ → Software
-    cse015: "software",   // Discrete Math/Proofs → Software
-    ropgamedesign: "games",      // Game Design → Games
-    roparchitecture: "robotics", // Architecture/CAD → Robotics
-    apjava: "software",         // AP CS A/Java → Software
-    redtierobotics: "robotics", // FRC 1458 → Robotics
-  };
-
-  /** Map work items to a directional quadrant theme */
-  const workQuadrantMap = {
-    microsoft:        "software",   // SWE → Software
-    ventana:          "software",   // SWE Intern → Software
-    citris:           "software",   // Web Dev → Software
-    hackmerced:       "software",   // Director → Software
-    vicelab:          "software",   // Geospatial RA → Software
-    andeslab:         "software",   // Computational RA → Software
-    maces:            "software",   // NASA MUREP RA → Software
-    learnbeat:        "software",   // STEM Instructor → Software
-    acm:              "software",   // Outreach → Software
-    alamorobotics:    "robotics",   // Lego Mindstorm → Robotics
-    summerofgamedesign: "games",    // Game Design Camp → Games
-    spaceninjas:      "games",      // Teaching boilerplate → Games
-  };
-
-  /** Map project + hackathon items to a directional quadrant theme */
-  const projectsQuadrantMap = {
-    // Projects
-    marp:         "robotics",   // Robot platform → Robotics
-    amaxesd:      "robotics",   // ESD hardware → Robotics
-    "home-iot":   "robotics",   // IoT hardware → Robotics
-    iterate:      "games",      // Mobile code editor/game → Games
-    bitnaughts:   "games",      // Code-gamified project → Games
-    voodoo:       "games",      // Pixel art auto-battler → Games
-    galconq:      "games",      // Procedural space strategy → Games
-    popvuj:       "games",      // God-sim city builder → Games
-    "the-nobles": "games",      // MTG Commander deck → Games
-    "the-demons": "games",      // MTG Commander deck → Games
-    duskrosecodex: "games",     // MTG lore compendium → Games
-    azuremlops:   "software",   // CI/CD pipeline → Software
-    motleymoves:  "software",   // Web app → Software
-    dogpark:      "software",   // Mobile app → Software
-    ozone:        "software",   // React web app → Software
-    breeze:       "software",   // IoT air quality sensing → Software
-    firmi:        "software",   // Physics modeling → Software
-    // Hackathons
-    motorskills:  "robotics",   // IoT ML hardware → Robotics
-    sriracha:     "robotics",   // RC tank robot → Robotics
-    smartank:     "robotics",   // Autonomous robot → Robotics
-    blindsight:   "robotics",   // Haptic wearable → Robotics
-    seerauber:    "games",      // Pirate strategy game → Games
-    graviton:     "games",      // Tower defense game → Games
-    gasleek:      "software",   // ML linear regression → Software
-    chemistry:    "software",   // AR science education → Software
-    gist:         "software",   // AR Unity app → Software
-    digestquest:  "software",   // OCR web app → Software
-  };
-
   /** Quadrant direction vectors (unit) — 3-way 120° triangle */
   const quadrantDir = {
     robotics:  { x: 0,    y: -1    },  // North (up, 270°)
@@ -102,61 +36,8 @@
 
   /** Whisper labels for nodes (compact accomplishments).
    *  Each value is an array — if multiple entries exist,
-   *  they crossfade based on zoom level. */
-  const whisperLabels = {
-    "microsoft":       ["🧠"],
-    "bitnaughts":      ["☄️"],
-    "marp":            ["🤖"],
-    "iterate":         ["🏆"],
-    "ventana":         ["🧬"],
-    "home-iot":        ["📡"],
-    "azuremlops":      ["⚡"],
-    "chemistry":       ["🧪"],
-    "firmi":           ["⚛️"],
-    "hackmerced":      ["🧑‍💻"],
-    "motleymoves":     ["🏃"],
-    "andeslab":        ["🏭"],
-    "breeze":          ["💨"],
-    "dogpark":         ["🥈"],
-    "vicelab":         ["🌾"],
-    "maces":           ["🚀"],
-    "citris":          ["🏙️"],
-    "amaxesd":         ["⚡"],
-    "summerofgamedesign": ["🧑‍🏫"],
-    "alamorobotics":   ["🧑‍🏫"],
-    "acm":             ["🤝"],
-    "learnbeat":       ["🌱"],
-    "redtierobotics":  ["🛠️"],
-    "cse180":          ["🤖"],
-    "cse165":          ["📦"],
-    "cse160":          ["🌐"],
-    "cse120":          ["🛠️"],
-    "cse111":          ["🗃️"],
-    "cse100":          ["📈"],
-    "cse031":          ["⚙️"],
-    "cse030":          ["⚙️"],
-    "cse015":          ["🔢"],
-    "ropgamedesign":   ["⚙️"],
-    "roparchitecture": ["📐"],
-    "apjava":          ["♨️"],
-    "gasleek":         ["🏆"],
-    "sriracha":        ["🥉"],
-    "smartank":        ["🥇"],
-    "spaceninjas":     ["🥷"],
-    "graviton":        ["🌸"],
-    "galconq":         ["🌌"],
-    "seerauber":       ["🥈"],
-    "ozone":           ["🥈"],
-    "blindsight":      ["🥉"],
-    "motorskills":     ["🥇"],
-    "gist":            ["🥇"],
-    "digestquest":     ["🥇"],
-    "voodoo":          ["🎨"],
-    "popvuj":          ["⛪"],
-    "the-nobles":      ["👑"],
-    "the-demons":      ["👹"],
-    "duskrosecodex":   ["📜"],
-  };
+   *  they crossfade based on zoom level.
+   *  Data loaded from VIZ_WHISPER_MAP (populated by data.js from portfolio.json). */
 
   function getTheme(item) { return themeMap[item.ID] || "software"; }
 
@@ -227,7 +108,6 @@
   let _nodes = [];       // { el, theme, quadrant, item, category, absMonth, dist }
   let _hoveredNode = null; // currently hovered node (for whisper on hover)
   let _threads = [];     // { theme, quadrant, segments[], nodes[] } — theme×quadrant thread lines
-  let _staticPositions = true; // when true, nodes keep original positions on filter
   let _transform = { x: 0, y: 0, scale: 1 };
   let _graphWorld = null; // the transform container
   let _edgeSVG = null;    // the SVG for edges
@@ -263,19 +143,12 @@
   const quadrantFilters = ["robotics", "games", "software"];
   const overlayFilters  = ["education", "work", "projects"];
 
-  /* ── Layout toggle (Static / Dynamic) ─────────────────────── */
-  const layoutToggleBtn = document.getElementById("kgLayoutToggle");
-  if (layoutToggleBtn) {
-    layoutToggleBtn.addEventListener("click", function () {
-      _staticPositions = !_staticPositions;
-      layoutToggleBtn.classList.toggle("dynamic", !_staticPositions);
-      layoutToggleBtn.textContent = _staticPositions ? "📌 Static" : "🔀 Dynamic";
-      // If switching to dynamic, immediately relayout visible nodes
-      if (!_staticPositions && graphBuilt) {
-        relayoutAndAnimate();
-      }
-    });
-  }
+  /* ── Layout toggle (Static / Dynamic) via shared viz.js utility ── */
+  const _layoutToggle = createLayoutToggle({
+    btn: "kgLayoutToggle",
+    onDynamic: function () { if (graphBuilt) relayoutAndAnimate(); },
+    startStatic: true,
+  });
 
   const _filterSys = createFilterSystem({
     allThemes: allThemes,
@@ -370,7 +243,7 @@
     });
 
     // Re-layout visible nodes and animate them into new positions
-    if (!_staticPositions) {
+    if (!_layoutToggle.isStatic()) {
       relayoutAndAnimate();
     }
     updateProximityGlow();
@@ -748,15 +621,11 @@
         // Duration in months (minimum 3 for point-events like hackathons)
         const duration = Math.max(3, (endMo || startMo) - startMo);
 
-        // Determine quadrant: education & work items use their mapped quadrant
-        let quadrant = theme;
-        if (theme === "education") {
-          quadrant = eduQuadrantMap[item.ID] || "software";
-        } else if (theme === "work") {
-          quadrant = workQuadrantMap[item.ID] || "software";
-        } else if (theme === "projects") {
-          quadrant = projectsQuadrantMap[item.ID] || "software";
-        }
+        // Determine quadrant: use VIZ_QUADRANT_MAP (populated from JSON),
+        // falling back to domain → quadrant natural mapping, then "software"
+        let quadrant = VIZ_QUADRANT_MAP[item.ID]
+          || (theme === "robotics" || theme === "games" || theme === "software" ? theme : null)
+          || "software";
 
         items.push({ item, category: cat, theme, quadrant, absMonth: startMo, endMonth: endMo || startMo, duration });
       });
@@ -934,7 +803,8 @@
         _graphWorld.appendChild(el);
 
         // Whisper crossfade state
-        const wList = whisperLabels[it.item.ID] || [];
+        const wEmoji = VIZ_WHISPER_MAP[it.item.ID];
+        const wList = wEmoji ? [wEmoji] : [];
         const nameLayer = el.querySelector(".kg-name-layer:first-child");
         const whisperLayers = Array.from(el.querySelectorAll(".kg-name-whisper"));
 
@@ -1251,44 +1121,6 @@
   function _graphBreakText(text) {
     if (!text) return "";
 
-    // ── Explicit overrides: plain-text name → exact circle display ──
-    // When auto-breaking produces too many lines, add the name here.
-    const nameBreaks = {
-      "Red Tie Robotics":             "Red Tie<br>Robotics",
-      "Summer of Game Design":        "Summer of<br>Game Design",
-      "CITRIS & Banatao Institute":   "CITRIS",
-      "VICE Lab":                     "VICE<br>Lab",
-      "ANDES Lab":                    "ANDES<br>Lab",
-      "Alamo Robotics":               "Alamo<br>Robotics",
-      "Dog Park":                     "Dog<br>Park",
-      "IoT Panel":                    "IoT<br>Panel",
-      "AMAX ESD":                     "AMAX<br>ESD",
-      "CSE 180":                     "CSE<br>180",
-      "CSE 165":                     "CSE<br>165",
-      "CSE 160":                     "CSE<br>160",
-      "CSE 120":                     "CSE<br>120",
-      "CSE 111":                     "CSE<br>111",
-      "CSE 100":                     "CSE<br>100",
-      "CSE 31":                      "CSE<br>31",
-      "CSE 30":                      "CSE<br>30",
-      "CSE 15":                      "CSE<br>15",
-      "AP Java":                     "AP<br>Java",
-      "ROP Game Design":             "ROP<br>Game<br>Design",
-      "ROP Architecture":            "ROP<br>Archi-<br>tecture",
-      "SRIRACHA":                   "SRIR-<br>ACHA",
-      "ChemisTRY":                   "Chem-<br>isTRY",
-      "VooDoo":                       "Voo-<br>Doo",
-      "SeeRäuber":                    "Sea-<br>Räuber",
-      "AzureMLOps":                   "Azure<br>MLOps",
-      "BitNaughts":                   "BitNaughts",
-      "GISt":                         "GISt",
-      "SpaceNinjas":                  "Space<br>Ninjas",
-      "SMARTank":                     "SMART<br>Tank",
-      "The Nobles":                   "Nobles",
-      "The Demons":                   "Demons",
-    };
-    if (nameBreaks[text]) return nameBreaks[text];
-
     // Step 1: Insert soft markers at camelCase boundaries (skip short ≤4 words)
     //   lowerUpper:  "LearnBEAT" → "Learn|BEAT"
     //   upperUpperLower: "ChemisTRY" → stays (≤8, no match)
@@ -1349,11 +1181,13 @@
     const textPart = emojiMatch ? rawName.slice(emojiMatch[0].length) : rawName;
 
     // Break text into tokens for circle display
-    const graphName = _graphBreakText(textPart);
+    // Check JSON shortname override first (keyed by item ID)
+    const graphName = VIZ_SHORTNAME_MAP[item.ID] || _graphBreakText(textPart);
     const cleanName = emojiPrefix
       ? emojiPrefix + "<br>" + graphName
       : graphName;
-    const whispers = whisperLabels[item.ID] || [];
+    const wEmoji = VIZ_WHISPER_MAP[item.ID];
+    const whispers = wEmoji ? [wEmoji] : [];
 
     el.innerHTML =
       `<div class="kg-node-accent" style="background:radial-gradient(circle at 30% 30%, rgba(${cfg.color},0.15) 0%, transparent 70%);"></div>` +

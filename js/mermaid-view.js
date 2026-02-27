@@ -976,22 +976,57 @@
       return ast.classAssigns[id] || (ast.nodes[id] && ast.nodes[id].classes && ast.nodes[id].classes[0]) || inferSubgraphClass(id, ast) || "";
     }
 
+    // For subgraph endpoints with mixed children (inferSubgraphClass returns ""),
+    // check whether ANY descendant class overlaps with `keep`.
+    const _sgClassCache = new Map();
+    function subgraphClasses(sgId) {
+      if (_sgClassCache.has(sgId)) return _sgClassCache.get(sgId);
+      const sgMap = new Map();
+      ast.subgraphs.forEach(sg => sgMap.set(sg.id, sg));
+      const classes = new Set();
+      const visited = new Set();
+      function walk(s) {
+        if (!s || visited.has(s.id)) return;
+        visited.add(s.id);
+        (s.children || []).forEach(id => {
+          const cls = ast.classAssigns[id] || (ast.nodes[id] && ast.nodes[id].classes && ast.nodes[id].classes[0]) || "";
+          if (cls && cls !== "footer") classes.add(cls);
+        });
+        (s.childSubgraphs || []).forEach(cid => { const ch = sgMap.get(cid); if (ch) walk(ch); });
+      }
+      walk(sgMap.get(sgId));
+      _sgClassCache.set(sgId, classes);
+      return classes;
+    }
+
+    // Check if an edge endpoint is "ok" for the current filter
+    function endpointOk(id) {
+      const cls = nodeCls(id);
+      if (cls) return keep.has(cls);
+      // Unclassed: either a truly unclassed node (always ok) or a mixed subgraph.
+      // For mixed subgraphs, require at least one child class to be in `keep`.
+      const sgClasses = subgraphClasses(id);
+      if (sgClasses.size === 0) return true;  // truly unclassed node
+      for (const c of sgClasses) { if (keep.has(c)) return true; }
+      return false;
+    }
+
     // 1. Determine which edges survive based on their color-category
     const survivingEdges = [];
     const neededNodeIds = new Set();
 
     ast.edges.forEach(edge => {
-      const fromCls = nodeCls(edge.from);
-      const toCls   = nodeCls(edge.to);
-      // Keep edge only if BOTH endpoints' classes are active (or unclassed).
-      // This prevents cross-category edges from prematurely revealing nodes
-      // that belong to a not-yet-active category (e.g. motors during driver step).
-      const fromOk = !fromCls || keep.has(fromCls);
-      const toOk   = !toCls   || keep.has(toCls);
-      if (fromOk && toOk) {
+      // Keep edge if AT LEAST ONE endpoint's class is active (or unclassed).
+      const fromOk = endpointOk(edge.from);
+      const toOk   = endpointOk(edge.to);
+      if (fromOk || toOk) {
         survivingEdges.push(edge);
-        neededNodeIds.add(edge.from);
-        neededNodeIds.add(edge.to);
+        // Only pull in endpoints that actually belong to the active filter.
+        // Foreign endpoints are NOT added — edges to them will be pruned in
+        // step 7 if the target node/subgraph doesn't survive, which cleanly
+        // clips arrows at the diagram boundary.
+        if (fromOk) neededNodeIds.add(edge.from);
+        if (toOk)   neededNodeIds.add(edge.to);
       }
     });
 
@@ -1016,6 +1051,9 @@
         id: sg.id, label: sg.label, direction: sg.direction, parent: sg.parent,
         children: (sg.children || []).filter(id => !!nodes[id]),
         childSubgraphs: (sg.childSubgraphs || []).slice(),
+        orderedChildren: (sg.orderedChildren || []).filter(item =>
+          item.type === 'node' ? !!nodes[item.id] : true
+        ),
       };
     }
     const subgraphs = ast.subgraphs.map(cloneSG);
@@ -1040,9 +1078,16 @@
       });
     });
     const liveSubgraphs = subgraphs.filter(sg => hasContent(sg));
+    const liveSgIds = new Set(liveSubgraphs.map(sg => sg.id));
+
+    // Prune orderedChildren of collapsed subgraph references
+    liveSubgraphs.forEach(sg => {
+      sg.orderedChildren = (sg.orderedChildren || []).filter(item =>
+        item.type === 'node' || liveSgIds.has(item.id)
+      );
+    });
 
     // 7. Final edge filter: both endpoints must be a node or a surviving subgraph
-    const liveSgIds = new Set(liveSubgraphs.map(sg => sg.id));
     const edges = survivingEdges.filter(e => (nodes[e.from] || liveSgIds.has(e.from)) && (nodes[e.to] || liveSgIds.has(e.to)));
 
     return { title: ast.title, nodes, edges, subgraphs: liveSubgraphs, classDefs: ast.classDefs, classAssigns: ast.classAssigns };
@@ -1159,7 +1204,7 @@
 
     const state = { built: false, x: 0, y: 0, scale: 1, world: null, _update: null };
     let _svgLayer = null, _dims = null;
-    let _ast = null, _legend = null;
+    let _ast = null, _legend = null, _colors = null;
     let _visibleBounds = null;  // { x, y, w, h } of visible content
     let _fitHandle = null;      // current animateCameraFit handle
 
@@ -1191,6 +1236,20 @@
 
     function rebuild(activeClasses) {
       if (!_ast || !_svgLayer) return;
+
+      var isDynamic = _layoutToggle && !_layoutToggle.isStatic();
+
+      // ── DYNAMIC MODE: full re-render with filtered AST ─────
+      if (isDynamic) {
+        var dynAST = filterAST(_ast, activeClasses);
+        _dims = buildDiagram(dynAST, _colors, state.world, _svgLayer, _legend.legendIds, function() { return _exploring; });
+        state._dims = _dims;
+        _visibleBounds = null; // fit full re-rendered diagram
+        requestAnimationFrame(function () { fitView(true); });
+        return;
+      }
+
+      // ── STATIC MODE: toggle visibility classes ─────────────
 
       // Snapshot currently visible elements BEFORE toggling
       const prevVisibleNodes = new Set();
@@ -1230,6 +1289,61 @@
         el.classList.toggle("mm-hidden", !liveEdgeKeys.has(el.dataset.mmFrom + "->" + el.dataset.mmTo));
       });
 
+      // ── Dim neighbour nodes/edges (visible but not primary) ─
+      const allActive = activeClasses.size >= Object.keys(_ast.classDefs).length;
+      // Build set of primary node IDs: nodes whose class is in the active set
+      const primaryNodeIds = new Set();
+      if (!allActive) {
+        Object.keys(filtered.nodes).forEach(id => {
+          const cls = _ast.classAssigns[id] || (_ast.nodes[id] && _ast.nodes[id].classes && _ast.nodes[id].classes[0]) || "";
+          if (!cls || cls === "footer" || activeClasses.has(cls)) primaryNodeIds.add(id);
+        });
+      }
+      // Also identify primary subgraph IDs (subgraphs whose inferred class is in keep)
+      const primarySgIds = new Set();
+      if (!allActive) {
+        const sgMap = new Map(); _ast.subgraphs.forEach(s => sgMap.set(s.id, s));
+        filtered.subgraphs.forEach(sg => {
+          const cls = inferSubgraphClass(sg.id, _ast);
+          if (cls && activeClasses.has(cls)) {
+            // Single-class subgraph with that class active → primary
+            primarySgIds.add(sg.id);
+          } else if (!cls) {
+            // Mixed or classless subgraph: primary if ANY descendant class is active
+            const s = sgMap.get(sg.id);
+            if (s) {
+              let hasActive = false;
+              (function walkSg(sub) {
+                (sub.children || []).forEach(cid => {
+                  const c = _ast.classAssigns[cid] || (_ast.nodes[cid] && _ast.nodes[cid].classes && _ast.nodes[cid].classes[0]) || "";
+                  if (c && activeClasses.has(c)) hasActive = true;
+                });
+                (sub.childSubgraphs || []).forEach(csid => { const ch = sgMap.get(csid); if (ch) walkSg(ch); });
+              })(s);
+              if (hasActive) primarySgIds.add(sg.id);
+            }
+          }
+        });
+      }
+
+      state.world.querySelectorAll(".mm-node[data-mm-id]").forEach(el => {
+        el.classList.toggle("mm-neighbour", !allActive && liveNodes.has(el.dataset.mmId) && !primaryNodeIds.has(el.dataset.mmId));
+      });
+      state.world.querySelectorAll(".mm-subgraph[data-mm-sg]").forEach(el => {
+        el.classList.toggle("mm-neighbour", !allActive && liveSgs.has(el.dataset.mmSg) && !primarySgIds.has(el.dataset.mmSg));
+      });
+      // Edges: dim if NEITHER endpoint is a primary node/subgraph
+      _svgLayer.querySelectorAll(".mm-edge[data-mm-from]").forEach(el => {
+        const fromPrimary = primaryNodeIds.has(el.dataset.mmFrom) || primarySgIds.has(el.dataset.mmFrom);
+        const toPrimary   = primaryNodeIds.has(el.dataset.mmTo)   || primarySgIds.has(el.dataset.mmTo);
+        el.classList.toggle("mm-neighbour", !allActive && !el.classList.contains("mm-hidden") && !fromPrimary && !toPrimary);
+      });
+      _svgLayer.querySelectorAll(".mm-edge-label-group[data-mm-from]").forEach(el => {
+        const fromPrimary = primaryNodeIds.has(el.dataset.mmFrom) || primarySgIds.has(el.dataset.mmFrom);
+        const toPrimary   = primaryNodeIds.has(el.dataset.mmTo)   || primarySgIds.has(el.dataset.mmTo);
+        el.classList.toggle("mm-neighbour", !allActive && !el.classList.contains("mm-hidden") && !fromPrimary && !toPrimary);
+      });
+
       // ── Glow newly-revealed elements during explore tour ───
       if (_exploring) {
         // Clear any prior explore highlights
@@ -1237,26 +1351,26 @@
         _svgLayer.querySelectorAll(".mm-explore-glow").forEach(el => el.classList.remove("mm-explore-glow"));
         state.world.classList.add("mm-explore-hovering");
 
-        // Highlight newly visible nodes
-        state.world.querySelectorAll(".mm-node[data-mm-id]:not(.mm-hidden)").forEach(el => {
+        // Highlight newly visible PRIMARY nodes only (skip neighbours)
+        state.world.querySelectorAll(".mm-node[data-mm-id]:not(.mm-hidden):not(.mm-neighbour)").forEach(el => {
           if (!prevVisibleNodes.has(el.dataset.mmId)) {
             el.classList.add("mm-explore-glow");
           }
         });
-        // Highlight newly visible subgraphs
-        state.world.querySelectorAll(".mm-subgraph[data-mm-sg]:not(.mm-hidden)").forEach(el => {
+        // Highlight newly visible PRIMARY subgraphs only
+        state.world.querySelectorAll(".mm-subgraph[data-mm-sg]:not(.mm-hidden):not(.mm-neighbour)").forEach(el => {
           if (!prevVisibleSgs.has(el.dataset.mmSg)) {
             el.classList.add("mm-explore-glow");
           }
         });
-        // Highlight newly visible edges + labels
-        _svgLayer.querySelectorAll(".mm-edge[data-mm-from]:not(.mm-hidden)").forEach(el => {
+        // Highlight newly visible edges only if at least one endpoint is primary
+        _svgLayer.querySelectorAll(".mm-edge[data-mm-from]:not(.mm-hidden):not(.mm-neighbour)").forEach(el => {
           const key = el.dataset.mmFrom + "->" + el.dataset.mmTo;
           if (!prevVisibleEdges.has(key)) {
             el.classList.add("mm-explore-glow");
           }
         });
-        _svgLayer.querySelectorAll(".mm-edge-label-group[data-mm-from]:not(.mm-hidden)").forEach(el => {
+        _svgLayer.querySelectorAll(".mm-edge-label-group[data-mm-from]:not(.mm-hidden):not(.mm-neighbour)").forEach(el => {
           const key = el.dataset.mmFrom + "->" + el.dataset.mmTo;
           if (!prevVisibleEdges.has(key)) {
             el.classList.add("mm-explore-glow");
@@ -1274,9 +1388,9 @@
 
       // Compute bounding box for camera fit
       // During explore: frame only the glowing (newly revealed) elements
-      // Otherwise: frame all visible elements
+      // Otherwise: frame primary (non-neighbour) visible elements
       let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
-      const glowSuffix = _exploring ? ".mm-explore-glow" : "";
+      const glowSuffix = _exploring ? ".mm-explore-glow" : ":not(.mm-neighbour)";
       const nodeSel = ".mm-node[data-mm-id]:not(.mm-hidden)" + glowSuffix;
       const sgSel   = ".mm-subgraph[data-mm-sg]:not(.mm-hidden)" + glowSuffix;
       function accumBounds(el) {
@@ -1335,7 +1449,7 @@
           if (!m) { console.warn("[mermaid-view] No mermaid block in", cfg.mdFile); return; }
           _ast = parseMermaid(m[1]);
           _legend = extractLegend(_ast);
-          var _colors = colorsFromAST(_ast.classDefs);
+          _colors = colorsFromAST(_ast.classDefs);
           _dims = buildDiagram(_ast, _colors, state.world, _svgLayer, _legend.legendIds, function() { return _exploring; });
           state._dims = _dims;
           state.built = true;
@@ -1343,7 +1457,25 @@
           // Build filter pills from legend
           const pillContainer = document.getElementById(cfg.filterId);
           if (pillContainer && _legend.legendNodes.length) {
-            _filterAPI = buildFilters(pillContainer, _legend.legendNodes, _colors, rebuild, stopExplore);
+            _filterAPI = buildFilters(pillContainer, _legend.legendNodes, _colors, rebuild, function() { stopExplore(false); });
+
+            // Add layout toggle after the filter pills
+            var toggleBtn = document.createElement("button");
+            toggleBtn.className = "kg-layout-toggle";
+            toggleBtn.title = "Static: nodes keep their positions when filtering. Dynamic: nodes reflow into compact positions.";
+            pillContainer.appendChild(toggleBtn);
+            _layoutToggle = createLayoutToggle({
+              btn: toggleBtn,
+              onDynamic: function () { _filterAPI.setAll(); },
+              onStatic: function () {
+                // Rebuild full diagram so all positions are restored
+                _dims = buildDiagram(_ast, _colors, state.world, _svgLayer, _legend.legendIds, function() { return _exploring; });
+                state._dims = _dims;
+                _visibleBounds = null;
+                requestAnimationFrame(function () { fitView(true); });
+              },
+              startStatic: true,
+            });
           }
 
           requestAnimationFrame(() => fitView(false));
@@ -1353,6 +1485,7 @@
 
     // ── Auto-explore tour ────────────────────────────────────
     let _filterAPI = null;
+    let _layoutToggle = null;
     let _exploreTimers = [];
     let _exploring = false;
     let _exploreGlowTimer = null;
@@ -1383,7 +1516,7 @@
       _hintCF.fade(hint, html);
     }
 
-    function stopExplore() {
+    function stopExplore(restoreAll) {
       _exploreGen++;
       _exploreTimers.forEach(t => clearTimeout(t));
       _exploreTimers = [];
@@ -1402,7 +1535,9 @@
       var pills = document.getElementById(cfg.filterId);
       if (pills) pills.querySelectorAll(".mm-filter-glow").forEach(function (el) { el.classList.remove("mm-filter-glow"); });
       resetHintLabel();
-      if (_filterAPI) _filterAPI.setAll();
+      // Only restore all filters when explicitly requested (e.g. tour end, close)
+      // Not when a user manually clicks a filter pill
+      if (restoreAll !== false && _filterAPI) _filterAPI.setAll();
     }
 
     function startExplore() {

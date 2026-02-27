@@ -77,6 +77,25 @@
     onFilter: applyFilter,
   });
 
+  /* ── Layout toggle (Static / Dynamic) via shared viz.js utility ── */
+  const _layoutToggle = createLayoutToggle({
+    btn: "tlLayoutToggle",
+    onDynamic: function () { if (timelineBuilt) applyFilter(); },
+    onStatic: function () {
+      if (!timelineBuilt) return;
+      // Restore full-range layout: unhide all, repack, then re-apply filter visibility
+      _allSlivers.forEach(s => s.el.classList.remove("tl-hidden"));
+      rebuildRuler();
+      repackSlivers();
+      // Now re-hide the filtered-out slivers (positions are locked to full range)
+      _allSlivers.forEach(s => {
+        var hide = activeFilters.size === 0 || !activeFilters.has(s.theme);
+        s.el.classList.toggle("tl-hidden", hide);
+      });
+    },
+    startStatic: false,  // timeline defaults to Dynamic
+  });
+
   /** All layout data is stored here after first build */
   let _allSlivers = [];   // { el, startOff, endOff, theme, category }
   let _container   = null;
@@ -89,7 +108,11 @@
       const hide = activeFilters.size === 0 || !activeFilters.has(s.theme);
       s.el.classList.toggle("tl-hidden", hide);
     });
-    // rebuild ruler + repack to constrain to visible range
+
+    // Static mode: just toggle visibility, keep positions/ruler stable
+    if (_layoutToggle.isStatic()) return;
+
+    // Dynamic mode: rebuild ruler + repack to constrain to visible range
     rebuildRuler();
     repackSlivers();
   }
@@ -191,10 +214,7 @@
           if (titles.length > 1 && titles.length === ranges.length) {
             // 1:1 pairing — e.g. "SWE Intern, SWE, Senior SWE" with 3 date ranges
             // Custom name overrides per title (e.g. Microsoft → team-specific names)
-            const nameOverrides = {
-              microsoft: { "Senior SWE": "🪟 Microsoft (E+D)", "__default": "🪟 Microsoft (AzureML)" }
-            };
-            const nameMap = nameOverrides[item.ID] || {};
+            const nameMap = (VIZ_TIMELINE.nameOverrides || {})[item.ID] || {};
             titles.forEach((t, i) => {
               const nameOverride = nameMap[t] || nameMap["__default"] || null;
               entries.push({ item, category: cat, theme, r: ranges[i], titleOverride: t, nameOverride });
@@ -220,11 +240,8 @@
           }
         }
 
-        // Per-item title overrides for the timeline (keeps CSV data intact)
-        const titleOverrides = { marp: "Home Robot" };
-
-        // Default: one sliver per range
-        const tOver = titleOverrides[item.ID] || null;
+        // Per-item title overrides for the timeline (from portfolio.json)
+        const tOver = (VIZ_TIMELINE.titleOverrides || {})[item.ID] || null;
         ranges.forEach(r => entries.push({ item, category: cat, theme, r, ...(tOver && { titleOverride: tOver }) }));
       });
     });
@@ -753,196 +770,8 @@
   }
 
   /* ── Whisper accomplishments for tall slivers ───────────── */
-  const whisperData = {
-    /* ── Multi-whisper (tall slivers) ── */
-    "microsoft|SWE I &amp; II": [
-      "🌐 8B+<sup>INF/DAY</sup>",
-      "🔒 Champ<sup>SEC</sup>",
-      "🎯 Champ<sup>DRI</sup>",
-      "☁️ 50+<sup>DCs</sup>",
-      "🚀 GA",
-      "📡 Envoy",
-    ],
-    "bitnaughts": [
-      "🎮 Code<sup>Gamified</sup>",
-      "👁️ See<sup>CODE</sup>",
-      "🔄 Try<sup>CODE</sup>",
-      "🎓 Learn<sup>CODE</sup>",
-      "💻 4<sup>Hacks</sup>",
-      "🌍 Play<sup>It</sup>",
-    ],
-    "redtierobotics|Electrician": [
-      "⚡ AMAX",
-    ],
-    "redtierobotics|Electrical Lead": [
-      "🔌 CAD",
-    ],
-    "redtierobotics|Treasurer": [
-      "💰 $18K+<sup>Budget</sup>",
-    ],
-    "voodoo": [
-      "🎨 Pixel<sup>Art</sup>",
-    ],
-    "the-nobles": [
-      "👑 Mardu<sup>Vamps</sup>",
-    ],
-    "the-demons": [
-      "👹 Orzhov<sup>Aristo</sup>",
-    ],
-    "duskrosecodex": [
-      "📖 Codex",
-    ],
-
-    /* ── Single-whisper (coSlumn) ── */
-    "microsoft|Senior SWE": [
-      "🧠 A.I.<sup>U.X.</sup>",
-    ],
-    "microsoft|SWE Intern": [
-      "⚡ MLOps",
-    ],
-    "marp": [
-      "🤖 Robot",
-    ],
-    "iterate": [
-      "🏆 $5,000",
-    ],
-    "ventana": [
-      "🔬 A.I.",
-    ],
-    "home-iot": [
-      "🎛️ Control",
-    ],
-    "azuremlops": [
-      "🏗️ CI/CD",
-    ],
-    "chemistry": [
-      "🧪 A.R.",
-    ],
-    "firmi": [
-      "💎 Fermi",
-    ],
-    "hackmerced": [
-      "🧑‍💻 350+",
-    ],
-    "motleymoves": [
-      "🏃 Running",
-    ],
-    "andeslab": [
-      "🏭 HVAC",
-    ],
-    "breeze": [
-      "💨 Aux<sup>Air</sup>",
-    ],
-    "dogpark": [
-      "🥈 2<sup>ND</sup>",
-    ],
-    "vicelab": [
-      "🛰️ Ag<sup>A.I.</sup>",
-    ],
-    "maces": [
-      "🚀 NASA",
-    ],
-    "citris|Event Organizer": [
-      "🏙️ Cyber<sup>Aware</sup>",
-    ],
-    "citris|Web Developer": [
-      "🏙️ Git<sup>Ops</sup>",
-    ],
-    "amaxesd": [
-      "⚡ ESD",
-    ],
-    "summerofgamedesign|Instructor": [
-      "👨‍🏫 50+<sup>Students</sup>",
-    ],
-    "summerofgamedesign|Founder": [
-      "💰 $25K+<sup>Budget</sup>",
-    ],
-    "alamorobotics": [
-      "🤖 Mindstorm",
-    ],
-    "acm": [
-      "💻 Outreach",
-    ],
-    "learnbeat": [
-      "📚 Learn<sup>STEM</sup>",
-    ],
-
-    /* ── Education single-whispers ── */
-    "cse180": [
-      "🤖 ROS",
-    ],
-    "cse165": [
-      "📦 OOP",
-    ],
-    "cse160": [
-      "🌐 TCP",
-    ],
-    "cse120": [
-      "💻 SWE",
-    ],
-    "cse111": [
-      "🗃️ SQL",
-    ],
-    "cse100": [
-      "📊 BigO",
-    ],
-    "cse031": [
-      "⚙️ MIPS",
-    ],
-    "cse030": [
-      "📚 C<sup>++</sup>",
-    ],
-    "cse015": [
-      "🔢 Proofs",
-    ],
-    "ropgamedesign": [
-      "🕹️ Unity",
-    ],
-    "roparchitecture": [
-      "🏗️ CAD",
-    ],
-    "apjava": [
-      "♨️ Java",
-    ],
-
-    /* ── Hackathon single-whispers ── */
-    "gasleek": [
-      "🥇 1<sup>st</sup>",
-    ],
-    "sriracha": [
-      "🥉 3<sup>rd</sup>",
-    ],
-    "smartank": [
-      "🥇 Hardware",
-    ],
-    "spaceninjas": [
-      "🥷 Platformer",
-    ],
-    "graviton": [
-      "🌸 Tower<sup>Def</sup>",
-    ],
-    "galconq": [
-      "🌌 4<sup>x</sup>",
-    ],
-    "seerauber": [
-      "🥈 2<sup>nd</sup>",
-    ],
-    "ozone": [
-      "🥈 2<sup>nd</sup>",
-    ],
-    "blindsight": [
-      "🥉 3<sup>rd</sup>",
-    ],
-    "motorskills": [
-      "🥇 GCP",
-    ],
-    "gist": [
-      "🥇 Environment",
-    ],
-    "digestquest": [
-      "🥇 Design",
-    ],
-  };
+  // Data loaded from VIZ_TIMELINE.whispers (populated by data.js from portfolio.json)
+  const whisperData = VIZ_TIMELINE.whispers || {};
 
   function getWhisperKey(item, titleOverride) {
     const key1 = titleOverride ? `${item.ID}|${titleOverride}` : item.ID;
