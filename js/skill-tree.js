@@ -1563,7 +1563,7 @@
     if (hint) hint.classList.add("exploring");
 
     // Step timing
-    var STEP_DELAY = 4000;    // ms between steps
+    var STEP_DELAY = 5000;    // ms between steps (2s titles + 1s crossfade + 2s whispers)
     var RELAYOUT_SETTLE = 700; // ms for relayout spring animation to settle
     var cumulative = 0;
 
@@ -1599,7 +1599,7 @@
         else if (phaseStep === 1) activeFilters.add("work");
         else activeFilters.add("projects");
 
-        _tourShowNames = false;
+        _tourShowNames = true;
         _filterSys.syncUI();
         applyFilter();
 
@@ -1612,12 +1612,12 @@
           fitVisibleNodes(true);
         }, RELAYOUT_SETTLE));
 
-        // At 1.75s: crossfade from whisper back to title (keep glow)
+        // At 2s: crossfade from titles to whispers (1s transition, then 2s whisper display)
         _tourTimers.push(setTimeout(function () {
           if (!_touring || gen !== _tourGen) return;
-          _tourShowNames = true;
+          _tourShowNames = false;
           updateProximityGlow();
-        }, 1750));
+        }, 2000));
 
       }, delay));
     });
