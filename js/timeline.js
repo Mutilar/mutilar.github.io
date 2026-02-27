@@ -66,8 +66,8 @@
 
   // ── Filter buttons (via viz.js shared filter system) ────────
   const allThemes = ["robotics", "games", "software", "research", "education"];
-  const allBtn = timelineModal.querySelector('.timeline-filter[data-filter="all"]');
-  const themeBtns = timelineModal.querySelectorAll('.timeline-filter:not([data-filter="all"])');
+  const allBtn = timelineModal.querySelector('.viz-filter[data-filter="all"]');
+  const themeBtns = timelineModal.querySelectorAll('.viz-filter:not([data-filter="all"])');
 
   const _filterSys = createFilterSystem({
     allThemes: allThemes,
@@ -549,7 +549,7 @@
 
     card.addEventListener("pointerdown", function (e) {
       // Ignore if target is a filter button, close button, or scroll hint
-      if (e.target.closest(".timeline-filter, .modal-close, .tl-scroll-hint")) return;
+      if (e.target.closest(".viz-filter, .modal-close, .tl-scroll-hint")) return;
       // Only primary button
       if (e.button !== 0) return;
       stopMomentum();

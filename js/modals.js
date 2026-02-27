@@ -186,6 +186,7 @@ const _modalOpeners = {
   archModal: function() { window.openArchModal(); },
   timelineModal: function() { window.openTimelineModal && window.openTimelineModal(); },
   knowledgeModal: function() { window.openKnowledgeModal && window.openKnowledgeModal(); },
+  mtgTreeModal: function() { window.openMtgTreeModal && window.openMtgTreeModal(); },
 };
 
 document.addEventListener("click", function(e) {

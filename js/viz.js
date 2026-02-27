@@ -245,12 +245,13 @@ function initPanZoom(viewport, world, transform, opts) {
 //    // Returns { syncUI }
 // ═══════════════════════════════════════════════════════════════
 function createFilterSystem(cfg) {
-  var allThemes     = cfg.allThemes;
-  var activeFilters = cfg.activeFilters;
-  var allBtn        = cfg.allBtn;
-  var themeBtns     = cfg.themeBtns;
-  var onFilter      = cfg.onFilter || function () {};
-  var soloLogic     = cfg.soloLogic || null;
+  var allThemes      = cfg.allThemes;
+  var activeFilters  = cfg.activeFilters;
+  var allBtn         = cfg.allBtn;
+  var themeBtns      = cfg.themeBtns;
+  var onFilter       = cfg.onFilter || function () {};
+  var soloLogic      = cfg.soloLogic || null;
+  var onManualFilter = cfg.onManualFilter || null;
 
   function syncUI() {
     var allActive = activeFilters.size === allThemes.length;
@@ -269,6 +270,29 @@ function createFilterSystem(cfg) {
     });
   }
 
+  // ── Programmatic API ────────────────────────────────────────
+  function setOnly(cls) {
+    activeFilters.clear();
+    activeFilters.add(cls);
+    syncUI();
+    onFilter();
+  }
+  function addFilter(cls) {
+    activeFilters.add(cls);
+    syncUI();
+    onFilter();
+  }
+  function setAll() {
+    allThemes.forEach(function (t) { activeFilters.add(t); });
+    syncUI();
+    onFilter();
+  }
+  function setNone() {
+    activeFilters.clear();
+    syncUI();
+    onFilter();
+  }
+
   // Initial render
   syncUI();
   window.addEventListener("theme-changed", function () { syncUI(); });
@@ -276,6 +300,7 @@ function createFilterSystem(cfg) {
   // All button
   if (allBtn) {
     allBtn.addEventListener("click", function () {
+      if (onManualFilter) onManualFilter();
       if (activeFilters.size === allThemes.length) {
         // Already all-active → pulse
         allBtn.classList.remove("filter-pulse");
@@ -284,15 +309,14 @@ function createFilterSystem(cfg) {
         setTimeout(function () { allBtn.classList.remove("filter-pulse"); }, 100);
         return;
       }
-      allThemes.forEach(function (t) { activeFilters.add(t); });
-      syncUI();
-      onFilter();
+      setAll();
     });
   }
 
   // Individual theme buttons
   themeBtns.forEach(function (btn) {
     btn.addEventListener("click", function () {
+      if (onManualFilter) onManualFilter();
       var f = btn.dataset.filter;
       if (soloLogic) {
         soloLogic(f, activeFilters, allThemes);
@@ -314,7 +338,56 @@ function createFilterSystem(cfg) {
     });
   });
 
-  return { syncUI: syncUI };
+  return {
+    syncUI: syncUI,
+    setOnly: setOnly,
+    addFilter: addFilter,
+    setAll: setAll,
+    setNone: setNone,
+    allThemes: allThemes,
+  };
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  EXPLORE HINT — Shared explore/traverse hint button + tour-
+//  stop wiring (pointerdown + wheel on viewport cancel tour).
+//
+//  Usage:
+//    createExploreHint({
+//      viewport,              // DOM element — the .viz-viewport
+//      label,                 // inner HTML, e.g. '<strong>Explore</strong>…'
+//      onStart,               // () => void — called on hint click
+//      isTouring,             // () => bool — returns whether a tour is active
+//      onCancel,              // () => void — called when user cancels tour
+//    });
+// ═══════════════════════════════════════════════════════════════
+function createExploreHint(cfg) {
+  var viewport  = cfg.viewport;
+  if (!viewport) return null;
+
+  var hint = document.createElement("div");
+  hint.className = "viz-explore-hint scroll-hint";
+  hint.innerHTML = cfg.label || '<strong>Explore</strong><span class="scroll-arrow">\uD83D\uDD2D</span>';
+  hint.style.cursor = "pointer";
+  hint.addEventListener("click", function (e) {
+    e.preventDefault();
+    if (cfg.onStart) cfg.onStart();
+  });
+
+  // Stop tour on user pan/zoom interaction
+  viewport.addEventListener("pointerdown", function (e) {
+    if (cfg.isTouring() && !e.target.closest(".viz-explore-hint")) {
+      if (cfg.onCancel) cfg.onCancel();
+    }
+  });
+  viewport.addEventListener("wheel", function () {
+    if (cfg.isTouring()) {
+      if (cfg.onCancel) cfg.onCancel();
+    }
+  }, { passive: true });
+
+  viewport.appendChild(hint);
+  return hint;
 }
 
 // ═══════════════════════════════════════════════════════════════

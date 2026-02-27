@@ -1,0 +1,278 @@
+% resume-one-page-bible.tex — Brian Hungerman
+% Content from resume2.tex, styled with resume-bible.tex aesthetics
+% Compile with XeLaTeX or LuaLaTeX for custom font support
+% =========================================================
+
+\documentclass[10pt,letterpaper]{article}
+
+% ----- Page Geometry (letter, tight margins for one-page) -----
+\usepackage[top=0.2in, bottom=0.2in, left=0.38in, right=0.38in]{geometry}
+
+% ----- Font Setup (requires XeLaTeX/LuaLaTeX) -----
+\usepackage{fontspec}
+\usepackage{microtype}
+
+% Main body font — Old Standard TT (Google Fonts)
+\setmainfont{Old Standard TT}[
+    UprightFont = *-Regular,
+    BoldFont = *-Bold,
+    ItalicFont = *-Italic,
+    FakeBold = 6
+]
+
+% Title font — Cinzel (Google Fonts)
+\newfontfamily\titlefont{Cinzel}[
+    UprightFont = *-Regular,
+    BoldFont = *-Bold,
+    FakeBold = 8
+]
+
+% Decorative title font — Cinzel Decorative
+\newfontfamily\decorativefont{Cinzel Decorative}[
+    UprightFont = *-Regular,
+    BoldFont = *-Bold,
+    FakeBold = 5
+]
+
+% ----- Packages -----
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{hyperref}
+\usepackage{paracol}
+\usepackage{lettrine}
+\usepackage{GoudyIn}
+\usepackage{amssymb}
+\usepackage{xcolor}
+\usepackage{calc}
+
+% Colors (from resume-bible.tex)
+\definecolor{bloodred}{RGB}{138, 3, 3}
+\definecolor{inkblack}{RGB}{30, 30, 30}
+\color{inkblack}
+
+\hypersetup{
+  colorlinks=false,
+  pdfborder={0 0 0},
+  pdfauthor={Brian Hungerman},
+  pdftitle={Brian Hungerman -- Resume}
+}
+
+% \speech = italicized proper nouns (bible.tex style, replaces \semi)
+\newcommand{\speech}[1]{\textit{#1}}
+
+% Horizontal rule (bible-style divider)
+\newcommand{\divider}{%
+    \begin{center}
+    \rule{0.4\textwidth}{1.5pt}
+    \end{center}
+}
+
+% Drop cap settings — Goudy Initialen decorative font
+\renewcommand{\LettrineFontHook}{\GoudyInfamily}
+\renewcommand{\LettrineTextFont}{\normalfont}
+\setcounter{DefaultLines}{2}
+\renewcommand{\DefaultLoversize}{0.1}
+\renewcommand{\DefaultLraise}{0.1}
+\setlength{\DefaultFindent}{3pt}
+\setlength{\DefaultNindent}{0pt}
+
+% ----- Section headers: bible-style left-justified with dividers -----
+\titleformat{\section}
+  {\titlefont\normalsize\raggedright}
+  {}
+  {0pt}
+  {\vspace{-2pt}\hrule height 0.8pt\vspace{4pt}}
+
+\titlespacing*{\section}{0pt}{6pt}{2pt}
+
+% ----- Tight bullet lists (bible-style cdot) -----
+\setlist[itemize]{
+  nosep, topsep=0pt, partopsep=0pt, parsep=0pt,
+  itemsep=0pt, left=8pt, label={$\cdot$},
+  before=\vspace{-2pt}, after=\vspace{0pt}
+}
+\setlist[itemize,2]{
+  nosep, topsep=0pt, partopsep=0pt, parsep=0pt,
+  itemsep=0pt, left=10pt, label={$\cdot$}
+}
+
+\pagestyle{empty}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+\setlength{\columnsep}{10pt}
+\setlength{\columnseprule}{0.4pt}
+
+% ═══════════════════════════════════════════════════════════════
+\begin{document}
+
+% ── HEADER ────────────────────────────────────────────────────
+\begin{minipage}[t]{0.62\textwidth}
+  \vspace{0pt}
+  {\decorativefont\fontsize{24}{28}\selectfont\bfseries Brian Hungerman}
+\end{minipage}%
+\hfill
+\begin{minipage}[t]{0.34\textwidth}
+  \vspace{4pt}
+  \raggedleft\small
+  https://brianhungerman.com\\
+  brianhungerman@gmail.com\\
+  1 (425) 389-9642
+\end{minipage}
+
+\vspace{1pt}
+
+% ── TWO COLUMNS ──────────────────────────────────────────────
+\columnratio{0.77}
+\begin{paracol}{2}
+
+% ═══════════════ LEFT COLUMN ═══════════════════════════════════
+
+\lettrine[lines=2]{E}{xperience}
+\vspace{-2pt}\hrule height 0.8pt\vspace{4pt}
+
+\lettrine[lines=2]{S}{enior} {\titlefont Software Engineer @ Applied Sciences, Microsoft}\\{\small\textit{January 2025 --- Present}}
+\begin{itemize}
+  \item Incubating novel A.I.\ user experiences with collaboration across W+D, MSR \& ID.
+  \item Developing full-stack functional prototypes across web \& mobile platforms.
+\end{itemize}
+\vspace{3pt}
+\lettrine[lines=2]{S}{oftware} {\titlefont Engineer @ A.I.\ Platform, Microsoft}\\{\small\textit{January 2020 --- January 2025}}
+\begin{itemize}
+  \item Shipped \speech{Online Endpoints} to 50+ regions for \speech{Azure OpenAI}, \speech{Copilot}, \speech{Office} \& 3p.
+  \item Scaled cloud infrastructure to serve trillions of inferences/month w/ 6 9's \speech{SLA}.
+  \item Optimized \speech{Network Address Translation} to reduce \speech{COGS} by \$10 million/year.
+  \item Completed security, privacy \& component governance audits as \speech{Security Champ}.
+  \item Spearheaded livesite process improvements via \speech{TSGs} \& \speech{SOPs} as \speech{DRI Champ}.
+  \item Implemented \speech{Envoy Proxy} build pipeline w/ \speech{Bazel} \& custom \speech{C++} filters, e.g.:
+  \begin{itemize}
+      \item \speech{SHA-256 Key-Based Authentication (KBA)} filter w/ \speech{CORS} preflight support.
+      \item \speech{Azure Active Directory (AAD)} authentication filter w/ \speech{LRU} decision cache.
+      \item \speech{Global Rate Limiting} filter w/ \speech{Go} microservice to pub/sub to \speech{Redis} cache.
+  \end{itemize}
+  \item Set up runners \& telemetry pipelines in \speech{Azure Data Explorer}, \speech{Kusto} \& \speech{SQL}.
+  \item Shipped \speech{PowerBI} \& \speech{Grafana} dashboards to track platform metrics \& logs.
+\end{itemize}
+\vspace{3pt}
+\lettrine[lines=2]{S}{oftware} {\titlefont Engineer Intern @ A.I.\ Platform, Microsoft}\\{\small\textit{May 2019 --- August 2019}}
+\begin{itemize}
+  \item Designed \speech{Jupyter} notebook \speech{CI} pipeline w/ \speech{Azure DevOps}, \speech{ML SDK} \& \speech{Functions}.
+\end{itemize}
+\vspace{3pt}
+\lettrine[lines=2]{S}{oftware} {\titlefont Engineer Intern @ Ventana, Roche}\\{\small\textit{May 2018 --- December 2018}}
+\begin{itemize}
+  \item Pushed feature-adds \& bug-fixes for \speech{MEAN} stack digital pathology web app.
+  \item Prototyped \speech{OpenSeaDragon}-esque image renderer \& annotator in \speech{Pixi.JS}.
+  \item Modernized \speech{Nagios} server monitoring w/ \speech{Icinga}, \speech{Graphite} \& \speech{Grafana}.
+\end{itemize}
+\vspace{3pt}
+\lettrine[lines=2]{D}{irector} {\titlefont @ HackMerced IV, Major League Hacking}\\{\small\textit{May 2018 --- May 2019}}
+\begin{itemize}
+  \item Hosted non-profit collegiate hackathon for 300 students, fundraising \$20,000!
+\end{itemize}
+\vspace{3pt}
+\lettrine[lines=2]{W}{eb} {\titlefont Developer @ CITRIS \& Banatao Institute, UCM}\\{\small\textit{May 2017 --- December 2018}}
+\begin{itemize}
+  \item Developed \speech{GitOps} content management system (\speech{CMS}) via \speech{jQuery} \& \speech{CSV} files to replace \speech{Drupal} \speech{CMS}, hosting via \speech{GitHub Pages}: https://citris.ucmerced.edu.
+\end{itemize}
+\vspace{3pt}
+\lettrine[lines=2]{I}{nstructor} {\titlefont @ Summer of Game Design, MVHS}\\{\small\textit{June 2015 --- July 2016}}
+\begin{itemize}
+  \item Co-founded non-profit game programming summer camp, fundraising \$25,000!
+\end{itemize}
+
+\lettrine[lines=2]{R}{esearch \& Education}
+\vspace{-2pt}\hrule height 0.8pt\vspace{4pt}
+
+\lettrine[lines=2]{B}{achelor} {\titlefont of Science @ University of California, Merced}\\{\small\textit{August 2016 --- December 2019}}
+\begin{itemize}
+  \item Computer Science \& Engineering, \textit{magna cum laude} (GPA 3.74)
+\end{itemize}
+\vspace{3pt}
+\lettrine[lines=2]{L}{ead} {\titlefont Research Assistant @ VICE Lab, UCM}\\{\small\textit{August 2018 --- December 2019}}
+\begin{itemize}
+  \item Led team to develop heuristic \& \speech{ML} scripts in \speech{Google Earth Engine} to model \& predict California's agricultural fallowing via Earth observation satellite data.
+  \item Onboarded lab to \speech{GitHub} \& wrote open-sourced scripts in \speech{Python}, \speech{C\#} \& \speech{R}.
+  \item Refurbished lab's website, hosting via \speech{GitHub Pages}: https://vicelab.net.
+\end{itemize}
+\vspace{3pt}
+\lettrine[lines=2]{R}{esearch} {\titlefont Assistant @ ANDES Lab, UCM}\\{\small\textit{January 2019 --- May 2019}}
+\begin{itemize}
+  \item Visualized \speech{InfluxDB} data for \speech{HVAC} predictive control system in \speech{Python}, \speech{Grafana}.
+\end{itemize}
+\vspace{3pt}
+\lettrine[lines=2]{R}{esearch} {\titlefont Assistant @ SAIL + MACES, UCM \& NASA MUREP}\\{\small\textit{August 2017 --- May 2018}}
+\begin{itemize}
+  \item Debugged code to 3D-print \speech{Fermi} surfaces via \speech{Marching cubes} in \speech{Fortran90}.
+\end{itemize}
+
+% ═══════════════ RIGHT COLUMN ═══════════════════════════════════
+\switchcolumn
+
+\lettrine[lines=2]{S}{kills}
+\vspace{-2pt}\hrule height 0.8pt\vspace{4pt}
+
+{\fontsize{8pt}{10pt}\selectfont
+\lettrine[lines=2]{L}{anguages:\ }
+C / C++ / C\# (8 yrs);
+\speech{Python} (6 yrs);
+JS / TS (4 yrs);
+\speech{Golang} / \speech{Rust} (2 yrs);
+\speech{Java} / \speech{Kotlin} (2 yrs).
+
+\vspace{2pt}
+\lettrine[lines=2]{F}{rame-works:\ }
+\speech{Azure} / .NET (6 yrs);
+\speech{MEAN} / \speech{MERN} (2 yrs);
+\speech{LAMP} / \speech{Drupal} (2 yrs).
+
+\vspace{2pt}
+\lettrine[lines=2]{P}{rograms:\ }
+\speech{Unity3D} (8 yrs);
+\speech{Docker} / K8s (4 yrs);
+\speech{Android Studio} (2 yrs).
+}
+
+\lettrine[lines=2]{P}{rojects}
+\vspace{-2pt}\hrule height 0.8pt\vspace{4pt}
+
+{\fontsize{8pt}{10pt}\selectfont
+\lettrine[lines=2]{I}{terate} --- \textit{``Code Mobilized''}
+
+\vspace{2pt}
+\lettrine[lines=2]{B}{it-Naughts} --- \textit{``Code Gamified''}
+
+\vspace{2pt}
+\lettrine[lines=2]{M}{ARP} --- \textit{``\ldots''}
+}
+
+\lettrine[lines=2]{A}{wards}
+\vspace{-2pt}\hrule height 0.8pt\vspace{4pt}
+
+{\fontsize{8pt}{10pt}\selectfont
+\textbf{Microsoft Hackathon '20}\\
+\textit{HackADuo Finalist}\\[1pt]
+\textbf{ValleyHacks '19}\\
+\textit{First Place}\\[1pt]
+\textbf{SLOHacks '19}\\
+\textit{Best Google Cloud}\\[1pt]
+\textbf{Mobile App Challenge '18}\\
+\textit{\$2,000 Finalist Prize}\\[1pt]
+\textbf{CitrusHack '18}\\
+\textit{Third Place}\\[1pt]
+\textbf{SDHacks '18}\\
+\textit{Third Place}\\[1pt]
+\textbf{SacHacks '18}\\
+\textit{Second Place}\\[1pt]
+\textbf{HackDavis '18}\\
+\textit{Best Environment}\\[1pt]
+\textbf{HackFresno '18}\\
+\textit{Best Hardware}\\[1pt]
+\textbf{Mobile App Challenge '17}\\
+\textit{\$5,000 Grand Prize}\\[1pt]
+\textbf{HackMerced '17}\\
+\textit{Best Design}
+}
+
+\end{paracol}
+
+\end{document}

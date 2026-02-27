@@ -137,8 +137,8 @@
   });
 
   /* ── Filter buttons (via viz.js shared filter system) ─────── */
-  const allBtn = graphModal.querySelector('.kg-filter[data-filter="all"]');
-  const themeBtns = graphModal.querySelectorAll('.kg-filter:not([data-filter="all"])');
+  const allBtn = graphModal.querySelector('.viz-filter[data-filter="all"]');
+  const themeBtns = graphModal.querySelectorAll('.viz-filter:not([data-filter="all"])');
 
   const quadrantFilters = ["robotics", "games", "software"];
   const overlayFilters  = ["education", "work", "projects"];
@@ -453,7 +453,7 @@
   function updateProximityGlow() {
     cancelAnimationFrame(_glowRAF);
     _glowRAF = requestAnimationFrame(() => {
-      const viewport = graphModal.querySelector(".kg-viewport");
+      const viewport = graphModal.querySelector(".viz-viewport");
       if (!viewport || _nodes.length === 0) return;
       const vw = viewport.clientWidth;
       const vh = viewport.clientHeight;
@@ -543,7 +543,7 @@
 
   /** Wire up pointer/wheel/pinch interaction via shared initPanZoom. */
   function _initPanZoom() {
-    const viewport = graphModal.querySelector(".kg-viewport");
+    const viewport = graphModal.querySelector(".viz-viewport");
     if (!viewport) return;
     _pz = initPanZoom(viewport, _graphWorld, _transform, {
       minScale:       _KG_MIN_SCALE,
@@ -552,10 +552,10 @@
       bounceCurve:    "cubic-bezier(0.34, 1.56, 0.64, 1)",
       bounceDuration: 380,
       rubberBandDrag: false,
-      ignoreSelector: ".kg-node, .kg-explore-hint",
+      ignoreSelector: ".kg-node, .viz-explore-hint",
       onUpdate:       () => updateProximityGlow(),
       getBounds:      () => {
-        const vp = graphModal.querySelector(".kg-viewport");
+        const vp = graphModal.querySelector(".viz-viewport");
         if (!vp || _nodes.length === 0) return null;
         const vw = vp.clientWidth;
         const vh = vp.clientHeight;
@@ -645,7 +645,7 @@
     });
 
     // Get DOM containers
-    _graphWorld = graphModal.querySelector(".kg-world");
+    _graphWorld = graphModal.querySelector(".viz-world");
     _edgeSVG = graphModal.querySelector(".kg-edges");
     if (!_graphWorld || !_edgeSVG) return;
 
@@ -1001,7 +1001,7 @@
     });
 
     // ── Center the view (zoomed in) ────────────────────────────
-    const viewport = graphModal.querySelector(".kg-viewport");
+    const viewport = graphModal.querySelector(".viz-viewport");
     if (viewport) {
       requestAnimationFrame(() => {
         const vw = viewport.clientWidth;
@@ -1253,7 +1253,7 @@
     });
 
     // Center the view with animation (zoomed in)
-    const viewport = graphModal.querySelector(".kg-viewport");
+    const viewport = graphModal.querySelector(".viz-viewport");
     if (viewport) {
       requestAnimationFrame(() => {
         const vw = viewport.clientWidth;
@@ -1297,7 +1297,7 @@
   /** Compute bounding box of all visible (non-hidden) nodes, then
    *  smoothly animate the camera to fit them in the viewport. */
   function fitVisibleNodes(animate) {
-    const viewport = graphModal.querySelector(".kg-viewport");
+    const viewport = graphModal.querySelector(".viz-viewport");
     if (!viewport || _nodes.length === 0) return;
     const visible = _nodes.filter(n => !n._hidden);
     if (visible.length === 0) return;
@@ -1364,7 +1364,7 @@
   var _hintCF = createCrossfader();
 
   function setHintLabelKG(label) {
-    var hint = graphModal.querySelector(".kg-explore-hint");
+    var hint = graphModal.querySelector(".viz-explore-hint");
     if (!hint) return;
     var html = '<span class="scroll-arrow">' + label + '</span>';
     _hintCF.fade(hint, html);
@@ -1373,22 +1373,22 @@
   /** Glow the filter pills that match the current tour step's active filters */
   function glowFilterPills() {
     // Remove prior glow from all pills
-    graphModal.querySelectorAll(".kg-filter-glow").forEach(function (el) {
-      el.classList.remove("kg-filter-glow");
+    graphModal.querySelectorAll(".viz-filter-glow").forEach(function (el) {
+      el.classList.remove("viz-filter-glow");
     });
     // Add glow to each active filter's pill
     activeFilters.forEach(function (f) {
-      var pill = graphModal.querySelector('.kg-filter[data-filter="' + f + '"]');
+      var pill = graphModal.querySelector('.viz-filter[data-filter="' + f + '"]');
       if (pill) {
         // Force animation restart by re-adding class on next frame
         void pill.offsetWidth;
-        pill.classList.add("kg-filter-glow");
+        pill.classList.add("viz-filter-glow");
       }
     });
   }
 
   function resetHintLabelKG() {
-    var hint = graphModal.querySelector(".kg-explore-hint");
+    var hint = graphModal.querySelector(".viz-explore-hint");
     if (!hint) return;
     if (_touring) {
       _hintCF.fade(hint, TOUR_DEFAULT, function () { hint.classList.remove("exploring"); });
@@ -1406,7 +1406,7 @@
     _tourShowNames = false;
     if (_cameraHandle) { _cameraHandle.cancel(); _cameraHandle = null; }
     // Remove filter pill glow
-    graphModal.querySelectorAll(".kg-filter-glow").forEach(function (el) { el.classList.remove("kg-filter-glow"); });
+    graphModal.querySelectorAll(".viz-filter-glow").forEach(function (el) { el.classList.remove("viz-filter-glow"); });
     // Restore all filters
     allThemes.forEach(t => activeFilters.add(t));
     _filterSys.syncUI();
@@ -1427,7 +1427,7 @@
     var gen = _tourGen;
     _touring = true;
 
-    var hint = graphModal.querySelector(".kg-explore-hint");
+    var hint = graphModal.querySelector(".viz-explore-hint");
     if (hint) {
       hint.innerHTML = "";
       hint.classList.add("exploring");
@@ -1501,7 +1501,7 @@
       _touring = false;
       _tourShowNames = false;
       // Remove filter pill glow
-      graphModal.querySelectorAll(".kg-filter-glow").forEach(function (el) { el.classList.remove("kg-filter-glow"); });
+      graphModal.querySelectorAll(".viz-filter-glow").forEach(function (el) { el.classList.remove("viz-filter-glow"); });
       // Restore all filters after tour completes
       allThemes.forEach(function (t) { activeFilters.add(t); });
       _filterSys.syncUI();
@@ -1512,29 +1512,18 @@
     }, totalDuration));
   }
 
-  /* ── Create explore hint button (dynamically, matching mermaid-view pattern) ── */
+  /* ── Create explore hint button (via shared viz.js utility) ── */
   function _createExploreHint() {
-    const viewport = graphModal.querySelector(".kg-viewport");
+    const viewport = graphModal.querySelector(".viz-viewport");
     if (!viewport) return;
 
-    const hint = document.createElement("div");
-    hint.className = "kg-explore-hint scroll-hint";
-    hint.innerHTML = TOUR_DEFAULT;
-    hint.style.cursor = "pointer";
-    hint.addEventListener("click", function (e) {
-      e.preventDefault();
-      startTour();
+    createExploreHint({
+      viewport: viewport,
+      label: TOUR_DEFAULT,
+      onStart: startTour,
+      isTouring: function () { return _touring; },
+      onCancel: stopTour,
     });
-
-    // Stop tour on user pan/zoom interaction
-    viewport.addEventListener("pointerdown", function (e) {
-      if (_touring && !e.target.closest(".kg-explore-hint")) stopTour();
-    });
-    viewport.addEventListener("wheel", function () {
-      if (_touring) stopTour();
-    }, { passive: true });
-
-    viewport.appendChild(hint);
   }
 
   // Stop tour on modal close

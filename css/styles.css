@@ -2974,38 +2974,6 @@ html.light-mode .modal-sticky-link:hover {
   border-color: rgba(0, 0, 0, 0.25);
 }
 
-/* ── Timeline (light mode) ────────────────────────────────── */
-html.light-mode .timeline-filter {
-  color: rgba(0, 0, 0, 0.5);
-  background: rgba(240, 240, 245, 0.75);
-  border-color: rgba(0, 0, 0, 0.12);
-}
-
-html.light-mode .timeline-filter:hover {
-  color: #1a1a2e;
-  background: rgba(225, 225, 235, 0.85);
-  border-color: rgba(var(--tc), 0.35);
-  box-shadow: 0 0 10px rgba(var(--tc), 0.15),
-              0 0 25px rgba(var(--tc), 0.06);
-}
-
-html.light-mode .timeline-filter.active {
-  color: rgba(0, 0, 0, 0.8);
-  background: rgba(var(--tc-light, var(--tc)), 0.25);
-  border-color: rgba(var(--tc-light, var(--tc)), 0.45);
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.4),
-              0 0 24px rgba(255, 255, 255, 0.2),
-              0 0 16px rgba(var(--tc-light, var(--tc)), 0.18),
-              0 0 40px rgba(var(--tc-light, var(--tc)), 0.10),
-              0 0 80px rgba(var(--tc-light, var(--tc)), 0.05);
-}
-
-html.light-mode .timeline-filter.active:hover {
-  background: rgba(var(--tc-light, var(--tc)), 0.12);
-  border-color: rgba(var(--tc-light, var(--tc)), 0.2);
-  box-shadow: none;
-}
-
 html.light-mode .tl-ruler-year {
   color: rgba(0, 0, 0, 0.65);
 }
@@ -3287,9 +3255,11 @@ html.light-mode .outline-pill {
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   MERMAID DIAGRAM VIEWER — Interactive architecture flowchart
+   SHARED VISUALIZATION CLASSES — Used by Mermaid, KG & Timeline
    ═══════════════════════════════════════════════════════════════ */
-.mm-modal-card {
+
+/* ── Modal card (pan-zoom modals: mermaid & KG) ────────────── */
+.viz-modal-card {
   max-width: 960px;
   width: 100%;
   height: 90vh;
@@ -3302,22 +3272,8 @@ html.light-mode .outline-pill {
   -webkit-user-select: none;
 }
 
-.mm-modal-card .modal-sticky-bar {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-  gap: 6px;
-  padding: 12px 16px 8px;
-  margin: 0;
-  border-radius: 20px 20px 0 0;
-  z-index: 30;
-}
-
-/* ── Filter pills (matches kg-filter aesthetic) ───────────── */
-.mm-filter-group {
+/* ── Filter group container ───────────────────────────────── */
+.viz-filter-group {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -3327,31 +3283,34 @@ html.light-mode .outline-pill {
   width: 100%;
 }
 
-.mm-filter-row {
+/* Flat variant for timeline (row, not column, no nested rows) */
+.viz-filter-group--flat {
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: auto;
+}
+
+/* ── Filter row (inner row inside group — mermaid & KG) ───── */
+.viz-filter-row {
   display: flex;
   flex-wrap: wrap;
-  justify-content: flex-end;
+  justify-content: center;
   align-items: center;
   gap: 6px;
   width: 100%;
 }
 
-.mm-filter-pills {
-  display: inline-flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 6px;
-}
-
-.mm-filter {
+/* ── Filter pill button ───────────────────────────────────── */
+.viz-filter {
   appearance: none;
   -webkit-appearance: none;
   display: inline-flex;
   align-items: center;
-  gap: 5px;
-  padding: 5px 12px;
+  gap: 6px;
+  padding: 6px 14px;
   border-radius: 14px;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
   font-family: inherit;
   letter-spacing: 0.3px;
@@ -3366,7 +3325,7 @@ html.light-mode .outline-pill {
   white-space: nowrap;
 }
 
-.mm-filter:hover {
+.viz-filter:hover {
   color: #fff;
   background: rgba(50, 50, 65, 0.85);
   border-color: rgba(var(--tc), 0.45);
@@ -3374,22 +3333,57 @@ html.light-mode .outline-pill {
               0 0 30px rgba(var(--tc), 0.10);
 }
 
-.mm-filter.active {
+.viz-filter.active {
   color: #fff;
   background: rgba(var(--tc), 0.14);
   border-color: rgba(var(--tc), 0.55);
   box-shadow: 0 0 12px rgba(0, 0, 0, 0.5),
+              0 0 30px rgba(0, 0, 0, 0.25),
               0 0 20px rgba(var(--tc), 0.25),
-              0 0 50px rgba(var(--tc), 0.12);
+              0 0 50px rgba(var(--tc), 0.12),
+              0 0 100px rgba(var(--tc), 0.06);
 }
 
-.mm-filter.active:hover {
+.viz-filter.active:hover {
   background: rgba(var(--tc), 0.08);
   border-color: rgba(var(--tc), 0.25);
   box-shadow: none;
 }
 
-.mm-filter .mm-dot {
+/* ── Light mode — filter pills ────────────────────────────── */
+html.light-mode .viz-filter {
+  color: rgba(0, 0, 0, 0.5);
+  background: rgba(240, 240, 245, 0.75);
+  border-color: rgba(0, 0, 0, 0.12);
+}
+
+html.light-mode .viz-filter:hover {
+  color: #1a1a2e;
+  background: rgba(225, 225, 235, 0.85);
+  border-color: rgba(var(--tc), 0.35);
+  box-shadow: 0 0 10px rgba(var(--tc), 0.15),
+              0 0 25px rgba(var(--tc), 0.06);
+}
+
+html.light-mode .viz-filter.active {
+  color: rgba(0, 0, 0, 0.8);
+  background: rgba(var(--tc-light, var(--tc)), 0.25);
+  border-color: rgba(var(--tc-light, var(--tc)), 0.45);
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.4),
+              0 0 24px rgba(255, 255, 255, 0.2),
+              0 0 16px rgba(var(--tc-light, var(--tc)), 0.18),
+              0 0 40px rgba(var(--tc-light, var(--tc)), 0.10),
+              0 0 80px rgba(var(--tc-light, var(--tc)), 0.05);
+}
+
+html.light-mode .viz-filter.active:hover {
+  background: rgba(var(--tc-light, var(--tc)), 0.12);
+  border-color: rgba(var(--tc-light, var(--tc)), 0.2);
+  box-shadow: none;
+}
+
+/* ── Dot indicator (color swatch inside filter) ───────────── */
+.viz-dot {
   display: inline-block;
   width: 8px;
   height: 8px;
@@ -3401,62 +3395,43 @@ html.light-mode .outline-pill {
 }
 
 /* Inactive filter: black dot (dark mode) */
-.mm-filter:not(.active) .mm-dot {
+.viz-filter:not(.active) .viz-dot {
   background: rgba(20, 20, 25, 0.9) !important;
   border-color: rgba(255, 255, 255, 0.15);
 }
 
 /* Inactive filter: white dot (light mode) */
-html.light-mode .mm-filter:not(.active) .mm-dot {
+html.light-mode .viz-filter:not(.active) .viz-dot {
   background: rgba(240, 240, 245, 0.9) !important;
   border-color: rgba(0, 0, 0, 0.12);
 }
 
-html.light-mode .mm-filter {
-  color: rgba(0, 0, 0, 0.5);
-  background: rgba(245, 245, 245, 0.8);
-  border-color: rgba(0, 0, 0, 0.12);
-}
-
-html.light-mode .mm-filter:hover {
-  color: rgba(0, 0, 0, 0.8);
-  background: rgba(235, 235, 240, 0.9);
-  border-color: rgba(var(--tc), 0.35);
-}
-
-html.light-mode .mm-filter.active {
-  color: rgba(0, 0, 0, 0.85);
-  background: rgba(var(--tc), 0.12);
-  border-color: rgba(var(--tc), 0.45);
-  box-shadow: 0 0 12px rgba(var(--tc), 0.15);
-}
-
-/* ── Explore tour: active filter pill glow ─────────────────── */
-.mm-filter.mm-filter-glow {
+/* ── Filter pill glow (explore/traverse tour) ─────────────── */
+.viz-filter.viz-filter-glow {
   color: #fff;
   border-color: rgba(var(--tc), 0.9) !important;
   background: rgba(var(--tc), 0.25) !important;
   box-shadow: 0 0 14px rgba(var(--tc), 0.5),
               0 0 36px rgba(var(--tc), 0.25),
               0 0 60px rgba(var(--tc), 0.1) !important;
-  animation: mm-pill-glow 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  animation: viz-pill-glow 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
 }
 
-html.light-mode .mm-filter.mm-filter-glow {
+html.light-mode .viz-filter.viz-filter-glow {
   color: rgba(0, 0, 0, 0.9);
-  background: rgba(var(--tc), 0.2) !important;
-  box-shadow: 0 0 10px rgba(var(--tc), 0.3),
-              0 0 28px rgba(var(--tc), 0.15) !important;
+  background: rgba(var(--tc-light, var(--tc)), 0.2) !important;
+  box-shadow: 0 0 10px rgba(var(--tc-light, var(--tc)), 0.3),
+              0 0 28px rgba(var(--tc-light, var(--tc)), 0.15) !important;
 }
 
-@keyframes mm-pill-glow {
+@keyframes viz-pill-glow {
   0%   { transform: scale(0.92); opacity: 0.5; }
   60%  { transform: scale(1.08); opacity: 1; }
   100% { transform: scale(1);    opacity: 1; }
 }
 
-/* ── Viewport (pan/zoom area) ─────────────────────────────── */
-.mm-viewport {
+/* ── Viewport (pan/zoom area — mermaid & KG) ──────────────── */
+.viz-viewport {
   flex: 1;
   overflow: hidden;
   position: relative;
@@ -3467,76 +3442,166 @@ html.light-mode .mm-filter.mm-filter-glow {
   border-radius: 20px;
 }
 
-/* ── Explore hint (bottom of viewport) ────────────────────── */
-.mm-explore-hint {
-  position: absolute;
-  bottom: 16px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 20;
-  margin-top: 0;
-  cursor: pointer;
-  transition: opacity 0.4s ease, color 0.25s ease;
-  animation: bounce-y-hero 1.8s ease-in-out infinite, tl-glow-pulse 3s ease-in-out infinite;
-}
-
-.mm-explore-hint.exploring {
-  animation: none;
-  color: rgba(255, 255, 255, 1);
-}
-
-.mm-explore-hint.exploring strong {
-  color: rgba(255, 255, 255, 1);
-}
-
-.mm-explore-hint:hover {
-  color: rgba(255, 255, 255, 0.9);
-}
-
-.mm-explore-hint:hover strong {
-  color: #fff;
-}
-
-/* ── Explore hint — Knowledge Graph (mirrors mm-explore-hint) ── */
-.kg-explore-hint {
-  position: absolute;
-  bottom: 16px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 20;
-  margin-top: 0;
-  cursor: pointer;
-  transition: opacity 0.4s ease, color 0.25s ease;
-  animation: bounce-y-hero 1.8s ease-in-out infinite, tl-glow-pulse 3s ease-in-out infinite;
-}
-
-.kg-explore-hint.exploring {
-  animation: none;
-  color: rgba(255, 255, 255, 1);
-}
-
-.kg-explore-hint.exploring .scroll-arrow {
-  font-size: 40px;
-}
-
-.kg-explore-hint.exploring strong {
-  color: rgba(255, 255, 255, 1);
-}
-
-.kg-explore-hint:hover {
-  color: rgba(255, 255, 255, 0.9);
-}
-
-.kg-explore-hint:hover strong {
-  color: #fff;
-}
-
-/* ── World (transform container) ──────────────────────────── */
-.mm-world {
+/* ── World (transform container — mermaid & KG) ───────────── */
+.viz-world {
   position: absolute;
   top: 0;
   left: 0;
   transform-origin: 0 0;
+}
+
+/* ── Explore hint (bottom of viewport — mermaid & KG) ─────── */
+.viz-explore-hint {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+  margin-top: 0;
+  cursor: pointer;
+  transition: opacity 0.4s ease, color 0.25s ease;
+  animation: bounce-y-hero 1.8s ease-in-out infinite, tl-glow-pulse 3s ease-in-out infinite;
+}
+
+.viz-explore-hint.exploring {
+  animation: none;
+  color: rgba(255, 255, 255, 1);
+}
+
+.viz-explore-hint.exploring .scroll-arrow {
+  font-size: 40px;
+}
+
+.viz-explore-hint.exploring strong {
+  color: rgba(255, 255, 255, 1);
+}
+
+.viz-explore-hint:hover {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.viz-explore-hint:hover strong {
+  color: #fff;
+}
+
+html.light-mode .viz-explore-hint {
+  animation: bounce-y-hero 1.8s ease-in-out infinite, tl-glow-pulse-light 3s ease-in-out infinite;
+}
+
+html.light-mode .viz-explore-hint.exploring {
+  animation: none;
+  color: rgba(0, 0, 0, 0.85);
+}
+
+html.light-mode .viz-explore-hint.exploring strong {
+  color: rgba(0, 0, 0, 0.9);
+}
+
+/* ── Layout toggle (Static/Dynamic — all three modals) ────── */
+.viz-layout-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 14px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  color: #fff;
+  background: rgba(var(--tc), 0.14);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(var(--tc), 0.55);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.5),
+              0 0 30px rgba(0, 0, 0, 0.25),
+              0 0 20px rgba(var(--tc), 0.25),
+              0 0 50px rgba(var(--tc), 0.12),
+              0 0 100px rgba(var(--tc), 0.06);
+}
+
+.viz-layout-toggle:hover {
+  background: rgba(var(--tc), 0.08);
+  border-color: rgba(var(--tc), 0.25);
+  box-shadow: none;
+}
+
+html.light-mode .viz-layout-toggle {
+  color: rgba(0, 0, 0, 0.75);
+  background: rgba(var(--tc), 0.1);
+  border-color: rgba(var(--tc), 0.35);
+  box-shadow: 0 0 10px rgba(var(--tc), 0.15),
+              0 0 28px rgba(var(--tc), 0.08);
+}
+
+html.light-mode .viz-layout-toggle:hover {
+  color: rgba(0, 0, 0, 0.9);
+  background: rgba(var(--tc), 0.06);
+  border-color: rgba(var(--tc), 0.2);
+  box-shadow: none;
+}
+
+/* ── Mobile — shared viz filter & toggle sizing ───────────── */
+@media (max-width: 600px) {
+  .viz-modal-card {
+    height: 100vh;
+    max-height: 100vh;
+    border-radius: 0 !important;
+  }
+  .viz-filter {
+    padding: 5px 10px;
+    font-size: 11px;
+    gap: 4px;
+  }
+  .viz-dot {
+    width: 6px;
+    height: 6px;
+  }
+  .viz-layout-toggle {
+    padding: 5px 10px;
+    font-size: 11px;
+    gap: 4px;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   MERMAID DIAGRAM VIEWER — Interactive architecture flowchart
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Mermaid sticky bar: absolute over viewport */
+.mm-modal-card .modal-sticky-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 6px;
+  padding: 12px 16px 8px;
+  margin: 0;
+  border-radius: 20px 20px 0 0;
+  z-index: 30;
+}
+
+/* Mermaid filter row: right-aligned */
+.mm-modal-card .viz-filter-row {
+  justify-content: flex-end;
+}
+
+/* Mermaid filter pills container */
+.mm-filter-pills {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Mermaid filters: slightly denser for compact legends */
+.mm-modal-card .viz-filter {
+  gap: 5px;
+  padding: 5px 12px;
+  font-size: 11px;
 }
 
 /* ── SVG edge layer ───────────────────────────────────────── */
@@ -3985,11 +4050,6 @@ html.light-mode .mm-edge-label-group.mm-explore-glow text {
 
 /* ── Mobile ───────────────────────────────────────────────── */
 @media (max-width: 600px) {
-  .mm-modal-card {
-    height: 100vh;
-    max-height: 100vh;
-    border-radius: 0 !important;
-  }
   .mm-node-title {
     font-size: 10px;
   }
@@ -4024,101 +4084,23 @@ html.light-mode .mm-edge-label-group.mm-explore-glow text {
   border-radius: 20px 20px 0 0;
 }
 
-/* ── Filter button group ──────────────────────────────────── */
-.timeline-filter-group {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 6px;
-  padding: 8px 14px;
-  border-radius: 18px;
-}
-
-/* ── Filter buttons (inside modal-sticky-bar) ─────────────── */
-.timeline-filter {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 14px;
-  border-radius: 14px;
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.3px;
-  color: rgba(255, 255, 255, 0.6);
-  background: rgba(30, 30, 40, 0.75);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.timeline-filter:hover {
-  color: #fff;
-  background: rgba(50, 50, 65, 0.85);
-  border-color: rgba(var(--tc), 0.45);
-  box-shadow: 0 0 12px rgba(var(--tc), 0.25),
-              0 0 30px rgba(var(--tc), 0.10);
-}
-
-.timeline-filter.active {
-  color: #fff;
-  background: rgba(var(--tc), 0.14);
-  border-color: rgba(var(--tc), 0.55);
-  box-shadow: 0 0 12px rgba(0, 0, 0, 0.5),
-              0 0 30px rgba(0, 0, 0, 0.25),
-              0 0 20px rgba(var(--tc), 0.25),
-              0 0 50px rgba(var(--tc), 0.12),
-              0 0 100px rgba(var(--tc), 0.06);
-}
-
-.timeline-filter.active:hover {
-  background: rgba(var(--tc), 0.08);
-  border-color: rgba(var(--tc), 0.25);
-  box-shadow: none;
-}
-
+/* Timeline-specific: filter pulse animation */
 @keyframes filter-backoff-pulse {
   0%   { box-shadow: 0 0 10px rgba(255,255,255,0.15); }
   50%  { box-shadow: 0 0 22px rgba(255,255,255,0.5), 0 0 40px rgba(255,255,255,0.2); }
   100% { box-shadow: 0 0 10px rgba(255,255,255,0.15); }
 }
-.timeline-filter.filter-pulse {
+.viz-filter.filter-pulse {
   animation: filter-backoff-pulse 100ms ease-in-out;
 }
 
-html.light-mode .timeline-filter.filter-pulse {
+html.light-mode .viz-filter.filter-pulse {
   animation-name: filter-backoff-pulse-light;
 }
 @keyframes filter-backoff-pulse-light {
   0%   { box-shadow: 0 0 8px rgba(0,0,0,0.1); }
   50%  { box-shadow: 0 0 20px rgba(0,0,0,0.25), 0 0 40px rgba(0,0,0,0.1); }
   100% { box-shadow: 0 0 8px rgba(0,0,0,0.1); }
-}
-
-.timeline-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  display: inline-block;
-  flex-shrink: 0;
-  box-sizing: border-box;
-  border: 1px solid transparent;
-  transition: background 0.3s ease, border-color 0.3s ease;
-}
-
-/* Inactive filter: black dot (dark mode) */
-.timeline-filter:not(.active) .timeline-dot,
-.kg-filter:not(.active) .timeline-dot {
-  background: rgba(20, 20, 25, 0.9) !important;
-  border-color: rgba(255, 255, 255, 0.15);
-}
-
-/* Inactive filter: white dot (light mode) */
-html.light-mode .timeline-filter:not(.active) .timeline-dot,
-html.light-mode .kg-filter:not(.active) .timeline-dot {
-  background: rgba(240, 240, 245, 0.9) !important;
-  border-color: rgba(0, 0, 0, 0.12);
 }
 
 /* ── Timeline scroll hint ─────────────────────────────────── */
@@ -4428,33 +4410,13 @@ html.light-mode .kg-filter:not(.active) .timeline-dot {
     padding: 10px 8px 6px;
     border-radius: 16px 16px 0 0;
   }
-  .timeline-filter {
-    padding: 5px 10px;
-    font-size: 11px;
-    gap: 4px;
-  }
-  .timeline-dot {
-    width: 6px;
-    height: 6px;
-  }
 }
 
 /* ═══════════════════════════════════════════════════════════════
    GRAPH OF KNOWLEDGE — 2D pannable/zoomable node canvas
    ═══════════════════════════════════════════════════════════════ */
-.kg-modal-card {
-  max-width: 960px;
-  width: 100%;
-  height: 90vh;
-  max-height: 90vh;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  padding: 0 !important;
-  user-select: none;
-  -webkit-user-select: none;
-}
 
+/* KG sticky bar (flex-based, no position override) */
 .kg-modal-card .modal-sticky-bar {
   flex-wrap: wrap;
   justify-content: flex-end;
@@ -4465,107 +4427,15 @@ html.light-mode .kg-filter:not(.active) .timeline-dot {
   z-index: 30;
 }
 
-/* ── Filter buttons (reuse timeline filter pattern) ─────── */
-.kg-filter-group {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-  padding: 8px 14px;
-  border-radius: 18px;
-}
-
-.kg-filter-row {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  gap: 6px;
+/* KG filter row: min-height for layout stability */
+.kg-modal-card .viz-filter-row {
   min-height: 40px;
 }
 
-.kg-filter {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 14px;
-  border-radius: 14px;
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.3px;
-  color: rgba(255, 255, 255, 0.6);
-  background: rgba(30, 30, 40, 0.75);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.kg-filter:hover {
-  color: #fff;
-  background: rgba(50, 50, 65, 0.85);
-  border-color: rgba(var(--tc), 0.45);
-  box-shadow: 0 0 12px rgba(var(--tc), 0.25),
-              0 0 30px rgba(var(--tc), 0.10);
-}
-
-.kg-filter.active {
-  color: #fff;
-  background: rgba(var(--tc), 0.14);
-  border-color: rgba(var(--tc), 0.55);
-  box-shadow: 0 0 12px rgba(0, 0, 0, 0.5),
-              0 0 30px rgba(0, 0, 0, 0.25),
-              0 0 20px rgba(var(--tc), 0.25),
-              0 0 50px rgba(var(--tc), 0.12),
-              0 0 100px rgba(var(--tc), 0.06);
-}
-
-.kg-filter.active:hover {
-  background: rgba(var(--tc), 0.08);
-  border-color: rgba(var(--tc), 0.25);
-  box-shadow: none;
-}
-
-.kg-filter.filter-pulse {
-  animation: filter-backoff-pulse 100ms ease-in-out;
-}
-
-/* ── Traverse tour: active filter pill glow ─────────────────── */
-.kg-filter.kg-filter-glow {
-  color: #fff;
-  border-color: rgba(var(--tc), 0.9) !important;
-  background: rgba(var(--tc), 0.25) !important;
-  box-shadow: 0 0 14px rgba(var(--tc), 0.5),
-              0 0 36px rgba(var(--tc), 0.25),
-              0 0 60px rgba(var(--tc), 0.1) !important;
-  animation: kg-pill-glow 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both 2;
-}
-
-@keyframes kg-pill-glow {
-  0%   { transform: scale(0.92); opacity: 0.5; }
-  60%  { transform: scale(1.08); opacity: 1; }
-  100% { transform: scale(1);    opacity: 1; }
-}
-
-/* ── Viewport (pan/zoom area) ─────────────────────────────── */
-.kg-viewport {
-  flex: 1;
-  overflow: hidden;
-  position: relative;
-  touch-action: none;
-  user-select: none;
-  -webkit-user-select: none;
-}
-
-/* ── World (transform container) ──────────────────────────── */
-.kg-world {
-  position: absolute;
-  top: 0;
-  left: 0;
+/* KG world: explicit right/bottom for SVG sizing */
+.kg-modal-card .viz-world {
   width: 0;
   height: 0;
-  transform-origin: 0 0;
 }
 
 /* ── SVG edge layer ───────────────────────────────────────── */
@@ -4636,35 +4506,6 @@ html.light-mode .kg-filter:not(.active) .timeline-dot {
               0 0 45px rgba(var(--tc), 0.10),
               0 0 90px rgba(var(--tc), 0.05);
   z-index: 5;
-}
-
-/* ── Static/Dynamic layout toggle ─────────────────────────── */
-.kg-layout-toggle {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 14px;
-  border-radius: 14px;
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.3px;
-  color: #fff;
-  background: rgba(var(--tc), 0.14);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(var(--tc), 0.55);
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 0 12px rgba(0, 0, 0, 0.5),
-              0 0 30px rgba(0, 0, 0, 0.25),
-              0 0 20px rgba(var(--tc), 0.25),
-              0 0 50px rgba(var(--tc), 0.12),
-              0 0 100px rgba(var(--tc), 0.06);
-}
-.kg-layout-toggle:hover {
-  background: rgba(var(--tc), 0.08);
-  border-color: rgba(var(--tc), 0.25);
-  box-shadow: none;
 }
 
 .kg-node.kg-hidden {
@@ -4793,74 +4634,6 @@ html.light-mode .kg-filter:not(.active) .timeline-dot {
 /* ═══════════════════════════════════════════════════════════════
    GRAPH OF KNOWLEDGE — Light mode
    ═══════════════════════════════════════════════════════════════ */
-html.light-mode .kg-filter {
-  color: rgba(0, 0, 0, 0.5);
-  background: rgba(240, 240, 245, 0.75);
-  border-color: rgba(0, 0, 0, 0.12);
-}
-
-html.light-mode .kg-filter:hover {
-  color: #1a1a2e;
-  background: rgba(225, 225, 235, 0.85);
-  border-color: rgba(var(--tc), 0.35);
-  box-shadow: 0 0 10px rgba(var(--tc), 0.15),
-              0 0 25px rgba(var(--tc), 0.06);
-}
-
-html.light-mode .kg-filter.active {
-  color: rgba(0, 0, 0, 0.8);
-  background: rgba(var(--tc-light, var(--tc)), 0.25);
-  border-color: rgba(var(--tc-light, var(--tc)), 0.45);
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.4),
-              0 0 24px rgba(255, 255, 255, 0.2),
-              0 0 16px rgba(var(--tc-light, var(--tc)), 0.18),
-              0 0 40px rgba(var(--tc-light, var(--tc)), 0.10),
-              0 0 80px rgba(var(--tc-light, var(--tc)), 0.05);
-}
-
-html.light-mode .kg-filter.active:hover {
-  background: rgba(var(--tc-light, var(--tc)), 0.12);
-  border-color: rgba(var(--tc-light, var(--tc)), 0.2);
-  box-shadow: none;
-}
-
-html.light-mode .kg-filter.filter-pulse {
-  animation-name: filter-backoff-pulse-light;
-}
-
-html.light-mode .kg-filter.kg-filter-glow {
-  color: rgba(0, 0, 0, 0.9);
-  background: rgba(var(--tc-light, var(--tc)), 0.2) !important;
-  box-shadow: 0 0 10px rgba(var(--tc-light, var(--tc)), 0.3),
-              0 0 28px rgba(var(--tc-light, var(--tc)), 0.15) !important;
-}
-
-html.light-mode .kg-layout-toggle {
-  color: rgba(0, 0, 0, 0.75);
-  background: rgba(var(--tc), 0.1);
-  border-color: rgba(var(--tc), 0.35);
-  box-shadow: 0 0 10px rgba(var(--tc), 0.15),
-              0 0 28px rgba(var(--tc), 0.08);
-}
-html.light-mode .kg-layout-toggle:hover {
-  color: rgba(0, 0, 0, 0.9);
-  background: rgba(var(--tc), 0.06);
-  border-color: rgba(var(--tc), 0.2);
-  box-shadow: none;
-}
-
-html.light-mode .kg-explore-hint {
-  animation: bounce-y-hero 1.8s ease-in-out infinite, tl-glow-pulse-light 3s ease-in-out infinite;
-}
-
-html.light-mode .kg-explore-hint.exploring {
-  animation: none;
-  color: rgba(0, 0, 0, 0.85);
-}
-
-html.light-mode .kg-explore-hint.exploring strong {
-  color: rgba(0, 0, 0, 0.9);
-}
 
 html.light-mode .kg-node {
   background: #e6e6e6;
@@ -4901,26 +4674,245 @@ html.light-mode .kg-name-whisper {
 
 /* ── Mobile ───────────────────────────────────────────────── */
 @media (max-width: 600px) {
-  .kg-modal-card {
-    height: 100vh;
-    max-height: 100vh;
-    border-radius: 0 !important;
-  }
-  .kg-filter {
-    padding: 5px 10px;
-    font-size: 11px;
-    gap: 4px;
-  }
-  .kg-layout-toggle {
-    padding: 5px 10px;
-    font-size: 11px;
-    gap: 4px;
-  }
   .kg-node {
     padding: 4px;
   }
   .kg-node-name {
     font-size: 8px;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   MTG SKILL TREE — Interactive card tree visualization
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── "See MTG" badge on the Skilltree tile ─────────────────── */
+.card-action-badge.badge-mtg {
+  background: rgba(180, 120, 40, 0.18);
+  border: 1px solid rgba(220, 170, 60, 0.5);
+  box-shadow: 0 0 6px rgba(220, 170, 60, 0.3), inset 0 0 4px rgba(220, 170, 60, 0.08);
+  animation: badgePulseMtg 2.5s ease-in-out infinite;
+  cursor: pointer;
+  margin-left: 4px;
+}
+
+@keyframes badgePulseMtg {
+  0%, 100% { box-shadow: 0 0 6px rgba(220, 170, 60, 0.3), inset 0 0 4px rgba(220, 170, 60, 0.08); }
+  50%      { box-shadow: 0 0 14px rgba(220, 170, 60, 0.55), inset 0 0 6px rgba(220, 170, 60, 0.15); }
+}
+
+html.light-mode .card-action-badge.badge-mtg {
+  color: rgba(140, 90, 0, 0.9);
+  background: rgba(160, 120, 20, 0.1);
+  border-color: rgba(160, 120, 20, 0.4);
+  box-shadow: 0 0 6px rgba(160, 120, 20, 0.15), inset 0 0 4px rgba(160, 120, 20, 0.05);
+}
+
+/* ── MTG modal card ────────────────────────────────────────── */
+.mtg-modal-card .modal-sticky-bar {
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 6px;
+  padding: 12px 16px 8px;
+  margin: 0;
+  border-radius: 20px 20px 0 0;
+  z-index: 30;
+}
+
+.mtg-modal-card .viz-filter-row {
+  min-height: 40px;
+}
+
+.mtg-modal-card .viz-world {
+  width: 0;
+  height: 0;
+}
+
+/* ── Filter buttons (reuse viz-filter pattern) ─────────────── */
+.mtg-filter {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 10px;
+  border-radius: 16px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1.5px solid rgba(var(--tc), 0.35);
+  background: rgba(var(--tc), 0.08);
+  color: rgba(255, 255, 255, 0.7);
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.mtg-filter:hover {
+  background: rgba(var(--tc), 0.18);
+  border-color: rgba(var(--tc), 0.6);
+  color: #fff;
+}
+
+.mtg-filter.active {
+  background: rgba(var(--tc), 0.22);
+  border-color: rgba(var(--tc), 0.7);
+  color: #fff;
+  box-shadow: 0 0 8px rgba(var(--tc), 0.2);
+}
+
+.mtg-filter-sep {
+  color: rgba(255, 255, 255, 0.2);
+  font-size: 14px;
+  user-select: none;
+  padding: 0 2px;
+}
+
+html.light-mode .mtg-filter {
+  color: rgba(0, 0, 0, 0.5);
+  background: rgba(var(--tc), 0.05);
+  border-color: rgba(var(--tc), 0.2);
+}
+html.light-mode .mtg-filter:hover {
+  background: rgba(var(--tc), 0.12);
+  color: rgba(0, 0, 0, 0.8);
+}
+html.light-mode .mtg-filter.active {
+  background: rgba(var(--tc), 0.15);
+  border-color: rgba(var(--tc), 0.5);
+  color: rgba(0, 0, 0, 0.85);
+}
+html.light-mode .mtg-filter-sep {
+  color: rgba(0, 0, 0, 0.15);
+}
+
+/* ── MTG edge SVG layer ────────────────────────────────────── */
+.mtg-edges {
+  position: absolute;
+  top: -2000px;
+  left: -2000px;
+  width: 4000px;
+  height: 4000px;
+  pointer-events: none;
+  overflow: visible;
+  z-index: 1;
+}
+
+/* ── MTG center node ───────────────────────────────────────── */
+.mtg-center {
+  cursor: default;
+}
+
+/* ── Deck hub nodes ────────────────────────────────────────── */
+.mtg-deck-hub {
+  cursor: default;
+}
+
+/* ── Card tooltip ──────────────────────────────────────────── */
+.mtg-card-tooltip {
+  position: absolute;
+  z-index: 100;
+  width: 240px;
+  background: rgba(15, 15, 25, 0.95);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 14px;
+  padding: 0;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 0 0 60px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  transform: scale(0.9) translateY(8px);
+  transition: opacity 0.25s ease, transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  pointer-events: auto;
+}
+
+.mtg-card-tooltip.mtg-tooltip-show {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+
+.mtg-tooltip-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px 8px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.mtg-tooltip-close {
+  cursor: pointer;
+  font-size: 18px;
+  color: rgba(255, 255, 255, 0.5);
+  transition: color 0.2s;
+  line-height: 1;
+}
+.mtg-tooltip-close:hover {
+  color: #fff;
+}
+
+.mtg-tooltip-art {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  display: block;
+}
+
+.mtg-tooltip-body {
+  padding: 10px 12px 12px;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.mtg-tooltip-row {
+  margin-bottom: 4px;
+  font-weight: 600;
+}
+
+.mtg-tooltip-text {
+  margin-top: 6px;
+  font-size: 10px;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.55);
+  max-height: 80px;
+  overflow-y: auto;
+}
+
+/* Light mode tooltip */
+html.light-mode .mtg-card-tooltip {
+  background: rgba(250, 250, 252, 0.95);
+  border-color: rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+}
+html.light-mode .mtg-tooltip-header {
+  color: #1a1a2e;
+  border-bottom-color: rgba(0, 0, 0, 0.06);
+}
+html.light-mode .mtg-tooltip-close {
+  color: rgba(0, 0, 0, 0.35);
+}
+html.light-mode .mtg-tooltip-close:hover {
+  color: #000;
+}
+html.light-mode .mtg-tooltip-body {
+  color: rgba(0, 0, 0, 0.65);
+}
+html.light-mode .mtg-tooltip-text {
+  color: rgba(0, 0, 0, 0.45);
+}
+
+/* ── Mobile ───────────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .mtg-modal-card .viz-filter-row {
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+  .mtg-filter {
+    padding: 4px 7px;
+    font-size: 11px;
+  }
+  .mtg-card-tooltip {
+    width: 200px;
   }
 }
 

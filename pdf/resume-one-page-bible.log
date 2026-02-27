@@ -1,0 +1,799 @@
+This is XeTeX, Version 3.141592653-2.6-0.999995 (MiKTeX 24.1) (preloaded format=xelatex 2026.1.5)  27 FEB 2026 14:11
+entering extended mode
+ restricted \write18 enabled.
+ %&-line parsing enabled.
+**./resume-one-page-bible.tex
+(resume-one-page-bible.tex
+LaTeX2e <2023-11-01> patch level 1
+L3 programming layer <2024-01-04>
+(C:\Users\brian\AppData\Local\Programs\MiKTeX\tex/latex/base\article.cls
+Document Class: article 2023/05/17 v1.4n Standard LaTeX document class
+(C:\Users\brian\AppData\Local\Programs\MiKTeX\tex/latex/base\size10.clo
+File: size10.clo 2023/05/17 v1.4n Standard LaTeX file (size option)
+)
+\c@part=\count183
+\c@section=\count184
+\c@subsection=\count185
+\c@subsubsection=\count186
+\c@paragraph=\count187
+\c@subparagraph=\count188
+\c@figure=\count189
+\c@table=\count190
+\abovecaptionskip=\skip48
+\belowcaptionskip=\skip49
+\bibindent=\dimen140
+)
+(C:\Users\brian\AppData\Local\Programs\MiKTeX\tex/latex/geometry\geometry.sty
+Package: geometry 2020/01/02 v5.9 Page Geometry
+
+(C:\Users\brian\AppData\Local\Programs\MiKTeX\tex/latex/graphics\keyval.sty
+Package: keyval 2022/05/29 v1.15 key=value parser (DPC)
+\KV@toks@=\toks17
+)
+(C:\Users\brian\AppData\Local\Programs\MiKTeX\tex/generic/iftex\ifvtex.sty
+Package: ifvtex 2019/10/25 v1.7 ifvtex legacy package. Use iftex instead.
+
+(C:\Users\brian\AppData\Local\Programs\MiKTeX\tex/generic/iftex\iftex.sty
+Package: iftex 2022/02/03 v1.0f TeX engine tests
+))
+\Gm@cnth=\count191
+\Gm@cntv=\count192
+\c@Gm@tempcnt=\count193
+\Gm@bindingoffset=\dimen141
+\Gm@wd@mp=\dimen142
+\Gm@odd@mp=\dimen143
+\Gm@even@mp=\dimen144
+\Gm@layoutwidth=\dimen145
+\Gm@layoutheight=\dimen146
+\Gm@layouthoffset=\dimen147
+\Gm@layoutvoffset=\dimen148
+\Gm@dimlist=\toks18
+
+(C:\Users\brian\AppData\Local\Programs\MiKTeX\tex/latex/geometry\geometry.cfg))
+(C:\Users\brian\AppData\Local\Programs\MiKTeX\tex/latex/fontspec\fontspec.sty
+(C:\Users\brian\AppData\Local\Programs\MiKTeX\tex/latex/l3packages/xparse\xpars
+e.sty
+(C:\Users\brian\AppData\Local\Programs\MiKTeX\tex/latex/l3kernel\expl3.sty
+Package: expl3 2024-01-04 L3 programming layer (loader) 
+
+(C:\Users\brian\AppData\Local\Programs\MiKTeX\tex/latex/l3backend\l3backend-xet
+ex.def
+File: l3backend-xetex.def 2024-01-04 L3 backend support: XeTeX
+\g__graphics_track_int=\count194
+\l__pdf_internal_box=\box51
+\g__pdf_backend_object_int=\count195
+\g__pdf_backend_annotation_int=\count196
+\g__pdf_backend_link_int=\count197
+))
+Package: xparse 2023-10-10 L3 Experimental document command parser
+)
+Package: fontspec 2022/01/15 v2.8a Font selection for XeLaTeX and LuaLaTeX
+
+(C:\Users\brian\AppData\Local\Programs\MiKTeX\tex/latex/fontspec\fontspec-xetex
+.sty
+Package: fontspec-xetex 2022/01/15 v2.8a Font selection for XeLaTeX and LuaLaTe
+X
+\l__fontspec_script_int=\count198
+\l__fontspec_language_int=\count199
+\l__fontspec_strnum_int=\count266
+\l__fontspec_tmp_int=\count267
+\l__fontspec_tmpa_int=\count268
+\l__fontspec_tmpb_int=\count269
+\l__fontspec_tmpc_int=\count270
+\l__fontspec_em_int=\count271
+\l__fontspec_emdef_int=\count272
+\l__fontspec_strong_int=\count273
+\l__fontspec_strongdef_int=\count274
+\l__fontspec_tmpa_dim=\dimen149
+\l__fontspec_tmpb_dim=\dimen150
+\l__fontspec_tmpc_dim=\dimen151
+ (C:\Users\brian\AppData\Local\Programs\MiKTeX\tex/latex/base\fontenc.sty
+Package: fontenc 2021/04/29 v2.0v Standard LaTeX package
+)
+(C:\Users\brian\AppData\Local\Programs\MiKTeX\tex/latex/fontspec\fontspec.cfg))
+)
+(C:\Users\brian\AppData\Local\Programs\MiKTeX\tex/latex/microtype\microtype.sty
+Package: microtype 2025/07/09 v3.2b Micro-typographical refinements (RS)
+(C:\Users\brian\AppData\Local\Programs\MiKTeX\tex/latex/etoolbox\etoolbox.sty
+Package: etoolbox 2020/10/05 v2.5k e-TeX tools for LaTeX (JAW)
+\etb@tempcnta=\count275
+)
+\MT@toks=\toks19
+\MT@tempbox=\box52
+\MT@count=\count276
+LaTeX Info: Redefining \noprotrusionifhmode on input line 1087.
+LaTeX Info: Redefining \leftprotrusion on input line 1088.
+\MT@prot@toks=\toks20
+LaTeX Info: Redefining \rightprotrusion on input line 1107.
+LaTeX Info: Redefining \textls on input line 1449.
+\MT@outer@kern=\dimen152
+LaTeX Info: Redefining \microtypecontext on input line 2053.
+LaTeX Info: Redefining \textmicrotypecontext on input line 2070.
+\MT@listname@count=\count277
+
+(C:\Users\brian\AppData\Local\Programs\MiKTeX\tex/latex/microtype\microtype-xet
+ex.def
+File: microtype-xetex.def 2025/07/09 v3.2b Definitions specific to xetex (RS)
+LaTeX Info: Redefining \lsstyle on input line 443.
+LaTeX Info: Redefining \lslig on input line 451.
+\MT@outer@space=\skip50
+)
+Package microtype Info: Loading configuration file microtype.cfg.
+
+(C:\Users\brian\AppData\Local\Programs\MiKTeX\tex/latex/microtype\microtype.cfg
+File: microtype.cfg 2025/07/09 v3.2b microtype main configuration file (RS)
+)
+LaTeX Info: Redefining \microtypesetup on input line 3065.
+)
+
+Package fontspec Info: Could not resolve font "Old Standard TT-Italic/B" (it
+(fontspec)             probably doesn't exist).
+
+
+Package fontspec Info: Font family 'OldStandardTT(0)' created for font 'Old
+(fontspec)             Standard TT' with options [Ligatures=TeX,UprightFont =
+(fontspec)             *-Regular,BoldFont = *-Bold,ItalicFont =
+(fontspec)             *-Italic,FakeBold = 6].
+(fontspec)              
+(fontspec)              This font family consists of the following NFSS
+(fontspec)             series/shapes:
+(fontspec)              
+(fontspec)             - 'normal' (m/n) with NFSS spec.: <->"Old Standard
+(fontspec)             TT-Regular/OT:script=latn;language=dflt;embolden=6;mappi
+ng=tex-text;"
+(fontspec)             - 'small caps'  (m/sc) with NFSS spec.: 
+(fontspec)             - 'bold' (b/n) with NFSS spec.: <->"Old Standard
+(fontspec)             TT-Bold/OT:script=latn;language=dflt;embolden=6;mapping=
+tex-text;"
+(fontspec)             - 'bold small caps'  (b/sc) with NFSS spec.: 
+(fontspec)             - 'italic' (m/it) with NFSS spec.: <->"Old Standard
+(fontspec)             TT-Italic/OT:script=latn;language=dflt;embolden=6;mappin
+g=tex-text;"
+(fontspec)             - 'italic small caps'  (m/scit) with NFSS spec.: 
+(fontspec)             - 'bold italic' (b/it) with NFSS spec.: <->"Old
+(fontspec)             Standard
+(fontspec)             TT-Bold/I/OT:script=latn;language=dflt;embolden=6;mappin
+g=tex-text;"
+(fontspec)             - 'bold italic small caps'  (b/scit) with NFSS spec.: 
+
+
+Package fontspec Info: Could not resolve font "Cinzel-Bold/I" (it probably
+(fontspec)             doesn't exist).
+
+
+Package fontspec Info: Could not resolve font "Cinzel-Regular/I" (it probably
+(fontspec)             doesn't exist).
+
+
+Package fontspec Info: Font family 'Cinzel(0)' created for font 'Cinzel' with
+(fontspec)             options [UprightFont = *-Regular,BoldFont =
+(fontspec)             *-Bold,FakeBold = 8].
+(fontspec)              
+(fontspec)              This font family consists of the following NFSS
+(fontspec)             series/shapes:
+(fontspec)              
+(fontspec)             - 'normal' (m/n) with NFSS spec.:
+(fontspec)             <->"Cinzel-Regular/OT:script=latn;language=dflt;embolden
+=8;"
+(fontspec)             - 'small caps'  (m/sc) with NFSS spec.: 
+(fontspec)             - 'bold' (b/n) with NFSS spec.:
+(fontspec)             <->"Cinzel-Bold/OT:script=latn;language=dflt;embolden=8;
+"
+(fontspec)             - 'bold small caps'  (b/sc) with NFSS spec.: 
+(fontspec)             - 'bold italic' (b/it) with NFSS spec.:
+(fontspec)             <->"Cinzel-Regular/BI/OT:script=latn;language=dflt;embol
+den=8;"
+(fontspec)             - 'bold italic small caps'  (b/scit) with NFSS spec.: 
+
+
+Package fontspec Info: Could not resolve font "Cinzel Decorative-Bold/I" (it
+(fontspec)             probably doesn't exist).
+
+
+Package fontspec Info: Could not resolve font "Cinzel Decorative-Regular/I"
+(fontspec)             (it probably doesn't exist).
+
+
+Package fontspec Info: Font family 'CinzelDecorative(0)' created for font
+(fontspec)             'Cinzel Decorative' with options [UprightFont =
+(fontspec)             *-Regular,BoldFont = *-Bold,FakeBold = 5].
+(fontspec)              
+(fontspec)              This font family consists of the following NFSS
+(fontspec)             series/shapes:
+(fontspec)              
+(fontspec)             - 'normal' (m/n) with NFSS spec.: <->"Cinzel
+(fontspec)             Decorative-Regular/OT:script=latn;language=dflt;embolden
+=5;"
+(fontspec)             - 'small caps'  (m/sc) with NFSS spec.: 
+(fontspec)             - 'bold' (b/n) with NFSS spec.: <->"Cinzel
+(fontspec)             Decorative-Bold/OT:script=latn;language=dflt;embolden=5;
+"
+(fontspec)             - 'bold small caps'  (b/sc) with NFSS spec.: 
+(fontspec)             - 'bold italic' (b/it) with NFSS spec.: <->"Cinzel
+(fontspec)             Decorative-Regular/BI/OT:script=latn;language=dflt;embol
+den=5;"
+(fontspec)             - 'bold italic small caps'  (b/scit) with NFSS spec.: 
+
+
+(C:\Users\brian\AppData\Local\Programs\MiKTeX\tex/latex/enumitem\enumitem.sty
+Package: enumitem 2025/02/06 v3.11 Customized lists
+\labelindent=\skip51
+\enit@outerparindent=\dimen153
+\enit@toks=\toks21
+\enit@inbox=\box53
+\enit@count@id=\count278
+\enitdp@description=\count279
+)
+(C:\Users\brian\AppData\Local\Programs\MiKTeX\tex/latex/titlesec\titlesec.sty
+Package: titlesec 2025/01/04 v2.17 Sectioning titles
+\ttl@box=\box54
+\beforetitleunit=\skip52
+\aftertitleunit=\skip53
+\ttl@plus=\dimen154
+\ttl@minus=\dimen155
+\ttl@toksa=\toks22
+\titlewidth=\dimen156
+\titlewidthlast=\dimen157
+\titlewidthfirst=\dimen158
+)
+(C:\Users\brian\AppData\Local\Programs\MiKTeX\tex/latex/hyperref\hyperref.sty
+Package: hyperref 2023-11-26 v7.01g Hypertext links for LaTeX
+
+(C:\Users\brian\AppData\Local\Programs\MiKTeX\tex/generic/infwarerr\infwarerr.s
+ty
+Package: infwarerr 2019/12/03 v1.5 Providing info/warning/error messages (HO)
+)
+(C:\Users\brian\AppData\Local\Programs\MiKTeX\tex/latex/kvsetkeys\kvsetkeys.sty
+Package: kvsetkeys 2022-10-05 v1.19 Key value parser (HO)
+)
+(C:\Users\brian\AppData\Local\Programs\MiKTeX\tex/generic/kvdefinekeys\kvdefine
+keys.sty
+Package: kvdefinekeys 2019-12-19 v1.6 Define keys (HO)
+)
+(C:\Users\brian\AppData\Local\Programs\MiKTeX\tex/generic/pdfescape\pdfescape.s
+ty
+Package: pdfescape 2019/12/09 v1.15 Implements pdfTeX's escape features (HO)
+
+(C:\Users\brian\AppData\Local\Programs\MiKTeX\tex/generic/ltxcmds\ltxcmds.sty
+Package: ltxcmds 2023-12-04 v1.26 LaTeX kernel commands for general use (HO)
+)
+(C:\Users\brian\AppData\Local\Programs\MiKTeX\tex/generic/pdftexcmds\pdftexcmds
+.sty
+Package: pdftexcmds 2020-06-27 v0.33 Utility functions of pdfTeX for LuaTeX (HO
+)
+Package pdftexcmds Info: \pdf@primitive is available.
+Package pdftexcmds Info: \pdf@ifprimitive is available.
+Package pdftexcmds Info: \pdfdraftmode not found.
+))
+(C:\Users\brian\AppData\Local\Programs\MiKTeX\tex/latex/hycolor\hycolor.sty
+Package: hycolor 2020-01-27 v1.10 Color options for hyperref/bookmark (HO)
+)
+(C:\Users\brian\AppData\Local\Programs\MiKTeX\tex/latex/letltxmacro\letltxmacro
+.sty
+Package: letltxmacro 2019/12/03 v1.6 Let assignment for LaTeX macros (HO)
+)
+(C:\Users\brian\AppData\Local\Programs\MiKTeX\tex/latex/auxhook\auxhook.sty
+Package: auxhook 2019-12-17 v1.6 Hooks for auxiliary files (HO)
+)
+(C:\Users\brian\AppData\Local\Programs\MiKTeX\tex/latex/hyperref\nameref.sty
+Package: nameref 2023-11-26 v2.56 Cross-referencing by name of section
+
+(C:\Users\brian\AppData\Local\Programs\MiKTeX\tex/latex/refcount\refcount.sty
+Package: refcount 2019/12/15 v3.6 Data extraction from label references (HO)
+)
+(C:\Users\brian\AppData\Local\Programs\MiKTeX\tex/generic/gettitlestring\gettit
+lestring.sty
+Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
+
+(C:\Users\brian\AppData\Local\Programs\MiKTeX\tex/latex/kvoptions\kvoptions.sty
+Package: kvoptions 2022-06-15 v3.15 Key value format for package options (HO)
+))
+\c@section@level=\count280
+)
+\@linkdim=\dimen159
+\Hy@linkcounter=\count281
+\Hy@pagecounter=\count282
+ (C:\Users\brian\AppData\Local\Programs\MiKTeX\tex/latex/hyperref\pd1enc.def
+File: pd1enc.def 2023-11-26 v7.01g Hyperref: PDFDocEncoding definition (HO)
+) (C:\Users\brian\AppData\Local\Programs\MiKTeX\tex/generic/intcalc\intcalc.sty
+Package: intcalc 2019/12/15 v1.3 Expandable calculations with integers (HO)
+)
+\Hy@SavedSpaceFactor=\count283
+ (C:\Users\brian\AppData\Local\Programs\MiKTeX\tex/latex/hyperref\puenc.def
+File: puenc.def 2023-11-26 v7.01g Hyperref: PDF Unicode definition (HO)
+)
+Package hyperref Info: Hyper figures OFF on input line 4181.
+Package hyperref Info: Link nesting OFF on input line 4186.
+Package hyperref Info: Hyper index ON on input line 4189.
+Package hyperref Info: Plain pages OFF on input line 4196.
+Package hyperref Info: Backreferencing OFF on input line 4201.
+Package hyperref Info: Implicit mode ON; LaTeX internals redefined.
+Package hyperref Info: Bookmarks ON on input line 4448.
+\c@Hy@tempcnt=\count284
+
+(C:\Users\brian\AppData\Local\Programs\MiKTeX\tex/latex/url\url.sty
+\Urlmuskip=\muskip16
+Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
+)
+LaTeX Info: Redefining \url on input line 4786.
+\XeTeXLinkMargin=\dimen160
+
+(C:\Users\brian\AppData\Local\Programs\MiKTeX\tex/generic/bitset\bitset.sty
+Package: bitset 2019/12/09 v1.3 Handle bit-vector datatype (HO)
+
+(C:\Users\brian\AppData\Local\Programs\MiKTeX\tex/generic/bigintcalc\bigintcalc
+.sty
+Package: bigintcalc 2019/12/15 v1.5 Expandable calculations on big integers (HO
+)
+))
+\Fld@menulength=\count285
+\Field@Width=\dimen161
+\Fld@charsize=\dimen162
+Package hyperref Info: Hyper figures OFF on input line 6065.
+Package hyperref Info: Link nesting OFF on input line 6070.
+Package hyperref Info: Hyper index ON on input line 6073.
+Package hyperref Info: backreferencing OFF on input line 6080.
+Package hyperref Info: Link coloring OFF on input line 6085.
+Package hyperref Info: Link coloring with OCG OFF on input line 6090.
+Package hyperref Info: PDF/A mode OFF on input line 6095.
+
+(C:\Users\brian\AppData\Local\Programs\MiKTeX\tex/latex/base\atbegshi-ltx.sty
+Package: atbegshi-ltx 2021/01/10 v1.0c Emulation of the original atbegshi
+package with kernel methods
+)
+\Hy@abspage=\count286
+\c@Item=\count287
+\c@Hfootnote=\count288
+)
+Package hyperref Info: Driver (autodetected): hxetex.
+(C:\Users\brian\AppData\Local\Programs\MiKTeX\tex/latex/hyperref\hxetex.def
+File: hxetex.def 2023-11-26 v7.01g Hyperref driver for XeTeX
+
+(C:\Users\brian\AppData\Local\Programs\MiKTeX\tex/generic/stringenc\stringenc.s
+ty
+Package: stringenc 2019/11/29 v1.12 Convert strings between diff. encodings (HO
+)
+)
+\pdfm@box=\box55
+\c@Hy@AnnotLevel=\count289
+\HyField@AnnotCount=\count290
+\Fld@listcount=\count291
+\c@bookmark@seq@number=\count292
+
+(C:\Users\brian\AppData\Local\Programs\MiKTeX\tex/latex/rerunfilecheck\rerunfil
+echeck.sty
+Package: rerunfilecheck 2025-06-21 v1.11 Rerun checks for auxiliary files (HO)
+
+(C:\Users\brian\AppData\Local\Programs\MiKTeX\tex/generic/uniquecounter\uniquec
+ounter.sty
+Package: uniquecounter 2019/12/15 v1.4 Provide unlimited unique counter (HO)
+)
+Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
+84.
+)
+\Hy@SectionHShift=\skip54
+)
+(C:\Users\brian\AppData\Local\Programs\MiKTeX\tex/latex/paracol\paracol.sty
+Package: paracol 2025/07/14 1.37 typeset columns in parallel
+\pcol@currcol=\count293
+\pcol@nextcol=\count294
+\pcol@ncol=\count295
+\pcol@ncolleft=\count296
+\pcol@page=\count297
+\pcol@basepage=\count298
+\pcol@toppage=\count299
+\pcol@footnotebase=\count300
+\pcol@nfootnotes=\count301
+\pcol@mcid=\count302
+\pcol@prevdepth=\dimen163
+\pcol@colht=\dimen164
+\pcol@textfloatsep=\dimen165
+\pcol@lrmargin=\dimen166
+\pagerim=\dimen167
+\pcol@topskip=\skip55
+\belowfootnoteskip=\skip56
+\pcol@topfnotes=\box56
+\pcol@prespan=\box57
+\pcol@rightpage=\box58
+\pcol@colorstack@saved=\box59
+\pcol@tempboxa=\box60
+\pcol@tempboxb=\box61
+\pcol@colorins=\insert252
+\pcol@everyvbox=\toks23
+)
+(C:\Users\brian\AppData\Local\Programs\MiKTeX\tex/latex/lettrine\lettrine.sty
+File: lettrine.sty 2025-12-06 v2.83 (Daniel Flipo)
+\c@DefaultLines=\count303
+\c@DefaultDepth=\count304
+\DefaultFindent=\dimen168
+\DefaultNindent=\dimen169
+\DefaultSlope=\dimen170
+\DiscardVskip=\dimen171
+\L@lbox=\box62
+\c@L@lines=\count305
+\c@L@depth=\count306
+\L@Pindent=\dimen172
+\L@Findent=\dimen173
+\L@Nindent=\dimen174
+\L@lraise=\dimen175
+\L@first=\dimen176
+\L@next=\dimen177
+\L@slope=\dimen178
+\L@height=\dimen179
+\L@novskip=\dimen180
+\L@target@ht=\dimen181
+\L@target@dp=\dimen182
+\L@target@tht=\dimen183
+\LettrineWidth=\dimen184
+\LettrineHeight=\dimen185
+\LettrineDepth=\dimen186
+\L@finalht=\dimen187
+\L@finaldp=\dimen188
+
+Loading lettrine.cfg
+(C:\Users\brian\AppData\Local\Programs\MiKTeX\tex/latex/lettrine\lettrine.cfg)
+\Lettrine@tweaks=\toks24
+\Llist@everypar=\toks25
+)
+(C:\Users\brian\AppData\Local\Programs\MiKTeX\tex/latex/cfr-initials\GoudyIn.st
+y
+Package: GoudyIn 2007/11/24 v1.01 GoudyIn CFR
+ (C:\Users\brian\AppData\Local\Programs\MiKTeX\tex/latex/initials\GoudyIn.fd
+File: GoudyIn.fd 2003/04/02 Font definition file for U/GoudyIn
+)) (C:\Users\brian\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\amssymb.sty
+Package: amssymb 2013/01/14 v3.01 AMS font symbols
+
+(C:\Users\brian\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\amsfonts.sty
+Package: amsfonts 2013/01/14 v3.01 Basic AMSFonts support
+\@emptytoks=\toks26
+\symAMSa=\mathgroup4
+\symAMSb=\mathgroup5
+LaTeX Font Info:    Redeclaring math symbol \hbar on input line 98.
+LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
+(Font)                  U/euf/m/n --> U/euf/b/n on input line 106.
+)) (C:\Users\brian\AppData\Local\Programs\MiKTeX\tex/latex/xcolor\xcolor.sty
+Package: xcolor 2023/11/15 v3.01 LaTeX color extensions (UK)
+
+(C:\Users\brian\AppData\Local\Programs\MiKTeX\tex/latex/graphics-cfg\color.cfg
+File: color.cfg 2016/01/02 v1.6 sample color configuration
+)
+Package xcolor Info: Driver file: xetex.def on input line 274.
+(C:\Users\brian\AppData\Local\Programs\MiKTeX\tex/latex/graphics-def\xetex.def
+File: xetex.def 2022/09/22 v5.0n Graphics/color driver for xetex
+) (C:\Users\brian\AppData\Local\Programs\MiKTeX\tex/latex/graphics\mathcolor.lt
+x)
+Package xcolor Info: Model `cmy' substituted by `cmy0' on input line 1350.
+Package xcolor Info: Model `RGB' extended on input line 1366.
+Package xcolor Info: Model `HTML' substituted by `rgb' on input line 1368.
+Package xcolor Info: Model `Hsb' substituted by `hsb' on input line 1369.
+Package xcolor Info: Model `tHsb' substituted by `hsb' on input line 1370.
+Package xcolor Info: Model `HSB' substituted by `hsb' on input line 1371.
+Package xcolor Info: Model `Gray' substituted by `gray' on input line 1372.
+Package xcolor Info: Model `wave' substituted by `hsb' on input line 1373.
+) (C:\Users\brian\AppData\Local\Programs\MiKTeX\tex/latex/tools\calc.sty
+Package: calc 2023/07/08 v4.3 Infix arithmetic (KKT,FJ)
+\calc@Acount=\count307
+\calc@Bcount=\count308
+\calc@Adimen=\dimen189
+\calc@Bdimen=\dimen190
+\calc@Askip=\skip57
+\calc@Bskip=\skip58
+LaTeX Info: Redefining \setlength on input line 80.
+LaTeX Info: Redefining \addtolength on input line 81.
+\calc@Ccount=\count309
+\calc@Cskip=\skip59
+)
+Package hyperref Info: Option `colorlinks' set `false' on input line 58.
+
+(resume-one-page-bible.aux)
+\openout1 = `resume-one-page-bible.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 106.
+LaTeX Font Info:    ... okay on input line 106.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 106.
+LaTeX Font Info:    ... okay on input line 106.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 106.
+LaTeX Font Info:    ... okay on input line 106.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 106.
+LaTeX Font Info:    ... okay on input line 106.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 106.
+LaTeX Font Info:    Trying to load font information for TS1+cmr on input line 1
+06.
+
+(C:\Users\brian\AppData\Local\Programs\MiKTeX\tex/latex/base\ts1cmr.fd
+File: ts1cmr.fd 2023/04/13 v2.5m Standard LaTeX font definitions
+)
+LaTeX Font Info:    ... okay on input line 106.
+LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 106.
+LaTeX Font Info:    ... okay on input line 106.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 106.
+LaTeX Font Info:    ... okay on input line 106.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 106.
+LaTeX Font Info:    ... okay on input line 106.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 106.
+LaTeX Font Info:    ... okay on input line 106.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 106.
+LaTeX Font Info:    ... okay on input line 106.
+
+*geometry* driver: auto-detecting
+*geometry* detected driver: xetex
+*geometry* verbose mode - [ preamble ] result:
+* driver: xetex
+* paper: letterpaper
+* layout: <same size as paper>
+* layoutoffset:(h,v)=(0.0pt,0.0pt)
+* modes: 
+* h-part:(L,W,R)=(27.46295pt, 559.3691pt, 27.46295pt)
+* v-part:(T,H,B)=(14.45377pt, 766.06245pt, 14.45377pt)
+* \paperwidth=614.295pt
+* \paperheight=794.96999pt
+* \textwidth=559.3691pt
+* \textheight=766.06245pt
+* \oddsidemargin=-44.80704pt
+* \evensidemargin=-44.80704pt
+* \topmargin=-94.81622pt
+* \headheight=12.0pt
+* \headsep=25.0pt
+* \topskip=10.0pt
+* \footskip=30.0pt
+* \marginparwidth=65.0pt
+* \marginparsep=11.0pt
+* \columnsep=10.0pt
+* \skip\footins=9.0pt plus 4.0pt minus 2.0pt
+* \hoffset=0.0pt
+* \voffset=0.0pt
+* \mag=1000
+* \@twocolumnfalse
+* \@twosidefalse
+* \@mparswitchfalse
+* \@reversemarginfalse
+* (1in=72.27pt=25.4mm, 1cm=28.453pt)
+
+
+Package fontspec Info: Adjusting the maths setup (use [no-math] to avoid
+(fontspec)             this).
+
+\symlegacymaths=\mathgroup6
+LaTeX Font Info:    Overwriting symbol font `legacymaths' in version `bold'
+(Font)                  OT1/cmr/m/n --> OT1/cmr/bx/n on input line 106.
+LaTeX Font Info:    Redeclaring math accent \acute on input line 106.
+LaTeX Font Info:    Redeclaring math accent \grave on input line 106.
+LaTeX Font Info:    Redeclaring math accent \ddot on input line 106.
+LaTeX Font Info:    Redeclaring math accent \tilde on input line 106.
+LaTeX Font Info:    Redeclaring math accent \bar on input line 106.
+LaTeX Font Info:    Redeclaring math accent \breve on input line 106.
+LaTeX Font Info:    Redeclaring math accent \check on input line 106.
+LaTeX Font Info:    Redeclaring math accent \hat on input line 106.
+LaTeX Font Info:    Redeclaring math accent \dot on input line 106.
+LaTeX Font Info:    Redeclaring math accent \mathring on input line 106.
+LaTeX Font Info:    Redeclaring math symbol \colon on input line 106.
+LaTeX Font Info:    Redeclaring math symbol \Gamma on input line 106.
+LaTeX Font Info:    Redeclaring math symbol \Delta on input line 106.
+LaTeX Font Info:    Redeclaring math symbol \Theta on input line 106.
+LaTeX Font Info:    Redeclaring math symbol \Lambda on input line 106.
+LaTeX Font Info:    Redeclaring math symbol \Xi on input line 106.
+LaTeX Font Info:    Redeclaring math symbol \Pi on input line 106.
+LaTeX Font Info:    Redeclaring math symbol \Sigma on input line 106.
+LaTeX Font Info:    Redeclaring math symbol \Upsilon on input line 106.
+LaTeX Font Info:    Redeclaring math symbol \Phi on input line 106.
+LaTeX Font Info:    Redeclaring math symbol \Psi on input line 106.
+LaTeX Font Info:    Redeclaring math symbol \Omega on input line 106.
+LaTeX Font Info:    Redeclaring math symbol \mathdollar on input line 106.
+LaTeX Font Info:    Redeclaring symbol font `operators' on input line 106.
+LaTeX Font Info:    Encoding `OT1' has changed to `TU' for symbol font
+(Font)              `operators' in the math version `normal' on input line 106.
+
+LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
+(Font)                  OT1/cmr/m/n --> TU/OldStandardTT(0)/m/n on input line 1
+06.
+LaTeX Font Info:    Encoding `OT1' has changed to `TU' for symbol font
+(Font)              `operators' in the math version `bold' on input line 106.
+LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
+(Font)                  OT1/cmr/bx/n --> TU/OldStandardTT(0)/m/n on input line 
+106.
+LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
+(Font)                  TU/OldStandardTT(0)/m/n --> TU/OldStandardTT(0)/m/n on 
+input line 106.
+LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `normal'
+(Font)                  OT1/cmr/m/it --> TU/OldStandardTT(0)/m/it on input line
+ 106.
+LaTeX Font Info:    Overwriting math alphabet `\mathbf' in version `normal'
+(Font)                  OT1/cmr/bx/n --> TU/OldStandardTT(0)/b/n on input line 
+106.
+LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `normal'
+(Font)                  OT1/cmss/m/n --> TU/lmss/m/n on input line 106.
+LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `normal'
+(Font)                  OT1/cmtt/m/n --> TU/lmtt/m/n on input line 106.
+LaTeX Font Info:    Overwriting symbol font `operators' in version `bold'
+(Font)                  TU/OldStandardTT(0)/m/n --> TU/OldStandardTT(0)/b/n on 
+input line 106.
+LaTeX Font Info:    Overwriting math alphabet `\mathit' in version `bold'
+(Font)                  OT1/cmr/bx/it --> TU/OldStandardTT(0)/b/it on input lin
+e 106.
+LaTeX Font Info:    Overwriting math alphabet `\mathsf' in version `bold'
+(Font)                  OT1/cmss/bx/n --> TU/lmss/b/n on input line 106.
+LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
+(Font)                  OT1/cmtt/m/n --> TU/lmtt/b/n on input line 106.
+LaTeX Info: Redefining \microtypecontext on input line 106.
+Package microtype Info: Applying patch `item' on input line 106.
+Package microtype Info: Applying patch `toc' on input line 106.
+Package microtype Info: Applying patch `eqnum' on input line 106.
+Package microtype Info: Applying patch `footnote' on input line 106.
+Package microtype Info: Applying patch `verbatim' on input line 106.
+LaTeX Info: Redefining \microtypesetup on input line 106.
+Package microtype Info: Character protrusion enabled (level 2).
+Package microtype Info: Using default protrusion set `alltext'.
+Package microtype Info: No adjustment of tracking.
+Package microtype Info: No adjustment of spacing.
+Package microtype Info: No adjustment of kerning.
+Package microtype Info: Loading generic protrusion settings for font family
+(microtype)             `OldStandardTT' (encoding: TU).
+(microtype)             For optimal results, create family-specific settings.
+(microtype)             See the microtype manual for details.
+Package hyperref Info: Link coloring OFF on input line 106.
+(resume-one-page-bible.out) (resume-one-page-bible.out)
+\@outlinefile=\write3
+\openout3 = `resume-one-page-bible.out'.
+
+
+
+Package lettrine.sty Warning: File  loaded! on input line 106.
+
+(C:\Users\brian\AppData\Local\Programs\MiKTeX\tex/latex/tools\.tex
+File ignored)
+Package lettrine.sty Info: Targeted height = 16.56pt
+(lettrine.sty)             (for loversize=0, accent excluded),
+(lettrine.sty)             Lettrine height = 18.21608pt (B) loversize=0.1;
+(lettrine.sty)             reported on input line 111.
+Package lettrine.sty Info: Targeted height = 16.56pt
+(lettrine.sty)             (for loversize=0, accent excluded),
+(lettrine.sty)             Lettrine height = 18.21608pt (E) loversize=0.1;
+(lettrine.sty)             reported on input line 130.
+Package lettrine.sty Info: Targeted height = 16.56pt
+(lettrine.sty)             (for loversize=0, accent excluded),
+(lettrine.sty)             Lettrine height = 18.21608pt (S) loversize=0.1;
+(lettrine.sty)             reported on input line 133.
+Package microtype Info: Loading generic protrusion settings for font family
+(microtype)             `Cinzel' (encoding: TU).
+(microtype)             For optimal results, create family-specific settings.
+(microtype)             See the microtype manual for details.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 135
+.
+
+(C:\Users\brian\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+)
+(C:\Users\brian\AppData\Local\Programs\MiKTeX\tex/latex/microtype\mt-msa.cfg
+File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
+)
+LaTeX Font Info:    Trying to load font information for U+msb on input line 135
+.
+
+(C:\Users\brian\AppData\Local\Programs\MiKTeX\tex/latex/amsfonts\umsb.fd
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+)
+(C:\Users\brian\AppData\Local\Programs\MiKTeX\tex/latex/microtype\mt-msb.cfg
+File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
+)
+(C:\Users\brian\AppData\Local\Programs\MiKTeX\tex/latex/microtype\mt-cmr.cfg
+File: mt-cmr.cfg 2013/05/19 v2.2 microtype config. file: Computer Modern Roman 
+(RS)
+)
+Package lettrine.sty Info: Targeted height = 16.56pt
+(lettrine.sty)             (for loversize=0, accent excluded),
+(lettrine.sty)             Lettrine height = 18.21608pt (S) loversize=0.1;
+(lettrine.sty)             reported on input line 139.
+Package lettrine.sty Info: Targeted height = 16.56pt
+(lettrine.sty)             (for loversize=0, accent excluded),
+(lettrine.sty)             Lettrine height = 18.21608pt (S) loversize=0.1;
+(lettrine.sty)             reported on input line 156.
+Package lettrine.sty Info: Targeted height = 16.56pt
+(lettrine.sty)             (for loversize=0, accent excluded),
+(lettrine.sty)             Lettrine height = 18.21608pt (S) loversize=0.1;
+(lettrine.sty)             reported on input line 161.
+Package lettrine.sty Info: Targeted height = 16.56pt
+(lettrine.sty)             (for loversize=0, accent excluded),
+(lettrine.sty)             Lettrine height = 18.21608pt (D) loversize=0.1;
+(lettrine.sty)             reported on input line 168.
+Package lettrine.sty Info: Targeted height = 16.56pt
+(lettrine.sty)             (for loversize=0, accent excluded),
+(lettrine.sty)             Lettrine height = 18.21608pt (W) loversize=0.1;
+(lettrine.sty)             reported on input line 173.
+Package lettrine.sty Info: Targeted height = 16.56pt
+(lettrine.sty)             (for loversize=0, accent excluded),
+(lettrine.sty)             Lettrine height = 18.21608pt (I) loversize=0.1;
+(lettrine.sty)             reported on input line 178.
+Package lettrine.sty Info: Targeted height = 16.56pt
+(lettrine.sty)             (for loversize=0, accent excluded),
+(lettrine.sty)             Lettrine height = 18.21608pt (R) loversize=0.1;
+(lettrine.sty)             reported on input line 183.
+Package lettrine.sty Info: Targeted height = 16.56pt
+(lettrine.sty)             (for loversize=0, accent excluded),
+(lettrine.sty)             Lettrine height = 18.21608pt (B) loversize=0.1;
+(lettrine.sty)             reported on input line 186.
+Package lettrine.sty Info: Targeted height = 16.56pt
+(lettrine.sty)             (for loversize=0, accent excluded),
+(lettrine.sty)             Lettrine height = 18.21608pt (L) loversize=0.1;
+(lettrine.sty)             reported on input line 191.
+Package lettrine.sty Info: Targeted height = 16.56pt
+(lettrine.sty)             (for loversize=0, accent excluded),
+(lettrine.sty)             Lettrine height = 18.21608pt (R) loversize=0.1;
+(lettrine.sty)             reported on input line 198.
+Package lettrine.sty Info: Targeted height = 16.56pt
+(lettrine.sty)             (for loversize=0, accent excluded),
+(lettrine.sty)             Lettrine height = 18.21608pt (R) loversize=0.1;
+(lettrine.sty)             reported on input line 203.
+Package lettrine.sty Info: Targeted height = 16.56pt
+(lettrine.sty)             (for loversize=0, accent excluded),
+(lettrine.sty)             Lettrine height = 18.21608pt (S) loversize=0.1;
+(lettrine.sty)             reported on input line 211.
+Package lettrine.sty Info: Targeted height = 16.56pt
+(lettrine.sty)             (for loversize=0, accent excluded),
+(lettrine.sty)             Lettrine height = 18.21608pt (L) loversize=0.1;
+(lettrine.sty)             reported on input line 214.
+Package lettrine.sty Info: Targeted height = 16.56pt
+(lettrine.sty)             (for loversize=0, accent excluded),
+(lettrine.sty)             Lettrine height = 18.21608pt (F) loversize=0.1;
+(lettrine.sty)             reported on input line 222.
+
+Overfull \hbox (1.4384pt too wide) in paragraph at lines 222--227
+[]\TU/OldStandardTT(0)/m/n/10 rame-works:  \TU/OldStandardTT(0)/m/it/8 Azure \T
+U/OldStandardTT(0)/m/n/8 / .NET
+ []
+
+Package lettrine.sty Info: Targeted height = 16.56pt
+(lettrine.sty)             (for loversize=0, accent excluded),
+(lettrine.sty)             Lettrine height = 18.21608pt (P) loversize=0.1;
+(lettrine.sty)             reported on input line 228.
+Package lettrine.sty Info: Targeted height = 16.56pt
+(lettrine.sty)             (for loversize=0, accent excluded),
+(lettrine.sty)             Lettrine height = 18.21608pt (P) loversize=0.1;
+(lettrine.sty)             reported on input line 234.
+Package lettrine.sty Info: Targeted height = 16.56pt
+(lettrine.sty)             (for loversize=0, accent excluded),
+(lettrine.sty)             Lettrine height = 18.21608pt (I) loversize=0.1;
+(lettrine.sty)             reported on input line 237.
+
+Overfull \hbox (8.15434pt too wide) in paragraph at lines 237--238
+[]\TU/OldStandardTT(0)/m/n/10 terate — \TU/OldStandardTT(0)/m/it/10 “Code Mobil
+ized” 
+ []
+
+Package lettrine.sty Info: Targeted height = 16.56pt
+(lettrine.sty)             (for loversize=0, accent excluded),
+(lettrine.sty)             Lettrine height = 18.21608pt (B) loversize=0.1;
+(lettrine.sty)             reported on input line 239.
+
+Overfull \hbox (5.72433pt too wide) in paragraph at lines 239--240
+[]\TU/OldStandardTT(0)/m/n/10 it-Naughts — \TU/OldStandardTT(0)/m/it/10 “Code G
+am-
+ []
+
+Package lettrine.sty Info: Targeted height = 16.56pt
+(lettrine.sty)             (for loversize=0, accent excluded),
+(lettrine.sty)             Lettrine height = 18.21608pt (M) loversize=0.1;
+(lettrine.sty)             reported on input line 241.
+Package lettrine.sty Info: Targeted height = 16.56pt
+(lettrine.sty)             (for loversize=0, accent excluded),
+(lettrine.sty)             Lettrine height = 18.21608pt (A) loversize=0.1;
+(lettrine.sty)             reported on input line 243.
+[1
+
+] (resume-one-page-bible.aux)
+ ***********
+LaTeX2e <2023-11-01> patch level 1
+L3 programming layer <2024-01-04>
+ ***********
+Package rerunfilecheck Info: File `resume-one-page-bible.out' has not changed.
+(rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
+ ) 
+Here is how much of TeX's memory you used:
+ 15230 strings out of 409617
+ 290984 string characters out of 5774014
+ 1958191 words of memory out of 5000000
+ 37152 multiletter control sequences out of 15000+600000
+ 560683 words of font info for 78 fonts, out of 8000000 for 9000
+ 1348 hyphenation exceptions out of 8191
+ 79i,5n,93p,1020b,652s stack positions out of 10000i,1000n,20000p,200000b,200000s
+
+Output written on resume-one-page-bible.pdf (1 page).

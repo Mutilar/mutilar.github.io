@@ -943,7 +943,7 @@
           maxY: vh * (1 - pad),
         };
       },
-      ignoreSelector: ".mm-node, .mm-explore-hint",
+      ignoreSelector: ".mm-node, .viz-explore-hint",
       rubberBandDrag: true,
       zoomStep: [0.92, 1.08],
       bounceCurve: "cubic-bezier(0.25, 1, 0.5, 1)",
@@ -1109,7 +1109,7 @@
 
     // "All" button
     const allBtn = document.createElement("button");
-    allBtn.className = "mm-filter active";
+    allBtn.className = "viz-filter active";
     allBtn.style.setProperty("--tc", "255,255,255");
     allBtn.innerHTML = '<span class="all-indicator">\u2b1c</span> \ud83c\udf9b\ufe0f';
     pillContainer.appendChild(allBtn);
@@ -1118,84 +1118,33 @@
     filters.forEach(f => {
       const tc = colors[f.cls] || "255,255,255";
       const btn = document.createElement("button");
-      btn.className = "mm-filter active";
+      btn.className = "viz-filter active";
       btn.dataset.filter = f.cls;
       btn.style.setProperty("--tc", tc);
       // Extract leading emoji from label, strip text
       var emojiMatch = f.label.match(/^(\p{Emoji_Presentation}|\p{Emoji}\uFE0F?)/u);
       var emojiOnly = emojiMatch ? emojiMatch[0] : '';
-      btn.innerHTML = '<span class="mm-dot" style="background:rgba(' + tc + ',0.9);"></span> ' + emojiOnly;
+      btn.innerHTML = '<span class="viz-dot" style="background:rgba(' + tc + ',0.9);"></span> ' + emojiOnly;
       btn.title = f.label;
       pillContainer.appendChild(btn);
       themeBtns.push(btn);
     });
 
-    function syncUI() {
-      const allActive = activeFilters.size === allClasses.length;
-      allBtn.classList.toggle("active", allActive);
-      const isLight = document.documentElement.classList.contains("light-mode");
-      const ind = allBtn.querySelector(".all-indicator");
-      if (ind) ind.textContent = allActive ? (isLight ? "\u2b1b" : "\u2b1c") : (isLight ? "\u2b1c" : "\u2b1b");
-      themeBtns.forEach(b => b.classList.toggle("active", activeFilters.has(b.dataset.filter)));
-    }
-
-    function doFilter() {
-      syncUI();
-      rebuild(activeFilters);
-    }
-
-    // Programmatic: set exactly one filter active
-    function setOnly(cls) {
-      activeFilters.clear();
-      activeFilters.add(cls);
-      doFilter();
-    }
-    // Programmatic: add one more filter
-    function addFilter(cls) {
-      activeFilters.add(cls);
-      doFilter();
-    }
-    // Programmatic: activate all
-    function setAll() {
-      allClasses.forEach(c => activeFilters.add(c));
-      doFilter();
-    }
-    // Programmatic: deactivate all (hide everything)
-    function setNone() {
-      activeFilters.clear();
-      doFilter();
-    }
-
-    allBtn.addEventListener("click", () => {
-      if (onManualFilter) onManualFilter();
-      if (activeFilters.size === allClasses.length) return;
-      setAll();
+    // Delegate behaviour to shared createFilterSystem
+    const sys = createFilterSystem({
+      allThemes: allClasses,
+      activeFilters: activeFilters,
+      allBtn: allBtn,
+      themeBtns: themeBtns,
+      onFilter: function () { rebuild(activeFilters); },
+      onManualFilter: onManualFilter,
     });
-
-    themeBtns.forEach(btn => {
-      btn.addEventListener("click", () => {
-        if (onManualFilter) onManualFilter();
-        const f = btn.dataset.filter;
-        if (activeFilters.size === allClasses.length) {
-          activeFilters.clear(); activeFilters.add(f);
-        } else if (activeFilters.has(f) && activeFilters.size === 1) {
-          allClasses.forEach(c => activeFilters.add(c));
-        } else if (activeFilters.has(f)) {
-          activeFilters.delete(f);
-        } else {
-          activeFilters.add(f);
-        }
-        doFilter();
-      });
-    });
-
-    window.addEventListener("theme-changed", syncUI);
 
     // Build class→label map for explore hint
     const labelMap = {};
     filters.forEach(f => { labelMap[f.cls] = f.label; });
 
-    return { allClasses: allClasses, labelMap: labelMap, setOnly: setOnly, addFilter: addFilter, setAll: setAll, setNone: setNone };
+    return { allClasses: allClasses, labelMap: labelMap, setOnly: sys.setOnly, addFilter: sys.addFilter, setAll: sys.setAll, setNone: sys.setNone };
   }
 
   /* ═════════════════════════════════════════════════════════════
@@ -1213,7 +1162,7 @@
     let _fitHandle = null;      // current animateCameraFit handle
 
     function fitView(animate) {
-      const vp = modal.querySelector(".mm-viewport");
+      const vp = modal.querySelector(".viz-viewport");
       if (!vp || !state.world || !_dims) return;
       const bw = _visibleBounds ? _visibleBounds.w : _dims.svgW;
       const bh = _visibleBounds ? _visibleBounds.h : _dims.svgH;
@@ -1465,7 +1414,7 @@
 
             // Add layout toggle as leftmost button (before All)
             var toggleBtn = document.createElement("button");
-            toggleBtn.className = "kg-layout-toggle";
+            toggleBtn.className = "viz-layout-toggle";
             toggleBtn.title = "Static: nodes keep their positions when filtering. Dynamic: nodes reflow into compact positions.";
             pillContainer.insertBefore(toggleBtn, pillContainer.firstChild);
             _layoutToggle = createLayoutToggle({
@@ -1500,7 +1449,7 @@
     var _hintCF = createCrossfader();
 
     function resetHintLabel() {
-      var hint = modal.querySelector(".mm-explore-hint");
+      var hint = modal.querySelector(".viz-explore-hint");
       if (!hint) return;
       if (_exploring) {
         _hintCF.fade(hint, EXPLORE_DEFAULT, function () { hint.classList.remove("exploring"); });
@@ -1511,7 +1460,7 @@
     }
 
     function setHintLabel(label) {
-      var hint = modal.querySelector(".mm-explore-hint");
+      var hint = modal.querySelector(".viz-explore-hint");
       if (!hint) return;
       var m = label.match(/^(\p{Emoji_Presentation}|\p{Emoji}\uFE0F?)\s*/u);
       var emoji = m ? m[1] : '\uD83D\uDD2D';
@@ -1537,7 +1486,7 @@
       }
       // Clear pill glow
       var pills = document.getElementById(cfg.filterId);
-      if (pills) pills.querySelectorAll(".mm-filter-glow").forEach(function (el) { el.classList.remove("mm-filter-glow"); });
+      if (pills) pills.querySelectorAll(".viz-filter-glow").forEach(function (el) { el.classList.remove("viz-filter-glow"); });
       resetHintLabel();
       // Only restore all filters when explicitly requested (e.g. tour end, close)
       // Not when a user manually clicks a filter pill
@@ -1557,7 +1506,7 @@
       var gen = _exploreGen;
       _exploring = true;
       if (state.world) state.world.classList.add("mm-exploring");
-      var hint = modal.querySelector(".mm-explore-hint");
+      var hint = modal.querySelector(".viz-explore-hint");
       if (hint) hint.classList.add("exploring");
       var classes = _filterAPI.allClasses;
       var labels = _filterAPI.labelMap;
@@ -1579,10 +1528,10 @@
       function glowFilterPill(cls) {
         if (!pillContainer) return;
         // Remove prior pill glow
-        pillContainer.querySelectorAll(".mm-filter-glow").forEach(function (el) { el.classList.remove("mm-filter-glow"); });
+        pillContainer.querySelectorAll(".viz-filter-glow").forEach(function (el) { el.classList.remove("viz-filter-glow"); });
         // Add glow to matching pill
-        var pill = pillContainer.querySelector('.mm-filter[data-filter="' + cls + '"]');
-        if (pill) pill.classList.add("mm-filter-glow");
+        var pill = pillContainer.querySelector('.viz-filter[data-filter="' + cls + '"]');
+        if (pill) pill.classList.add("viz-filter-glow");
       }
 
       // Start with first category only
@@ -1617,7 +1566,7 @@
         _exploring = false;
         if (state.world) state.world.classList.remove("mm-exploring");
         // Clear pill glow
-        if (pillContainer) pillContainer.querySelectorAll(".mm-filter-glow").forEach(function (el) { el.classList.remove("mm-filter-glow"); });
+        if (pillContainer) pillContainer.querySelectorAll(".viz-filter-glow").forEach(function (el) { el.classList.remove("viz-filter-glow"); });
         resetHintLabel();
       }, cumulative[classes.length]));
     }
@@ -1629,9 +1578,9 @@
     function close() { stopExplore(); toggleModal(modal, false); }
 
     // Wire DOM
-    const vp = modal.querySelector(".mm-viewport");
+    const vp = modal.querySelector(".viz-viewport");
     if (vp) {
-      state.world = modal.querySelector(".mm-world");
+      state.world = modal.querySelector(".viz-world");
       _svgLayer   = modal.querySelector(".mm-edges");
       if (state.world && _svgLayer) _initPanZoom(vp, state);
     }
@@ -1645,18 +1594,13 @@
 
     // ── Explore hint ─────────────────────────────────────────
     if (vp) {
-      const hint = document.createElement("div");
-      hint.className = "mm-explore-hint scroll-hint";
-      hint.innerHTML = '<strong>Explore</strong><span class="scroll-arrow">\uD83D\uDD2D</span>';
-      hint.style.cursor = "pointer";
-      hint.addEventListener("click", function (e) {
-        e.preventDefault();
-        startExplore();
+      createExploreHint({
+        viewport: vp,
+        label: '<strong>Explore</strong><span class="scroll-arrow">\uD83D\uDD2D</span>',
+        onStart: startExplore,
+        isTouring: function () { return _exploring; },
+        onCancel: stopExplore,
       });
-      // Also stop explore on user pan/zoom interaction
-      vp.addEventListener("pointerdown", function (e) { if (_exploring && !e.target.closest(".mm-explore-hint")) stopExplore(); });
-      vp.addEventListener("wheel", function () { if (_exploring) stopExplore(); }, { passive: true });
-      vp.appendChild(hint);
     }
 
     window[cfg.openGlobal]  = open;
