@@ -416,14 +416,17 @@ function createLayoutToggle(cfg) {
   var btn = typeof cfg.btn === "string" ? document.getElementById(cfg.btn) : cfg.btn;
   var onDynamic    = cfg.onDynamic    || function () {};
   var onStatic     = cfg.onStatic     || function () {};
-  var staticLabel  = cfg.staticLabel  || "\uD83D\uDCCC Static";
-  var dynamicLabel = cfg.dynamicLabel || "\uD83D\uDD00 Dynamic";
+  var staticLabel  = cfg.staticLabel  || "\uD83D\uDCCC";
+  var dynamicLabel = cfg.dynamicLabel || "\uD83D\uDD00";
+  var staticColor  = cfg.staticColor  || "0,120,212";   // MSFT Blue
+  var dynamicColor = cfg.dynamicColor || "242,80,34";   // MSFT Red
   var _static      = cfg.startStatic !== undefined ? cfg.startStatic : true;
 
   function syncUI() {
     if (!btn) return;
     btn.classList.toggle("dynamic", !_static);
     btn.textContent = _static ? staticLabel : dynamicLabel;
+    btn.style.setProperty("--tc", _static ? staticColor : dynamicColor);
   }
 
   syncUI();

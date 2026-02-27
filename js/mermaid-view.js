@@ -1111,7 +1111,7 @@
     const allBtn = document.createElement("button");
     allBtn.className = "mm-filter active";
     allBtn.style.setProperty("--tc", "255,255,255");
-    allBtn.innerHTML = '<span class="all-indicator">\u2b1c</span> \ud83c\udf9b\ufe0f All';
+    allBtn.innerHTML = '<span class="all-indicator">\u2b1c</span> \ud83c\udf9b\ufe0f';
     pillContainer.appendChild(allBtn);
 
     const themeBtns = [];
@@ -1121,7 +1121,11 @@
       btn.className = "mm-filter active";
       btn.dataset.filter = f.cls;
       btn.style.setProperty("--tc", tc);
-      btn.innerHTML = '<span class="mm-dot" style="background:rgba(' + tc + ',0.9);"></span> ' + f.label;
+      // Extract leading emoji from label, strip text
+      var emojiMatch = f.label.match(/^(\p{Emoji_Presentation}|\p{Emoji}\uFE0F?)/u);
+      var emojiOnly = emojiMatch ? emojiMatch[0] : '';
+      btn.innerHTML = '<span class="mm-dot" style="background:rgba(' + tc + ',0.9);"></span> ' + emojiOnly;
+      btn.title = f.label;
       pillContainer.appendChild(btn);
       themeBtns.push(btn);
     });
@@ -1459,11 +1463,11 @@
           if (pillContainer && _legend.legendNodes.length) {
             _filterAPI = buildFilters(pillContainer, _legend.legendNodes, _colors, rebuild, function() { stopExplore(false); });
 
-            // Add layout toggle after the filter pills
+            // Add layout toggle as leftmost button (before All)
             var toggleBtn = document.createElement("button");
             toggleBtn.className = "kg-layout-toggle";
             toggleBtn.title = "Static: nodes keep their positions when filtering. Dynamic: nodes reflow into compact positions.";
-            pillContainer.appendChild(toggleBtn);
+            pillContainer.insertBefore(toggleBtn, pillContainer.firstChild);
             _layoutToggle = createLayoutToggle({
               btn: toggleBtn,
               onDynamic: function () { _filterAPI.setAll(); },

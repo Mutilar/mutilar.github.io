@@ -1,5 +1,5 @@
-%------------------------------------------------------------
-% resume2.tex — Brian Hungerman
+﻿%------------------------------------------------------------
+% resume2.tex â€” Brian Hungerman
 % Compile: pdflatex resume2.tex
 %------------------------------------------------------------
 \documentclass[10pt,letterpaper]{article}
@@ -17,7 +17,7 @@
 % Open Sans is now the default font (has sb/semi-bold weight)
 
 % \sb = semi-bold for proper nouns & acronyms in descriptions
-\newcommand{\sb}[1]{{\fontseries{sb}\selectfont #1}}
+\newcommand{\semi}[1]{{\fontseries{sb}\selectfont #1}}
 
 \hypersetup{
   colorlinks=false,
@@ -26,7 +26,7 @@
   pdftitle={Brian Hungerman -- Resume}
 }
 
-% ── Section headers: black rule ABOVE, then BOLD text ─────
+% â”€â”€ Section headers: black rule ABOVE, then BOLD text â”€â”€â”€â”€â”€
 \titleformat{\section}
   {\fontsize{10}{12}\selectfont\bfseries}
   {}
@@ -35,7 +35,7 @@
 
 \titlespacing*{\section}{0pt}{8pt}{2pt}
 
-% ── Tight bullet lists ───────────────────────────────────
+% â”€â”€ Tight bullet lists â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 \setlist[itemize]{
   nosep, topsep=0pt, partopsep=0pt, parsep=0pt,
   itemsep=0pt, left=8pt, label={\textbullet},
@@ -53,10 +53,10 @@
 
 \setlength{\columnseprule}{0.4pt}
 
-% ══════════════════════════════════════════════════════════
+% â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 \begin{document}
 
-% ── HEADER ────────────────────────────────────────────────
+% â”€â”€ HEADER â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 \begin{minipage}[t]{0.62\textwidth}
   \vspace{0pt}
   {\fontsize{24}{28}\selectfont\bfseries Brian Hungerman}
@@ -72,11 +72,11 @@
 
 \vspace{1pt}
 
-% ── TWO COLUMNS ──────────────────────────────────────────
+% â”€â”€ TWO COLUMNS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 \columnratio{0.77}
 \begin{paracol}{2}
 
-% ══════════════ LEFT COLUMN ══════════════════════════════
+% â•â•â•â•â•â•â•â•â•â•â•â•â•â• LEFT COLUMN â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 \section*{Experience}
 
@@ -88,31 +88,31 @@
 \vspace{3pt}
 \textbf{Software Engineer @ A.I.\ Platform (Microsoft)} \hfill {\mdseries\small Jan 2020 -- Jan 2025}
 \begin{itemize}
-  \item Shipped \sb{Online Endpoints} to 50+ regions for \sb{Azure OpenAI}, \sb{Copilot}, \sb{Office} \& 3p.
-  \item Scaled cloud infrastructure to serve trillions of inferences/month w/ 6 9's \sb{SLA}.
-  \item Optimized \sb{Network Address Translation} to reduce \sb{COGS} by \$10 million/year.
-  \item Completed security, privacy \& component governance audits as \sb{Security Champ}.
-  \item Spearheaded livesite process improvements via \sb{TSGs} \& \sb{SOPs} as \sb{DRI Champ}.
-  \item Implemented \sb{Envoy Proxy} build pipeline w/ \sb{Bazel} \& custom \sb{C++} filters, e.g.:
+  \item Shipped \semi{Online Endpoints} to 50+ regions for \semi{Azure OpenAI}, \semi{Copilot}, \semi{Office} \& 3p.
+  \item Scaled cloud infrastructure to serve trillions of inferences/month w/ 6 9's \semi{SLA}.
+  \item Optimized \semi{Network Address Translation} to reduce \semi{COGS} by \$10 million/year.
+  \item Completed security, privacy \& component governance audits as \semi{Security Champ}.
+  \item Spearheaded livesite process improvements via \semi{TSGs} \& \semi{SOPs} as \semi{DRI Champ}.
+  \item Implemented \semi{Envoy Proxy} build pipeline w/ \semi{Bazel} \& custom \semi{C++} filters, e.g.:
   \begin{itemize}
-      \item \sb{SHA-256 Key-Based Authentication (KBA)} filter w/ \sb{CORS} preflight support.
-      \item \sb{Azure Active Directory (AAD)} authentication filter w/ \sb{LRU} decision cache.
-      \item \sb{Global Rate Limiting} filter w/ \sb{Go} microservice to pub/sub to \sb{Redis} cache.
+      \item \semi{SHA-256 Key-Based Authentication (KBA)} filter w/ \semi{CORS} preflight support.
+      \item \semi{Azure Active Directory (AAD)} authentication filter w/ \semi{LRU} decision cache.
+      \item \semi{Global Rate Limiting} filter w/ \semi{Go} microservice to pub/sub to \semi{Redis} cache.
   \end{itemize}
-  \item Set up runners \& telemetry pipelines in \sb{Azure Data Explorer}, \sb{Kusto} \& \sb{SQL}.
-  \item Shipped \sb{PowerBI} \& \sb{Grafana} dashboards to track platform metrics \& logs.
+  \item Set up runners \& telemetry pipelines in \semi{Azure Data Explorer}, \semi{Kusto} \& \semi{SQL}.
+  \item Shipped \semi{PowerBI} \& \semi{Grafana} dashboards to track platform metrics \& logs.
 \end{itemize}
 \vspace{3pt}
 \textbf{Software Engineer Intern @ A.I.\ Platform (Microsoft)} \hfill {\mdseries\small May 2019 -- Aug 2019}
 \begin{itemize}
-  \item Designed \sb{Jupyter} notebook \sb{CI} pipeline w/ \sb{Azure DevOps}, \sb{ML SDK} \& \sb{Functions}.
+  \item Designed \semi{Jupyter} notebook \semi{CI} pipeline w/ \semi{Azure DevOps}, \semi{ML SDK} \& \semi{Functions}.
 \end{itemize}
 \vspace{3pt}
 \textbf{Software Engineer Intern @ Ventana (Roche)} \hfill {\mdseries\small May 2018 -- Dec 2018}
 \begin{itemize}
-  \item Pushed feature-adds \& bug-fixes for \sb{MEAN} stack digital pathology web app.
-  \item Prototyped \sb{OpenSeaDragon}-esque image renderer \& annotator in \sb{Pixi.JS}.
-  \item Modernized \sb{Nagios} server monitoring w/ \sb{Icinga}, \sb{Graphite} \& \sb{Grafana}.
+  \item Pushed feature-adds \& bug-fixes for \semi{MEAN} stack digital pathology web app.
+  \item Prototyped \semi{OpenSeaDragon}-esque image renderer \& annotator in \semi{Pixi.JS}.
+  \item Modernized \semi{Nagios} server monitoring w/ \semi{Icinga}, \semi{Graphite} \& \semi{Grafana}.
 \end{itemize}
 \vspace{3pt}
 \textbf{Director @ HackMerced IV (MLH)} \hfill {\mdseries\small May 2018 -- May 2019}
@@ -122,7 +122,7 @@
 \vspace{3pt}
 \textbf{Web Developer @ CITRIS \& Banatao Institute (UCM)} \hfill {\mdseries\small May 2017 -- Dec 2018}
 \begin{itemize}
-  \item Developed \sb{GitOps} content management system (\sb{CMS}) via \sb{jQuery} \& \sb{CSV} files to replace \sb{Drupal} \sb{CMS}, hosting via \sb{GitHub Pages}: https://citris.ucmerced.edu.
+  \item Developed \semi{GitOps} content management system (\semi{CMS}) via \semi{jQuery} \& \semi{CSV} files to replace \semi{Drupal} \semi{CMS}, hosting via \semi{GitHub Pages}: https://citris.ucmerced.edu.
 \end{itemize}
 \vspace{3pt}
 \textbf{Instructor @ Summer of Game Design (MVHS)} \hfill {\mdseries\small Jun 2015 -- Jul 2016}
@@ -139,22 +139,22 @@
 \vspace{3pt}
 \textbf{Lead Research Assistant @ VICE Lab (UCM)} \hfill {\mdseries\small Aug 2018 -- Dec 2019}
 \begin{itemize}
-  \item Led team to develop heuristic \& \sb{ML} scripts in \sb{Google Earth Engine} to model \& predict California's agricultural fallowing via Earth observation satellite data.
-  \item Onboarded lab to \sb{GitHub} \& wrote open-sourced scripts in \sb{Python}, \sb{C\#} \& \sb{R}.
-  \item Refurbished lab's website, hosting via \sb{GitHub Pages}: https://vicelab.net.
+  \item Led team to develop heuristic \& \semi{ML} scripts in \semi{Google Earth Engine} to model \& predict California's agricultural fallowing via Earth observation satellite data.
+  \item Onboarded lab to \semi{GitHub} \& wrote open-sourced scripts in \semi{Python}, \semi{C\#} \& \semi{R}.
+  \item Refurbished lab's website, hosting via \semi{GitHub Pages}: https://vicelab.net.
 \end{itemize}
 \vspace{3pt}
 \textbf{Research Assistant @ ANDES Lab (UCM)} \hfill {\mdseries\small Jan 2019 -- May 2019}
 \begin{itemize}
-  \item Visualized \sb{InfluxDB} data for \sb{HVAC} predictive control system in \sb{Python}, \sb{Grafana}.
+  \item Visualized \semi{InfluxDB} data for \semi{HVAC} predictive control system in \semi{Python}, \semi{Grafana}.
 \end{itemize}
 \vspace{3pt}
 \textbf{Research Assistant @ SAIL + MACES (UCM \& NASA MUREP)} \hfill {\mdseries\small Aug 2017 -- May 2018}
 \begin{itemize}
-  \item Debugged code to 3D-print \sb{Fermi} surfaces via \sb{Marching cubes} in \sb{Fortran90}.
+  \item Debugged code to 3D-print \semi{Fermi} surfaces via \semi{Marching cubes} in \semi{Fortran90}.
 \end{itemize}
 
-% ══════════════ RIGHT COLUMN ═════════════════════════════
+% â•â•â•â•â•â•â•â•â•â•â•â•â•â• RIGHT COLUMN â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 \switchcolumn
 
 \section*{Skills}
@@ -219,3 +219,4 @@ Android Studio      & 2 \\
 \end{paracol}
 
 \end{document}
+

@@ -1,0 +1,691 @@
+% resume-bible.tex — Brian Hungerman
+% Style-transferred from resume2.tex into bible.tex aesthetics
+% Compile with XeLaTeX or LuaLaTeX for custom font support
+% =========================================================
+
+\documentclass[10pt, twoside, openany]{book}
+
+% ----- Page Geometry (A6 pocket bible size) -----
+\usepackage[
+    paperwidth=4.25in,
+    paperheight=6.875in,
+    margin=0.5in,
+    inner=0.5in,
+    outer=0.5in
+]{geometry}
+
+% ----- Font Setup (requires XeLaTeX/LuaLaTeX) -----
+\usepackage{fontspec}
+\usepackage{microtype}
+
+% Main body font - Old Standard TT (install from Google Fonts)
+\setmainfont{Old Standard TT}[
+    UprightFont = *-Regular,
+    BoldFont = *-Bold,
+    ItalicFont = *-Italic,
+    FakeBold = 6
+]
+
+% Title font - Cinzel (install from Google Fonts)
+\newfontfamily\titlefont{Cinzel}[
+    UprightFont = *-Regular,
+    BoldFont = *-Bold,
+    FakeBold = 8
+]
+
+% Decorative title font - Cinzel Decorative
+\newfontfamily\decorativefont{Cinzel Decorative}[
+    UprightFont = *-Regular,
+    BoldFont = *-Bold,
+    FakeBold = 5
+]
+
+% ----- Formatting -----
+\usepackage{titlesec}
+\usepackage{lettrine}      % Drop caps
+\usepackage{GoudyIn}       % Goudy Initialen - decorative drop cap font
+\usepackage{amssymb}       % For star symbols
+\usepackage{setspace}
+\usepackage{parskip}
+\usepackage{xcolor}
+\usepackage{multicol}      % For two-column appendix
+\usepackage{enumitem}      % For tight lists
+
+% Colors
+\definecolor{bloodred}{RGB}{138, 3, 3}
+\definecolor{inkblack}{RGB}{30, 30, 30}
+
+\color{inkblack}
+
+% ----- Chapter/Section Formatting -----
+\titleformat{\chapter}[display]
+    {\decorativefont\Large\centering}
+    {}
+    {0pt}
+    {}
+\titlespacing*{\chapter}{0pt}{20pt}{10pt}
+
+\titleformat{\section}[block]
+    {\titlefont\large\centering}
+    {}
+    {0pt}
+    {}
+\titlespacing*{\section}{0pt}{15pt}{8pt}
+
+% ----- Custom Commands -----
+% For emphasis (italicized proper nouns, as in bible.tex)
+\newcommand{\speech}[1]{\textit{#1}}
+
+% Horizontal rule
+\newcommand{\divider}{%
+    \begin{center}
+    \rule{0.5\textwidth}{2pt}
+    \end{center}
+}
+
+% Elegant TOC dot leader (spaced dots)
+\newcommand{\tocfill}{%
+    \leaders\hbox to 1em{\hfil.\hfil}\hfill%
+}
+
+% Drop cap settings - use Goudy Initialen decorative font
+\renewcommand{\LettrineFontHook}{\GoudyInfamily}
+\renewcommand{\LettrineTextFont}{\normalfont}
+\setcounter{DefaultLines}{2}
+\renewcommand{\DefaultLoversize}{0.1}
+\renewcommand{\DefaultLraise}{0.1}
+\setlength{\DefaultFindent}{3pt}
+\setlength{\DefaultNindent}{0pt}
+
+% ----- Tight bullet lists (small, bible-style) -----
+\setlist[itemize]{
+  nosep, topsep=2pt, partopsep=0pt, parsep=0pt,
+  itemsep=1pt, left=8pt, label={$\cdot$},
+  before=\vspace{2pt}\fontsize{8pt}{10pt}\selectfont,
+  after=\vspace{2pt}
+}
+
+% Custom command for index section letters with proper spacing (from bible.tex)
+\newcommand{\indexletter}[1]{%
+\vspace{0.2cm}\par\noindent%
+{\GoudyInfamily\fontsize{24pt}{24pt}\selectfont #1}\par%
+\vspace{0.1cm}\noindent\ignorespaces%
+}
+
+% ----- Document -----
+\begin{document}
+\pagestyle{plain}
+\setstretch{1.15}
+
+% ===== TITLE PAGE =====
+\begin{titlepage}
+    \centering
+    \vspace*{2cm}
+
+    {\decorativefont\bfseries\Huge Brian}\\[0.3cm]
+    {\decorativefont\bfseries\Huge Hungerman}
+
+    \vfill
+
+    \vspace{0.5cm}
+\end{titlepage}
+
+% Front matter uses Roman numerals
+\pagenumbering{roman}
+
+% ===== INNER TITLE PAGE =====
+\newpage
+
+\vspace*{3cm}
+
+\begin{center}
+
+{\decorativefont\LARGE Brian}\\[0.3cm]
+{\decorativefont\LARGE Hungerman}
+
+\vspace{.5cm}
+
+\begin{center}
+\textbullet\quad\textbullet\quad\textbullet
+\end{center}
+
+\vspace{.5cm}
+
+{\titlefont\large Chronicle Of\\Works \& Wisdom}
+
+\divider
+
+\vspace{0.5cm}
+
+{\titlefont\large Senior Software Engineer}
+
+\vspace{.5cm}
+
+\begin{center}
+\textbullet\quad\textbullet\quad\textbullet
+\end{center}
+
+\vspace{.5cm}
+
+{\titlefont\large Microsoft}
+
+\end{center}
+
+\vfill
+
+% ===== PROFESSIONAL SUMMARY PAGE =====
+\newpage
+\thispagestyle{plain}
+
+\begin{center}
+{\titlefont\large Apostle's Preface}\\[0.2cm]
+\end{center}
+
+\divider
+
+{\small
+\lettrine[lines=2]{B}{rian} Hungerman, \speech{Senior Software Engineer} at \speech{Microsoft Applied Sciences}, incubates novel \speech{A.I.}\ user experiences with collaboration across \speech{W+D}, \speech{MSR} \& \speech{ID}, developing full-stack functional prototypes across web \& mobile platforms.
+
+\lettrine[lines=2]{P}{reviously}, he shipped \speech{Online Endpoints} to 50+ regions for \speech{Azure OpenAI}, \speech{Copilot}, \speech{Office} \& third-parties, scaling cloud infrastructure to serve trillions of inferences per month with six nines of \speech{SLA}.
+
+\lettrine[lines=2]{H}{e} holds a \speech{Bachelor of Science} in \speech{Computer Science \& Engineering} from the \speech{University of California, Merced}, \textit{magna cum laude}.
+
+\vspace{.2cm}
+
+\begin{flushright}
+\textit{''Mortality is merely a door, not a wall!''\\— Clavileño, First Of The Blesséd}
+\end{flushright}
+
+\vspace{.2cm}
+
+\begin{flushleft}
+\textit{''Code mobilized, code gamified\ldots''\\— Brian Hungerman, typically}
+\end{flushleft}
+
+\vspace{0.5cm}
+
+\begin{center}
+\textbullet\quad\textbullet\quad\textbullet
+\end{center}
+
+\begin{center}
+{\small https://brianhungerman.com}\\
+{\small brianhungerman@gmail.com}\\
+{\small 1 (425) 389-9642}
+\end{center}
+
+}
+
+% ===== SACRED INDEX (TABLE OF CONTENTS) =====
+\newpage
+\thispagestyle{plain}
+
+\begin{center}
+{\titlefont\large Dark Tutelage}\\[0.2cm]
+\end{center}
+
+\vspace*{0.5cm}
+
+\begin{center}
+\textbullet\quad\textbullet\quad\textbullet
+\end{center}
+
+\begin{center}
+\speech{What follows is a compilation of professional experience, research, education, skills, projects \& awards.}
+\end{center}
+
+\divider
+
+\vspace{1cm}
+
+\noindent{\titlefont\large Experience}\tocfill 1
+
+\vspace{0.1cm}
+\hspace{1em}{\titlefont Applied Sciences}\tocfill 1
+
+\vspace{0.1cm}
+\hspace{1em}{\titlefont A.I.\ Platform}\tocfill 2
+
+\vspace{0.1cm}
+\hspace{1em}{\titlefont Internships}\tocfill 5
+
+\vspace{0.1cm}
+\hspace{1em}{\titlefont Leadership}\tocfill 7
+
+\vspace{.5cm}
+
+\noindent{\titlefont\large Research \& Education}\tocfill 9
+
+\vspace{0.1cm}
+\hspace{1em}{\titlefont University}\tocfill 9
+
+\vspace{0.1cm}
+\hspace{1em}{\titlefont Laboratories}\tocfill 10
+
+\vspace{.5cm}
+
+\noindent{\titlefont\large Skills}\tocfill 13
+
+\vspace{.5cm}
+
+\noindent{\titlefont\large Projects}\tocfill 15
+
+\vspace{.5cm}
+
+\noindent{\titlefont\large Awards}\tocfill 16
+
+\vfill
+
+% ===== VOLUME ONE: EXPERIENCE =====
+\newpage
+\pagenumbering{arabic}
+\chapter*{Experience}
+
+\vspace{0.5cm}
+
+\begin{center}
+\textbullet\quad\textbullet\quad\textbullet
+\end{center}
+
+\begin{center}
+\speech{What follows is a compilation of professional works; here-in re-counting the labors undertaken in service of \speech{Microsoft} and others.}
+\end{center}
+
+\divider
+
+% ----- APPLIED SCIENCES -----
+
+\section*{Applied Sciences}
+
+\divider
+
+{\titlefont\small Senior Software Engineer @ Microsoft}\\
+{\small\textit{January 2025 — Present}}
+
+\vspace{0.3cm}
+
+\lettrine[lines=2]{I}{ncubating} novel \speech{A.I.}\ user experiences with collaboration across \speech{W+D}, \speech{MSR} \& \speech{ID}; developing full-stack functional prototypes across web \& mobile platforms.
+
+\lettrine[lines=2]{T}{he} \speech{Applied Sciences} group is the advanced prototyping arm of \speech{Microsoft}, where research meets product in the pursuit of what comes next\ldots.
+
+\vspace{0.5cm}
+
+\begin{center}
+\textbullet\quad\textbullet\quad\textbullet
+\end{center}
+
+\newpage
+
+% ----- A.I. PLATFORM -----
+
+\section*{A.I.\ Platform}
+
+\divider
+
+{\titlefont\small Software Engineer @ Microsoft}\\
+{\small\textit{January 2020 — January 2025}}
+
+\vspace{0.3cm}
+
+\lettrine[lines=2]{S}{hipped} \speech{Online Endpoints} to 50+ regions for \speech{Azure OpenAI}, \speech{Copilot}, \speech{Office} \& third-parties; scaled cloud infrastructure to serve trillions of inferences per month with six nines of \speech{SLA}.
+
+\lettrine[lines=2]{O}{ptimized} \speech{Network Address Translation} to reduce \speech{COGS} by \$10 million per year; a feat of frugal engineering that echoed through the ledgers of \speech{Azure}\ldots.
+
+\lettrine[lines=2]{C}{ompleted} security, privacy \& component governance audits as \speech{Security Champion}; spearheaded livesite process improvements via \speech{TSGs} \& \speech{SOPs} as \speech{DRI Champion}.
+
+\lettrine[lines=2]{I}{mplemented} \speech{Envoy Proxy} build pipeline with \speech{Bazel} \& custom \speech{C++} filters, among them:
+
+\begin{itemize}
+  \item \speech{SHA-256 Key-Based Authentication} filter with \speech{CORS} preflight support
+  \item \speech{Azure Active Directory} authentication filter with \speech{LRU} decision cache
+  \item \speech{Global Rate Limiting} filter with \speech{Go} microservice to pub/sub to \speech{Redis} cache
+\end{itemize}
+
+\lettrine[lines=2]{S}{et} up runners \& telemetry pipelines in \speech{Azure Data Explorer}, \speech{Kusto} \& \speech{SQL}; shipped \speech{PowerBI} \& \speech{Grafana} dashboards to track platform metrics \& logs.
+
+\vspace{0.5cm}
+
+\begin{center}
+\textbullet\quad\textbullet\quad\textbullet
+\end{center}
+
+\newpage
+
+% ----- INTERNSHIPS -----
+
+\section*{The Internships}
+
+\divider
+
+{\titlefont\small Software Engineer Intern @ A.I.\ Platform, Microsoft}\\
+{\small\textit{May 2019 — August 2019}}
+
+\vspace{0.3cm}
+
+\lettrine[lines=2]{D}{esigned} \speech{Jupyter} notebook \speech{CI} pipeline with \speech{Azure DevOps}, \speech{ML SDK} \& \speech{Azure Functions}; thus was the seed of automation sown\ldots.
+
+\vspace{0.5cm}
+
+\begin{center}
+\textbullet\quad\textbullet\quad\textbullet
+\end{center}
+
+\vspace{0.5cm}
+
+{\titlefont\small Software Engineer Intern @ Ventana, Roche}\\
+{\small\textit{May 2018 — December 2018}}
+
+\vspace{0.3cm}
+
+\lettrine[lines=2]{P}{ushed} feature-adds \& bug-fixes for \speech{MEAN} stack digital pathology web application; prototyped \speech{OpenSeaDragon}-esque image renderer \& annotator in \speech{Pixi.JS}.
+
+\lettrine[lines=2]{M}{odernized} \speech{Nagios} server monitoring with \speech{Icinga}, \speech{Graphite} \& \speech{Grafana}; watch-fires re-kindled for a new age of observability\ldots.
+
+\vspace{0.5cm}
+
+\begin{center}
+\textbullet\quad\textbullet\quad\textbullet
+\end{center}
+
+\newpage
+
+% ----- LEADERSHIP -----
+
+\section*{Leadership}
+
+\divider
+
+{\titlefont\small Director @ HackMerced IV, Major League Hacking}\\
+{\small\textit{May 2018 — May 2019}}
+
+\vspace{0.3cm}
+
+\lettrine[lines=2]{H}{osted} non-profit collegiate hackathon for 300 students, fundraising \$20,000! A congregation of builders, summoned to create\ldots.
+
+\vspace{0.5cm}
+
+\begin{center}
+\textbullet\quad\textbullet\quad\textbullet
+\end{center}
+
+\vspace{0.5cm}
+
+{\titlefont\small Web Developer @ CITRIS \& Banatao Institute, UCM}\\
+{\small\textit{May 2017 — December 2018}}
+
+\vspace{0.3cm}
+
+\lettrine[lines=2]{D}{eveloped} \speech{GitOps} content management system via \speech{jQuery} \& \speech{CSV} files to replace \speech{Drupal CMS}, hosting via \speech{GitHub Pages}: https://citris.ucmerced.edu.
+
+\vspace{0.5cm}
+
+\begin{center}
+\textbullet\quad\textbullet\quad\textbullet
+\end{center}
+
+\vspace{0.5cm}
+
+{\titlefont\small Instructor @ Summer of Game Design, MVHS}\\
+{\small\textit{June 2015 — July 2016}}
+
+\vspace{0.3cm}
+
+\lettrine[lines=2]{C}{o-founded} non-profit game programming summer camp, fundraising \$25,000! The youth were taught the ancient craft of \speech{Unity3D}\ldots.
+
+\vspace{0.5cm}
+
+\begin{center}
+\textbullet\quad\textbullet\quad\textbullet
+\end{center}
+
+\vspace{2cm}
+
+\begin{center}
+\textbullet\quad\textbullet\quad\textbullet
+\end{center}
+
+\begin{center}
+\textit{''\ldots\ so it is written in Code; so it shall compile\ldots''}
+\end{center}
+
+\divider
+
+% ===== VOLUME TWO: RESEARCH & EDUCATION =====
+\chapter*{Research \& Education}
+
+\vspace{0.5cm}
+
+\begin{center}
+\textbullet\quad\textbullet\quad\textbullet
+\end{center}
+
+\begin{center}
+\speech{What follows is a compilation of scholarly works; here-in re-counting the studies \& discoveries made in the laboratories \& lecture halls of \speech{UC Merced}.}
+\end{center}
+
+\divider
+
+% ----- UNIVERSITY -----
+
+\section*{The University}
+
+\divider
+
+{\titlefont\small Bachelor of Science @ University of California, Merced}\\
+{\small\textit{August 2016 — December 2019}}
+
+\vspace{0.3cm}
+
+\lettrine[lines=2]{C}{omputer} Science \& Engineering, \textit{magna cum laude}\\(GPA 3.74); a foundation forged in algorithms \& proofs\ldots.
+
+\vspace{0.5cm}
+
+\begin{center}
+\textbullet\quad\textbullet\quad\textbullet
+\end{center}
+
+\newpage
+
+% ----- LABORATORIES -----
+
+\section*{The Laboratories}
+
+\divider
+
+{\titlefont\small Lead Research Assistant @ VICE Lab, UCM}\\
+{\small\textit{August 2018 — December 2019}}
+
+\vspace{0.3cm}
+
+\lettrine[lines=2]{L}{ed} team to develop heuristic \& \speech{ML} scripts in \speech{Google Earth Engine} to model \& predict California's agricultural fallowing via Earth observation satellite data.
+
+\lettrine[lines=2]{O}{nboarded} lab to \speech{GitHub} \& wrote open-sourced scripts in \speech{Python}, \speech{C\#} \& \speech{R}; refurbished lab's website, hosting via \speech{GitHub Pages}: https://vicelab.net.
+
+\vspace{0.5cm}
+
+\begin{center}
+\textbullet\quad\textbullet\quad\textbullet
+\end{center}
+
+\vspace{0.5cm}
+
+{\titlefont\small Research Assistant @ ANDES Lab, UCM}\\
+{\small\textit{January 2019 — May 2019}}
+
+\vspace{0.3cm}
+
+\lettrine[lines=2]{V}{isualized} \speech{InfluxDB} data for \speech{HVAC} predictive control system in \speech{Python} \& \speech{Grafana}; charting the unseen currents of climate\ldots.
+
+\vspace{0.5cm}
+
+\begin{center}
+\textbullet\quad\textbullet\quad\textbullet
+\end{center}
+
+\vspace{0.5cm}
+
+{\titlefont\small Research Assistant @ SAIL + MACES, UCM \& NASA MUREP}\\
+{\small\textit{August 2017 — May 2018}}
+
+\vspace{0.3cm}
+
+\lettrine[lines=2]{D}{ebugged} code to 3D-print \speech{Fermi} surfaces via \speech{Marching Cubes} in \speech{Fortran90}; giving physical form to quantum abstraction\ldots.
+
+\vspace{0.5cm}
+
+\begin{center}
+\textbullet\quad\textbullet\quad\textbullet
+\end{center}
+
+\vspace{2cm}
+
+\begin{center}
+\textbullet\quad\textbullet\quad\textbullet
+\end{center}
+
+\begin{center}
+\textit{''\ldots\ so it is written in Code; so it shall compile\ldots''}
+\end{center}
+
+\divider
+
+% ===== APPENDIX: SKILLS =====
+\newpage
+\section*{Skills}
+
+\divider
+
+\begin{center}
+\speech{The tools \& tongues mastered over the years.}
+\end{center}
+
+\vspace{0.5cm}
+
+\lettrine[lines=2]{L}{anguages:\ }
+{\fontsize{8pt}{10pt}\selectfont\addfontfeatures{FakeBold=6}
+\speech{C} / \speech{C++} / \speech{C\#} (8 years);
+\speech{Python} (6 years);
+\speech{JavaScript} / \speech{TypeScript} (4 years);
+\speech{Golang} / \speech{Rust} (2 years);
+\speech{Java} / \speech{Kotlin} (2 years).}
+
+\vspace{0.5cm}
+
+\lettrine[lines=2]{F}{rame-works:\ }
+{\fontsize{8pt}{10pt}\selectfont\addfontfeatures{FakeBold=6}
+\speech{Azure} / \speech{.NET} (6 years);
+\speech{MEAN} / \speech{MERN} (2 years);
+\speech{LAMP} / \speech{Drupal} (2 years).}
+
+\vspace{0.5cm}
+
+\lettrine[lines=2]{P}{rograms:\ }
+{\fontsize{8pt}{10pt}\selectfont\addfontfeatures{FakeBold=6}
+\speech{Unity3D} (8 years);
+\speech{Docker} / \speech{Kubernetes} (4 years);
+\speech{Android Studio} (2 years).}
+
+\vspace{0.5cm}
+
+\begin{center}
+\textbullet\quad\textbullet\quad\textbullet
+\end{center}
+
+% ===== APPENDIX: PROJECTS =====
+\newpage
+\section*{Projects}
+
+\divider
+
+\begin{center}
+\speech{Personal works, forged in spare hours \& sleepless nights.}
+\end{center}
+
+\vspace{0.5cm}
+
+\lettrine[lines=2]{I}{terate} — \textit{''Code Mobilized''}: a vessel for learning to code on the go.
+
+\vspace{0.3cm}
+
+\lettrine[lines=2]{B}{it-Naughts} — \textit{''Code Gamified''}: a vessel for learning to code through play.
+
+\vspace{0.3cm}
+
+\lettrine[lines=2]{M}{ARP} — \textit{''\ldots''}: a vessel yet un-named, its purpose yet un-revealed\ldots.
+
+\vspace{0.5cm}
+
+\begin{center}
+\textbullet\quad\textbullet\quad\textbullet
+\end{center}
+
+% ===== APPENDIX: AWARDS =====
+\newpage
+\section*{Awards}
+
+\divider
+
+\begin{center}
+\speech{Honors bestowed upon the worthy.}
+\end{center}
+
+\vspace{0.5cm}
+
+\begin{multicols}{2}
+\fontsize{7pt}{9pt}\selectfont
+\addfontfeatures{FakeBold=6}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1pt}
+\raggedright
+
+\indexletter{2020}
+\textbf{Microsoft Hackathon}\\
+\textit{HackADuo Finalist}
+
+\indexletter{2019}
+\textbf{ValleyHacks}\\
+\textit{First Place}\\[3pt]
+\textbf{SLOHacks}\\
+\textit{Best Google Cloud}
+
+\indexletter{2018}
+\textbf{Mobile App Challenge}\\
+\textit{\$2,000 Finalist Prize}\\[3pt]
+\textbf{CitrusHack}\\
+\textit{Third Place}\\[3pt]
+\textbf{SDHacks}\\
+\textit{Third Place}\\[3pt]
+\textbf{SacHacks}\\
+\textit{Second Place}\\[3pt]
+\textbf{HackDavis}\\
+\textit{Best Environment}\\[3pt]
+\textbf{HackFresno}\\
+\textit{Best Hardware}
+
+\indexletter{2017}
+\textbf{Mobile App Challenge}\\
+\textit{\$5,000 Grand Prize}\\[3pt]
+\textbf{HackMerced}\\
+\textit{Best Design}
+
+\end{multicols}
+
+\vspace{0.5cm}
+
+\begin{center}
+\textbullet\quad\textbullet\quad\textbullet
+\end{center}
+
+\vspace{3cm}
+
+\begin{center}
+\textbullet\quad\textbullet\quad\textbullet
+\end{center}
+
+\begin{center}
+\textit{''\ldots\ so it is written in Code; so it shall compile\ldots''}
+\end{center}
+
+\divider
+
+\end{document}
