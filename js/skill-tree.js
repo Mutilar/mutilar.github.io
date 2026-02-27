@@ -138,7 +138,7 @@
     "cse015":          ["🔢"],
     "ropgamedesign":   ["🕹️"],
     "roparchitecture": ["🏗️"],
-    "apjava":          ["☕"],
+    "apjava":          ["♨️"],
     "gasleek":         ["🏆"],
     "sriracha":        ["🥉"],
     "smartank":        ["🥇"],
@@ -558,7 +558,7 @@
   /** Shared pan/zoom handle — set by _initPanZoom(). */
   let _pz = null;
 
-  /** Toggle glow on nodes whose center falls within the center 40% of the viewport */
+  /** Toggle glow on nodes whose center falls within the center 30% of the viewport */
   let _glowRAF = 0;
   function updateProximityGlow() {
     cancelAnimationFrame(_glowRAF);
@@ -567,8 +567,8 @@
       if (!viewport || _nodes.length === 0) return;
       const vw = viewport.clientWidth;
       const vh = viewport.clientHeight;
-      // Center 40% rectangle
-      const margin = 0.30; // (1 - 0.40) / 2
+      // Center 30% rectangle
+      const margin = 0.35; // (1 - 0.30) / 2
       const left   = vw * margin;
       const right  = vw * (1 - margin);
       const top    = vh * margin;
@@ -1498,13 +1498,13 @@
   // Each step adds one filter. The order tells the story:
   // Software education → +work → +projects → Robotics edu → +work → +projects → Games edu → +work → +projects
   const TOUR_STEPS = [
-    { add: ["software", "education"],  label: "📚 Education" },
+    { add: ["software", "education"],  label: "🎓 Education" },
     { add: ["work"],                   label: "💼 Work" },
     { add: ["projects"],               label: "🚀 Projects" },
-    { add: ["robotics"],               label: "📚 Education" },
+    { add: ["robotics"],               label: "🎓 Education" },
     { add: ["work"],                   label: "💼 Work" },
     { add: ["projects"],               label: "🚀 Projects" },
-    { add: ["games"],                  label: "📚 Education" },
+    { add: ["games"],                  label: "🎓 Education" },
     { add: ["work"],                   label: "💼 Work" },
     { add: ["projects"],               label: "🚀 Projects" },
   ];
@@ -1519,6 +1519,23 @@
     var text  = m ? label.slice(m[0].length) : label;
     var html = '<strong>' + text + '</strong><span class="scroll-arrow">' + emoji + '</span>';
     _hintCF.fade(hint, html);
+  }
+
+  /** Glow the filter pills that match the current tour step's active filters */
+  function glowFilterPills() {
+    // Remove prior glow from all pills
+    graphModal.querySelectorAll(".kg-filter-glow").forEach(function (el) {
+      el.classList.remove("kg-filter-glow");
+    });
+    // Add glow to each active filter's pill
+    activeFilters.forEach(function (f) {
+      var pill = graphModal.querySelector('.kg-filter[data-filter="' + f + '"]');
+      if (pill) {
+        // Force animation restart by re-adding class on next frame
+        void pill.offsetWidth;
+        pill.classList.add("kg-filter-glow");
+      }
+    });
   }
 
   function resetHintLabelKG() {
@@ -1539,6 +1556,8 @@
     _touring = false;
     _tourShowNames = false;
     if (_cameraHandle) { _cameraHandle.cancel(); _cameraHandle = null; }
+    // Remove filter pill glow
+    graphModal.querySelectorAll(".kg-filter-glow").forEach(function (el) { el.classList.remove("kg-filter-glow"); });
     // Restore all filters
     allThemes.forEach(t => activeFilters.add(t));
     _filterSys.syncUI();
@@ -1563,7 +1582,7 @@
     if (hint) hint.classList.add("exploring");
 
     // Step timing
-    var STEP_DELAY = 5000;    // ms between steps (2s titles + 1s crossfade + 2s whispers)
+    var STEP_DELAY = 6000;    // ms between steps (4s titles + 1s crossfade + 1s whispers)
     var RELAYOUT_SETTLE = 700; // ms for relayout spring animation to settle
     var cumulative = 0;
 
@@ -1602,6 +1621,7 @@
         _tourShowNames = true;
         _filterSys.syncUI();
         applyFilter();
+        glowFilterPills();
 
         // Update hint label
         setHintLabelKG(step.label);
@@ -1612,12 +1632,12 @@
           fitVisibleNodes(true);
         }, RELAYOUT_SETTLE));
 
-        // At 2s: crossfade from titles to whispers (1s transition, then 2s whisper display)
+        // At 4s: crossfade from titles to whispers (1s transition, then 1s whisper display)
         _tourTimers.push(setTimeout(function () {
           if (!_touring || gen !== _tourGen) return;
           _tourShowNames = false;
           updateProximityGlow();
-        }, 2000));
+        }, 4000));
 
       }, delay));
     });
@@ -1628,6 +1648,8 @@
       if (!_touring || gen !== _tourGen) return;
       _touring = false;
       _tourShowNames = false;
+      // Remove filter pill glow
+      graphModal.querySelectorAll(".kg-filter-glow").forEach(function (el) { el.classList.remove("kg-filter-glow"); });
       // Restore all filters after tour completes
       allThemes.forEach(function (t) { activeFilters.add(t); });
       _filterSys.syncUI();

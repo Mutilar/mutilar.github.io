@@ -4428,6 +4428,23 @@ html.light-mode .timeline-filter.filter-pulse {
   animation: filter-backoff-pulse 100ms ease-in-out;
 }
 
+/* ── Traverse tour: active filter pill glow ─────────────────── */
+.kg-filter.kg-filter-glow {
+  color: #fff;
+  border-color: rgba(var(--tc), 0.9) !important;
+  background: rgba(var(--tc), 0.25) !important;
+  box-shadow: 0 0 14px rgba(var(--tc), 0.5),
+              0 0 36px rgba(var(--tc), 0.25),
+              0 0 60px rgba(var(--tc), 0.1) !important;
+  animation: kg-pill-glow 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both 2;
+}
+
+@keyframes kg-pill-glow {
+  0%   { transform: scale(0.92); opacity: 0.5; }
+  60%  { transform: scale(1.08); opacity: 1; }
+  100% { transform: scale(1);    opacity: 1; }
+}
+
 /* ── Viewport (pan/zoom area) ─────────────────────────────── */
 .kg-viewport {
   flex: 1;
@@ -4677,6 +4694,13 @@ html.light-mode .kg-filter.active:hover {
 
 html.light-mode .kg-filter.filter-pulse {
   animation-name: filter-backoff-pulse-light;
+}
+
+html.light-mode .kg-filter.kg-filter-glow {
+  color: rgba(0, 0, 0, 0.9);
+  background: rgba(var(--tc-light, var(--tc)), 0.2) !important;
+  box-shadow: 0 0 10px rgba(var(--tc-light, var(--tc)), 0.3),
+              0 0 28px rgba(var(--tc-light, var(--tc)), 0.15) !important;
 }
 
 html.light-mode .kg-explore-hint {

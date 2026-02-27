@@ -808,7 +808,7 @@
       "🏗️ CAD",
     ],
     "apjava": [
-      "☕ Java",
+      "♨️ Java",
     ],
 
     /* ── Hackathon single-whispers ── */

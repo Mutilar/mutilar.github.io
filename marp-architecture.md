@@ -12,7 +12,7 @@ graph TD
             L1["🔋 BATTERY"]:::battery
             L2["⚡ POWER"]:::control
             L3["🔽 REGULATION"]:::converter
-            L4["🔌 DRIVERS"]:::driver
+            L4["📟 DRIVERS"]:::driver
             L5["⚙️ MOTORS"]:::motor
             L6["🧠 COMPUTE"]:::compute
             L7["↔️ I/O"]:::sensor
@@ -38,22 +38,10 @@ graph TD
         end
         subgraph PowerConversion["⚡ REGULATION"]
             direction LR
-            subgraph UsbPd["🔃 20 V USB-C PD"]
-                direction LR
-                PDAdapter["ADAPTER\n<i>JacobsParts</i>\n2.2 A"]
-            end
-            subgraph 5Bucks["🔽 5.0 V BUCK"]
-                direction LR
-                Buck5["BUCK\n<i>TOBSUN</i>\n5 A"]
-            end
-            subgraph Boost["🔼 3.3 V BOOST"]
-                direction LR
-                LevelShifter["LEVEL SHIFTER\n<i>74AHCT125N</i>\nSPIO"]
-            end
-            subgraph 12Buck["🔽 12 V BUCK"]
-                direction LR
-                Buck12["BUCK\n<i>TOBSUN</i>\n10 A"]
-            end
+            PDAdapter["🔃 20 V USB-C PD\n<i>JacobsParts</i>\n2.2 A"]
+            Buck5["🔽 5.0 V BUCK\n<i>TOBSUN</i>\n5 A"]
+            LevelShifter["🔼 3.3 V BOOST\n<i>74AHCT125N</i>\nSPIO"]
+            Buck12["🔽 12 V BUCK\n<i>TOBSUN</i>\n10 A"]
         end
     end
 
@@ -61,28 +49,28 @@ graph TD
         direction LR
         subgraph WheelDrive["⚙️ WHEELS"]
             direction LR
-            subgraph WheelLeft["⬅️ LEFT DRIVER"]
+            subgraph WheelLeft["⬅️ LEFT"]
                 direction TB
-                Stepper24Left["DRIVER\n<i>TB6600</i>\n24 V, 1 W"]
-                LeftWheel["MOTOR\n<i>KH56</i>\n24 V, 60 W"]
+                Stepper24Left["<i>TB6600</i>\n24 V, 1 W"]
+                LeftWheel["<i>KH56</i>\n24 V, 60 W"]
             end
-            subgraph WheelRight["➡️ RIGHT DRIVER"]
+            subgraph WheelRight["➡️ RIGHT"]
                 direction TB
-                Stepper24Right["DRIVER\n<i>TB6600</i>\n24 V, 1 W"]
-                RightWheel["MOTOR\n<i>KH56</i>\n24 V, 60 W"]
+                Stepper24Right["<i>TB6600</i>\n24 V, 1 W"]
+                RightWheel["<i>KH56</i>\n24 V, 60 W"]
             end
         end
         subgraph TurretDrive["🤖 TURRET"]
             direction LR
-            subgraph TurretPan["🔄 PAN DRIVER"]
+            subgraph TurretPan["🔄 PAN"]
                 direction TB
-                Stepper12Pan["DRIVER\n<i>TB6600</i>\n12 V, 0.5 W"]
-                HeadPan["MOTOR\n<i>M55</i>\n12 V, 12 W"]
+                Stepper12Pan["<i>TB6600</i>\n12 V, 0.5 W"]
+                HeadPan["<i>M55</i>\n12 V, 12 W"]
             end
-            subgraph TurretTilt["↕️ TILT DRIVER"]
+            subgraph TurretTilt["↕️ TILT"]
                 direction TB
                 Stepper12Tilt["DRIVER\n<i>TB6600</i>\n12 V, 0.5 W"]
-                HeadTilt["MOTOR\n<i>M55</i>\n12 V, 12 W"]
+                HeadTilt["<i>M55</i>\n12 V, 12 W"]
             end
         end
     end
