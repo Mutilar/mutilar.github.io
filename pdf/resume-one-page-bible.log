@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999995 (MiKTeX 24.1) (preloaded format=xelatex 2026.1.5)  27 FEB 2026 14:11
+This is XeTeX, Version 3.141592653-2.6-0.999995 (MiKTeX 24.1) (preloaded format=xelatex 2026.1.5)  27 FEB 2026 14:19
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -641,14 +641,10 @@ Package lettrine.sty Warning: File  loaded! on input line 106.
 
 (C:\Users\brian\AppData\Local\Programs\MiKTeX\tex/latex/tools\.tex
 File ignored)
-Package lettrine.sty Info: Targeted height = 16.56pt
-(lettrine.sty)             (for loversize=0, accent excluded),
-(lettrine.sty)             Lettrine height = 18.21608pt (B) loversize=0.1;
-(lettrine.sty)             reported on input line 111.
-Package lettrine.sty Info: Targeted height = 16.56pt
-(lettrine.sty)             (for loversize=0, accent excluded),
-(lettrine.sty)             Lettrine height = 18.21608pt (E) loversize=0.1;
-(lettrine.sty)             reported on input line 130.
+Package microtype Info: Loading generic protrusion settings for font family
+(microtype)             `CinzelDecorative' (encoding: TU).
+(microtype)             For optimal results, create family-specific settings.
+(microtype)             See the microtype manual for details.
 Package lettrine.sty Info: Targeted height = 16.56pt
 (lettrine.sty)             (for loversize=0, accent excluded),
 (lettrine.sty)             Lettrine height = 18.21608pt (S) loversize=0.1;
@@ -705,10 +701,6 @@ Package lettrine.sty Info: Targeted height = 16.56pt
 (lettrine.sty)             reported on input line 178.
 Package lettrine.sty Info: Targeted height = 16.56pt
 (lettrine.sty)             (for loversize=0, accent excluded),
-(lettrine.sty)             Lettrine height = 18.21608pt (R) loversize=0.1;
-(lettrine.sty)             reported on input line 183.
-Package lettrine.sty Info: Targeted height = 16.56pt
-(lettrine.sty)             (for loversize=0, accent excluded),
 (lettrine.sty)             Lettrine height = 18.21608pt (B) loversize=0.1;
 (lettrine.sty)             reported on input line 186.
 Package lettrine.sty Info: Targeted height = 16.56pt
@@ -723,60 +715,124 @@ Package lettrine.sty Info: Targeted height = 16.56pt
 (lettrine.sty)             (for loversize=0, accent excluded),
 (lettrine.sty)             Lettrine height = 18.21608pt (R) loversize=0.1;
 (lettrine.sty)             reported on input line 203.
-Package lettrine.sty Info: Targeted height = 16.56pt
+Package lettrine.sty Info: Targeted height = 13.648pt
 (lettrine.sty)             (for loversize=0, accent excluded),
-(lettrine.sty)             Lettrine height = 18.21608pt (S) loversize=0.1;
-(lettrine.sty)             reported on input line 211.
-Package lettrine.sty Info: Targeted height = 16.56pt
+(lettrine.sty)             Lettrine height = 15.01285pt (L) loversize=0.1;
+(lettrine.sty)             reported on input line 215.
+Package lettrine.sty Info: Targeted height = 13.648pt
 (lettrine.sty)             (for loversize=0, accent excluded),
-(lettrine.sty)             Lettrine height = 18.21608pt (L) loversize=0.1;
-(lettrine.sty)             reported on input line 214.
-Package lettrine.sty Info: Targeted height = 16.56pt
+(lettrine.sty)             Lettrine height = 15.01285pt (F) loversize=0.1;
+(lettrine.sty)             reported on input line 223.
+Package lettrine.sty Info: Targeted height = 13.648pt
 (lettrine.sty)             (for loversize=0, accent excluded),
-(lettrine.sty)             Lettrine height = 18.21608pt (F) loversize=0.1;
-(lettrine.sty)             reported on input line 222.
-
-Overfull \hbox (1.4384pt too wide) in paragraph at lines 222--227
-[]\TU/OldStandardTT(0)/m/n/10 rame-works:  \TU/OldStandardTT(0)/m/it/8 Azure \T
-U/OldStandardTT(0)/m/n/8 / .NET
- []
-
-Package lettrine.sty Info: Targeted height = 16.56pt
+(lettrine.sty)             Lettrine height = 15.01285pt (P) loversize=0.1;
+(lettrine.sty)             reported on input line 229.
+Package lettrine.sty Info: Targeted height = 13.648pt
 (lettrine.sty)             (for loversize=0, accent excluded),
-(lettrine.sty)             Lettrine height = 18.21608pt (P) loversize=0.1;
-(lettrine.sty)             reported on input line 228.
-Package lettrine.sty Info: Targeted height = 16.56pt
-(lettrine.sty)             (for loversize=0, accent excluded),
-(lettrine.sty)             Lettrine height = 18.21608pt (P) loversize=0.1;
-(lettrine.sty)             reported on input line 234.
-Package lettrine.sty Info: Targeted height = 16.56pt
-(lettrine.sty)             (for loversize=0, accent excluded),
-(lettrine.sty)             Lettrine height = 18.21608pt (I) loversize=0.1;
-(lettrine.sty)             reported on input line 237.
-
-Overfull \hbox (8.15434pt too wide) in paragraph at lines 237--238
-[]\TU/OldStandardTT(0)/m/n/10 terate — \TU/OldStandardTT(0)/m/it/10 “Code Mobil
-ized” 
- []
-
-Package lettrine.sty Info: Targeted height = 16.56pt
-(lettrine.sty)             (for loversize=0, accent excluded),
-(lettrine.sty)             Lettrine height = 18.21608pt (B) loversize=0.1;
+(lettrine.sty)             Lettrine height = 15.01285pt (I) loversize=0.1;
 (lettrine.sty)             reported on input line 239.
+Package lettrine.sty Info: Targeted height = 13.648pt
+(lettrine.sty)             (for loversize=0, accent excluded),
+(lettrine.sty)             Lettrine height = 15.01285pt (B) loversize=0.1;
+(lettrine.sty)             reported on input line 242.
+Package lettrine.sty Info: Targeted height = 13.648pt
+(lettrine.sty)             (for loversize=0, accent excluded),
+(lettrine.sty)             Lettrine height = 15.01285pt (M) loversize=0.1;
+(lettrine.sty)             reported on input line 245.
+Package lettrine.sty Info: Targeted height = 13.648pt
+(lettrine.sty)             (for loversize=0, accent excluded),
+(lettrine.sty)             Lettrine height = 15.01285pt (M) loversize=0.1;
+(lettrine.sty)             reported on input line 252.
 
-Overfull \hbox (5.72433pt too wide) in paragraph at lines 239--240
-[]\TU/OldStandardTT(0)/m/n/10 it-Naughts — \TU/OldStandardTT(0)/m/it/10 “Code G
-am-
+Underfull \hbox (badness 10000) in paragraph at lines 252--254
+
  []
 
-Package lettrine.sty Info: Targeted height = 16.56pt
+Package lettrine.sty Info: Targeted height = 13.648pt
 (lettrine.sty)             (for loversize=0, accent excluded),
-(lettrine.sty)             Lettrine height = 18.21608pt (M) loversize=0.1;
-(lettrine.sty)             reported on input line 241.
-Package lettrine.sty Info: Targeted height = 16.56pt
+(lettrine.sty)             Lettrine height = 15.01285pt (V) loversize=0.1;
+(lettrine.sty)             reported on input line 254.
+
+Underfull \hbox (badness 10000) in paragraph at lines 254--256
+
+ []
+
+Package lettrine.sty Info: Targeted height = 13.648pt
 (lettrine.sty)             (for loversize=0, accent excluded),
-(lettrine.sty)             Lettrine height = 18.21608pt (A) loversize=0.1;
-(lettrine.sty)             reported on input line 243.
+(lettrine.sty)             Lettrine height = 15.01285pt (S) loversize=0.1;
+(lettrine.sty)             reported on input line 256.
+
+Underfull \hbox (badness 10000) in paragraph at lines 256--258
+
+ []
+
+Package lettrine.sty Info: Targeted height = 13.648pt
+(lettrine.sty)             (for loversize=0, accent excluded),
+(lettrine.sty)             Lettrine height = 15.01285pt (M) loversize=0.1;
+(lettrine.sty)             reported on input line 258.
+
+Underfull \hbox (badness 10000) in paragraph at lines 258--260
+
+ []
+
+Package lettrine.sty Info: Targeted height = 13.648pt
+(lettrine.sty)             (for loversize=0, accent excluded),
+(lettrine.sty)             Lettrine height = 15.01285pt (C) loversize=0.1;
+(lettrine.sty)             reported on input line 260.
+
+Underfull \hbox (badness 10000) in paragraph at lines 260--262
+
+ []
+
+Package lettrine.sty Info: Targeted height = 13.648pt
+(lettrine.sty)             (for loversize=0, accent excluded),
+(lettrine.sty)             Lettrine height = 15.01285pt (S) loversize=0.1;
+(lettrine.sty)             reported on input line 262.
+
+Underfull \hbox (badness 10000) in paragraph at lines 262--264
+
+ []
+
+Package lettrine.sty Info: Targeted height = 13.648pt
+(lettrine.sty)             (for loversize=0, accent excluded),
+(lettrine.sty)             Lettrine height = 15.01285pt (S) loversize=0.1;
+(lettrine.sty)             reported on input line 264.
+
+Underfull \hbox (badness 10000) in paragraph at lines 264--266
+
+ []
+
+Package lettrine.sty Info: Targeted height = 13.648pt
+(lettrine.sty)             (for loversize=0, accent excluded),
+(lettrine.sty)             Lettrine height = 15.01285pt (H) loversize=0.1;
+(lettrine.sty)             reported on input line 266.
+
+Underfull \hbox (badness 10000) in paragraph at lines 266--268
+
+ []
+
+Package lettrine.sty Info: Targeted height = 13.648pt
+(lettrine.sty)             (for loversize=0, accent excluded),
+(lettrine.sty)             Lettrine height = 15.01285pt (H) loversize=0.1;
+(lettrine.sty)             reported on input line 268.
+
+Underfull \hbox (badness 10000) in paragraph at lines 268--270
+
+ []
+
+Package lettrine.sty Info: Targeted height = 13.648pt
+(lettrine.sty)             (for loversize=0, accent excluded),
+(lettrine.sty)             Lettrine height = 15.01285pt (M) loversize=0.1;
+(lettrine.sty)             reported on input line 270.
+
+Underfull \hbox (badness 10000) in paragraph at lines 270--272
+
+ []
+
+Package lettrine.sty Info: Targeted height = 13.648pt
+(lettrine.sty)             (for loversize=0, accent excluded),
+(lettrine.sty)             Lettrine height = 15.01285pt (H) loversize=0.1;
+(lettrine.sty)             reported on input line 272.
 [1
 
 ] (resume-one-page-bible.aux)
@@ -788,11 +844,11 @@ Package rerunfilecheck Info: File `resume-one-page-bible.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
- 15230 strings out of 409617
- 290984 string characters out of 5774014
- 1958191 words of memory out of 5000000
- 37152 multiletter control sequences out of 15000+600000
- 560683 words of font info for 78 fonts, out of 8000000 for 9000
+ 15255 strings out of 409617
+ 291924 string characters out of 5774014
+ 1959191 words of memory out of 5000000
+ 37171 multiletter control sequences out of 15000+600000
+ 561038 words of font info for 86 fonts, out of 8000000 for 9000
  1348 hyphenation exceptions out of 8191
  79i,5n,93p,1020b,652s stack positions out of 10000i,1000n,20000p,200000b,200000s
 

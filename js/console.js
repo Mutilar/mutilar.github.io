@@ -36,11 +36,11 @@
     }).join(" ");
   }
 
-  function addLine(text, level) {
+  function addLine(text, level, source) {
     if (inside) return;           // prevent infinite recursion
     inside = true;
     try {
-      if (!ready) { queue.push({ text: text, level: level }); return; }
+      if (!ready) { queue.push({ text: text, level: level, source: source }); return; }
 
       var line = document.createElement("div");
       line.className = "dev-toast-line dev-toast-" + level;
@@ -55,6 +55,14 @@
 
       line.appendChild(prefix);
       line.appendChild(msg);
+
+      if (source) {
+        var src = document.createElement("code");
+        src.className = "dev-toast-source";
+        src.textContent = source;
+        line.appendChild(src);
+      }
+
       container.appendChild(line);
 
       // Trigger reflow then animate in
@@ -95,7 +103,12 @@
 
   /* ── Catch unhandled errors ─────────────────────────────────── */
   window.addEventListener("error", function (e) {
-    addLine(e.message || "Unknown error", "error");
+    var src = "";
+    if (e.filename) {
+      var name = e.filename.split("/").pop().split("?")[0];
+      src = name + (e.lineno ? ":" + e.lineno : "") + (e.colno ? ":" + e.colno : "");
+    }
+    addLine(e.message || "Unknown error", "error", src);
   });
 
   window.addEventListener("unhandledrejection", function (e) {
@@ -112,7 +125,7 @@
     ready = true;
 
     // Flush queued messages
-    queue.forEach(function (item) { addLine(item.text, item.level); });
+    queue.forEach(function (item) { addLine(item.text, item.level, item.source); });
     queue.length = 0;
   }
 

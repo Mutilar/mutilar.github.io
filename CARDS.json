@@ -6,9 +6,8 @@
       "items": [
         {
           "cardName": "Imperial Seal",
+          "whisper": "🔏",
           "category": "Tutor",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 1.35,
           "color": "Black",
           "cmc": 1,
@@ -20,9 +19,8 @@
         },
         {
           "cardName": "Vampiric Tutor",
+          "whisper": "🩸",
           "category": "Tutor",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 1.6,
           "color": "Black",
           "cmc": 1,
@@ -34,9 +32,8 @@
         },
         {
           "cardName": "Reanimate",
+          "whisper": "⚰️",
           "category": "Recursion",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.79,
           "color": "Black",
           "cmc": 1,
@@ -48,9 +45,8 @@
         },
         {
           "cardName": "Sol Ring",
+          "whisper": "💍",
           "category": "Ramp",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 1.46,
           "cmc": 1,
           "rarity": "uncommon",
@@ -61,9 +57,8 @@
         },
         {
           "cardName": "Damn",
+          "whisper": "🪦",
           "category": "Removal",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.36,
           "color": "Black",
           "cmc": 2,
@@ -75,9 +70,8 @@
         },
         {
           "cardName": "Demonic Tutor",
+          "whisper": "📜",
           "category": "Tutor",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 1.58,
           "color": "Black",
           "cmc": 2,
@@ -89,9 +83,8 @@
         },
         {
           "cardName": "Enlightened Tutor",
+          "whisper": "✨",
           "category": "Tutor",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 1.15,
           "color": "White",
           "cmc": 1,
@@ -103,22 +96,25 @@
         },
         {
           "cardName": "Arcane Signet",
+          "whisper": "💎",
           "category": "Ramp",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.24,
           "cmc": 2,
           "rarity": "common",
           "types": "Artifact",
           "price": 0.99,
           "cardText": "{T}: Add one mana of any color in your commander's color identity.",
-          "art": "images/card_art/Arcane_Signet/Arcane_Signet_blc_127_28180667.png"
+          "art": "images/card_art/Arcane_Signet/Arcane_Signet_blc_127_28180667.png",
+          "color": [
+            "White",
+            "Red",
+            "Black"
+          ]
         },
         {
           "cardName": "Sidequest: Catch a Fish",
+          "whisper": "🐟",
           "category": "Ramp",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.19,
           "color": "White",
           "cmc": 3,
@@ -130,22 +126,21 @@
         },
         {
           "cardName": "Cooking Campsite",
+          "whisper": "🏕️",
           "category": "Ramp",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.19,
           "cmc": 0,
           "rarity": "uncommon",
           "types": "Land",
           "price": 0.35,
           "cardText": "{T}: Add {W}. {3}, {T}, Sacrifice an artifact: Put a +1/+1 counter on each creature you control. Activate only as a sorcery.",
-          "art": "images/card_art/Sidequest_Catch_a_Fish_Cooking_Campsite/Sidequest_Catch_a_Fish_Cooking_Campsite_fin_31_bdb5452e_front.png"
+          "art": "images/card_art/Sidequest_Catch_a_Fish_Cooking_Campsite/Sidequest_Catch_a_Fish_Cooking_Campsite_fin_31_bdb5452e_front.png",
+          "color": "White"
         },
         {
           "cardName": "Anguished Unmaking",
+          "whisper": "💔",
           "category": "Removal",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.23,
           "color": [
             "White",
@@ -160,9 +155,8 @@
         },
         {
           "cardName": "Wedding Announcement",
+          "whisper": "💌",
           "category": "Draw",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.33,
           "color": "White",
           "cmc": 3,
@@ -174,9 +168,8 @@
         },
         {
           "cardName": "Wedding Festivity",
+          "whisper": "🎉",
           "category": "Draw",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.33,
           "color": "White",
           "cmc": 0,
@@ -188,9 +181,8 @@
         },
         {
           "cardName": "Herald's Horn",
+          "whisper": "📯",
           "category": "Ramp",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.21,
           "cmc": 3,
           "rarity": "uncommon",
@@ -201,9 +193,8 @@
         },
         {
           "cardName": "Victimize",
+          "whisper": "⚖️",
           "category": "Recursion",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.32,
           "color": "Black",
           "cmc": 3,
@@ -215,22 +206,25 @@
         },
         {
           "cardName": "Patchwork Banner",
+          "whisper": "🚩",
           "category": "Ramp",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.5,
           "cmc": 3,
           "rarity": "uncommon",
           "types": "Artifact",
           "price": 10.99,
           "cardText": "As this artifact enters, choose a creature type. Creatures you control of the chosen type get +1/+1. {T}: Add one mana of any color.",
-          "art": "images/card_art/Patchwork_Banner/Patchwork_Banner_pmei_2024-7_36034cb5.png"
+          "art": "images/card_art/Patchwork_Banner/Patchwork_Banner_pmei_2024-7_36034cb5.png",
+          "color": [
+            "White",
+            "Red",
+            "Black"
+          ]
         },
         {
           "cardName": "Anointed Procession",
+          "whisper": "👼",
           "category": "Tokens",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.96,
           "color": "White",
           "cmc": 4,
@@ -242,9 +236,8 @@
         },
         {
           "cardName": "Smothering Tithe",
+          "whisper": "💰",
           "category": "Ramp",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 2.58,
           "color": "White",
           "cmc": 4,
@@ -256,9 +249,8 @@
         },
         {
           "cardName": "Ruinous Ultimatum",
+          "whisper": "💥",
           "category": "Removal",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 1.02,
           "color": [
             "White",
@@ -274,9 +266,8 @@
         },
         {
           "cardName": "Vanquisher's Banner",
+          "whisper": "🏆",
           "category": "Draw",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.26,
           "cmc": 5,
           "rarity": "rare",
@@ -287,9 +278,8 @@
         },
         {
           "cardName": "Dazzling Theater",
+          "whisper": "🎭",
           "category": "Ramp",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.24,
           "color": "White",
           "cmc": 4,
@@ -301,9 +291,8 @@
         },
         {
           "cardName": "Prop Room",
+          "whisper": "🎪",
           "category": "Ramp",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.24,
           "color": "White",
           "cmc": 3,
@@ -315,9 +304,8 @@
         },
         {
           "cardName": "All-Out Assault",
+          "whisper": "⚡",
           "category": "Anthem",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.32,
           "color": [
             "White",
@@ -333,9 +321,8 @@
         },
         {
           "cardName": "Falkenrath Gorger",
+          "whisper": "😤",
           "category": "Draw",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.32,
           "color": "Red",
           "cmc": 1,
@@ -347,9 +334,8 @@
         },
         {
           "cardName": "Master of Dark Rites",
+          "whisper": "🕯️",
           "category": "Ramp",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.22,
           "color": "Black",
           "cmc": 1,
@@ -361,9 +347,8 @@
         },
         {
           "cardName": "Knight of the Ebon Legion",
+          "whisper": "🗡️",
           "category": "Counters",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.14,
           "color": "Black",
           "cmc": 1,
@@ -375,9 +360,8 @@
         },
         {
           "cardName": "Vampire Socialite",
+          "whisper": "🥂",
           "category": "Pump",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.07,
           "color": [
             "Red",
@@ -392,9 +376,8 @@
         },
         {
           "cardName": "Cordial Vampire",
+          "whisper": "🍷",
           "category": "Counters",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.42,
           "color": "Black",
           "cmc": 2,
@@ -406,9 +389,8 @@
         },
         {
           "cardName": "Charismatic Conqueror",
+          "whisper": "👑",
           "category": "Tokens",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.8,
           "color": "White",
           "cmc": 2,
@@ -420,9 +402,8 @@
         },
         {
           "cardName": "Legion Lieutenant",
+          "whisper": "⚔️",
           "category": "Anthem",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.11,
           "color": [
             "White",
@@ -437,9 +418,8 @@
         },
         {
           "cardName": "Welcoming Vampire",
+          "whisper": "🤝",
           "category": "Draw",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.22,
           "color": "White",
           "cmc": 3,
@@ -451,9 +431,8 @@
         },
         {
           "cardName": "Rakish Heir",
+          "whisper": "🎲",
           "category": "Counters",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.16,
           "color": "Red",
           "cmc": 3,
@@ -465,9 +444,8 @@
         },
         {
           "cardName": "Mavren Fein, Dusk Apostle",
+          "whisper": "🌅",
           "category": "Tokens",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.23,
           "color": "White",
           "cmc": 3,
@@ -479,9 +457,8 @@
         },
         {
           "cardName": "Stromkirk Captain",
+          "whisper": "🛡️",
           "category": "Anthem",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.16,
           "color": [
             "Red",
@@ -496,9 +473,8 @@
         },
         {
           "cardName": "Laurine, the Diversion",
+          "whisper": "🎯",
           "category": "Sac Outlet",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.5,
           "color": "Red",
           "cmc": 3,
@@ -510,22 +486,24 @@
         },
         {
           "cardName": "Blood Crypt",
+          "whisper": "🩻",
           "category": "Land",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.22,
           "cmc": 0,
           "rarity": "rare",
           "types": "Land",
           "price": 20.99,
           "cardText": "({T}: Add {B} or {R}.) As this land enters, you may pay 2 life. If you don't, it enters tapped.",
-          "art": "images/card_art/Blood_Crypt/Blood_Crypt_sld_125_1716b4dd.png"
+          "art": "images/card_art/Blood_Crypt/Blood_Crypt_sld_125_1716b4dd.png",
+          "color": [
+            "Black",
+            "Red"
+          ]
         },
         {
           "cardName": "Vito, Thorn of the Dusk Rose",
+          "whisper": "🥀",
           "category": "Drain",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.95,
           "color": "Black",
           "cmc": 3,
@@ -537,9 +515,8 @@
         },
         {
           "cardName": "Markov Baron",
+          "whisper": "🧛",
           "category": "Anthem",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.11,
           "color": "Black",
           "cmc": 3,
@@ -551,9 +528,8 @@
         },
         {
           "cardName": "Edgar, Charmed Groom",
+          "whisper": "💒",
           "category": "Tokens",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.15,
           "color": [
             "White",
@@ -568,9 +544,8 @@
         },
         {
           "cardName": "Edgar Markov's Coffin",
+          "whisper": "⚱️",
           "category": "Tokens",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.15,
           "color": [
             "White",
@@ -585,9 +560,8 @@
         },
         {
           "cardName": "Kamber, the Plunderer",
+          "whisper": "🏴‍☠️",
           "category": "Draw",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0,
           "color": "Black",
           "cmc": 4,
@@ -599,9 +573,8 @@
         },
         {
           "cardName": "Baron Bertram Graywater",
+          "whisper": "🎩",
           "category": "Tokens",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.16,
           "color": [
             "White",
@@ -616,9 +589,8 @@
         },
         {
           "cardName": "Olivia, Opulent Outlaw",
+          "whisper": "💃",
           "category": "Ramp",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.19,
           "color": [
             "White",
@@ -634,9 +606,8 @@
         },
         {
           "cardName": "Sanctum Seeker",
+          "whisper": "⛪",
           "category": "Drain",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.28,
           "color": "Black",
           "cmc": 4,
@@ -648,9 +619,8 @@
         },
         {
           "cardName": "Olivia, Crimson Bride",
+          "whisper": "👰",
           "category": "Recursion",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.39,
           "color": [
             "Red",
@@ -665,9 +635,8 @@
         },
         {
           "cardName": "Aclazotz, Deepest Betrayal",
+          "whisper": "🦇",
           "category": "Discard",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.71,
           "color": "Black",
           "cmc": 5,
@@ -679,22 +648,21 @@
         },
         {
           "cardName": "Temple of the Dead",
+          "whisper": "⛩️",
           "category": "Discard",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.71,
           "cmc": 0,
           "rarity": "mythic",
           "types": "Land",
           "price": 8.99,
           "cardText": "{T}: Add {B}. {2}{B}, {T}: Transform this land. Activate only if a player has one or fewer cards in hand and only as a sorcery.",
-          "art": "images/card_art/Aclazotz,_Deepest_Betrayal_Temple_of_the_Dead/Aclazotz,_Deepest_Betrayal_Temple_of_the_Dead_lci_88_627c392c_front.png"
+          "art": "images/card_art/Aclazotz,_Deepest_Betrayal_Temple_of_the_Dead/Aclazotz,_Deepest_Betrayal_Temple_of_the_Dead_lci_88_627c392c_front.png",
+          "color": "Black"
         },
         {
           "cardName": "Ojer Taq, Deepest Foundation",
+          "whisper": "🏛️",
           "category": "Tokens",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.98,
           "color": "White",
           "cmc": 6,
@@ -706,256 +674,319 @@
         },
         {
           "cardName": "Temple of Civilization",
+          "whisper": "🌄",
           "category": "Tokens",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.98,
           "cmc": 0,
           "rarity": "mythic",
           "types": "Land",
           "price": 39.99,
           "cardText": "{T}: Add {W}. {2}{W}, {T}: Transform this land. Activate only if you attacked with three or more creatures this turn and only as a sorcery.",
-          "art": "images/card_art/Ojer_Taq,_Deepest_Foundation_Temple_of_Civilization/Ojer_Taq,_Deepest_Foundation_Temple_of_Civilization_lci_26_1ca79dd4_front.png"
+          "art": "images/card_art/Ojer_Taq,_Deepest_Foundation_Temple_of_Civilization/Ojer_Taq,_Deepest_Foundation_Temple_of_Civilization_lci_26_1ca79dd4_front.png",
+          "color": "White"
         },
         {
           "cardName": "Godless Shrine",
+          "whisper": "🏚️",
           "category": "Land",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.13,
           "cmc": 0,
           "rarity": "rare",
           "types": "Land",
           "price": 13.99,
           "cardText": "({T}: Add {W} or {B}.) As this land enters, you may pay 2 life. If you don't, it enters tapped.",
-          "art": "images/card_art/Godless_Shrine/Godless_Shrine_gtc_242_6fd672bb.png"
+          "art": "images/card_art/Godless_Shrine/Godless_Shrine_gtc_242_6fd672bb.png",
+          "color": [
+            "Black",
+            "White"
+          ]
         },
         {
           "cardName": "Shadowy Backstreet",
+          "whisper": "🌑",
           "category": "Land",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.17,
           "cmc": 0,
           "rarity": "rare",
           "types": "Land",
           "price": 17.99,
           "cardText": "({T}: Add {W} or {B}.) This land enters tapped. When this land enters, surveil 1. (Look at the top card of your library. You may put it into your graveyard.)",
-          "art": "images/card_art/Shadowy_Backstreet/Shadowy_Backstreet_mkm_268_69c1b656.png"
+          "art": "images/card_art/Shadowy_Backstreet/Shadowy_Backstreet_mkm_268_69c1b656.png",
+          "color": [
+            "Black",
+            "White"
+          ]
         },
         {
           "cardName": "Path of Ancestry",
+          "whisper": "🧬",
           "category": "Land",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.13,
           "cmc": 0,
           "rarity": "common",
           "types": "Land",
           "price": 0.39,
           "cardText": "This land enters tapped. {T}: Add one mana of any color in your commander's color identity. When that mana is spent to cast a creature spell that shares a creature type with your commander, scry 1. (Look at the top card of your library. You may put that card on the bottom.)",
-          "art": "images/card_art/Path_of_Ancestry/Path_of_Ancestry_afc_254_4ae7a4a1.png"
+          "art": "images/card_art/Path_of_Ancestry/Path_of_Ancestry_afc_254_4ae7a4a1.png",
+          "color": [
+            "Black",
+            "Blue",
+            "Green",
+            "Red",
+            "White"
+          ]
         },
         {
           "cardName": "Command Tower",
+          "whisper": "🏰",
           "category": "Land",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.38,
           "cmc": 0,
           "rarity": "common",
           "types": "Land",
           "price": 0.79,
           "cardText": "{T}: Add one mana of any color in your commander's color identity.",
-          "art": "images/card_art/Command_Tower/Command_Tower_40k_270_7cf39d35.png"
+          "art": "images/card_art/Command_Tower/Command_Tower_40k_270_7cf39d35.png",
+          "color": [
+            "Black",
+            "Blue",
+            "Green",
+            "Red",
+            "White"
+          ]
         },
         {
           "cardName": "Savai Triome",
+          "whisper": "🗻",
           "category": "Land",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.27,
           "cmc": 0,
           "rarity": "rare",
           "types": "Land",
           "price": 29.99,
           "cardText": "({T}: Add {R}, {W}, or {B}.) This land enters tapped. Cycling {3} ({3}, Discard this card: Draw a card.)",
-          "art": "images/card_art/Savai_Triome/Savai_Triome_iko_253_748e6a61.png"
+          "art": "images/card_art/Savai_Triome/Savai_Triome_iko_253_748e6a61.png",
+          "color": [
+            "Black",
+            "Red",
+            "White"
+          ]
         },
         {
           "cardName": "Marsh Flats",
+          "whisper": "🌿",
           "category": "Land",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.33,
           "cmc": 0,
           "rarity": "rare",
           "types": "Land",
           "price": 34.99,
           "cardText": "{T}, Pay 1 life, Sacrifice this land: Search your library for a Plains or Swamp card, put it onto the battlefield, then shuffle.",
-          "art": "images/card_art/Marsh_Flats/Marsh_Flats_mh2_248_9db3ba6d.png"
+          "art": "images/card_art/Marsh_Flats/Marsh_Flats_mh2_248_9db3ba6d.png",
+          "color": [
+            "Black",
+            "White"
+          ]
         },
         {
           "cardName": "Shattered Sanctum",
+          "whisper": "🪟",
           "category": "Land",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.06,
           "cmc": 0,
           "rarity": "rare",
           "types": "Land",
           "price": 6.49,
           "cardText": "This land enters tapped unless you control two or more other lands. {T}: Add {W} or {B}.",
-          "art": "images/card_art/Shattered_Sanctum/Shattered_Sanctum_inr_283_89bec47e.png"
+          "art": "images/card_art/Shattered_Sanctum/Shattered_Sanctum_inr_283_89bec47e.png",
+          "color": [
+            "Black",
+            "White"
+          ]
         },
         {
           "cardName": "Raucous Theater",
+          "whisper": "🎶",
           "category": "Land",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.2,
           "cmc": 0,
           "rarity": "rare",
           "types": "Land",
           "price": 19.99,
           "cardText": "({T}: Add {B} or {R}.) This land enters tapped. When this land enters, surveil 1. (Look at the top card of your library. You may put it into your graveyard.)",
-          "art": "images/card_art/Raucous_Theater/Raucous_Theater_mkm_266_b598c93e.png"
+          "art": "images/card_art/Raucous_Theater/Raucous_Theater_mkm_266_b598c93e.png",
+          "color": [
+            "Black",
+            "Red"
+          ]
         },
         {
           "cardName": "Bloodstained Mire",
+          "whisper": "🩸",
           "category": "Land",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.19,
           "cmc": 0,
           "rarity": "rare",
           "types": "Land",
           "price": 22.99,
           "cardText": "{T}, Pay 1 life, Sacrifice this land: Search your library for a Swamp or Mountain card, put it onto the battlefield, then shuffle.",
-          "art": "images/card_art/Bloodstained_Mire/Bloodstained_Mire_ktk_230_7f430794.png"
+          "art": "images/card_art/Bloodstained_Mire/Bloodstained_Mire_ktk_230_7f430794.png",
+          "color": [
+            "Black",
+            "Red"
+          ]
         },
         {
           "cardName": "Elegant Parlor",
+          "whisper": "🪞",
           "category": "Land",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.11,
           "cmc": 0,
           "rarity": "rare",
           "types": "Land",
           "price": 17.99,
           "cardText": "({T}: Add {R} or {W}.) This land enters tapped. When this land enters, surveil 1. (Look at the top card of your library. You may put it into your graveyard.)",
-          "art": "images/card_art/Elegant_Parlor/Elegant_Parlor_mkm_260_72c6d541.png"
+          "art": "images/card_art/Elegant_Parlor/Elegant_Parlor_mkm_260_72c6d541.png",
+          "color": [
+            "Red",
+            "White"
+          ]
         },
         {
           "cardName": "Arid Mesa",
+          "whisper": "🏜️",
           "category": "Land",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.2,
           "cmc": 0,
           "rarity": "rare",
           "types": "Land",
           "price": 34.99,
           "cardText": "{T}, Pay 1 life, Sacrifice this land: Search your library for a Mountain or Plains card, put it onto the battlefield, then shuffle.",
-          "art": "images/card_art/Arid_Mesa/Arid_Mesa_mh2_244_25ac5405.png"
+          "art": "images/card_art/Arid_Mesa/Arid_Mesa_mh2_244_25ac5405.png",
+          "color": [
+            "Red",
+            "White"
+          ]
         },
         {
           "cardName": "Sacred Foundry",
+          "whisper": "🔥",
           "category": "Land",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.16,
           "cmc": 0,
           "rarity": "rare",
           "types": "Land",
           "price": 15.99,
           "cardText": "({T}: Add {R} or {W}.) As this land enters, you may pay 2 life. If you don't, it enters tapped.",
-          "art": "images/card_art/Sacred_Foundry/Sacred_Foundry_sld_131_52e55b85.png"
+          "art": "images/card_art/Sacred_Foundry/Sacred_Foundry_sld_131_52e55b85.png",
+          "color": [
+            "Red",
+            "White"
+          ]
         },
         {
           "cardName": "Haunted Ridge",
+          "whisper": "👻",
           "category": "Land",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.18,
           "cmc": 0,
           "rarity": "rare",
           "types": "Land",
           "price": 11.99,
           "cardText": "This land enters tapped unless you control two or more other lands. {T}: Add {B} or {R}.",
-          "art": "images/card_art/Haunted_Ridge/Haunted_Ridge_inr_280_32f1e668.png"
+          "art": "images/card_art/Haunted_Ridge/Haunted_Ridge_inr_280_32f1e668.png",
+          "color": [
+            "Black",
+            "Red"
+          ]
         },
         {
           "cardName": "Voldaren Estate",
+          "whisper": "🏡",
           "category": "Land",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.09,
           "cmc": 0,
           "rarity": "rare",
           "types": "Land",
           "price": 0.59,
           "cardText": "{T}: Add {C}. {T}, Pay 1 life: Add one mana of any color. Spend this mana only to cast a Vampire spell. {5}, {T}: Create a Blood token. This ability costs {1} less to activate for each Vampire you control. (It's an artifact with \"{1}, {T}, Discard a card, Sacrifice this token: Draw a card.\")",
-          "art": "images/card_art/Voldaren_Estate/Voldaren_Estate_lcc_369_1fcbc704.png"
+          "art": "images/card_art/Voldaren_Estate/Voldaren_Estate_lcc_369_1fcbc704.png",
+          "color": [
+            "Black",
+            "Blue",
+            "Green",
+            "Red",
+            "White"
+          ]
         },
         {
           "cardName": "Secluded Courtyard",
+          "whisper": "🌳",
           "category": "Land",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.02,
           "cmc": 0,
           "rarity": "uncommon",
           "types": "Land",
           "price": 0.59,
           "cardText": "As this land enters, choose a creature type. {T}: Add {C}. {T}: Add one mana of any color. Spend this mana only to cast a creature spell of the chosen type or activate an ability of a creature source of the chosen type.",
-          "art": "images/card_art/Secluded_Courtyard/Secluded_Courtyard_ltc_330_a49a20ea.png"
+          "art": "images/card_art/Secluded_Courtyard/Secluded_Courtyard_ltc_330_a49a20ea.png",
+          "color": [
+            "Black",
+            "Blue",
+            "Green",
+            "Red",
+            "White"
+          ]
         },
         {
           "cardName": "Sundown Pass",
+          "whisper": "🌇",
           "category": "Land",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.11,
           "cmc": 0,
           "rarity": "rare",
           "types": "Land",
           "price": 12.99,
           "cardText": "This land enters tapped unless you control two or more other lands. {T}: Add {R} or {W}.",
-          "art": "images/card_art/Sundown_Pass/Sundown_Pass_inr_286_12ca1b4f.png"
+          "art": "images/card_art/Sundown_Pass/Sundown_Pass_inr_286_12ca1b4f.png",
+          "color": [
+            "Red",
+            "White"
+          ]
         },
         {
           "cardName": "Vault of the Archangel",
+          "whisper": "😇",
           "category": "Land",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.24,
           "cmc": 0,
           "rarity": "rare",
           "types": "Land",
           "price": 1.79,
           "cardText": "{T}: Add {C}. {2}{W}{B}, {T}: Creatures you control gain deathtouch and lifelink until end of turn.",
-          "art": "images/card_art/Vault_of_the_Archangel/Vault_of_the_Archangel_clb_927_e1004cea.png"
+          "art": "images/card_art/Vault_of_the_Archangel/Vault_of_the_Archangel_clb_927_e1004cea.png",
+          "color": [
+            "Black",
+            "White"
+          ]
         },
         {
           "cardName": "Takenuma, Abandoned Mire",
+          "whisper": "🏯",
           "category": "Land",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.22,
           "cmc": 0,
           "rarity": "rare",
           "types": "Land",
           "price": 15.99,
           "cardText": "{T}: Add {B}. Channel — {3}{B}, Discard this card: Mill three cards, then return a creature or planeswalker card from your graveyard to your hand. This ability costs {1} less to activate for each legendary creature you control.",
-          "art": "images/card_art/Takenuma,_Abandoned_Mire/Takenuma,_Abandoned_Mire_neo_278_499037cc.png"
+          "art": "images/card_art/Takenuma,_Abandoned_Mire/Takenuma,_Abandoned_Mire_neo_278_499037cc.png",
+          "color": "Black"
         },
         {
           "cardName": "Anje, Maid of Dishonor",
+          "whisper": "🍺",
           "category": "Draw",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.35,
           "color": [
             "Red",
@@ -970,9 +1001,8 @@
         },
         {
           "cardName": "Bloodletter of Aclazotz",
+          "whisper": "✍️",
           "category": "Drain",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 1.09,
           "color": "Black",
           "cmc": 4,
@@ -984,9 +1014,8 @@
         },
         {
           "cardName": "Bloodthirsty Conqueror",
+          "whisper": "🦅",
           "category": "Lifegain",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 1.31,
           "color": "Black",
           "cmc": 5,
@@ -998,9 +1027,8 @@
         },
         {
           "cardName": "Roaming Throne",
+          "whisper": "🪑",
           "category": "Copy",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 1.45,
           "cmc": 4,
           "rarity": "rare",
@@ -1014,9 +1042,8 @@
         },
         {
           "cardName": "Crackling Doom",
+          "whisper": "⚡",
           "category": "Removal",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.31,
           "color": [
             "White",
@@ -1032,9 +1059,8 @@
         },
         {
           "cardName": "March of the Canonized",
+          "whisper": "🕊️",
           "category": "Tokens",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.22,
           "color": "White",
           "cmc": 2,
@@ -1046,9 +1072,8 @@
         },
         {
           "cardName": "Forerunner of the Legion",
+          "whisper": "📣",
           "category": "Tutor",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.62,
           "color": "White",
           "cmc": 3,
@@ -1060,9 +1085,8 @@
         },
         {
           "cardName": "Akroma's Will",
+          "whisper": "🙏",
           "category": "Protection",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 1.18,
           "color": "White",
           "cmc": 4,
@@ -1074,9 +1098,8 @@
         },
         {
           "cardName": "Florian, Voldaren Scion",
+          "whisper": "🔍",
           "category": "Draw",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.22,
           "color": [
             "Red",
@@ -1091,9 +1114,8 @@
         },
         {
           "cardName": "Malakir Rebirth",
+          "whisper": "🔄",
           "category": "Protection",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.21,
           "color": "Black",
           "cmc": 1,
@@ -1105,22 +1127,21 @@
         },
         {
           "cardName": "Malakir Mire",
+          "whisper": "🌫️",
           "category": "Protection",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.21,
           "cmc": 0,
           "rarity": "uncommon",
           "types": "Land",
           "price": 15.99,
           "cardText": "This land enters tapped. {T}: Add {B}.",
-          "art": "images/card_art/Malakir_Rebirth_Malakir_Mire/Malakir_Rebirth_Malakir_Mire_znr_111_609d3ecf_front.png"
+          "art": "images/card_art/Malakir_Rebirth_Malakir_Mire/Malakir_Rebirth_Malakir_Mire_znr_111_609d3ecf_front.png",
+          "color": "Black"
         },
         {
           "cardName": "Tarrian's Journal",
+          "whisper": "📓",
           "category": "Draw",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.13,
           "color": "Black",
           "cmc": 2,
@@ -1132,22 +1153,21 @@
         },
         {
           "cardName": "The Tomb of Aclazotz",
+          "whisper": "🦇",
           "category": "Draw",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.13,
           "cmc": 0,
           "rarity": "rare",
           "types": "Land",
           "price": 0.79,
           "cardText": "{T}: Add {B}. {T}: You may cast a creature spell from your graveyard this turn. If you do, it enters with a finality counter on it and is a Vampire in addition to its other types. (If a creature with a finality counter on it would die, exile it instead.)",
-          "art": "images/card_art/Tarrian's_Journal_The_Tomb_of_Aclazotz/Tarrian's_Journal_The_Tomb_of_Aclazotz_lci_126_99255a66_front.png"
+          "art": "images/card_art/Tarrian's_Journal_The_Tomb_of_Aclazotz/Tarrian's_Journal_The_Tomb_of_Aclazotz_lci_126_99255a66_front.png",
+          "color": "Black"
         },
         {
           "cardName": "Phyrexian Reclamation",
+          "whisper": "♻️",
           "category": "Recursion",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.37,
           "color": "Black",
           "cmc": 1,
@@ -1159,9 +1179,8 @@
         },
         {
           "cardName": "Thought Vessel",
+          "whisper": "🧠",
           "category": "Ramp",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.27,
           "cmc": 2,
           "rarity": "common",
@@ -1172,9 +1191,8 @@
         },
         {
           "cardName": "Champion of Dusk",
+          "whisper": "🌑",
           "category": "Draw",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.22,
           "color": "Black",
           "cmc": 5,
@@ -1186,22 +1204,24 @@
         },
         {
           "cardName": "Vault of Champions",
+          "whisper": "🏦",
           "category": "Land",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.21,
           "cmc": 0,
           "rarity": "rare",
           "types": "Land",
           "price": 20.99,
           "cardText": "This land enters tapped unless you have two or more opponents. {T}: Add {W} or {B}.",
-          "art": "images/card_art/Vault_of_Champions/Vault_of_Champions_cmm_436_cafd7db6.png"
+          "art": "images/card_art/Vault_of_Champions/Vault_of_Champions_cmm_436_cafd7db6.png",
+          "color": [
+            "Black",
+            "White"
+          ]
         },
         {
           "cardName": "Elenda, Saint of Dusk",
+          "whisper": "⭐",
           "category": "Lifegain",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.19,
           "color": [
             "White",
@@ -1216,61 +1236,60 @@
         },
         {
           "cardName": "Blightstep Pathway",
+          "whisper": "🌑",
           "category": "Land",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.03,
           "cmc": 0,
           "rarity": "rare",
           "types": "Land",
           "price": 8.99,
           "cardText": "{T}: Add {B}.",
-          "art": "images/card_art/Blightstep_Pathway_Searstep_Pathway/Blightstep_Pathway_Searstep_Pathway_khm_252_0ce39a19_front.png"
+          "art": "images/card_art/Blightstep_Pathway_Searstep_Pathway/Blightstep_Pathway_Searstep_Pathway_khm_252_0ce39a19_front.png",
+          "color": "Black"
         },
         {
           "cardName": "Searstep Pathway",
+          "whisper": "🔥",
           "category": "Land",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.03,
           "cmc": 0,
           "rarity": "rare",
           "types": "Land",
           "price": 8.99,
           "cardText": "{T}: Add {R}.",
-          "art": "images/card_art/Blightstep_Pathway_Searstep_Pathway/Blightstep_Pathway_Searstep_Pathway_khm_252_0ce39a19_front.png"
+          "art": "images/card_art/Blightstep_Pathway_Searstep_Pathway/Blightstep_Pathway_Searstep_Pathway_khm_252_0ce39a19_front.png",
+          "color": "Red"
         },
         {
           "cardName": "Needleverge Pathway",
+          "whisper": "📍",
           "category": "Land",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.13,
           "cmc": 0,
           "rarity": "rare",
           "types": "Land",
           "price": 4.99,
           "cardText": "{T}: Add {R}.",
-          "art": "images/card_art/Needleverge_Pathway_Pillarverge_Pathway/Needleverge_Pathway_Pillarverge_Pathway_plst_ZNR-263_1c276e74_front.png"
+          "art": "images/card_art/Needleverge_Pathway_Pillarverge_Pathway/Needleverge_Pathway_Pillarverge_Pathway_plst_ZNR-263_1c276e74_front.png",
+          "color": "Red"
         },
         {
           "cardName": "Pillarverge Pathway",
+          "whisper": "🪨",
           "category": "Land",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.13,
           "cmc": 0,
           "rarity": "rare",
           "types": "Land",
           "price": 4.99,
           "cardText": "{T}: Add {W}.",
-          "art": "images/card_art/Needleverge_Pathway_Pillarverge_Pathway/Needleverge_Pathway_Pillarverge_Pathway_plst_ZNR-263_1c276e74_front.png"
+          "art": "images/card_art/Needleverge_Pathway_Pillarverge_Pathway/Needleverge_Pathway_Pillarverge_Pathway_plst_ZNR-263_1c276e74_front.png",
+          "color": "White"
         },
         {
           "cardName": "We Ride at Dawn",
+          "whisper": "🐴",
           "category": "Ramp",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0,
           "color": "White",
           "cmc": 3,
@@ -1282,35 +1301,34 @@
         },
         {
           "cardName": "Brightclimb Pathway",
+          "whisper": "☀️",
           "category": "Land",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.14,
           "cmc": 0,
           "rarity": "rare",
           "types": "Land",
           "price": 5.99,
           "cardText": "{T}: Add {W}.",
-          "art": "images/card_art/Brightclimb_Pathway_Grimclimb_Pathway/Brightclimb_Pathway_Grimclimb_Pathway_plst_ZNR-259_6a91d75c_front.png"
+          "art": "images/card_art/Brightclimb_Pathway_Grimclimb_Pathway/Brightclimb_Pathway_Grimclimb_Pathway_plst_ZNR-259_6a91d75c_front.png",
+          "color": "White"
         },
         {
           "cardName": "Grimclimb Pathway",
+          "whisper": "🌘",
           "category": "Land",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.14,
           "cmc": 0,
           "rarity": "rare",
           "types": "Land",
           "price": 5.99,
           "cardText": "{T}: Add {B}.",
-          "art": "images/card_art/Brightclimb_Pathway_Grimclimb_Pathway/Brightclimb_Pathway_Grimclimb_Pathway_plst_ZNR-259_6a91d75c_front.png"
+          "art": "images/card_art/Brightclimb_Pathway_Grimclimb_Pathway/Brightclimb_Pathway_Grimclimb_Pathway_plst_ZNR-259_6a91d75c_front.png",
+          "color": "Black"
         },
         {
           "cardName": "Edgar Markov",
+          "whisper": "🧛‍♂️",
           "category": "Commander",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 2.05,
           "color": [
             "White",
@@ -1326,9 +1344,8 @@
         },
         {
           "cardName": "Black Market Connections",
+          "whisper": "🕶️",
           "category": "Draw",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.56,
           "color": "Black",
           "cmc": 3,
@@ -1340,22 +1357,21 @@
         },
         {
           "cardName": "Detection Tower",
+          "whisper": "🔭",
           "category": "Land",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.19,
           "cmc": 0,
           "rarity": "rare",
           "types": "Land",
           "price": 3.49,
           "cardText": "{T}: Add {C}. {1}, {T}: Until end of turn, your opponents and creatures your opponents control with hexproof can be the targets of spells and abilities you control as though they didn't have hexproof.",
-          "art": "images/card_art/Detection_Tower/Detection_Tower_m19_249_02f99756.png"
+          "art": "images/card_art/Detection_Tower/Detection_Tower_m19_249_02f99756.png",
+          "color": "Colorless"
         },
         {
           "cardName": "Vito, Fanatic of Aclazotz",
+          "whisper": "🦴",
           "category": "Drain",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.47,
           "color": [
             "White",
@@ -1370,9 +1386,8 @@
         },
         {
           "cardName": "Life Insurance",
+          "whisper": "📋",
           "category": "Ramp",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.31,
           "color": [
             "White",
@@ -1387,9 +1402,8 @@
         },
         {
           "cardName": "Blood Artist",
+          "whisper": "🎨",
           "category": "Drain",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.56,
           "color": "Black",
           "cmc": 2,
@@ -1401,9 +1415,8 @@
         },
         {
           "cardName": "Exquisite Blood",
+          "whisper": "🍸",
           "category": "Lifegain",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 1.59,
           "color": "Black",
           "cmc": 5,
@@ -1415,9 +1428,8 @@
         },
         {
           "cardName": "Drana, Liberator of Malakir",
+          "whisper": "🗡️",
           "category": "Counters",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.19,
           "color": "Black",
           "cmc": 3,
@@ -1429,10 +1441,9 @@
         },
         {
           "cardName": "Honeymoon Hearse",
+          "whisper": "🚗",
           "category": "Sideboard",
           "secondaryCategories": "Artifact",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.5,
           "color": "Red",
           "cmc": 3,
@@ -1444,74 +1455,82 @@
         },
         {
           "cardName": "Rakdos Guildgate",
+          "whisper": "🚪",
           "category": "Land",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.05,
           "cmc": 0,
           "rarity": "common",
           "types": "Land",
           "price": 0.35,
           "cardText": "This land enters tapped. {T}: Add {B} or {R}.",
-          "art": "images/card_art/Rakdos_Guildgate/Rakdos_Guildgate_c13_314_e7c71a39.png"
+          "art": "images/card_art/Rakdos_Guildgate/Rakdos_Guildgate_c13_314_e7c71a39.png",
+          "color": [
+            "Black",
+            "Red"
+          ]
         },
         {
           "cardName": "Maze's End",
+          "whisper": "🌀",
           "category": "Land",
-          "label": "default",
-          "modifier": "Foil",
           "salt": 0.55,
           "cmc": 0,
           "rarity": "mythic",
           "types": "Land",
           "price": 1.99,
           "cardText": "This land enters tapped. {T}: Add {C}. {3}, {T}, Return this land to its owner's hand: Search your library for a Gate card, put it onto the battlefield, then shuffle. If you control ten or more Gates with different names, you win the game.",
-          "art": "images/card_art/Maze's_End/Maze's_End_fdn_727_ea9a4d1a.png"
+          "art": "images/card_art/Maze's_End/Maze's_End_fdn_727_ea9a4d1a.png",
+          "color": "Colorless"
         },
         {
           "cardName": "Boros Guildgate",
+          "whisper": "🚪",
           "category": "Land",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.12,
           "cmc": 0,
           "rarity": "common",
           "types": "Land",
           "price": 0.35,
           "cardText": "This land enters tapped. {T}: Add {R} or {W}.",
-          "art": "images/card_art/Boros_Guildgate/Boros_Guildgate_fdn_684_3e3c74ea.png"
+          "art": "images/card_art/Boros_Guildgate/Boros_Guildgate_fdn_684_3e3c74ea.png",
+          "color": [
+            "Red",
+            "White"
+          ]
         },
         {
           "cardName": "Orzhov Guildgate",
+          "whisper": "🚪",
           "category": "Land",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.04,
           "cmc": 0,
           "rarity": "common",
           "types": "Land",
           "price": 0.39,
           "cardText": "This land enters tapped. {T}: Add {W} or {B}.",
-          "art": "images/card_art/Orzhov_Guildgate/Orzhov_Guildgate_clu_242_e59ddc7f.png"
+          "art": "images/card_art/Orzhov_Guildgate/Orzhov_Guildgate_clu_242_e59ddc7f.png",
+          "color": [
+            "Black",
+            "White"
+          ]
         },
         {
           "cardName": "Castle Locthwain",
+          "whisper": "🏴",
           "category": "Land",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.1,
           "cmc": 0,
           "rarity": "rare",
           "types": "Land",
           "price": 5.99,
           "cardText": "This land enters tapped unless you control a Swamp. {T}: Add {B}. {1}{B}{B}, {T}: Draw a card, then you lose life equal to the number of cards in your hand.",
-          "art": "images/card_art/Castle_Locthwain/Castle_Locthwain_clb_884_19336e3a.png"
+          "art": "images/card_art/Castle_Locthwain/Castle_Locthwain_clb_884_19336e3a.png",
+          "color": "Black"
         },
         {
           "cardName": "The Meathook Massacre",
+          "whisper": "🪝",
           "category": "Removal",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.99,
           "color": "Black",
           "cmc": 2,
@@ -1523,22 +1542,24 @@
         },
         {
           "cardName": "Luxury Suite",
+          "whisper": "🛋️",
           "category": "Land",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.09,
           "cmc": 0,
           "rarity": "rare",
           "types": "Land",
           "price": 37.99,
           "cardText": "This land enters tapped unless you have two or more opponents. {T}: Add {B} or {R}.",
-          "art": "images/card_art/Luxury_Suite/Luxury_Suite_clb_355_6fc5fc38.png"
+          "art": "images/card_art/Luxury_Suite/Luxury_Suite_clb_355_6fc5fc38.png",
+          "color": [
+            "Black",
+            "Red"
+          ]
         },
         {
           "cardName": "Seal of the Guildpact",
+          "whisper": "🔮",
           "category": "Ramp",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.29,
           "cmc": 5,
           "rarity": "rare",
@@ -1549,9 +1570,8 @@
         },
         {
           "cardName": "Heirloom Mirror",
+          "whisper": "🪞",
           "category": "Draw",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.07,
           "color": "Black",
           "cmc": 2,
@@ -1563,9 +1583,8 @@
         },
         {
           "cardName": "Inherited Fiend",
+          "whisper": "😈",
           "category": "Draw",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.07,
           "color": "Black",
           "cmc": 0,
@@ -1577,28 +1596,32 @@
         },
         {
           "cardName": "White Lotus Tile",
+          "whisper": "🪷",
           "category": "Ramp",
-          "label": "default",
-          "modifier": "Normal",
           "cmc": 4,
           "rarity": "mythic",
           "types": "Artifact",
           "price": 6.49,
           "cardText": "This artifact enters tapped. {T}: Add X mana of any one color, where X is the greatest number of creatures you control that have a creature type in common.",
-          "art": "images/card_art/White_Lotus_Tile/White_Lotus_Tile_ptla_262s_d06dea02.png"
+          "art": "images/card_art/White_Lotus_Tile/White_Lotus_Tile_ptla_262s_d06dea02.png",
+          "color": [
+            "White",
+            "Red",
+            "Black"
+          ]
         },
         {
           "cardName": "Urborg, Tomb of Yawgmoth",
+          "whisper": "💀",
           "category": "Land",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.49,
           "cmc": 0,
           "rarity": "rare",
           "types": "Land",
           "price": 64.99,
           "cardText": "Each land is a Swamp in addition to its other land types.",
-          "art": "images/card_art/Urborg,_Tomb_of_Yawgmoth/Urborg,_Tomb_of_Yawgmoth_plst_UMA-254_a9ca5e42.png"
+          "art": "images/card_art/Urborg,_Tomb_of_Yawgmoth/Urborg,_Tomb_of_Yawgmoth_plst_UMA-254_a9ca5e42.png",
+          "color": "Black"
         }
       ]
     },
@@ -1608,9 +1631,8 @@
       "items": [
         {
           "cardName": "Imperial Seal",
+          "whisper": "🔏",
           "category": "Tutor",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 1.35,
           "color": "Black",
           "cmc": 1,
@@ -1622,9 +1644,8 @@
         },
         {
           "cardName": "Vampiric Tutor",
+          "whisper": "🩸",
           "category": "Tutor",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 1.6,
           "color": "Black",
           "cmc": 1,
@@ -1636,9 +1657,8 @@
         },
         {
           "cardName": "Reanimate",
+          "whisper": "⚰️",
           "category": "Recursion",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.79,
           "color": "Black",
           "cmc": 1,
@@ -1650,9 +1670,8 @@
         },
         {
           "cardName": "Thoughtseize",
+          "whisper": "🧠",
           "category": "Discard",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.93,
           "color": "Black",
           "cmc": 1,
@@ -1664,9 +1683,8 @@
         },
         {
           "cardName": "Entomb",
+          "whisper": "⚰️",
           "category": "Tutor",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.92,
           "color": "Black",
           "cmc": 1,
@@ -1678,9 +1696,8 @@
         },
         {
           "cardName": "Enlightened Tutor",
+          "whisper": "✨",
           "category": "Tutor",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 1.15,
           "color": "White",
           "cmc": 1,
@@ -1692,9 +1709,8 @@
         },
         {
           "cardName": "Demonic Tutor",
+          "whisper": "📜",
           "category": "Tutor",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 1.58,
           "color": "Black",
           "cmc": 2,
@@ -1706,22 +1722,24 @@
         },
         {
           "cardName": "Arcane Signet",
+          "whisper": "💎",
           "category": "Ramp",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.24,
           "cmc": 2,
           "rarity": "common",
           "types": "Artifact",
           "price": 0.99,
           "cardText": "{T}: Add one mana of any color in your commander's color identity.",
-          "art": "images/card_art/Arcane_Signet/Arcane_Signet_blc_127_28180667.png"
+          "art": "images/card_art/Arcane_Signet/Arcane_Signet_blc_127_28180667.png",
+          "color": [
+            "White",
+            "Black"
+          ]
         },
         {
           "cardName": "Legion's Landing",
+          "whisper": "⛵",
           "category": "Ramp",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.13,
           "color": "White",
           "cmc": 1,
@@ -1733,22 +1751,21 @@
         },
         {
           "cardName": "Adanto, the First Fort",
+          "whisper": "🏰",
           "category": "Ramp",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.13,
           "cmc": 0,
           "rarity": "rare",
           "types": "Land",
           "price": 5.99,
           "cardText": "{T}: Add {W}. {2}{W}, {T}: Create a 1/1 white Vampire creature token with lifelink.",
-          "art": "images/card_art/Legion's_Landing_Adanto,_the_First_Fort/Legion's_Landing_Adanto,_the_First_Fort_plst_XLN-22_14a41e7e_front.png"
+          "art": "images/card_art/Legion's_Landing_Adanto,_the_First_Fort/Legion's_Landing_Adanto,_the_First_Fort_plst_XLN-22_14a41e7e_front.png",
+          "color": "White"
         },
         {
           "cardName": "Sol Ring",
+          "whisper": "💍",
           "category": "Ramp",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 1.46,
           "cmc": 1,
           "rarity": "uncommon",
@@ -1759,9 +1776,8 @@
         },
         {
           "cardName": "Pyre of Heroes",
+          "whisper": "🔥",
           "category": "Tutor",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.4,
           "cmc": 2,
           "rarity": "rare",
@@ -1772,9 +1788,8 @@
         },
         {
           "cardName": "Victimize",
+          "whisper": "⚖️",
           "category": "Recursion",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.32,
           "color": "Black",
           "cmc": 3,
@@ -1786,9 +1801,8 @@
         },
         {
           "cardName": "Profane Procession",
+          "whisper": "⛓️",
           "category": "Removal",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.32,
           "color": [
             "White",
@@ -1803,22 +1817,27 @@
         },
         {
           "cardName": "Tomb of the Dusk Rose",
+          "whisper": "🌹",
           "category": "Removal",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.32,
           "cmc": 0,
           "rarity": "rare",
           "types": "Land",
           "price": 0.49,
           "cardText": "{T}: Add one mana of any color. {2}{W}{B}, {T}: Put a creature card exiled with this permanent onto the battlefield under your control.",
-          "art": "images/card_art/Profane_Procession_Tomb_of_the_Dusk_Rose/Profane_Procession_Tomb_of_the_Dusk_Rose_rix_166_1d94ff37_front.png"
+          "art": "images/card_art/Profane_Procession_Tomb_of_the_Dusk_Rose/Profane_Procession_Tomb_of_the_Dusk_Rose_rix_166_1d94ff37_front.png",
+          "color": [
+            "Black",
+            "Blue",
+            "Green",
+            "Red",
+            "White"
+          ]
         },
         {
           "cardName": "Anguished Unmaking",
+          "whisper": "💔",
           "category": "Removal",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.23,
           "color": [
             "White",
@@ -1833,9 +1852,8 @@
         },
         {
           "cardName": "Meathook Massacre II",
+          "whisper": "🪝",
           "category": "Removal",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.56,
           "color": "Black",
           "cmc": 4,
@@ -1847,9 +1865,8 @@
         },
         {
           "cardName": "Indulgent Aristocrat",
+          "whisper": "🎩",
           "category": "Sac Outlet",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.17,
           "color": "Black",
           "cmc": 1,
@@ -1861,9 +1878,8 @@
         },
         {
           "cardName": "Master of Dark Rites",
+          "whisper": "🕯️",
           "category": "Ramp",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.22,
           "color": "Black",
           "cmc": 1,
@@ -1875,9 +1891,8 @@
         },
         {
           "cardName": "Knight of the Ebon Legion",
+          "whisper": "🗡️",
           "category": "Counters",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.14,
           "color": "Black",
           "cmc": 1,
@@ -1889,9 +1904,8 @@
         },
         {
           "cardName": "Bloodghast",
+          "whisper": "👤",
           "category": "Recursion",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.27,
           "color": "Black",
           "cmc": 2,
@@ -1903,9 +1917,8 @@
         },
         {
           "cardName": "Cordial Vampire",
+          "whisper": "🍷",
           "category": "Counters",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.42,
           "color": "Black",
           "cmc": 2,
@@ -1917,9 +1930,8 @@
         },
         {
           "cardName": "Charismatic Conqueror",
+          "whisper": "👑",
           "category": "Tokens",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.8,
           "color": "White",
           "cmc": 2,
@@ -1931,23 +1943,21 @@
         },
         {
           "cardName": "Sorin, Imperious Bloodlord",
+          "whisper": "🧛‍♂️",
           "category": "Ramp",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.56,
           "color": "Black",
           "cmc": 3,
           "rarity": "mythic",
-          "types": "Planeswalker",
+          "types": "Creature",
           "price": 5.99,
           "cardText": "+1: Target creature you control gains deathtouch and lifelink until end of turn. If it's a Vampire, put a +1/+1 counter on it. +1: You may sacrifice a Vampire. When you do, Sorin deals 3 damage to any target and you gain 3 life. −3: You may put a Vampire creature card from your hand onto the battlefield.",
           "art": "images/card_art/Sorin,_Imperious_Bloodlord/Sorin,_Imperious_Bloodlord_inr_133_219d3e48.png"
         },
         {
           "cardName": "Vito, Thorn of the Dusk Rose",
+          "whisper": "🥀",
           "category": "Drain",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.95,
           "color": "Black",
           "cmc": 3,
@@ -1959,9 +1969,8 @@
         },
         {
           "cardName": "Preacher of the Schism",
+          "whisper": "📖",
           "category": "Draw",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.25,
           "color": "Black",
           "cmc": 3,
@@ -1973,9 +1982,8 @@
         },
         {
           "cardName": "Ruthless Lawbringer",
+          "whisper": "⚖️",
           "category": "Removal",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.04,
           "color": [
             "White",
@@ -1990,9 +1998,8 @@
         },
         {
           "cardName": "Baron Bertram Graywater",
+          "whisper": "🎩",
           "category": "Tokens",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.16,
           "color": [
             "White",
@@ -2007,9 +2014,8 @@
         },
         {
           "cardName": "Edgar, Charmed Groom",
+          "whisper": "💒",
           "category": "Tokens",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.15,
           "color": [
             "White",
@@ -2024,9 +2030,8 @@
         },
         {
           "cardName": "Edgar Markov's Coffin",
+          "whisper": "⚱️",
           "category": "Tokens",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.15,
           "color": [
             "White",
@@ -2041,9 +2046,8 @@
         },
         {
           "cardName": "Twilight Prophet",
+          "whisper": "🌒",
           "category": "Draw",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.29,
           "color": "Black",
           "cmc": 4,
@@ -2055,9 +2059,8 @@
         },
         {
           "cardName": "Bloodline Keeper",
+          "whisper": "🩸",
           "category": "Tokens",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.28,
           "color": "Black",
           "cmc": 4,
@@ -2069,9 +2072,8 @@
         },
         {
           "cardName": "Lord of Lineage",
+          "whisper": "👑",
           "category": "Tokens",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.28,
           "color": "Black",
           "cmc": 0,
@@ -2083,9 +2085,8 @@
         },
         {
           "cardName": "Sanctum Seeker",
+          "whisper": "⛪",
           "category": "Drain",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.28,
           "color": "Black",
           "cmc": 4,
@@ -2097,9 +2098,8 @@
         },
         {
           "cardName": "Elenda, the Dusk Rose",
+          "whisper": "🌹",
           "category": "Tokens",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.28,
           "color": [
             "White",
@@ -2114,9 +2114,8 @@
         },
         {
           "cardName": "Carmen, Cruel Skymarcher",
+          "whisper": "🦅",
           "category": "Recursion",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.32,
           "color": [
             "White",
@@ -2131,9 +2130,8 @@
         },
         {
           "cardName": "Queen's Bay Paladin",
+          "whisper": "🛡️",
           "category": "Recursion",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.33,
           "color": "Black",
           "cmc": 5,
@@ -2145,35 +2143,46 @@
         },
         {
           "cardName": "Cavern of Souls",
+          "whisper": "🕳️",
           "category": "Land",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.67,
           "cmc": 0,
           "rarity": "mythic",
           "types": "Land",
           "price": 69.99,
           "cardText": "As this land enters, choose a creature type. {T}: Add {C}. {T}: Add one mana of any color. Spend this mana only to cast a creature spell of the chosen type, and that spell can't be countered.",
-          "art": "images/card_art/Cavern_of_Souls/Cavern_of_Souls_plci_269p_17fc8e0f.png"
+          "art": "images/card_art/Cavern_of_Souls/Cavern_of_Souls_plci_269p_17fc8e0f.png",
+          "color": [
+            "Black",
+            "Blue",
+            "Green",
+            "Red",
+            "White"
+          ]
         },
         {
           "cardName": "Command Tower",
+          "whisper": "🏰",
           "category": "Land",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.38,
           "cmc": 0,
           "rarity": "common",
           "types": "Land",
           "price": 0.79,
           "cardText": "{T}: Add one mana of any color in your commander's color identity.",
-          "art": "images/card_art/Command_Tower/Command_Tower_40k_270_7cf39d35.png"
+          "art": "images/card_art/Command_Tower/Command_Tower_40k_270_7cf39d35.png",
+          "color": [
+            "Black",
+            "Blue",
+            "Green",
+            "Red",
+            "White"
+          ]
         },
         {
           "cardName": "Anowon, the Ruin Sage",
+          "whisper": "📕",
           "category": "Removal",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.75,
           "color": "Black",
           "cmc": 5,
@@ -2185,9 +2194,8 @@
         },
         {
           "cardName": "Butcher of Malakir",
+          "whisper": "🪓",
           "category": "Removal",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 1,
           "color": "Black",
           "cmc": 7,
@@ -2199,243 +2207,296 @@
         },
         {
           "cardName": "Path of Ancestry",
+          "whisper": "🧬",
           "category": "Land",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.13,
           "cmc": 0,
           "rarity": "common",
           "types": "Land",
           "price": 0.39,
           "cardText": "This land enters tapped. {T}: Add one mana of any color in your commander's color identity. When that mana is spent to cast a creature spell that shares a creature type with your commander, scry 1. (Look at the top card of your library. You may put that card on the bottom.)",
-          "art": "images/card_art/Path_of_Ancestry/Path_of_Ancestry_afc_254_4ae7a4a1.png"
+          "art": "images/card_art/Path_of_Ancestry/Path_of_Ancestry_afc_254_4ae7a4a1.png",
+          "color": [
+            "Black",
+            "Blue",
+            "Green",
+            "Red",
+            "White"
+          ]
         },
         {
           "cardName": "Secluded Courtyard",
+          "whisper": "🌳",
           "category": "Land",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.02,
           "cmc": 0,
           "rarity": "uncommon",
           "types": "Land",
           "price": 0.59,
           "cardText": "As this land enters, choose a creature type. {T}: Add {C}. {T}: Add one mana of any color. Spend this mana only to cast a creature spell of the chosen type or activate an ability of a creature source of the chosen type.",
-          "art": "images/card_art/Secluded_Courtyard/Secluded_Courtyard_ltc_330_a49a20ea.png"
+          "art": "images/card_art/Secluded_Courtyard/Secluded_Courtyard_ltc_330_a49a20ea.png",
+          "color": [
+            "Black",
+            "Blue",
+            "Green",
+            "Red",
+            "White"
+          ]
         },
         {
           "cardName": "Three Tree City",
+          "whisper": "🌲",
           "category": "Land",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.48,
           "cmc": 0,
           "rarity": "rare",
           "types": "Land",
           "price": 37.99,
           "cardText": "As Three Tree City enters, choose a creature type. {T}: Add {C}. {2}, {T}: Choose a color. Add an amount of mana of that color equal to the number of creatures you control of the chosen type.",
-          "art": "images/card_art/Three_Tree_City/Three_Tree_City_blb_260_56f88a48.png"
+          "art": "images/card_art/Three_Tree_City/Three_Tree_City_blb_260_56f88a48.png",
+          "color": [
+            "Black",
+            "Blue",
+            "Green",
+            "Red",
+            "White"
+          ]
         },
         {
           "cardName": "Godless Shrine",
+          "whisper": "🏚️",
           "category": "Land",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.13,
           "cmc": 0,
           "rarity": "rare",
           "types": "Land",
           "price": 13.99,
           "cardText": "({T}: Add {W} or {B}.) As this land enters, you may pay 2 life. If you don't, it enters tapped.",
-          "art": "images/card_art/Godless_Shrine/Godless_Shrine_gtc_242_6fd672bb.png"
+          "art": "images/card_art/Godless_Shrine/Godless_Shrine_gtc_242_6fd672bb.png",
+          "color": [
+            "Black",
+            "White"
+          ]
         },
         {
           "cardName": "Marsh Flats",
+          "whisper": "🌿",
           "category": "Land",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.33,
           "cmc": 0,
           "rarity": "rare",
           "types": "Land",
           "price": 34.99,
           "cardText": "{T}, Pay 1 life, Sacrifice this land: Search your library for a Plains or Swamp card, put it onto the battlefield, then shuffle.",
-          "art": "images/card_art/Marsh_Flats/Marsh_Flats_mh2_248_9db3ba6d.png"
+          "art": "images/card_art/Marsh_Flats/Marsh_Flats_mh2_248_9db3ba6d.png",
+          "color": [
+            "Black",
+            "White"
+          ]
         },
         {
           "cardName": "Sunlit Marsh",
+          "whisper": "🌅",
           "category": "Land",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.11,
           "cmc": 0,
           "rarity": "common",
           "types": "Land",
           "price": 0.35,
           "cardText": "({T}: Add {W} or {B}.) This land enters tapped.",
-          "art": "images/card_art/Sunlit_Marsh/Sunlit_Marsh_dmu_257_f0588fbf.png"
+          "art": "images/card_art/Sunlit_Marsh/Sunlit_Marsh_dmu_257_f0588fbf.png",
+          "color": [
+            "Black",
+            "White"
+          ]
         },
         {
           "cardName": "Urza's Cave",
+          "whisper": "🕳️",
           "category": "Land",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.24,
           "cmc": 0,
           "rarity": "uncommon",
           "types": "Land",
           "price": 3.49,
           "cardText": "{T}: Add {C}. {3}, {T}, Sacrifice this land: Search your library for a land card, put it onto the battlefield tapped, then shuffle.",
-          "art": "images/card_art/Urza's_Cave/Urza's_Cave_mh3_234_926916ed.png"
+          "art": "images/card_art/Urza's_Cave/Urza's_Cave_mh3_234_926916ed.png",
+          "color": "Colorless"
         },
         {
           "cardName": "Shadowy Backstreet",
+          "whisper": "🌑",
           "category": "Land",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.17,
           "cmc": 0,
           "rarity": "rare",
           "types": "Land",
           "price": 17.99,
           "cardText": "({T}: Add {W} or {B}.) This land enters tapped. When this land enters, surveil 1. (Look at the top card of your library. You may put it into your graveyard.)",
-          "art": "images/card_art/Shadowy_Backstreet/Shadowy_Backstreet_mkm_268_69c1b656.png"
+          "art": "images/card_art/Shadowy_Backstreet/Shadowy_Backstreet_mkm_268_69c1b656.png",
+          "color": [
+            "Black",
+            "White"
+          ]
         },
         {
           "cardName": "Bleachbone Verge",
+          "whisper": "🦴",
           "category": "Land",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.12,
           "cmc": 0,
           "rarity": "rare",
           "types": "Land",
           "price": 14.99,
           "cardText": "{T}: Add {B}. {T}: Add {W}. Activate only if you control a Plains or a Swamp.",
-          "art": "images/card_art/Bleachbone_Verge/Bleachbone_Verge_dft_250_52dcdabd.png"
+          "art": "images/card_art/Bleachbone_Verge/Bleachbone_Verge_dft_250_52dcdabd.png",
+          "color": [
+            "Black",
+            "White"
+          ]
         },
         {
           "cardName": "Temple of Silence",
+          "whisper": "🤫",
           "category": "Land",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.03,
           "cmc": 0,
           "rarity": "rare",
           "types": "Land",
           "price": 0.49,
           "cardText": "This land enters tapped. When this land enters, scry 1. (Look at the top card of your library. You may put that card on the bottom.) {T}: Add {W} or {B}.",
-          "art": "images/card_art/Temple_of_Silence/Temple_of_Silence_c21_325_bba526f9.png"
+          "art": "images/card_art/Temple_of_Silence/Temple_of_Silence_c21_325_bba526f9.png",
+          "color": [
+            "Black",
+            "White"
+          ]
         },
         {
           "cardName": "Caves of Koilos",
+          "whisper": "⛰️",
           "category": "Land",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.12,
           "cmc": 0,
           "rarity": "rare",
           "types": "Land",
           "price": 1.99,
           "cardText": "{T}: Add {C}. {T}: Add {W} or {B}. This land deals 1 damage to you.",
-          "art": "images/card_art/Caves_of_Koilos/Caves_of_Koilos_9ed_320★_f17c33bd.png"
+          "art": "images/card_art/Caves_of_Koilos/Caves_of_Koilos_9ed_320★_f17c33bd.png",
+          "color": [
+            "Black",
+            "White"
+          ]
         },
         {
           "cardName": "Tainted Field",
+          "whisper": "🌾",
           "category": "Land",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.01,
           "cmc": 0,
           "rarity": "uncommon",
           "types": "Land",
           "price": 0.59,
           "cardText": "{T}: Add {C}. {T}: Add {W} or {B}. Activate only if you control a Swamp.",
-          "art": "images/card_art/Tainted_Field/Tainted_Field_c15_311_fa018dbf.png"
+          "art": "images/card_art/Tainted_Field/Tainted_Field_c15_311_fa018dbf.png",
+          "color": [
+            "Black",
+            "White"
+          ]
         },
         {
           "cardName": "Shattered Sanctum",
+          "whisper": "🪟",
           "category": "Land",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.06,
           "cmc": 0,
           "rarity": "rare",
           "types": "Land",
           "price": 6.49,
           "cardText": "This land enters tapped unless you control two or more other lands. {T}: Add {W} or {B}.",
-          "art": "images/card_art/Shattered_Sanctum/Shattered_Sanctum_inr_283_89bec47e.png"
+          "art": "images/card_art/Shattered_Sanctum/Shattered_Sanctum_inr_283_89bec47e.png",
+          "color": [
+            "Black",
+            "White"
+          ]
         },
         {
           "cardName": "Isolated Chapel",
+          "whisper": "⛪",
           "category": "Land",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.17,
           "cmc": 0,
           "rarity": "rare",
           "types": "Land",
           "price": 1.29,
           "cardText": "This land enters tapped unless you control a Plains or a Swamp. {T}: Add {W} or {B}.",
-          "art": "images/card_art/Isolated_Chapel/Isolated_Chapel_dmr_249_d359281b.png"
+          "art": "images/card_art/Isolated_Chapel/Isolated_Chapel_dmr_249_d359281b.png",
+          "color": [
+            "Black",
+            "White"
+          ]
         },
         {
           "cardName": "Phyrexian Tower",
+          "whisper": "🗼",
           "category": "Land",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.41,
           "cmc": 0,
           "rarity": "mythic",
           "types": "Land",
           "price": 34.99,
           "cardText": "{T}: Add {C}. {T}, Sacrifice a creature: Add {B}{B}.",
-          "art": "images/card_art/Phyrexian_Tower/Phyrexian_Tower_sld_208_3097b876.png"
+          "art": "images/card_art/Phyrexian_Tower/Phyrexian_Tower_sld_208_3097b876.png",
+          "color": "Black"
         },
         {
           "cardName": "Concealed Courtyard",
+          "whisper": "🌿",
           "category": "Land",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.12,
           "cmc": 0,
           "rarity": "rare",
           "types": "Land",
           "price": 2.29,
           "cardText": "This land enters tapped unless you control two or fewer other lands. {T}: Add {W} or {B}.",
-          "art": "images/card_art/Concealed_Courtyard/Concealed_Courtyard_kld_245_c8769e97.png"
+          "art": "images/card_art/Concealed_Courtyard/Concealed_Courtyard_kld_245_c8769e97.png",
+          "color": [
+            "Black",
+            "White"
+          ]
         },
         {
           "cardName": "Vault of the Archangel",
+          "whisper": "😇",
           "category": "Land",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.24,
           "cmc": 0,
           "rarity": "rare",
           "types": "Land",
           "price": 1.79,
           "cardText": "{T}: Add {C}. {2}{W}{B}, {T}: Creatures you control gain deathtouch and lifelink until end of turn.",
-          "art": "images/card_art/Vault_of_the_Archangel/Vault_of_the_Archangel_clb_927_e1004cea.png"
+          "art": "images/card_art/Vault_of_the_Archangel/Vault_of_the_Archangel_clb_927_e1004cea.png",
+          "color": [
+            "Black",
+            "White"
+          ]
         },
         {
           "cardName": "Thespian's Stage",
+          "whisper": "🎭",
           "category": "Land",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.37,
           "cmc": 0,
           "rarity": "rare",
           "types": "Land",
           "price": 0.99,
           "cardText": "{T}: Add {C}. {2}, {T}: This land becomes a copy of target land, except it has this ability.",
-          "art": "images/card_art/Thespian's_Stage/Thespian's_Stage_c19_282_954c7792.png"
+          "art": "images/card_art/Thespian's_Stage/Thespian's_Stage_c19_282_954c7792.png",
+          "color": "Colorless"
         },
         {
           "cardName": "Dark Ritual",
+          "whisper": "🕯️",
           "category": "Ramp",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.67,
           "color": "Black",
           "cmc": 1,
@@ -2447,9 +2508,8 @@
         },
         {
           "cardName": "Nighthawk Scavenger",
+          "whisper": "🦇",
           "category": "Lifegain",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.21,
           "color": "Black",
           "cmc": 3,
@@ -2461,9 +2521,8 @@
         },
         {
           "cardName": "Vampire of the Dire Moon",
+          "whisper": "🌙",
           "category": "Lifegain",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.12,
           "color": "Black",
           "cmc": 1,
@@ -2475,22 +2534,24 @@
         },
         {
           "cardName": "Fetid Heath",
+          "whisper": "🌾",
           "category": "Land",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.09,
           "cmc": 0,
           "rarity": "rare",
           "types": "Land",
           "price": 1.29,
           "cardText": "{T}: Add {C}. {W/B}, {T}: Add {W}{W}, {W}{B}, or {B}{B}.",
-          "art": "images/card_art/Fetid_Heath/Fetid_Heath_a25_238_e0547b3a.png"
+          "art": "images/card_art/Fetid_Heath/Fetid_Heath_a25_238_e0547b3a.png",
+          "color": [
+            "Black",
+            "White"
+          ]
         },
         {
           "cardName": "Glass-Cast Heart",
+          "whisper": "❤️‍🔥",
           "category": "Tokens",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.18,
           "color": "Black",
           "cmc": 3,
@@ -2502,9 +2563,8 @@
         },
         {
           "cardName": "Whip of Erebos",
+          "whisper": "🐍",
           "category": "Recursion",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.44,
           "color": "Black",
           "cmc": 4,
@@ -2519,9 +2579,8 @@
         },
         {
           "cardName": "Vampire Cutthroat",
+          "whisper": "🔪",
           "category": "Lifegain",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0,
           "color": "Black",
           "cmc": 1,
@@ -2533,22 +2592,21 @@
         },
         {
           "cardName": "Shizo, Death's Storehouse",
+          "whisper": "☠️",
           "category": "Land",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.34,
           "cmc": 0,
           "rarity": "rare",
           "types": "Land",
           "price": 42.99,
           "cardText": "{T}: Add {B}. {B}, {T}: Target legendary creature gains fear until end of turn. (It can't be blocked except by artifact creatures and/or black creatures.)",
-          "art": "images/card_art/Shizo,_Death's_Storehouse/Shizo,_Death's_Storehouse_dmc_233_099352e2.png"
+          "art": "images/card_art/Shizo,_Death's_Storehouse/Shizo,_Death's_Storehouse_dmc_233_099352e2.png",
+          "color": "Black"
         },
         {
           "cardName": "Treacherous Greed",
+          "whisper": "💸",
           "category": "Draw",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.29,
           "color": [
             "White",
@@ -2563,9 +2621,8 @@
         },
         {
           "cardName": "Fell the Profane",
+          "whisper": "⬇️",
           "category": "Removal",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.18,
           "color": "Black",
           "cmc": 4,
@@ -2577,22 +2634,21 @@
         },
         {
           "cardName": "Fell Mire",
+          "whisper": "🌫️",
           "category": "Removal",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.18,
           "cmc": 0,
           "rarity": "uncommon",
           "types": "Land",
           "price": 7.49,
           "cardText": "As this land enters, you may pay 3 life. If you don't, it enters tapped. {T}: Add {B}.",
-          "art": "images/card_art/Fell_the_Profane_Fell_Mire/Fell_the_Profane_Fell_Mire_mh3_244_a3cb782d_front.png"
+          "art": "images/card_art/Fell_the_Profane_Fell_Mire/Fell_the_Profane_Fell_Mire_mh3_244_a3cb782d_front.png",
+          "color": "Black"
         },
         {
           "cardName": "Necropolis Regent",
+          "whisper": "👸",
           "category": "Counters",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.21,
           "color": "Black",
           "cmc": 6,
@@ -2604,9 +2660,8 @@
         },
         {
           "cardName": "Luminous Broodmoth",
+          "whisper": "🦋",
           "category": "Recursion",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.58,
           "color": "White",
           "cmc": 4,
@@ -2618,9 +2673,8 @@
         },
         {
           "cardName": "Tarrian's Journal",
+          "whisper": "📓",
           "category": "Draw",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.13,
           "color": "Black",
           "cmc": 2,
@@ -2632,22 +2686,21 @@
         },
         {
           "cardName": "The Tomb of Aclazotz",
+          "whisper": "🦇",
           "category": "Draw",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.13,
           "cmc": 0,
           "rarity": "rare",
           "types": "Land",
           "price": 0.79,
           "cardText": "{T}: Add {B}. {T}: You may cast a creature spell from your graveyard this turn. If you do, it enters with a finality counter on it and is a Vampire in addition to its other types. (If a creature with a finality counter on it would die, exile it instead.)",
-          "art": "images/card_art/Tarrian's_Journal_The_Tomb_of_Aclazotz/Tarrian's_Journal_The_Tomb_of_Aclazotz_lci_126_99255a66_front.png"
+          "art": "images/card_art/Tarrian's_Journal_The_Tomb_of_Aclazotz/Tarrian's_Journal_The_Tomb_of_Aclazotz_lci_126_99255a66_front.png",
+          "color": "Black"
         },
         {
           "cardName": "Bloodvial Purveyor",
+          "whisper": "💉",
           "category": "Tokens",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.22,
           "color": "Black",
           "cmc": 4,
@@ -2659,9 +2712,8 @@
         },
         {
           "cardName": "Alhammarret's Archive",
+          "whisper": "📚",
           "category": "Draw",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.51,
           "cmc": 5,
           "rarity": "mythic",
@@ -2672,9 +2724,8 @@
         },
         {
           "cardName": "Erebos, God of the Dead",
+          "whisper": "💀",
           "category": "Draw",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.43,
           "color": "Black",
           "cmc": 4,
@@ -2689,9 +2740,8 @@
         },
         {
           "cardName": "Shadowspear",
+          "whisper": "🔱",
           "category": "Lifegain",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.75,
           "cmc": 1,
           "rarity": "rare",
@@ -2702,9 +2752,8 @@
         },
         {
           "cardName": "Pearl Medallion",
+          "whisper": "🪙",
           "category": "Ramp",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.23,
           "cmc": 2,
           "rarity": "rare",
@@ -2715,9 +2764,8 @@
         },
         {
           "cardName": "Helm of the Host",
+          "whisper": "⛑️",
           "category": "Copy",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.97,
           "cmc": 4,
           "rarity": "rare",
@@ -2728,9 +2776,8 @@
         },
         {
           "cardName": "Dictate of Erebos",
+          "whisper": "📜",
           "category": "Removal",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 1.88,
           "color": "Black",
           "cmc": 5,
@@ -2742,9 +2789,8 @@
         },
         {
           "cardName": "Jet Medallion",
+          "whisper": "🖤",
           "category": "Ramp",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.22,
           "cmc": 2,
           "rarity": "rare",
@@ -2755,9 +2801,8 @@
         },
         {
           "cardName": "Clavileño, First of the Blessed",
+          "whisper": "😇",
           "category": "Commander",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.36,
           "color": [
             "White",
@@ -2772,48 +2817,53 @@
         },
         {
           "cardName": "The Golden Throne",
+          "whisper": "👑",
           "category": "Ramp",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.65,
           "cmc": 4,
           "rarity": "rare",
           "types": "Artifact",
           "price": 16.99,
           "cardText": "Arcane Life-support — If you would lose the game, instead exile The Golden Throne and your life total becomes 1. A Thousand Souls Die Every Day — {T}, Sacrifice a creature: Add three mana in any combination of colors.",
-          "art": "images/card_art/The_Golden_Throne/The_Golden_Throne_40k_157_fa515b78.png"
+          "art": "images/card_art/The_Golden_Throne/The_Golden_Throne_40k_157_fa515b78.png",
+          "color": [
+            "White",
+            "Black"
+          ]
         },
         {
           "cardName": "Scrubland",
+          "whisper": "🏜️",
           "category": "Land",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.83,
           "cmc": 0,
           "rarity": "rare",
           "types": "Land",
           "price": 549.99,
           "cardText": "({T}: Add {W} or {B}.)",
-          "art": "images/card_art/Scrubland/Scrubland_ced_282_c6aad9a9.png"
+          "art": "images/card_art/Scrubland/Scrubland_ced_282_c6aad9a9.png",
+          "color": [
+            "Black",
+            "White"
+          ]
         },
         {
           "cardName": "Urborg, Tomb of Yawgmoth",
+          "whisper": "💀",
           "category": "Land",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.49,
           "cmc": 0,
           "rarity": "rare",
           "types": "Land",
           "price": 64.99,
           "cardText": "Each land is a Swamp in addition to its other land types.",
-          "art": "images/card_art/Urborg,_Tomb_of_Yawgmoth/Urborg,_Tomb_of_Yawgmoth_plst_UMA-254_a9ca5e42.png"
+          "art": "images/card_art/Urborg,_Tomb_of_Yawgmoth/Urborg,_Tomb_of_Yawgmoth_plst_UMA-254_a9ca5e42.png",
+          "color": "Black"
         },
         {
           "cardName": "Agadeem's Awakening",
+          "whisper": "🌊",
           "category": "Recursion",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.43,
           "color": "Black",
           "cmc": 3,
@@ -2825,22 +2875,21 @@
         },
         {
           "cardName": "Agadeem, the Undercrypt",
+          "whisper": "🕸️",
           "category": "Recursion",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.43,
           "cmc": 0,
           "rarity": "mythic",
           "types": "Land",
           "price": 37.99,
           "cardText": "As this land enters, you may pay 3 life. If you don't, it enters tapped. {T}: Add {B}.",
-          "art": "images/card_art/Agadeem's_Awakening_Agadeem,_the_Undercrypt/Agadeem's_Awakening_Agadeem,_the_Undercrypt_znr_90_67f4c93b_front.png"
+          "art": "images/card_art/Agadeem's_Awakening_Agadeem,_the_Undercrypt/Agadeem's_Awakening_Agadeem,_the_Undercrypt_znr_90_67f4c93b_front.png",
+          "color": "Black"
         },
         {
           "cardName": "Grim Tutor",
+          "whisper": "💀",
           "category": "Tutor",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.91,
           "color": "Black",
           "cmc": 3,
@@ -2852,9 +2901,8 @@
         },
         {
           "cardName": "Legion Lieutenant",
+          "whisper": "⚔️",
           "category": "Anthem",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.11,
           "color": [
             "White",
@@ -2869,9 +2917,8 @@
         },
         {
           "cardName": "Bishop of Rebirth",
+          "whisper": "✝️",
           "category": "Recursion",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.36,
           "color": "White",
           "cmc": 5,
@@ -2883,9 +2930,8 @@
         },
         {
           "cardName": "Elenda's Hierophant",
+          "whisper": "🕊️",
           "category": "Tokens",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.25,
           "color": "White",
           "cmc": 3,
@@ -2897,9 +2943,8 @@
         },
         {
           "cardName": "March of the Canonized",
+          "whisper": "🕊️",
           "category": "Tokens",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.22,
           "color": "White",
           "cmc": 2,
@@ -2911,9 +2956,8 @@
         },
         {
           "cardName": "Vona, Butcher of Magan",
+          "whisper": "🪓",
           "category": "Removal",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.5,
           "color": [
             "White",
@@ -2928,9 +2972,8 @@
         },
         {
           "cardName": "Damn",
+          "whisper": "🪦",
           "category": "Removal",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.36,
           "color": "Black",
           "cmc": 2,
@@ -2942,9 +2985,8 @@
         },
         {
           "cardName": "Call the Bloodline",
+          "whisper": "📞",
           "category": "Discard",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.62,
           "color": "Black",
           "cmc": 2,
@@ -2956,22 +2998,27 @@
         },
         {
           "cardName": "Nykthos, Shrine to Nyx",
+          "whisper": "⭐",
           "category": "Land",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.91,
           "cmc": 0,
           "rarity": "rare",
           "types": "Land",
           "price": 64.99,
           "cardText": "{T}: Add {C}. {2}, {T}: Choose a color. Add an amount of mana of that color equal to your devotion to that color. (Your devotion to a color is the number of mana symbols of that color in the mana costs of permanents you control.)",
-          "art": "images/card_art/Nykthos,_Shrine_to_Nyx/Nykthos,_Shrine_to_Nyx_ppro_2022-3_76cc445b.png"
+          "art": "images/card_art/Nykthos,_Shrine_to_Nyx/Nykthos,_Shrine_to_Nyx_ppro_2022-3_76cc445b.png",
+          "color": [
+            "Black",
+            "Blue",
+            "Green",
+            "Red",
+            "White"
+          ]
         },
         {
           "cardName": "Mavren Fein, Dusk Apostle",
+          "whisper": "🌅",
           "category": "Tokens",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.23,
           "color": "White",
           "cmc": 3,
@@ -2983,35 +3030,34 @@
         },
         {
           "cardName": "Takenuma, Abandoned Mire",
+          "whisper": "🏯",
           "category": "Land",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.22,
           "cmc": 0,
           "rarity": "rare",
           "types": "Land",
           "price": 15.99,
           "cardText": "{T}: Add {B}. Channel — {3}{B}, Discard this card: Mill three cards, then return a creature or planeswalker card from your graveyard to your hand. This ability costs {1} less to activate for each legendary creature you control.",
-          "art": "images/card_art/Takenuma,_Abandoned_Mire/Takenuma,_Abandoned_Mire_neo_278_499037cc.png"
+          "art": "images/card_art/Takenuma,_Abandoned_Mire/Takenuma,_Abandoned_Mire_neo_278_499037cc.png",
+          "color": "Black"
         },
         {
           "cardName": "Castle Locthwain",
+          "whisper": "🏴",
           "category": "Land",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.1,
           "cmc": 0,
           "rarity": "rare",
           "types": "Land",
           "price": 5.99,
           "cardText": "This land enters tapped unless you control a Swamp. {T}: Add {B}. {1}{B}{B}, {T}: Draw a card, then you lose life equal to the number of cards in your hand.",
-          "art": "images/card_art/Castle_Locthwain/Castle_Locthwain_clb_884_19336e3a.png"
+          "art": "images/card_art/Castle_Locthwain/Castle_Locthwain_clb_884_19336e3a.png",
+          "color": "Black"
         },
         {
           "cardName": "Malakir Rebirth",
+          "whisper": "🔄",
           "category": "Protection",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.21,
           "color": "Black",
           "cmc": 1,
@@ -3023,22 +3069,21 @@
         },
         {
           "cardName": "Malakir Mire",
+          "whisper": "🌫️",
           "category": "Protection",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.21,
           "cmc": 0,
           "rarity": "uncommon",
           "types": "Land",
           "price": 15.99,
           "cardText": "This land enters tapped. {T}: Add {B}.",
-          "art": "images/card_art/Malakir_Rebirth_Malakir_Mire/Malakir_Rebirth_Malakir_Mire_znr_111_609d3ecf_front.png"
+          "art": "images/card_art/Malakir_Rebirth_Malakir_Mire/Malakir_Rebirth_Malakir_Mire_znr_111_609d3ecf_front.png",
+          "color": "Black"
         },
         {
           "cardName": "Thought Vessel",
+          "whisper": "🧠",
           "category": "Ramp",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.27,
           "cmc": 2,
           "rarity": "common",
@@ -3049,10 +3094,9 @@
         },
         {
           "cardName": "Dusk Legion Dreadnought",
+          "whisper": "🚢",
           "category": "Sideboard",
           "secondaryCategories": "Artifact",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.07,
           "cmc": 5,
           "rarity": "uncommon",
@@ -3063,35 +3107,34 @@
         },
         {
           "cardName": "Brightclimb Pathway",
+          "whisper": "☀️",
           "category": "Land",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.14,
           "cmc": 0,
           "rarity": "rare",
           "types": "Land",
           "price": 5.99,
           "cardText": "{T}: Add {W}.",
-          "art": "images/card_art/Brightclimb_Pathway_Grimclimb_Pathway/Brightclimb_Pathway_Grimclimb_Pathway_plst_ZNR-259_6a91d75c_front.png"
+          "art": "images/card_art/Brightclimb_Pathway_Grimclimb_Pathway/Brightclimb_Pathway_Grimclimb_Pathway_plst_ZNR-259_6a91d75c_front.png",
+          "color": "White"
         },
         {
           "cardName": "Grimclimb Pathway",
+          "whisper": "🌘",
           "category": "Land",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.14,
           "cmc": 0,
           "rarity": "rare",
           "types": "Land",
           "price": 5.99,
           "cardText": "{T}: Add {B}.",
-          "art": "images/card_art/Brightclimb_Pathway_Grimclimb_Pathway/Brightclimb_Pathway_Grimclimb_Pathway_plst_ZNR-259_6a91d75c_front.png"
+          "art": "images/card_art/Brightclimb_Pathway_Grimclimb_Pathway/Brightclimb_Pathway_Grimclimb_Pathway_plst_ZNR-259_6a91d75c_front.png",
+          "color": "Black"
         },
         {
           "cardName": "Lifeline",
+          "whisper": "❤️‍🩹",
           "category": "Recursion",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.46,
           "cmc": 5,
           "rarity": "rare",
@@ -3102,9 +3145,8 @@
         },
         {
           "cardName": "Contamination",
+          "whisper": "☣️",
           "category": "Stax",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 1.5,
           "color": "Black",
           "cmc": 3,
@@ -3116,9 +3158,8 @@
         },
         {
           "cardName": "Flare of Malice",
+          "whisper": "🔥",
           "category": "Removal",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 0.62,
           "color": "Black",
           "cmc": 4,
@@ -3130,9 +3171,8 @@
         },
         {
           "cardName": "Bolas's Citadel",
+          "whisper": "🏰",
           "category": "Draw",
-          "label": "default",
-          "modifier": "Normal",
           "salt": 1.72,
           "color": "Black",
           "cmc": 6,

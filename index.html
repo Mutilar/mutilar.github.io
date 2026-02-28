@@ -959,6 +959,7 @@
     <div class="modal-sticky-bar">
       <div class="viz-filter-group tl-glow">
         <div class="viz-filter-row">
+          <button class="viz-layout-toggle" id="mtgLayoutToggle" style="--tc:0,120,212" title="Static: nodes keep their positions when filtering. Dynamic: nodes reflow into new positions.">📌</button>
           <!-- Type filters -->
           <button class="mtg-filter active" data-type="all" style="--tc:255,255,255;--tc-light:30,30,40"><span class="all-indicator">⬜</span> 🎛️</button>
           <button class="mtg-filter active" data-type="Creature" style="--tc:100,180,100"><span class="viz-dot" style="background:rgba(100,180,100,0.9);"></span> 🧛</button>
@@ -967,7 +968,11 @@
           <button class="mtg-filter active" data-type="Instant" style="--tc:80,160,220"><span class="viz-dot" style="background:rgba(80,160,220,0.9);"></span> ⚡</button>
           <button class="mtg-filter active" data-type="Sorcery" style="--tc:200,100,100"><span class="viz-dot" style="background:rgba(200,100,100,0.9);"></span> 🔮</button>
           <button class="mtg-filter active" data-type="Land" style="--tc:140,120,90"><span class="viz-dot" style="background:rgba(140,120,90,0.9);"></span> 🏔️</button>
-          <button class="mtg-filter active" data-type="Planeswalker" style="--tc:200,170,50"><span class="viz-dot" style="background:rgba(200,170,50,0.9);"></span> 🌟</button>
+          <span class="mtg-filter-sep">│</span>
+          <!-- Deck filters -->
+          <button class="mtg-filter active" data-deck="all" style="--tc:255,255,255;--tc-light:30,30,40"><span class="all-indicator">⬜</span> 🃏</button>
+          <button class="mtg-filter active" data-deck="the-nobles" style="--tc:240,200,80"><span class="viz-dot" style="background:rgba(240,200,80,0.9);"></span> 👑</button>
+          <button class="mtg-filter active" data-deck="the-demons" style="--tc:180,60,60"><span class="viz-dot" style="background:rgba(180,60,60,0.9);"></span> 😈</button>
           <span class="mtg-filter-sep">│</span>
           <!-- Mana color filters -->
           <button class="mtg-filter active" data-color="all" style="--tc:255,255,255;--tc-light:30,30,40"><span class="all-indicator">⬜</span> 🎨</button>
@@ -984,6 +989,21 @@
         <svg class="mtg-edges" xmlns="http://www.w3.org/2000/svg" viewBox="-2000 -2000 4000 4000"></svg>
       </div>
     </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     MTG CARD VIEW MODAL  (overlay on top of skill tree)
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="modal-overlay" id="mtg-card-modal">
+  <div class="glass-tile modal-card mtg-card-view-card">
+    <div class="modal-sticky-bar">
+      <div class="modal-sticky-group tl-glow">
+        <div class="mtg-card-badges" id="mtg-card-badges"></div>
+        <button class="modal-close" id="mtgCardModalClose" aria-label="Close modal">&times;</button>
+      </div>
+    </div>
+    <img class="mtg-card-view-art" id="mtg-card-view-art" src="" alt="" />
   </div>
 </div>
 
@@ -1055,9 +1075,7 @@
 <script defer src="js/modals.js"></script>
 <script defer src="js/pdfviewer.js"></script>
 <script defer src="js/timeline.js"></script>
-<script defer src="js/skill-tree-engine.js"></script>
 <script defer src="js/skill-tree.js"></script>
-<script defer src="js/mtg-tree.js"></script>
 <script defer src="js/mermaid-view.js"></script>
 <script defer src="js/radio.js"></script>
 

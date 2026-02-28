@@ -37,6 +37,7 @@
 
   // ── Open / close ───────────────────────────────────────────
   function openTimelineModal() {
+    _filterSys.setAll();
     toggleModal(timelineModal, true);
     if (!timelineBuilt) buildTimeline();
     // Re-activate whisper HUD (hidden on close)
