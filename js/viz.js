@@ -546,3 +546,154 @@ function createCrossfader() {
     }
   };
 }
+
+// ═══════════════════════════════════════════════════════════════
+//  TOUR ENGINE — Shared traverse / guided-tour state machine
+//
+//  Drives a timed sequence of filter steps with smooth camera
+//  transitions, pill glow, and an explore hint button.
+//
+//  Usage:
+//    var tour = createTourEngine({
+//      modal,             // DOM modal element
+//      viewport,          // DOM .viz-viewport element
+//      hintLabel,         // default hint HTML (e.g. '<strong>Traverse</strong>…')
+//      steps,             // [{ label: "emoji" }]  — step metadata
+//      applyStep,         // fn(step, idx) — set filters & call applyFilters
+//      resetAll,          // fn() — restore all filters after tour ends
+//      fitCamera,         // fn() — smooth camera fit to visible nodes
+//      setShowNames,      // fn(bool) — toggle name/whisper display
+//      updateGlow,        // fn() — proximity glow refresh
+//      glowPills,         // fn() — highlight active filter buttons
+//      clearPillGlow,     // fn() — remove all pill glow
+//      stepDelay,         // ms between steps (default 6000)
+//      settleDelay,       // ms before camera fit (default 700)
+//      nameShowDuration,  // ms to show names before reverting (default 4000)
+//    });
+//    // Returns { start, stop, isTouring, createHint }
+// ═══════════════════════════════════════════════════════════════
+function createTourEngine(cfg) {
+  var modal           = cfg.modal;
+  var viewport        = cfg.viewport;
+  var hintLabel       = cfg.hintLabel || '<strong>Traverse</strong><span class="scroll-arrow">\uD83D\uDD2D</span>';
+  var steps           = cfg.steps || [];
+  var applyStep       = cfg.applyStep;
+  var resetAll        = cfg.resetAll;
+  var fitCamera       = cfg.fitCamera;
+  var setShowNames    = cfg.setShowNames   || function () {};
+  var updateGlow      = cfg.updateGlow     || function () {};
+  var glowPills       = cfg.glowPills      || function () {};
+  var clearPillGlow   = cfg.clearPillGlow  || function () {};
+  var STEP_DELAY      = cfg.stepDelay         || 2000;
+  var SETTLE_DELAY    = cfg.settleDelay       || 500;
+  var NAME_SHOW_DUR   = cfg.nameShowDuration  || 2000;
+
+  var _timers  = [];
+  var _gen     = 0;
+  var _touring = false;
+  var _crossfader = createCrossfader();
+
+  function _setHintLabel(label) {
+    var hint = modal.querySelector(".viz-explore-hint");
+    if (!hint) return;
+    var html = '<span class="scroll-arrow">' + label + '</span>';
+    _crossfader.fade(hint, html);
+  }
+
+  function _resetHintLabel() {
+    var hint = modal.querySelector(".viz-explore-hint");
+    if (!hint) return;
+    if (_touring) {
+      _crossfader.fade(hint, hintLabel, function () { hint.classList.remove("exploring"); });
+    } else {
+      hint.innerHTML = hintLabel;
+      hint.classList.remove("exploring");
+    }
+  }
+
+  function stop() {
+    _gen++;
+    _timers.forEach(function (t) { clearTimeout(t); });
+    _timers = [];
+    _touring = false;
+    if (viewport) viewport.classList.remove("kg-touring");
+    setShowNames(false);
+    clearPillGlow();
+    resetAll();
+    _resetHintLabel();
+  }
+
+  function start() {
+    if (!steps.length) return;
+    if (_touring) { stop(); return; }
+
+    _gen++;
+    var gen = _gen;
+    _touring = true;
+
+    if (viewport) viewport.classList.add("kg-touring");
+
+    var hint = modal.querySelector(".viz-explore-hint");
+    if (hint) { hint.innerHTML = ""; hint.classList.add("exploring"); }
+
+    var initialDelay = 300;
+
+    // Apply first step immediately
+    applyStep(steps[0], 0);
+
+    steps.forEach(function (step, idx) {
+      var delay = initialDelay + idx * STEP_DELAY;
+
+      _timers.push(setTimeout(function () {
+        if (!_touring || gen !== _gen) return;
+
+        applyStep(step, idx);
+        setShowNames(true);
+        glowPills();
+        _setHintLabel(step.label);
+
+        _timers.push(setTimeout(function () {
+          if (!_touring || gen !== _gen) return;
+          fitCamera();
+        }, SETTLE_DELAY));
+
+        _timers.push(setTimeout(function () {
+          if (!_touring || gen !== _gen) return;
+          setShowNames(false);
+          updateGlow();
+        }, NAME_SHOW_DUR));
+
+      }, delay));
+    });
+
+    var totalDuration = initialDelay + steps.length * STEP_DELAY + SETTLE_DELAY + 800;
+    _timers.push(setTimeout(function () {
+      if (!_touring || gen !== _gen) return;
+      _touring = false;
+      if (viewport) viewport.classList.remove("kg-touring");
+      setShowNames(false);
+      clearPillGlow();
+      resetAll();
+      _resetHintLabel();
+      setTimeout(function () { fitCamera(); }, 400);
+    }, totalDuration));
+  }
+
+  function createHint() {
+    if (!viewport) return null;
+    return createExploreHint({
+      viewport: viewport,
+      label:    hintLabel,
+      onStart:  start,
+      isTouring: function () { return _touring; },
+      onCancel:  stop,
+    });
+  }
+
+  return {
+    start:     start,
+    stop:      stop,
+    isTouring: function () { return _touring; },
+    createHint: createHint,
+  };
+}

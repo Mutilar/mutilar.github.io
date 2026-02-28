@@ -3407,7 +3407,8 @@ html.light-mode .viz-filter:not(.active) .viz-dot {
 }
 
 /* ── Filter pill glow (explore/traverse tour) ─────────────── */
-.viz-filter.viz-filter-glow {
+.viz-filter.viz-filter-glow,
+.mtg-filter.viz-filter-glow {
   color: #fff;
   border-color: rgba(var(--tc), 0.9) !important;
   background: rgba(var(--tc), 0.25) !important;
@@ -3417,7 +3418,8 @@ html.light-mode .viz-filter:not(.active) .viz-dot {
   animation: viz-pill-glow 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
 }
 
-html.light-mode .viz-filter.viz-filter-glow {
+html.light-mode .viz-filter.viz-filter-glow,
+html.light-mode .mtg-filter.viz-filter-glow {
   color: rgba(0, 0, 0, 0.9);
   background: rgba(var(--tc-light, var(--tc)), 0.2) !important;
   box-shadow: 0 0 10px rgba(var(--tc-light, var(--tc)), 0.3),
@@ -4538,6 +4540,11 @@ html.light-mode .viz-filter.filter-pulse {
   transition: opacity 0.3s ease;
 }
 
+/* During touring, hide/show nodes instantly — no fade that could flash the title */
+.kg-touring .kg-node.kg-hidden {
+  transition: none !important;
+}
+
 /* ── Center node (identity) ───────────────────────────────── */
 .kg-node-center {
   opacity: 1;
@@ -4615,28 +4622,28 @@ html.light-mode .viz-filter.filter-pulse {
 }
 
 /* Crossfade layers: name ↔ whisper */
-/* Emoji row: hidden by default, revealed on hover */
+/* Emoji row: never displayed — nodes show only name or whisper */
 .kg-node-emoji {
   display: none;
-  text-align: center;
-  line-height: 1.2;
-  font-size: 1.2em;
-}
-.kg-node:hover .kg-node-emoji,
-.kg-node.kg-in-focus .kg-node-emoji {
-  display: block;
 }
 
-/* Hide text on hover/active — emoji only */
-.kg-node:hover .kg-name-layer:not(.kg-name-whisper),
+/* When in focus, hide the name layer and show whisper instead */
 .kg-node.kg-in-focus .kg-name-layer:not(.kg-name-whisper) {
   display: none;
 }
 
-/* Show whisper emoji on hover/focus */
-.kg-node:hover .kg-name-whisper,
+/* Show whisper on focus */
 .kg-node.kg-in-focus .kg-name-whisper {
   opacity: 1;
+}
+
+/* On hover, show the title name and hide whisper */
+.kg-node:hover .kg-name-layer:not(.kg-name-whisper) {
+  display: block;
+  opacity: 1;
+}
+.kg-node:hover .kg-name-whisper {
+  opacity: 0;
 }
 
 .kg-name-layer {
@@ -4650,17 +4657,31 @@ html.light-mode .viz-filter.filter-pulse {
   color: inherit;
 }
 
+/* Suppress crossfade transitions during traverse mode */
+.kg-touring .kg-name-layer {
+  transition: none !important;
+}
+
+/* During touring, show whisper and hide name on ALL nodes.
+   Scoped per modal so each tree gets identical behaviour. */
+.kg-touring .kg-node .kg-name-layer:not(.kg-name-whisper) {
+  display: none !important;
+}
+.kg-touring .kg-node .kg-name-whisper {
+  opacity: 1;
+}
+
 .kg-name-layer sup {
   margin-left: 0.15em;
   margin-top: -0.4em;
 }
 
-/* First layer (name): flows normally to size the container */
-.kg-name-layer:first-child {
+/* Name layer (not whisper): hidden by default, shown via kg-name-show */
+.kg-name-layer:not(.kg-name-whisper) {
   position: relative;
   opacity: 0;
 }
-.kg-name-layer:first-child.kg-name-show {
+.kg-name-layer:not(.kg-name-whisper).kg-name-show {
   opacity: 1;
 }
 
@@ -4747,6 +4768,28 @@ html.light-mode .kg-node.kg-highlight {
 /* ═══════════════════════════════════════════════════════════════
    MTG SKILL TREE — Interactive card tree visualization
    ═══════════════════════════════════════════════════════════════ */
+
+/* ── "See MARP" / "See ARCH" badges on the Mermaid tile ──── */
+.card-action-badge.badge-mermaid {
+  background: rgba(0, 180, 160, 0.18);
+  border: 1px solid rgba(0, 200, 180, 0.5);
+  box-shadow: 0 0 6px rgba(0, 200, 180, 0.3), inset 0 0 4px rgba(0, 200, 180, 0.08);
+  animation: badgePulseMermaid 2.5s ease-in-out infinite;
+  cursor: pointer;
+  margin-left: 4px;
+}
+
+@keyframes badgePulseMermaid {
+  0%, 100% { box-shadow: 0 0 6px rgba(0, 200, 180, 0.3), inset 0 0 4px rgba(0, 200, 180, 0.08); }
+  50%      { box-shadow: 0 0 14px rgba(0, 200, 180, 0.55), inset 0 0 6px rgba(0, 200, 180, 0.15); }
+}
+
+html.light-mode .card-action-badge.badge-mermaid {
+  color: rgba(0, 100, 90, 0.9);
+  background: rgba(0, 130, 110, 0.1);
+  border-color: rgba(0, 130, 110, 0.4);
+  box-shadow: 0 0 6px rgba(0, 130, 110, 0.15), inset 0 0 4px rgba(0, 130, 110, 0.05);
+}
 
 /* ── "See MTG" badge on the Skilltree tile ─────────────────── */
 .card-action-badge.badge-mtg {

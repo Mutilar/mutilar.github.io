@@ -27,7 +27,7 @@
   };
 
   /* ── Card type config ──────────────────────────────────── */
-  const TYPE_ICONS  = { Planeswalker:"🌟", Creature:"🧛", Artifact:"⚙️", Enchantment:"✨", Instant:"⚡", Sorcery:"🔮", Land:"🏔️", Token:"🪙" };
+  const TYPE_ICONS  = { Planeswalker:"🌟", Creature:"🧛", Artifact:"✨", Enchantment:"🌩️", Instant:"⚡", Sorcery:"🔮", Land:"⛈️", Token:"🪙" };
   const TYPE_COLORS = { Planeswalker:"200,170,50", Creature:"100,180,100", Artifact:"160,160,180", Enchantment:"180,130,220", Instant:"80,160,220", Sorcery:"200,100,100", Land:"140,120,90", Token:"180,160,120" };
 
   /* ── Filter values ─────────────────────────────────────── */

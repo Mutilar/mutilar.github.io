@@ -248,26 +248,35 @@ function createSkillTree(cfg) {
 
   /* ── Proximity glow ─────────────────────────────────────── */
   var _glowRAF = 0;
-  function _updateGlow() {
-    cancelAnimationFrame(_glowRAF);
-    _glowRAF = requestAnimationFrame(function () {
-      var vp = modal.querySelector(".viz-viewport");
-      if (!vp) return;
-      var vw = vp.clientWidth, vh = vp.clientHeight;
-      var m = 0.30;
-      var left = vw * m, right = vw * (1 - m), top = vh * m, bottom = vh * (1 - m);
+  function _glowPass() {
+    var vp = modal.querySelector(".viz-viewport");
+    if (!vp) return;
+    var vw = vp.clientWidth, vh = vp.clientHeight;
+    var m = 0.40;
+    var left = vw * m, right = vw * (1 - m), top = vh * m, bottom = vh * (1 - m);
 
-      var all = _nodes.concat(_hubs);
-      for (var i = 0; i < all.length; i++) {
-        var n = all[i];
-        var sx = (n.targetX || 0) * _transform.scale + _transform.x;
-        var sy = (n.targetY || 0) * _transform.scale + _transform.y;
-        var inCenter = sx >= left && sx <= right && sy >= top && sy <= bottom;
-        var hovered = n === _hoveredNode;
-        var focused = (inCenter || hovered) && !n.el.classList.contains("kg-hidden");
-        n.el.classList.toggle("kg-in-focus", focused);
-      }
-    });
+    var all = _nodes.concat(_hubs);
+    for (var i = 0; i < all.length; i++) {
+      var n = all[i];
+      var sx = (n.targetX || 0) * _transform.scale + _transform.x;
+      var sy = (n.targetY || 0) * _transform.scale + _transform.y;
+      var inCenter = sx >= left && sx <= right && sy >= top && sy <= bottom;
+      var hovered = n === _hoveredNode;
+      var tourFocus = cfg.isTouring && cfg.isTouring() && !n.el.classList.contains("kg-hidden");
+      var focused = (inCenter || hovered || tourFocus) && !n.el.classList.contains("kg-hidden");
+      n.el.classList.toggle("kg-in-focus", focused);
+    }
+  }
+  function _updateGlow() {
+    // During touring, run synchronously so kg-in-focus is set in the
+    // same paint frame as kg-hidden removal — prevents title flash.
+    if (cfg.isTouring && cfg.isTouring()) {
+      cancelAnimationFrame(_glowRAF);
+      _glowPass();
+      return;
+    }
+    cancelAnimationFrame(_glowRAF);
+    _glowRAF = requestAnimationFrame(_glowPass);
   }
 
   /* ── Transform ──────────────────────────────────────────── */
@@ -315,6 +324,7 @@ function createSkillTree(cfg) {
       },
       registerHover: function (el, nodeRef) {
         el.addEventListener("mouseenter", function () {
+          if (cfg.isTouring && cfg.isTouring()) return;
           _hoveredNode = nodeRef;
           _updateGlow();
           // Highlight connected arrows (mirroring mermaid-view.js)
@@ -330,6 +340,7 @@ function createSkillTree(cfg) {
           });
         });
         el.addEventListener("mouseleave", function () {
+          if (cfg.isTouring && cfg.isTouring()) return;
           if (_hoveredNode === nodeRef) { _hoveredNode = null; _updateGlow(); }
           // Clear all highlights
           if (_graphWorld) _graphWorld.classList.remove("kg-hovering");
@@ -570,6 +581,8 @@ function createSkillTree(cfg) {
     getTransform:  function () { return _transform; },
     applyFilters:  _applyFilters,
     resetFilters:  _resetFilters,
+    getFilterSets: function () { return _filterSets; },
+    syncFilterUI:  _syncAllFilterUI,
     updateGlow:    _updateGlow,
     updateTransform: _updateTransform,
     animateToPositions: _animateToPositions,
@@ -712,10 +725,11 @@ function createSkillTree(cfg) {
   const quadrantFilters = ["robotics", "games", "software"];
   const overlayFilters  = ["education", "work", "projects"];
 
+  var _isMobile = window.matchMedia("(max-width: 768px)").matches;
   const _layoutToggle = createLayoutToggle({
     btn: "kgLayoutToggle",
     onDynamic: function () { if (graphBuilt) relayoutAndAnimate(); },
-    startStatic: true,
+    startStatic: _isMobile,
   });
 
   const _filterSys = createFilterSystem({
@@ -805,6 +819,12 @@ function createSkillTree(cfg) {
       relayoutAndAnimate();
     }
     updateProximityGlow();
+
+    // Smooth-ease the camera to fit visible nodes (like traverse mode)
+    if (!_kgTour || !_kgTour.isTouring()) {
+      var settleDelay = _layoutToggle.isStatic() ? 80 : 700;
+      setTimeout(function () { fitVisibleNodes(true); }, settleDelay);
+    }
   }
 
   function relayoutAndAnimate() {
@@ -1008,25 +1028,29 @@ function createSkillTree(cfg) {
         const sy = n.targetY * _transform.scale + _transform.y;
         const inCenter = sx >= left && sx <= right && sy >= top && sy <= bottom;
         const hovered = n === _hoveredNode;
-        const tourFocus = _touring && !n._hidden;
+        const tourFocus = _kgTour && _kgTour.isTouring() && !n._hidden;
         const focused = (inCenter || hovered || tourFocus) && !n.el.classList.contains("kg-hidden");
         n.el.classList.toggle("kg-in-focus", focused);
 
         if (!n.nameLayer || !n.whisperLayers || n.whisperLayers.length < 2) return;
 
         if (focused && n.whispers.length) {
-          if (_touring && _tourShowNames) {
+          if (_kgTour && _kgTour.isTouring() && _tourShowNames) {
+            // Tour "show names" phase: reveal the actual name
             n.nameLayer.classList.add("kg-name-show");
             n.whisperLayers[0].classList.remove("kg-name-show");
             n.whisperLayers[1].classList.remove("kg-name-show");
             n.wasFocused = false;
             return;
           }
-          n.nameLayer.classList.remove("kg-name-show");
+        }
 
+        // Default state: show whisper (if available)
+        if (n.whispers.length) {
           const idx = Math.min(n.whispers.length - 1, Math.floor(zoomT * n.whispers.length));
 
           if (!n.wasFocused) {
+            n.nameLayer.classList.remove("kg-name-show");
             const cur = n.whisperLayers[n.activeWhisper];
             cur.innerHTML = n.whispers[idx];
             fitTextToCircle(cur, parseFloat(n.el.style.getPropertyValue('--kg-size')) || 70, (parseFloat(n.el.style.getPropertyValue('--kg-size')) || 70) * 0.50);
@@ -1045,6 +1069,7 @@ function createSkillTree(cfg) {
           }
           n.wasFocused = true;
         } else {
+          // No whispers: show name as usual
           n.nameLayer.classList.add("kg-name-show");
           n.whisperLayers[0].classList.remove("kg-name-show");
           n.whisperLayers[1].classList.remove("kg-name-show");
@@ -1165,7 +1190,7 @@ function createSkillTree(cfg) {
     _edgeSVG.innerHTML = "";
     _nodes = [];
 
-    const centerSize = 180;
+    const centerSize = 100;
     const centerNode = document.createElement("div");
     centerNode.className = "kg-node kg-node-center";
     centerNode.style.setProperty("--kg-size", centerSize + "px");
@@ -1297,7 +1322,7 @@ function createSkillTree(cfg) {
 
         const wEmoji = VIZ_WHISPER_MAP[it.item.ID];
         const wList = wEmoji ? [wEmoji] : [];
-        const nameLayer = el.querySelector(".kg-name-layer:first-child");
+        const nameLayer = el.querySelector(".kg-name-layer:not(.kg-name-whisper)");
         const whisperLayers = Array.from(el.querySelectorAll(".kg-name-whisper"));
 
         el.addEventListener("mouseenter", () => {
@@ -1523,18 +1548,14 @@ function createSkillTree(cfg) {
     const textPart = emojiMatch ? rawName.slice(emojiMatch[0].length) : rawName;
 
     const graphName = VIZ_SHORTNAME_MAP[item.ID] || _graphBreakText(textPart);
-    const emojiSpan = emojiPrefix
-      ? `<span class="kg-node-emoji">${emojiPrefix}</span>`
-      : "";
     const wEmoji = VIZ_WHISPER_MAP[item.ID];
     const whispers = wEmoji ? [wEmoji] : [];
 
     el.innerHTML =
       `<div class="kg-node-accent" style="background:radial-gradient(circle at 30% 30%, rgba(${cfg.color},0.15) 0%, transparent 70%);"></div>` +
       `<div class="kg-node-name">` +
-        emojiSpan +
-        `<span class="kg-name-layer kg-name-show">${graphName}</span>` +
-        `<span class="kg-name-layer kg-name-whisper">${whispers[0] || graphName}</span>` +
+        `<span class="kg-name-layer">${graphName}</span>` +
+        `<span class="kg-name-layer kg-name-whisper kg-name-show">${whispers[0] || graphName}</span>` +
         `<span class="kg-name-layer kg-name-whisper"></span>` +
       `</div>`;
 
@@ -1544,7 +1565,7 @@ function createSkillTree(cfg) {
     });
 
     const baseFont = Math.round(8 * fontScale);
-    const nameLayer = el.querySelector(".kg-name-layer:first-child");
+    const nameLayer = el.querySelector(".kg-name-layer:not(.kg-name-whisper)");
     const whisperLayers = el.querySelectorAll(".kg-name-whisper");
     requestAnimationFrame(() => {
       fitTextToCircle(nameLayer, size, size * 0.50);
@@ -1660,182 +1681,80 @@ function createSkillTree(cfg) {
     });
   }
 
-  /* ── Tour ─────────────────────────────────────────────────── */
-  let _tourTimers = [];
-  let _touring = false;
+  /* ── Tour (via shared createTourEngine) ─────────────────── */
   let _tourShowNames = false;
-  let _tourGen = 0;
 
   const TOUR_DEFAULT = '<strong>Traverse</strong><span class="scroll-arrow">\uD83D\uDD2D</span>';
 
   const TOUR_STEPS = [
-    { add: ["software", "education"],  label: "💻🎓" },
-    { add: ["work"],                   label: "💻💼" },
-    { add: ["projects"],               label: "💻🚀" },
-    { add: ["robotics"],               label: "🤖🎓" },
-    { add: ["work"],                   label: "🤖💼" },
-    { add: ["projects"],               label: "🤖🚀" },
-    { add: ["games"],                  label: "🎮🎓" },
-    { add: ["work"],                   label: "🎮💼" },
-    { add: ["projects"],               label: "🎮🚀" },
+    { filters: ["software", "education"],  label: "💻🎓" },
+    { filters: ["software", "work"],       label: "💻💼" },
+    { filters: ["software", "projects"],   label: "💻🚀" },
+    { filters: ["robotics", "education"],  label: "🤖🎓" },
+    { filters: ["robotics", "work"],       label: "🤖💼" },
+    { filters: ["robotics", "projects"],   label: "🤖🚀" },
+    { filters: ["games", "education"],     label: "🎮🎓" },
+    { filters: ["games", "work"],          label: "🎮💼" },
+    { filters: ["games", "projects"],      label: "🎮🚀" },
   ];
 
-  var _hintCF = createCrossfader();
-
-  function setHintLabelKG(label) {
-    var hint = graphModal.querySelector(".viz-explore-hint");
-    if (!hint) return;
-    var html = '<span class="scroll-arrow">' + label + '</span>';
-    _hintCF.fade(hint, html);
-  }
-
-  function glowFilterPills() {
-    graphModal.querySelectorAll(".viz-filter-glow").forEach(function (el) {
-      el.classList.remove("viz-filter-glow");
-    });
-    activeFilters.forEach(function (f) {
-      var pill = graphModal.querySelector('.viz-filter[data-filter="' + f + '"]');
-      if (pill) {
-        void pill.offsetWidth;
-        pill.classList.add("viz-filter-glow");
-      }
-    });
-  }
-
-  function resetHintLabelKG() {
-    var hint = graphModal.querySelector(".viz-explore-hint");
-    if (!hint) return;
-    if (_touring) {
-      _hintCF.fade(hint, TOUR_DEFAULT, function () { hint.classList.remove("exploring"); });
-    } else {
-      hint.innerHTML = TOUR_DEFAULT;
-      hint.classList.remove("exploring");
-    }
-  }
-
-  function stopTour() {
-    _tourGen++;
-    _tourTimers.forEach(t => clearTimeout(t));
-    _tourTimers = [];
-    _touring = false;
-    _tourShowNames = false;
-    if (_cameraHandle) { _cameraHandle.cancel(); _cameraHandle = null; }
-    graphModal.querySelectorAll(".viz-filter-glow").forEach(function (el) { el.classList.remove("viz-filter-glow"); });
-    allThemes.forEach(t => activeFilters.add(t));
-    _filterSys.syncUI();
-    applyFilter();
-    resetHintLabelKG();
-  }
-
-  function startTour() {
-    if (!graphBuilt) return;
-
-    if (_touring) {
-      stopTour();
-      return;
-    }
-
-    _tourGen++;
-    var gen = _tourGen;
-    _touring = true;
-
-    var hint = graphModal.querySelector(".viz-explore-hint");
-    if (hint) {
-      hint.innerHTML = "";
-      hint.classList.add("exploring");
-    }
-
-    var STEP_DELAY = 6000;
-    var RELAYOUT_SETTLE = 700;
-    var cumulative = 0;
-
-    allThemes.forEach(function (t) { activeFilters.delete(t); });
-    activeFilters.add("software");
-    activeFilters.add("education");
-    _filterSys.syncUI();
-    applyFilter();
-
-    var initialDelay = 300;
-
-    TOUR_STEPS.forEach(function (step, idx) {
-      var delay = initialDelay + idx * STEP_DELAY;
-
-      _tourTimers.push(setTimeout(function () {
-        if (!_touring || gen !== _tourGen) return;
-
-        allThemes.forEach(function (t) { activeFilters.delete(t); });
-
-        if (idx < 3)       activeFilters.add("software");
-        else if (idx < 6)  activeFilters.add("robotics");
-        else               activeFilters.add("games");
-
-        var phaseStep = idx % 3;
-        if (phaseStep === 0) activeFilters.add("education");
-        else if (phaseStep === 1) activeFilters.add("work");
-        else activeFilters.add("projects");
-
-        _tourShowNames = true;
-        _filterSys.syncUI();
-        applyFilter();
-        glowFilterPills();
-
-        setHintLabelKG(step.label);
-
-        _tourTimers.push(setTimeout(function () {
-          if (!_touring || gen !== _tourGen) return;
-          fitVisibleNodes(true);
-        }, RELAYOUT_SETTLE));
-
-        _tourTimers.push(setTimeout(function () {
-          if (!_touring || gen !== _tourGen) return;
-          _tourShowNames = false;
-          updateProximityGlow();
-        }, 4000));
-
-      }, delay));
-    });
-
-    var totalDuration = initialDelay + TOUR_STEPS.length * STEP_DELAY + RELAYOUT_SETTLE + 800;
-    _tourTimers.push(setTimeout(function () {
-      if (!_touring || gen !== _tourGen) return;
-      _touring = false;
-      _tourShowNames = false;
-      graphModal.querySelectorAll(".viz-filter-glow").forEach(function (el) { el.classList.remove("viz-filter-glow"); });
+  var _kgTour = createTourEngine({
+    modal:     graphModal,
+    viewport:  graphModal.querySelector(".viz-viewport"),
+    hintLabel: TOUR_DEFAULT,
+    steps:     TOUR_STEPS,
+    applyStep: function (step) {
+      allThemes.forEach(function (t) { activeFilters.delete(t); });
+      step.filters.forEach(function (f) { activeFilters.add(f); });
+      _filterSys.syncUI();
+      applyFilter();
+    },
+    resetAll: function () {
       allThemes.forEach(function (t) { activeFilters.add(t); });
       _filterSys.syncUI();
       applyFilter();
-      resetHintLabelKG();
-      setTimeout(function () { fitVisibleNodes(true); }, 400);
-    }, totalDuration));
-  }
+    },
+    fitCamera: function () { fitVisibleNodes(true); },
+    setShowNames: function (show) {
+      _tourShowNames = show;
+      if (!show) updateProximityGlow();
+    },
+    updateGlow: function () { updateProximityGlow(); },
+    glowPills: function () {
+      graphModal.querySelectorAll(".viz-filter-glow").forEach(function (el) {
+        el.classList.remove("viz-filter-glow");
+      });
+      activeFilters.forEach(function (f) {
+        var pill = graphModal.querySelector('.viz-filter[data-filter="' + f + '"]');
+        if (pill) {
+          void pill.offsetWidth;
+          pill.classList.add("viz-filter-glow");
+        }
+      });
+    },
+    clearPillGlow: function () {
+      graphModal.querySelectorAll(".viz-filter-glow").forEach(function (el) { el.classList.remove("viz-filter-glow"); });
+    },
+  });
 
   function _createExploreHint() {
-    const viewport = graphModal.querySelector(".viz-viewport");
-    if (!viewport) return;
-
-    createExploreHint({
-      viewport: viewport,
-      label: TOUR_DEFAULT,
-      onStart: startTour,
-      isTouring: function () { return _touring; },
-      onCancel: stopTour,
-    });
+    _kgTour.createHint();
   }
 
   const _origClose = closeKnowledgeModal;
   window.closeKnowledgeModal = function () {
-    if (_touring) stopTour();
+    if (_kgTour.isTouring()) _kgTour.stop();
     _origClose();
   };
 
   themeBtns.forEach(function (btn) {
     btn.addEventListener("click", function () {
-      if (_touring) stopTour();
+      if (_kgTour.isTouring()) _kgTour.stop();
     });
   });
   if (allBtn) {
     allBtn.addEventListener("click", function () {
-      if (_touring) stopTour();
+      if (_kgTour.isTouring()) _kgTour.stop();
     });
   }
 })();
@@ -1854,25 +1773,25 @@ function createSkillTree(cfg) {
   const closeBtn = document.getElementById("mtgTreeModalClose");
   if (!modal || !closeBtn) return;
 
-  /* ── Mana-color config ──────────────────────────────────── */
+  /* ── Mana-color config (emoji-keyed) ─────────────────── */
   const MTG_COLORS = {
-    White:     { rgb: "240,220,160", icon: "☀️" },
-    Black:     { rgb: "130,110,170", icon: "💀" },
-    Red:       { rgb: "210,80,60",   icon: "🔥" },
-    Colorless: { rgb: "160,160,170", icon: "◆"  },
+    "⚪": { rgb: "240,220,160", icon: "☀️" },
+    "⚫": { rgb: "130,110,170", icon: "💀" },
+    "🔴": { rgb: "210,80,60",   icon: "🔥" },
+    "💎": { rgb: "160,160,170", icon: "◆"  },
   };
   const ALL_COLORS = Object.keys(MTG_COLORS);
 
-  /* ── Type config ────────────────────────────────────────── */
+  /* ── Type config (emoji-keyed) ──────────────────────────── */
   const TYPE_ICONS = {
-    Creature:     "🧛", Artifact: "⚙️", Enchantment: "✨",
-    Instant:      "⚡", Sorcery:  "🔮", Land:        "🏔️",
+    "🧛": "🧛", "✨": "✨", "🌩️": "🌩️",
+    "⚡": "⚡", "🔮": "🔮", "⛈️":  "⛈️",
   };
   const TYPE_COLORS = {
-    Creature: "100,180,100", Artifact: "160,160,180", Enchantment: "180,130,220",
-    Instant:  "80,160,220",  Sorcery:  "200,100,100", Land:        "140,120,90",
+    "🧛": "100,180,100", "✨": "160,160,180", "🌩️": "180,130,220",
+    "⚡": "80,160,220",  "🔮": "200,100,100", "⛈️":  "140,120,90",
   };
-  const ALL_TYPES = Object.keys(TYPE_ICONS);
+  const ALL_TYPES = Object.keys(TYPE_COLORS);
 
   /* ── Drant directions — one per type, evenly around circle ─ */
   const DRANT_DIR = {};
@@ -1894,20 +1813,71 @@ function createSkillTree(cfg) {
   };
   const ALL_DECKS = Object.keys(DECK_CFG);
 
+  /* ── Color-emoji splitter (colors can be multi-emoji) ──── */
+  var _COLOR_EMOJIS = Object.keys(MTG_COLORS);
+  // Sort longest-first so multi-codepoint emojis match first
+  _COLOR_EMOJIS.sort(function (a, b) { return b.length - a.length; });
+
+  function splitColorEmojis(str) {
+    var result = [];
+    var rem = str;
+    while (rem.length) {
+      var matched = false;
+      for (var i = 0; i < _COLOR_EMOJIS.length; i++) {
+        if (rem.indexOf(_COLOR_EMOJIS[i]) === 0) {
+          result.push(_COLOR_EMOJIS[i]);
+          rem = rem.slice(_COLOR_EMOJIS[i].length);
+          matched = true;
+          break;
+        }
+      }
+      if (!matched) rem = rem.slice(1);
+    }
+    return result;
+  }
+
+  /**
+   * Normalize a CARDS_NEW item (UPPERCASE keys, emoji values)
+   * into the lowercase-key shape the rest of the code expects.
+   * TYPE is always a single emoji. COLOR may be multi-emoji.
+   */
+  function normalizeCard(item) {
+    var id     = item.ID || "";
+    var type   = item.TYPE  || "🧛";
+    var colors = splitColorEmojis(item.COLOR || "💎");
+    if (colors.length === 0) colors = ["💎"];
+
+    var card = {
+      cardName:  item.NAME     || "",
+      whisper:   item.WHISPER  || "",
+      category:  item.CATEGORY || "",
+      salt:      item.SALT     || 0,
+      color:     colors.length === 1 ? colors[0] : colors,
+      cmc:       item.CMC      || 0,
+      rarity:    item.RARITY   || "",
+      types:     type,
+      price:     item.PRICE    || 0,
+      art:       "images/card_art/" + id + "/art.png",
+    };
+    if (item.SECONDARY_CATEGORIES) {
+      card.secondaryCategories = item.SECONDARY_CATEGORIES;
+    }
+    return card;
+  }
+
   /* ── Helpers ────────────────────────────────────────────── */
-  function cardColorKey(card) {
-    return card.color || "Colorless";
+  function cmcToRGB(cmc) {
+    var c = cmc || 0;
+    if (c <= 1) return "0,120,212";    // MSFT Blue
+    if (c <= 3) return "127,186,0";    // MSFT Green
+    if (c <= 5) return "255,185,0";    // MSFT Yellow
+    return "242,80,34";                // MSFT Red
   }
 
-  function cardManaRGB(card) {
-    var c = MTG_COLORS[cardColorKey(card)];
-    return c ? c.rgb : MTG_COLORS.Colorless.rgb;
-  }
-
-  function cmcToSize(cmc) {
-    var MIN = 32, MAX = 80;
-    var c = Math.max(0, Math.min(10, cmc || 0));
-    return MIN + (c / 10) * (MAX - MIN);
+  function saltToSize(salt) {
+    var MIN = 30, MAX = 80;
+    var s = Math.max(0, Math.min(3, salt || 0));
+    return MIN + (s / 3) * (MAX - MIN);
   }
 
   /* ── Card-view modal (overlay on top of skill tree) ───── */
@@ -1939,16 +1909,13 @@ function createSkillTree(cfg) {
 
     var badges = "";
 
-    // Type badges (color-coded to match skill tree)
-    var types = Array.isArray(card.types) ? card.types : [card.types];
-    types.forEach(function (t) {
-      var icon = TYPE_ICONS[t] || "";
-      var rgb  = TYPE_COLORS[t] || "160,160,170";
-      if (icon) badges += '<span class="mtg-badge" style="--bc:' + rgb + '">' + icon + '</span>';
-    });
+    // Type badge (color-coded to match skill tree)
+    var t   = card.types || "🧛";
+    var rgb = TYPE_COLORS[t] || "160,160,170";
+    badges += '<span class="mtg-badge" style="--bc:' + rgb + '">' + t + '</span>';
 
     // Mana color badges (color-coded to match skill tree)
-    var colors = Array.isArray(card.color) ? card.color : [card.color || "Colorless"];
+    var colors = Array.isArray(card.color) ? card.color : [card.color || "💎"];
     colors.forEach(function (c) {
       var entry = MTG_COLORS[c];
       if (!entry) return;
@@ -1995,10 +1962,22 @@ function createSkillTree(cfg) {
 
   function ensureData(cb) {
     if (_cardsData) { cb(_cardsData); return; }
-    fetch("CARDS.json")
-      .then(r => r.json())
-      .then(data => { _cardsData = data; cb(data); })
-      .catch(err => console.error("[mtg-tree] fetch error", err));
+    fetch("CARDS_NEW.json")
+      .then(function (r) { return r.json(); })
+      .then(function (raw) {
+        // Normalize CARDS_NEW uppercase-emoji format → lowercase-string format
+        var data = { sections: [] };
+        raw.sections.forEach(function (sec) {
+          data.sections.push({
+            id:    sec.id,
+            count: sec.count,
+            items: sec.items.map(normalizeCard),
+          });
+        });
+        _cardsData = data;
+        cb(data);
+      })
+      .catch(function (err) { console.error("[mtg-tree] fetch error", err); });
   }
 
   /* ── Filter axes (wired to HTML buttons) ────────────────── */
@@ -2031,10 +2010,11 @@ function createSkillTree(cfg) {
   ];
 
   /* ── Layout toggle (static/dynamic) ─────────────────────── */
+  var _mtgIsMobile = window.matchMedia("(max-width: 768px)").matches;
   var _mtgLayoutToggle = createLayoutToggle({
     btn: "mtgLayoutToggle",
     onDynamic: function () { if (_tree) relayoutMtg(); },
-    startStatic: true,
+    startStatic: _mtgIsMobile,
   });
 
   function relayoutMtg() {
@@ -2141,10 +2121,19 @@ function createSkillTree(cfg) {
     var hubGap  = 75;
     var hubRefs = {};
 
+    var commanderCards = {};  // deckId → commander card data
+
     data.sections.forEach(function (section) {
       var deckId = section.id;
       var dcfg   = DECK_CFG[deckId];
       if (!dcfg) return;
+
+      // Find commander card for this deck
+      var cmdr = null;
+      (section.items || []).forEach(function (card) {
+        if (card.category === "Commander") cmdr = card;
+      });
+      if (cmdr) commanderCards[deckId] = cmdr;
 
       var hubX = Math.cos(dcfg.angle) * hubGap;
       var hubY = Math.sin(dcfg.angle) * hubGap;
@@ -2157,6 +2146,16 @@ function createSkillTree(cfg) {
       hubEl.style.top  = hubY + "px";
       hubEl.innerHTML = '<div class="kg-node-icon">' + dcfg.icon + '</div>' +
         '<div class="kg-node-name"><span class="kg-name-layer kg-name-show" style="font-size:9px">' + dcfg.label + '</span></div>';
+
+      // Click hub → open commander card modal
+      if (cmdr) {
+        hubEl.style.cursor = "pointer";
+        hubEl.addEventListener("click", function (e) {
+          e.stopPropagation();
+          openCardModal(cmdr);
+        });
+      }
+
       graphWorld.appendChild(hubEl);
 
       var hubRef = { el: hubEl, targetX: hubX, targetY: hubY, r: hubSize / 2, _hidden: false, _fixed: true, _deckId: deckId, children: [] };
@@ -2169,6 +2168,7 @@ function createSkillTree(cfg) {
     data.sections.forEach(function (section) {
       var deckId = section.id;
       (section.items || []).forEach(function (card) {
+        if (card.category === "Commander") return;  // commanders live on hub nodes
         var key = card.cardName;
         if (!cardMap[key]) cardMap[key] = { card: card, decks: new Set() };
         cardMap[key].decks.add(deckId);
@@ -2180,9 +2180,7 @@ function createSkillTree(cfg) {
     ALL_TYPES.forEach(function (t) { drants[t] = []; });
     Object.keys(cardMap).forEach(function (k) {
       var entry = cardMap[k];
-      var rawTypes = entry.card.types;
-      // Handle array types — use first element for drant grouping
-      var type = Array.isArray(rawTypes) ? rawTypes[0] : (rawTypes || "Creature");
+      var type = entry.card.types || "🧛";
       if (!drants[type]) drants[type] = [];
       entry._primaryType = type;            // cache for node creation
       drants[type].push(entry);
@@ -2193,19 +2191,10 @@ function createSkillTree(cfg) {
     var MAX_DIST = 400;
     var SPREAD   = 2 * Math.PI / ALL_TYPES.length * 0.75;
 
-  function cardSaltRGB(card) {
-    var salt = card.salt || 0;
-    if (salt < 0.15) return "120,180,220";
-    if (salt < 0.40) return "100,180,100";
-    if (salt < 0.80) return "220,140,40";
-    if (salt < 1.20) return "220,80,40";
-    return "180,50,180";
-  }
-
     /* ── Helper: create a card node ───────────────────────── */
     function makeCardNode(card, cx, cy, deckIds) {
-      var size = cmcToSize(card.cmc);
-      var rgb  = cardSaltRGB(card);
+      var size = saltToSize(card.salt);
+      var rgb  = cmcToRGB(card.cmc);
 
       var el = document.createElement("div");
       el.className = "kg-node";
@@ -2216,14 +2205,16 @@ function createSkillTree(cfg) {
 
       var displayName = card.cardName.replace(/\s+/g, "<br>");
       var whisperEmoji = card.whisper || "";
-      var primaryType = Array.isArray(card.types) ? card.types[0] : card.types;
-      var hoverEmoji = whisperEmoji || TYPE_ICONS[primaryType] || "";
+      var hoverEmoji = whisperEmoji || card.types || "";
+
+      var whisperContent = hoverEmoji || displayName;
 
       el.innerHTML =
         '<div class="kg-node-accent" style="background:radial-gradient(circle at 30% 30%, rgba(' + rgb + ',0.2) 0%, transparent 70%);"></div>' +
         '<div class="kg-node-name">' +
-          (hoverEmoji ? '<span class="kg-node-emoji">' + hoverEmoji + '</span>' : '') +
-          '<span class="kg-name-layer kg-name-show">' + displayName + '</span>' +
+          '<span class="kg-name-layer">' + displayName + '</span>' +
+          '<span class="kg-name-layer kg-name-whisper kg-name-show">' + whisperContent + '</span>' +
+          '<span class="kg-name-layer kg-name-whisper"></span>' +
         '</div>';
 
       el.addEventListener("click", function (e) {
@@ -2233,12 +2224,15 @@ function createSkillTree(cfg) {
 
       graphWorld.appendChild(el);
 
-      var nameLayer = el.querySelector(".kg-name-layer.kg-name-show");
+      var nameLayer = el.querySelector(".kg-name-layer:not(.kg-name-whisper)");
+      var whisperLayers = el.querySelectorAll(".kg-name-whisper");
       requestAnimationFrame(function () {
         fitTextToCircle(nameLayer, size, size * 0.45);
+        whisperLayers.forEach(function (wl) { fitTextToCircle(wl, size, size * 0.45); });
       });
 
-      var typeArr = Array.isArray(card.types) ? card.types : [card.types || "Creature"];
+      var typeArr = [card.types || "🧛"];
+      var colorArr = Array.isArray(card.color) ? card.color : [card.color || "💎"];
       var nodeRef = {
         el: el,
         targetX: cx,
@@ -2246,11 +2240,12 @@ function createSkillTree(cfg) {
         r: size / 2,
         _hidden: false,
         _cmc: card.cmc || 0,
+        _salt: card.salt || 0,
         _price: card.price || 0,
         drant: typeArr[0],
         filterKeys: {
           type:  new Set(typeArr),
-          color: new Set([cardColorKey(card)]),
+          color: new Set(colorArr),
           deck:  new Set(deckIds),
         },
       };
@@ -2295,7 +2290,7 @@ function createSkillTree(cfg) {
         var cy = Math.sin(angle) * dist;
 
         var nodeRef = makeCardNode(card, cx, cy, entry.decks);
-        var edgeRGB = cardSaltRGB(card);
+        var edgeRGB = cmcToRGB(card.cmc);
 
         // Edge to each deck hub this card belongs to
         entry.decks.forEach(function (deckId) {
@@ -2313,6 +2308,120 @@ function createSkillTree(cfg) {
     return { nodes: nodes, hubs: hubs, centerVirts: centerVirts };
   }
 
+  /* ── Camera fit for MTG ──────────────────────────────────── */
+  var _mtgCameraHandle = null;
+
+  function fitMtgVisibleNodes(animate) {
+    if (!_tree) return;
+    var viewport = modal.querySelector(".viz-viewport");
+    if (!viewport) return;
+    var nodes = _tree.getNodes();
+    var hubs  = _tree.getHubs();
+    var visible = nodes.filter(function (n) { return !n._hidden; });
+    if (visible.length === 0) return;
+
+    var minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+    visible.forEach(function (n) {
+      var r = n.r || 30;
+      if (n.targetX - r < minX) minX = n.targetX - r;
+      if (n.targetX + r > maxX) maxX = n.targetX + r;
+      if (n.targetY - r < minY) minY = n.targetY - r;
+      if (n.targetY + r > maxY) maxY = n.targetY + r;
+    });
+
+    if (_mtgCameraHandle) { _mtgCameraHandle.cancel(); _mtgCameraHandle = null; }
+
+    var transform = _tree.getTransform();
+    _mtgCameraHandle = animateCameraFit(transform, function () {
+      _tree.updateTransform();
+    }, {
+      vpWidth:  viewport.clientWidth,
+      vpHeight: viewport.clientHeight,
+      bounds:   { x: minX, y: minY, w: maxX - minX, h: maxY - minY },
+      minScale: 0.3,
+      maxScale: 4,
+      padding:  50,
+      duration: animate !== false ? 500 : 0,
+      animate:  animate !== false,
+    });
+  }
+
+  /* ── Tour (via shared createTourEngine) ────────────────── */
+  var _mtgTour = null;   // created lazily after _tree exists
+
+  var MTG_TOUR_LABEL = '<strong>Traverse</strong><span class="scroll-arrow">\uD83D\uDD2D</span>';
+
+  var MTG_TOUR_STEPS = [
+    { label: "👑",   filters: { deck: ["the-nobles"],                type: null,              color: null } },
+    { label: "😈",   filters: { deck: ["the-demons"],                type: null,              color: null } },
+    { label: "⛈️",   filters: { deck: null,                          type: ["⛈️"],            color: null } },
+    { label: "🧛",   filters: { deck: null,                          type: ["🧛"],            color: null } },
+    { label: "✨",   filters: { deck: null,                          type: ["✨"],            color: null } },
+    { label: "🌩️",   filters: { deck: null,                          type: ["🌩️"],            color: null } },
+    { label: "⚡",   filters: { deck: null,                          type: ["⚡"],            color: null } },
+    { label: "🔮",   filters: { deck: null,                          type: ["🔮"],            color: null } },
+  ];
+
+  function _createMtgTour() {
+    _mtgTour = createTourEngine({
+      modal:     modal,
+      viewport:  modal.querySelector(".viz-viewport"),
+      hintLabel: MTG_TOUR_LABEL,
+      steps:     MTG_TOUR_STEPS,
+      stepDelay: 2000,
+      applyStep: function (step, idx) {
+        if (!_tree) return;
+        var fs = _tree.getFilterSets();
+        // For each axis: if step specifies values use them, else set to all
+        ["type", "color", "deck"].forEach(function (axis) {
+          var vals = step.filters[axis];
+          var allVals = axis === "type" ? ALL_TYPES : axis === "color" ? ALL_COLORS : ALL_DECKS;
+          fs[axis].clear();
+          if (vals) {
+            vals.forEach(function (v) { fs[axis].add(v); });
+          } else {
+            allVals.forEach(function (v) { fs[axis].add(v); });
+          }
+        });
+        _tree.syncFilterUI();
+        _tree.applyFilters();
+      },
+      resetAll: function () {
+        if (!_tree) return;
+        _tree.resetFilters();
+      },
+      fitCamera: function () { fitMtgVisibleNodes(true); },
+      setShowNames: function () {},  // MTG nodes don't have whisper crossfade
+      updateGlow: function () { if (_tree) _tree.updateGlow(); },
+      glowPills: function () {
+        if (!_tree) return;
+        var fs = _tree.getFilterSets();
+        modal.querySelectorAll(".viz-filter-glow").forEach(function (el) {
+          el.classList.remove("viz-filter-glow");
+        });
+        // Glow active filter buttons across all axes
+        ["type", "color", "deck"].forEach(function (axis) {
+          var allVals = axis === "type" ? ALL_TYPES : axis === "color" ? ALL_COLORS : ALL_DECKS;
+          // Only glow if not all-active (i.e. axis is narrowed)
+          if (fs[axis].size < allVals.length) {
+            fs[axis].forEach(function (v) {
+              var pill = modal.querySelector('.mtg-filter[data-' + axis + '="' + v + '"]');
+              if (pill) {
+                void pill.offsetWidth;
+                pill.classList.add("viz-filter-glow");
+              }
+            });
+          }
+        });
+      },
+      clearPillGlow: function () {
+        modal.querySelectorAll(".viz-filter-glow").forEach(function (el) { el.classList.remove("viz-filter-glow"); });
+      },
+    });
+
+    _mtgTour.createHint();
+  }
+
   function initMtgTree() {
     ensureData(function () {
       _tree = createSkillTree({
@@ -2327,12 +2436,22 @@ function createSkillTree(cfg) {
         maxScale:        4,
         collisionPadding: 3,
         collisionIters:   50,
-        onClose:         closeCardModal,
+        isTouring:       function () { return _mtgTour && _mtgTour.isTouring(); },
+        onClose:         function () {
+          closeCardModal();
+          if (_mtgTour && _mtgTour.isTouring()) _mtgTour.stop();
+        },
         onFilterApplied: function () {
           if (!_mtgLayoutToggle.isStatic()) relayoutMtg();
+          // Smooth-ease camera to fit visible nodes
+          if (!_mtgTour || !_mtgTour.isTouring()) {
+            var settleDelay = _mtgLayoutToggle.isStatic() ? 80 : 700;
+            setTimeout(function () { fitMtgVisibleNodes(true); }, settleDelay);
+          }
         },
       });
 
+      _createMtgTour();
       _tree.open();
     });
   }
@@ -2340,9 +2459,17 @@ function createSkillTree(cfg) {
   /* ── Global opener (wired from badge onclick) ───────────── */
   window.openMtgTreeModal = function () {
     if (_tree) {
+      if (_mtgTour && _mtgTour.isTouring()) _mtgTour.stop();
       _tree.open();
     } else {
       initMtgTree();
     }
   };
+
+  /* ── Stop tour on manual filter interaction ─────────────── */
+  modal.querySelectorAll(".mtg-filter").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      if (_mtgTour && _mtgTour.isTouring()) _mtgTour.stop();
+    });
+  });
 })();

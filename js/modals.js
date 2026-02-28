@@ -426,9 +426,9 @@ gameModal.addEventListener("click", e => { if (e.target === gameModal) closeGame
   const deckModalClose = document.getElementById("deckModalClose");
 
   const typeIcons = {
-    Planeswalker: "🌟", Creature: "🧛", Artifact: "⚙️",
-    Enchantment: "✨", Instant: "⚡", Sorcery: "🔮",
-    Land: "🏔️", Token: "🪙"
+    Planeswalker: "🌟", Creature: "🧛", Artifact: "✨",
+    Enchantment: "🌩️", Instant: "⚡", Sorcery: "🔮",
+    Land: "⛈️", Token: "🪙"
   };
 
   const typeOrder = ["Planeswalker", "Creature", "Artifact", "Enchantment", "Instant", "Sorcery", "Land", "Token"];

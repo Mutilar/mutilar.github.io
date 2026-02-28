@@ -104,6 +104,7 @@
   let _globalMax   = 0;
 
   function applyFilter() {
+    if (!timelineBuilt) return;
     // hide/show slivers by theme (multi-select)
     _allSlivers.forEach(s => {
       const hide = activeFilters.size === 0 || !activeFilters.has(s.theme);

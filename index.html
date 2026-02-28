@@ -199,19 +199,19 @@
       </div>
       <div class="card-grid card-grid-wide" style="margin-bottom:32px;">
         <div class="glass-tile video-card reveal" style="cursor:pointer;" role="button" tabindex="0" aria-label="Open Graph of Knowledge" data-action="scroll-open" data-open="knowledgeModal">
-          <div class="video-label">🧭 Skilltree<span class="card-action-badge badge-dive">🔍 See More!</span><span class="card-action-badge badge-mtg" onclick="event.stopPropagation(); window.openMtgTreeModal && window.openMtgTreeModal();" role="button" tabindex="0" aria-label="Open MTG Skill Tree">🃏 See MTG</span></div>
+          <div class="video-label">🧭 SkillTree<span class="card-action-badge badge-dive" style="margin-left:auto;">🔍 See Portfolio</span><span class="card-action-badge badge-mtg" onclick="event.stopPropagation(); window.openMtgTreeModal && window.openMtgTreeModal();" role="button" tabindex="0" aria-label="Open MTG Skill Tree">🃏 See MTG</span></div>
           <div class="video-wrap">
             <img src="images/graph.png" alt="Graph of Knowledge" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" loading="lazy">
           </div>
         </div>
         <div class="glass-tile video-card reveal" style="cursor:pointer;" role="button" tabindex="0" aria-label="See more in Timeline" data-action="scroll-open" data-open="timelineModal">
-          <div class="video-label">🕰️ Timeline<span class="card-action-badge badge-dive">🔍 See More!</span></div>
+          <div class="video-label">🕰️ TimeLine<span class="card-action-badge badge-dive">🔍 See More!</span></div>
           <div class="video-wrap">
             <img src="images/timeline.png" alt="Timeline" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" loading="lazy">
           </div>
         </div>
         <div class="glass-tile video-card reveal" style="cursor:pointer;" role="button" tabindex="0" aria-label="See more about Architecture" onclick="openArchModal()">
-          <div class="video-label">🏗️ Architecture<span class="card-action-badge badge-dive">🔍 See More!</span><span class="year-badge">2017</span></div>
+          <div class="video-label">🧜 Mermaid<span class="card-action-badge badge-dive" style="margin-left:auto;" onclick="event.stopPropagation(); window.openMarpModal && window.openMarpModal();" role="button" tabindex="0" aria-label="Open MARP Diagram">🤖 See MARP</span><span class="card-action-badge badge-mermaid" onclick="event.stopPropagation(); window.openArchModal && window.openArchModal();" role="button" tabindex="0" aria-label="Open Architecture Diagram">🧜 See ARCH</span></div>
           <div class="video-wrap">
             <img src="images/arch.png" alt="Architecture" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" loading="lazy">
           </div>
@@ -932,7 +932,7 @@
       <div class="viz-filter-group tl-glow">
         <div class="viz-filter-row">
           <button class="viz-layout-toggle" id="kgLayoutToggle" style="--tc:0,120,212" title="Static: nodes keep their positions when filtering. Dynamic: nodes reflow into new positions.">📌</button>
-          <button class="viz-filter active" data-filter="all" style="--tc:255,255,255;--tc-light:30,30,40"><span class="all-indicator">⬜</span> 🎛️</button>
+          <button class="viz-filter active" data-filter="all" style="--tc:255,255,255;--tc-light:30,30,40"><span class="all-indicator">⬜</span></button>
           <button class="viz-filter" data-filter="robotics" style="--tc:242,80,34"><span class="viz-dot" style="background:rgba(242,80,34,0.9);"></span> 🤖</button>
           <button class="viz-filter" data-filter="games" style="--tc:127,186,0"><span class="viz-dot" style="background:rgba(127,186,0,0.9);"></span> 🎮</button>
           <button class="viz-filter" data-filter="software" style="--tc:0,120,212"><span class="viz-dot" style="background:rgba(0,120,212,0.9);"></span> 💻</button>
@@ -961,13 +961,13 @@
         <div class="viz-filter-row">
           <button class="viz-layout-toggle" id="mtgLayoutToggle" style="--tc:0,120,212" title="Static: nodes keep their positions when filtering. Dynamic: nodes reflow into new positions.">📌</button>
           <!-- Type filters -->
-          <button class="mtg-filter active" data-type="all" style="--tc:255,255,255;--tc-light:30,30,40"><span class="all-indicator">⬜</span> 🎛️</button>
-          <button class="mtg-filter active" data-type="Creature" style="--tc:100,180,100"><span class="viz-dot" style="background:rgba(100,180,100,0.9);"></span> 🧛</button>
-          <button class="mtg-filter active" data-type="Artifact" style="--tc:160,160,180"><span class="viz-dot" style="background:rgba(160,160,180,0.9);"></span> ⚙️</button>
-          <button class="mtg-filter active" data-type="Enchantment" style="--tc:180,130,220"><span class="viz-dot" style="background:rgba(180,130,220,0.9);"></span> ✨</button>
-          <button class="mtg-filter active" data-type="Instant" style="--tc:80,160,220"><span class="viz-dot" style="background:rgba(80,160,220,0.9);"></span> ⚡</button>
-          <button class="mtg-filter active" data-type="Sorcery" style="--tc:200,100,100"><span class="viz-dot" style="background:rgba(200,100,100,0.9);"></span> 🔮</button>
-          <button class="mtg-filter active" data-type="Land" style="--tc:140,120,90"><span class="viz-dot" style="background:rgba(140,120,90,0.9);"></span> 🏔️</button>
+          <button class="mtg-filter active" data-type="all" style="--tc:255,255,255;--tc-light:30,30,40"><span class="all-indicator">⬜</span></button>
+          <button class="mtg-filter active" data-type="🧛" style="--tc:100,180,100"><span class="viz-dot" style="background:rgba(100,180,100,0.9);"></span> 🧛</button>
+          <button class="mtg-filter active" data-type="✨" style="--tc:160,160,180"><span class="viz-dot" style="background:rgba(160,160,180,0.9);"></span> ✨</button>
+          <button class="mtg-filter active" data-type="🌩️" style="--tc:180,130,220"><span class="viz-dot" style="background:rgba(180,130,220,0.9);"></span> 🌩️</button>
+          <button class="mtg-filter active" data-type="⚡" style="--tc:80,160,220"><span class="viz-dot" style="background:rgba(80,160,220,0.9);"></span> ⚡</button>
+          <button class="mtg-filter active" data-type="🔮" style="--tc:200,100,100"><span class="viz-dot" style="background:rgba(200,100,100,0.9);"></span> 🔮</button>
+          <button class="mtg-filter active" data-type="⛈️" style="--tc:140,120,90"><span class="viz-dot" style="background:rgba(140,120,90,0.9);"></span> ⛈️</button>
           <span class="mtg-filter-sep">│</span>
           <!-- Deck filters -->
           <button class="mtg-filter active" data-deck="all" style="--tc:255,255,255;--tc-light:30,30,40"><span class="all-indicator">⬜</span> 🃏</button>
@@ -976,10 +976,10 @@
           <span class="mtg-filter-sep">│</span>
           <!-- Mana color filters -->
           <button class="mtg-filter active" data-color="all" style="--tc:255,255,255;--tc-light:30,30,40"><span class="all-indicator">⬜</span> 🎨</button>
-          <button class="mtg-filter active" data-color="White" style="--tc:240,220,160"><span class="viz-dot" style="background:rgba(240,220,160,0.9);"></span> ☀️</button>
-          <button class="mtg-filter active" data-color="Black" style="--tc:130,110,170"><span class="viz-dot" style="background:rgba(130,110,170,0.9);"></span> 💀</button>
-          <button class="mtg-filter active" data-color="Red" style="--tc:210,80,60"><span class="viz-dot" style="background:rgba(210,80,60,0.9);"></span> 🔥</button>
-          <button class="mtg-filter active" data-color="Colorless" style="--tc:160,160,170"><span class="viz-dot" style="background:rgba(160,160,170,0.9);"></span> ◆</button>
+          <button class="mtg-filter active" data-color="⚪" style="--tc:240,220,160"><span class="viz-dot" style="background:rgba(240,220,160,0.9);"></span> ☀️</button>
+          <button class="mtg-filter active" data-color="⚫" style="--tc:130,110,170"><span class="viz-dot" style="background:rgba(130,110,170,0.9);"></span> 💀</button>
+          <button class="mtg-filter active" data-color="🔴" style="--tc:210,80,60"><span class="viz-dot" style="background:rgba(210,80,60,0.9);"></span> 🔥</button>
+          <button class="mtg-filter active" data-color="💎" style="--tc:160,160,170"><span class="viz-dot" style="background:rgba(160,160,170,0.9);"></span> ◆</button>
           <button class="modal-close" id="mtgTreeModalClose" aria-label="Close modal">&times;</button>
         </div>
       </div>
@@ -1015,7 +1015,7 @@
     <div class="modal-sticky-bar">
       <div class="viz-filter-group viz-filter-group--flat tl-glow">
         <button class="viz-layout-toggle dynamic" id="tlLayoutToggle" style="--tc:242,80,34" title="Static: items keep their positions when filtering. Dynamic: timeline reflows to fit visible items.">🔀</button>
-        <button class="viz-filter active" data-filter="all" style="--tc:255,255,255;--tc-light:30,30,40"><span class="all-indicator">⬜</span> 🎛️</button>
+        <button class="viz-filter active" data-filter="all" style="--tc:255,255,255;--tc-light:30,30,40"><span class="all-indicator">⬜</span></button>
         <button class="viz-filter" data-filter="robotics" style="--tc:242,80,34"><span class="viz-dot" style="background:rgba(242,80,34,0.9);"></span> 🤖</button>
         <button class="viz-filter" data-filter="games" style="--tc:127,186,0"><span class="viz-dot" style="background:rgba(127,186,0,0.9);"></span> 🎮</button>
         <button class="viz-filter" data-filter="software" style="--tc:0,164,239"><span class="viz-dot" style="background:rgba(0,164,239,0.9);"></span> 💻</button>
