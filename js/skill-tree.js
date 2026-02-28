@@ -1837,7 +1837,7 @@ function createSkillTree(cfg) {
   }
 
   /**
-   * Normalize a CARDS_NEW item (UPPERCASE keys, emoji values)
+   * Normalize a CARDS item (UPPERCASE keys, emoji values)
    * into the lowercase-key shape the rest of the code expects.
    * TYPE is always a single emoji. COLOR may be multi-emoji.
    */
@@ -1962,10 +1962,10 @@ function createSkillTree(cfg) {
 
   function ensureData(cb) {
     if (_cardsData) { cb(_cardsData); return; }
-    fetch("CARDS_NEW.json")
+    fetch("CARDS.json")
       .then(function (r) { return r.json(); })
       .then(function (raw) {
-        // Normalize CARDS_NEW uppercase-emoji format → lowercase-string format
+        // Normalize CARDS uppercase-emoji format → lowercase-string format
         var data = { sections: [] };
         raw.sections.forEach(function (sec) {
           data.sections.push({
