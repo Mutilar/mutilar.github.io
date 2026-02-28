@@ -1616,7 +1616,7 @@
     modalId:     "arch-modal",
     closeId:     "archModalClose",
     filterId:    "arch-filters",
-    mdFile:      "architecture.md",
+    mdFile:      "ARCh.md",
     openGlobal:  "openArchModal",
     closeGlobal: "closeArchModal",
   });
@@ -1626,7 +1626,7 @@
     modalId:     "marp-modal",
     closeId:     "marpModalClose",
     filterId:    "marp-filters",
-    mdFile:      "marp-architecture.md",
+    mdFile:      "MARP.md",
     openGlobal:  "openMarpModal",
     closeGlobal: "closeMarpModal",
   });
