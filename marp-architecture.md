@@ -123,7 +123,7 @@ graph TD
     Buck5 -->|"5 V"| Pi 
 
     %% Converters to specific drivers / devices
-    Buck12 -->|"1.0 A"| Mouth
+    Buck12 -->|"1.0 A"| LEDs
     Buck12 -->|"1.1 A"| Stepper12Pan
     Buck12 -->|"1.1 A"| Stepper12Tilt
     FuseStepper24 -->|"1.1 A"| Stepper24Right
@@ -150,7 +150,7 @@ graph TD
     Stepper24Right -->|"1.0 A"| RightWheel
 
     %% Data output chain
-    LevelShifter -->|"SPIO"| Mouth
+    LevelShifter -->|"SPIO"| LEDs
 
     class Battery,Meter,Switch battery
     class FuseStepper24,FuseBuck12,FuseBuck5,FusePD control
