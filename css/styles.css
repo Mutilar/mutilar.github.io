@@ -830,6 +830,7 @@ a.scroll-hint:hover strong {
 
 /* Penguin overlay */
 .hero-portrait-penguin {
+  --glow: 0, 164, 239;
   position: absolute;
   inset: 0;
   display: flex;
@@ -840,13 +841,13 @@ a.scroll-hint:hover strong {
   border-radius: 50%;
   overflow: hidden;
   background: #000;
-  border: 3px solid rgba(255, 255, 255, 0.7);
-  box-shadow: 0 0 25px rgba(255, 255, 255, 0.4),
-              0 0 60px rgba(255, 255, 255, 0.15),
-              0 0 120px rgba(255, 255, 255, 0.06);
+  border: 3px solid rgba(var(--glow), 0.7);
+  box-shadow: 0 0 50px rgba(var(--glow), 0.6),
+              0 0 120px rgba(var(--glow), 0.3),
+              0 0 240px rgba(var(--glow), 0.12);
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.35s ease;
+  transition: opacity 0.35s ease, box-shadow 1s ease, border-color 1s ease;
 }
 
 .hero-portrait-link:hover .hero-portrait,
@@ -3024,10 +3025,10 @@ html.light-mode .hero-portrait:hover {
 
 html.light-mode .hero-portrait-penguin {
   background: #fff;
-  border-color: rgba(0, 0, 0, 0.5);
-  box-shadow: 0 0 25px rgba(0, 0, 0, 0.2),
-              0 0 60px rgba(0, 0, 0, 0.08),
-              0 0 120px rgba(0, 0, 0, 0.03);
+  border-color: rgba(var(--glow), 0.5);
+  box-shadow: 0 0 50px rgba(var(--glow), 0.4),
+              0 0 120px rgba(var(--glow), 0.16),
+              0 0 240px rgba(var(--glow), 0.06);
 }
 
 html.light-mode .section-heading {

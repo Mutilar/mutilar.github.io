@@ -249,12 +249,29 @@ quiltModal.addEventListener("click", e => { if (e.target === quiltModal) closeQu
   var a = document.getElementById("heroPenguinBgA");
   var b = document.getElementById("heroPenguinBgB");
   var link = document.querySelector(".hero-portrait-link");
-  if (!a || !b || !link) return;
-  var emojis = ["🌍","🌎","🌏", "🏙️","🌁","🌇","🌆","🌃","🌌"];
+  var penguin = link && link.querySelector(".hero-penguin-emoji");
+  if (!a || !b || !link || !penguin) return;
+  var emojis = ["🌎","🌍","🌏", "🏙️","🌁","🌇","🌆","🌃","🌌", "🌠"];
+  var SHOOTING_STAR = "🌠";
   var idx = 0;
   var front = a;
   var back = b;
   var timer = null;
+
+  // Emoji → glow color (r, g, b)
+  var glowMap = {
+    "🌎": "0, 164, 239",     // MSFT blue
+    "🌍": "0, 164, 239",     // MSFT blue
+    "🌏": "0, 164, 239",     // MSFT blue
+    "🏙️": "127, 186, 0",     // MSFT green
+    "🌁": "127, 186, 0",     // MSFT green
+    "🌇": "242, 80, 34",     // MSFT red
+    "🌆": "242, 80, 34",     // MSFT red
+    "🌃": "242, 80, 34",     // MSFT red
+    "🌌": "255, 185, 0",     // MSFT yellow
+    "🌠": "255, 185, 0"      // MSFT yellow
+  };
+  var circle = link.querySelector(".hero-portrait-penguin");
 
   function step() {
     idx = (idx + 1) % emojis.length;
@@ -264,6 +281,20 @@ quiltModal.addEventListener("click", e => { if (e.target === quiltModal) closeQu
     var tmp = front;
     front = back;
     back = tmp;
+
+    // Update glow color
+    if (circle && glowMap[emojis[idx]]) {
+      circle.style.setProperty("--glow", glowMap[emojis[idx]]);
+    }
+
+    // Hide penguin on shooting star, bring it back otherwise
+    if (emojis[idx] === SHOOTING_STAR) {
+      penguin.style.transition = "opacity 0.8s ease";
+      penguin.style.opacity = "0";
+    } else if (penguin.style.opacity === "0") {
+      penguin.style.transition = "opacity 0.8s ease";
+      penguin.style.opacity = "1";
+    }
   }
 
   function start() {
@@ -273,13 +304,18 @@ quiltModal.addEventListener("click", e => { if (e.target === quiltModal) closeQu
     a.textContent = emojis[0];
     a.style.opacity = "0.35";
     b.style.opacity = "0";
-    timer = setInterval(step, 750);
+    penguin.style.opacity = "";
+    penguin.style.transition = "";
+    if (circle) circle.style.setProperty("--glow", glowMap[emojis[0]]);
+    timer = setInterval(step, 1500);
   }
 
   function stop() {
     if (timer) { clearInterval(timer); timer = null; }
     a.style.opacity = "0";
     b.style.opacity = "0";
+    penguin.style.opacity = "";
+    penguin.style.transition = "";
   }
 
   link.addEventListener("mouseenter", start);
