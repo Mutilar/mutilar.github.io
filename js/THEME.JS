@@ -85,7 +85,7 @@
       // Mobile toggle in radio bar
       if (toggleRadio) toggleRadio.classList.toggle("hidden", pastHome);
 
-      // Brand labels are handled by scroll.js — they show when pastHome
+      // Brand labels are handled by SCROLL.JS — they show when pastHome
     }
 
     window.addEventListener("scroll", updateToggleVisibility, { passive: true });

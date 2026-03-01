@@ -161,7 +161,7 @@ Graviton, SpaceNinjas & VooDoo are playable in-browser via WebGL on the portfoli
 
 [mutilar.github.io](https://mutilar.github.io) is itself an open-source project — a single-page app with zero build tools and zero frameworks.
 
-![Site Architecture](images/mutilar-architecture.png)
+![Site Architecture](png/mutilar-architecture.png)
 
 | Layer | Details |
 |---|---|
@@ -174,7 +174,40 @@ Graviton, SpaceNinjas & VooDoo are playable in-browser via WebGL on the portfoli
 | **A11y** | Skip-to-content link · focus trapping in modals · ARIA labels · `noscript` fallback · structured data (JSON-LD) · Open Graph & Twitter Cards |
 | **Hosting** | GitHub Pages from `master` — no CI needed · MIT licensed |
 
-**Structure:** [`index.html`](https://github.com/Mutilar/mutilar.github.io/blob/master/index.html) · [`css/`](https://github.com/Mutilar/mutilar.github.io/tree/master/css) · [`js/`](https://github.com/Mutilar/mutilar.github.io/tree/master/js) (`parallax.js` · `scroll.js` · `modals.js` · `data.js` · `pdfviewer.js` · `radio.js`) · [`csv/`](https://github.com/Mutilar/mutilar.github.io/tree/master/csv) · [`images/`](https://github.com/Mutilar/mutilar.github.io/tree/master/images) · [`games/`](https://github.com/Mutilar/mutilar.github.io/tree/master/games)
+**Structure:** [`index.html`](https://github.com/Mutilar/mutilar.github.io/blob/master/index.html) · [`css/`](https://github.com/Mutilar/mutilar.github.io/tree/master/css) · [`js/`](https://github.com/Mutilar/mutilar.github.io/tree/master/js) (`parallax.js` · `scroll.js` · `modals.js` · `data.js` · `pdf.js` · `radio.js`) · [`csv/`](https://github.com/Mutilar/mutilar.github.io/tree/master/csv) · [`png/`](https://github.com/Mutilar/mutilar.github.io/tree/master/images) · [`games/`](https://github.com/Mutilar/mutilar.github.io/tree/master/games)
+
+### 🗺️ Tech Emoji Map
+
+Each technology in the **Constellation Map** visualization has a unique emoji "whisper". These same emojis are used as a compact alphabet in `PORTFOLIO.json`'s `TECH` field — a string like `"🍃⚛️💚"` decodes to MongoDB + React + Node.js.
+
+| | | | |
+|---|---|---|---|
+| **📝 Languages** | | **🧩 Frameworks** | |
+| ⚙️ C | 🏎️ C++ | 🟦 .NET | ⚛️ React |
+| 🎵 C# | 🐍 Python | 💚 Node.js | 🚂 Express |
+| ⚡ JS | 🛡️ TS | 💲 jQuery | 🤖 ROS |
+| 🐹 Go | 🦀 Rust | 🏗️ CMake | 🧱 Bazel |
+| ♨️ Java | 🟣 Kotlin | 📨 Envoy | 🧠 Keras |
+| 🌐 HTML | 🎨 CSS | 🔶 TensorFlow | 🧚 Pixi.JS |
+| 🗄️ SQL | 📊 R | 👁️ Vuforia | 📱 AR.JS |
+| 🧮 Fortran | 🔩 MIPS | 🗺️ Mapbox | 📈 Chart.js |
+| 📡 nesC | 🌈 ShaderLab | 📉 Chartist | 🃏 Jest |
+| 💠 HLSL | 🪟 VB.NET | 📌 lgpio | 📷 libfreenect |
+| | | 🔍 Tesseract | 🐢 TorToiSe |
+| | | 💧 Drupal | 📐 OpenSCAD |
+| | | 🥞 MEAN | |
+| **☁️ Platforms** | | **🔧 Tools** | |
+| 🔷 Azure | ⛅ Azure Functions | 🎮 Unity | 🔥 Grafana |
+| ☁️ GCP | 🟠 AWS | 📋 PowerBI | 📏 AutoCAD |
+| 🐙 GitHub Pages | 🍃 MongoDB | 🏛️ Revit | 🌿 Git |
+| 🔴 Redis | 🐳 Docker | 📲 Android Studio | 🌍 GEE |
+| ☸️ K8s | 🐧 Linux | 📓 Jupyter | 🔺 WebGL |
+| 🍓 RPi | 🔌 Arduino | 🖌️ Paint.NET | 🎧 Audacity |
+| 📶 Bluetooth | 🪶 SQLite | | |
+| ⏱️ InfluxDB | 🦕 DynamoDB | | |
+| 🗣️ Alexa | | | |
+
+> Run `node scripts/inject-tech-field.js --dry-run` to preview auto-extracted `TECH` fields, or without `--dry-run` to write them into `PORTFOLIO.json`.
 
 ---
 

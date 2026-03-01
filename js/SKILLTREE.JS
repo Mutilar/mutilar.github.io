@@ -12,12 +12,12 @@
 //       whispers, tour, threads, etc.
 //
 //  Any dataset can be visualized by calling createSkillTree() with
-//  a different config object.  See mtg-tree.js for the MTG example.
+//  a different config object (e.g. the MTG instance at the bottom).
 //
-//  Depends on: viz.js  (initPanZoom, createFilterSystem,
+//  Depends on: VIZ.JS  (initPanZoom, createFilterSystem,
 //                        createExploreHint, animateCameraFit,
 //                        createLayoutToggle, createCrossfader)
-//              modals.js (toggleModal)
+//              MODALS.JS (toggleModal)
 // ═══════════════════════════════════════════════════════════════
 
 
@@ -327,7 +327,7 @@ function createSkillTree(cfg) {
           if (cfg.isTouring && cfg.isTouring()) return;
           _hoveredNode = nodeRef;
           _updateGlow();
-          // Highlight connected arrows (mirroring mermaid-view.js)
+          // Highlight connected arrows (mirroring MERMAID.JS)
           if (_graphWorld) _graphWorld.classList.add("kg-hovering");
           if (_edgeSVG) _edgeSVG.classList.add("kg-hovering");
           nodeRef.el.classList.add("kg-highlight");
@@ -608,7 +608,7 @@ function createSkillTree(cfg) {
   const graphModalClose = document.getElementById("knowledgeModalClose");
   if (!graphModal || !graphModalClose) return;
 
-  /* ── Thematic config (from viz.js) ──────────────────────────── */
+  /* ── Thematic config (from VIZ.JS) ──────────────────────────── */
   const themeConfig = {};
   ["robotics", "games", "software", "education", "work", "projects"].forEach(function (k) {
     var src = VIZ_THEMES[k];
@@ -633,7 +633,7 @@ function createSkillTree(cfg) {
 
   function getTheme(item) { return themeMap[item.ID] || "software"; }
 
-  /* ── Date parsing (simplified from timeline.js) ───────────── */
+  /* ── Date parsing (simplified from TIMELINE.JS) ───────────── */
   const monthLookup = {
     jan:0,january:0,feb:1,february:1,mar:2,march:2,
     apr:3,april:3,may:4,jun:5,june:5,jul:6,july:6,
@@ -718,18 +718,16 @@ function createSkillTree(cfg) {
     if (e.key === "Escape" && graphModal.classList.contains("open")) closeKnowledgeModal();
   });
 
-  /* ── Filter buttons (via viz.js shared filter system) ─────── */
+  /* ── Filter buttons (via VIZ.JS shared filter system) ─────── */
   const allBtn = graphModal.querySelector('.viz-filter[data-filter="all"]');
   const themeBtns = graphModal.querySelectorAll('.viz-filter:not([data-filter="all"])');
 
   const quadrantFilters = ["robotics", "games", "software"];
   const overlayFilters  = ["education", "work", "projects"];
 
-  var _isMobile = window.matchMedia("(max-width: 768px)").matches;
   const _layoutToggle = createLayoutToggle({
     btn: "kgLayoutToggle",
     onDynamic: function () { if (graphBuilt) relayoutAndAnimate(); },
-    startStatic: _isMobile,
   });
 
   const _filterSys = createFilterSystem({
@@ -1035,17 +1033,28 @@ function createSkillTree(cfg) {
         if (!n.nameLayer || !n.whisperLayers || n.whisperLayers.length < 2) return;
 
         if (focused && n.whispers.length) {
-          if (_kgTour && _kgTour.isTouring() && _tourShowNames) {
-            // Tour "show names" phase: reveal the actual name
-            n.nameLayer.classList.add("kg-name-show");
-            n.whisperLayers[0].classList.remove("kg-name-show");
-            n.whisperLayers[1].classList.remove("kg-name-show");
-            n.wasFocused = false;
+          if (_kgTour && _kgTour.isTouring() && !_tourShowNames) {
+            // Tour whisper phase: show whisper on all visible nodes
+            // (CSS !important handles this, but keep kg-name-show in sync)
+            n.nameLayer.classList.remove("kg-name-show");
+            if (!n.wasFocused) {
+              var cur = n.whisperLayers[n.activeWhisper];
+              cur.innerHTML = n.whispers[0];
+              fitTextToCircle(cur, parseFloat(n.el.style.getPropertyValue('--kg-size')) || 70, (parseFloat(n.el.style.getPropertyValue('--kg-size')) || 70) * 0.50);
+              cur.classList.add("kg-name-show");
+            }
+            n.wasFocused = true;
             return;
           }
+          // Focused (glow/hover or tour show-names): show name, hide whisper
+          n.nameLayer.classList.add("kg-name-show");
+          n.whisperLayers[0].classList.remove("kg-name-show");
+          n.whisperLayers[1].classList.remove("kg-name-show");
+          n.wasFocused = false;
+          return;
         }
 
-        // Default state: show whisper (if available)
+        // Not focused — show whisper (if available)
         if (n.whispers.length) {
           const idx = Math.min(n.whispers.length - 1, Math.floor(zoomT * n.whispers.length));
 
@@ -1717,7 +1726,9 @@ function createSkillTree(cfg) {
     fitCamera: function () { fitVisibleNodes(true); },
     setShowNames: function (show) {
       _tourShowNames = show;
-      if (!show) updateProximityGlow();
+      var vp = graphModal.querySelector(".viz-viewport");
+      if (vp) vp.classList.toggle("kg-tour-show-names", !!show);
+      updateProximityGlow();
     },
     updateGlow: function () { updateProximityGlow(); },
     glowPills: function () {
@@ -1857,7 +1868,7 @@ function createSkillTree(cfg) {
       rarity:    item.RARITY   || "",
       types:     type,
       price:     item.PRICE    || 0,
-      art:       "images/card_art/" + id + "/art.png",
+      art:       "png/card_art/" + id + "/art.png",
     };
     if (item.SECONDARY_CATEGORIES) {
       card.secondaryCategories = item.SECONDARY_CATEGORIES;
@@ -2010,11 +2021,9 @@ function createSkillTree(cfg) {
   ];
 
   /* ── Layout toggle (static/dynamic) ─────────────────────── */
-  var _mtgIsMobile = window.matchMedia("(max-width: 768px)").matches;
   var _mtgLayoutToggle = createLayoutToggle({
     btn: "mtgLayoutToggle",
     onDynamic: function () { if (_tree) relayoutMtg(); },
-    startStatic: _mtgIsMobile,
   });
 
   function relayoutMtg() {
@@ -2203,8 +2212,12 @@ function createSkillTree(cfg) {
       el.style.left = cx + "px";
       el.style.top  = cy + "px";
 
-      var displayName = card.cardName.replace(/\s+/g, "<br>");
-      var whisperEmoji = card.whisper || "";
+      // First grapheme of cardName is the main emoji → use as whisper
+      var nameChars = Array.from(card.cardName);
+      var firstChar = nameChars[0] || "";
+      var restName  = nameChars.slice(1).join("").trim();
+      var displayName = restName.replace(/\s+/g, "<br>") || card.cardName.replace(/\s+/g, "<br>");
+      var whisperEmoji = firstChar;
       var hoverEmoji = whisperEmoji || card.types || "";
 
       var whisperContent = hoverEmoji || displayName;
@@ -2391,7 +2404,11 @@ function createSkillTree(cfg) {
         _tree.resetFilters();
       },
       fitCamera: function () { fitMtgVisibleNodes(true); },
-      setShowNames: function () {},  // MTG nodes don't have whisper crossfade
+      setShowNames: function (show) {
+        var vp = modal.querySelector(".viz-viewport");
+        if (vp) vp.classList.toggle("kg-tour-show-names", !!show);
+        if (_tree) _tree.updateGlow();
+      },
       updateGlow: function () { if (_tree) _tree.updateGlow(); },
       glowPills: function () {
         if (!_tree) return;

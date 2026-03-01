@@ -1,27 +1,6 @@
 {
   "sections": [
     {
-      "id": "marp",
-      "items": [
-        {
-          "ID": "marppi",
-          "NAME": "🤖 marp.brain",
-          "TITLE": "🧠 Raspberry Pi 5",
-          "MOTTO": "4-axis stepper control with dual input via USB joystick or Wi-Fi Direct UDP, low-latency H.264 video streaming &amp; auto-stop safety",
-          "GITHUB": "https://github.com/Mutilar/MarpPi",
-          "TEXT": "<b>Raspberry Pi 5 Robot Controller</b><br>Drives a 4-axis robot (2 drive steppers + 2 turret steppers) using <b>lgpio</b> for precise GPIO timing. Written in <b>Python (74.2%); C++ (10.0%); Shell (8.2%); HTML (5.7%)</b>; built with CMake.<br><br><b>Features:</b><ul><li><b>Dual Input</b> — Seamlessly switches between local USB joystick (Xbox) and network UDP packets (JSON on port <code>5005</code>) with automatic failover</li><li><b>Wi-Fi Direct</b> — Acts as Group Owner hotspot (<code>DIRECT-xx-Robot-Pi5</code>) for field connection without a router; DHCP via dnsmasq</li><li><b>Safety</b> — Auto-stops all motors if network connection is lost for &gt;1 second</li><li><b>Video Multiplexer</b> — Unified MJPEG stream on port <code>5600</code> with hot-swap between sources (Pi Camera; Kinect RGB; IR; depth map); configurable resolution and quality</li><li><b>Kinect Support</b> — Vendors <a href='https://github.com/OpenKinect/libfreenect'>libfreenect</a> as a submodule for RGB/depth/IR; accelerometer; and motor/LED control</li><li><b>Systemd Integration</b> — Auto-starts wifi-direct; stepper-controller; and video-stream services on boot</li></ul><b>Hardware Pinout (BCM GPIO):</b><ul><li>Left Drive: 5/6/13 · Right Drive: 19/26/21</li><li>Turret Pan: 23/24/25 · Turret Tilt: 12/16/20</li><li>Activity LED: GPIO 18</li></ul><b>Diagrams:</b> High-Level Wiring; Data Flow; User Story; System Architecture (Mermaid-sourced)<br><b>Dependencies:</b> liblgpio-dev; nlohmann-json3-dev; dnsmasq; rpicam-vid; libfreenect"
-        },
-        {
-          "ID": "marpgamepad",
-          "NAME": "🕹️ marp.gamepad",
-          "TITLE": "🎮 Valve Steamdeck",
-          "MOTTO": "Wireless teleoperation with real-time video feed, native Steam Deck &amp; Xbox controller support via Unity's Input System",
-          "GITHUB": "https://github.com/Mutilar/MarpGamepad",
-          "TEXT": "<b>MARP Gamepad — Wireless Teleoperation Client</b><br>A <b>Unity 6.0</b> client-side control application designed primarily for the <b>Valve Steam Deck</b>; enabling wireless teleoperation and real-time video streaming over a local Wi-Fi network. Written in <b>ShaderLab (44.8%); C# (43.9%); HLSL (9.2%); PowerShell (1.7%); Shell (0.4%)</b>.<br><br><b>Features:</b><ul><li><b>Wireless Teleoperation</b> — Control the robot's mobility; head movements; and expressive outputs over shared local Wi-Fi</li><li><b>Live Video Feed</b> — Receives and displays real-time MJPEG stream from the robot's onboard cameras/sensors at <code>http://192.168.4.1:5600/stream.mjpg</code></li><li><b>Input Support</b> — Native Steam Deck controls and Xbox Elite Controller via Unity's Input System package; dual joysticks for drive (left) and turret (right)</li><li><b>Source Switching</b> — Switch between Pi Camera; Kinect RGB; IR; and depth feeds from the client via HTTP or TCP socket</li></ul><b>Hardware Specs:</b><ul><li>Steam Deck: 5–20V USB-C PD; ≤3.0A; ≤45W; 11.7&quot; × 4.6&quot; × 1.9&quot;</li><li>Xbox Controller: 5V; ≤1.5A; ≤7.5W (optional/dev input)</li></ul><b>Control Protocol:</b> UDP JSON packets to <code>192.168.4.1:5005</code> — <code>{joysticks: {left: [x;y]; right: [x;y]}}</code> with values from -1.0 to 1.0<br><b>Build Target:</b> Linux (Steam Deck architecture)<br><b>Deployment:</b> <code>build_deploy.ps1</code> (PowerShell) and <code>launch.sh</code> for automated build and deploy"
-        }
-      ]
-    },
-    {
       "id": "bitnaughts",
       "items": [
         {
@@ -34,8 +13,8 @@
           "domain": "games",
           "source": "projects",
           "quadrant": "games",
-          "shortname": "BIT<br>NAUGHTS",
-          "whisper": "☄️"
+          "shortname": "☄️<br>Bit<br>Naughts",
+          "TECH": "🌿🔺"
         },
         {
           "ID": "bitnaughts-unity",
@@ -43,7 +22,8 @@
           "TITLE": "Unity 6.0",
           "MOTTO": "Cross-platform game interface",
           "GITHUB": "https://github.com/bitnaughts/bitnaughts.unity",
-          "TEXT": "<b>Unity Game Client</b><br>The core game application built in <b>Unity 6.0</b> (100% C#). Players navigate a spaceship; dock at planets; and solve programming challenges through an in-game terminal that interprets assembly-style instructions.<br><br><b>Submodule Architecture:</b><ul><li><b>Assets</b> — Sprites; audio; and visual assets</li><li><b>UI/UX</b> — Interface design and user experience components</li><li><b>Components</b> — Modular game systems (navigation; docking; inventory)</li><li><b>C# Interpreter</b> — The embedded language interpreter engine</li><li><b>WebGLNativeInputField</b> — Custom input handling for WebGL builds</li></ul><b>Contributors:</b> 4 (Mutilar; botnaughts; vva0; nt314p)"
+          "TEXT": "<b>Unity Game Client</b><br>The core game application built in <b>Unity 6.0</b> (100% C#). Players navigate a spaceship; dock at planets; and solve programming challenges through an in-game terminal that interprets assembly-style instructions.<br><br><b>Submodule Architecture:</b><ul><li><b>Assets</b> — Sprites; audio; and visual assets</li><li><b>UI/UX</b> — Interface design and user experience components</li><li><b>Components</b> — Modular game systems (navigation; docking; inventory)</li><li><b>C# Interpreter</b> — The embedded language interpreter engine</li><li><b>WebGLNativeInputField</b> — Custom input handling for WebGL builds</li></ul><b>Contributors:</b> 4 (Mutilar; botnaughts; vva0; nt314p)",
+          "TECH": "🎮🔺🎵"
         },
         {
           "ID": "bitnaughts-interpreter",
@@ -51,7 +31,8 @@
           "TITLE": "C#",
           "MOTTO": "Stepping through each OP Code of abstracted languages",
           "GITHUB": "https://github.com/bitnaughts/bitnaughts.interpreter",
-          "TEXT": "<b>Assembly Interpreter Engine</b><br>The core language processing engine written in <b>C#</b> that powers BitNaughts' in-game programming challenges. Players write assembly-level OP codes which this interpreter steps through instruction-by-instruction.<br><br><b>Architecture:</b><ul><li><b>Interpreter.cs</b> — Main execution loop; parses and executes OP code instructions sequentially</li><li><b>Instruction.cs</b> — Data model representing individual assembly instructions (opcode + operands)</li><li><b>Variable.cs</b> — Register and memory variable management for the virtual machine</li><li><b>ColorCoder.cs</b> — Syntax highlighting for the in-game terminal; color-codes keywords; registers; and literals</li></ul>Designed as a Git submodule consumed by bitnaughts.unity; enabling modular development of the language engine independent of the game client."
+          "TEXT": "<b>Assembly Interpreter Engine</b><br>The core language processing engine written in <b>C#</b> that powers BitNaughts' in-game programming challenges. Players write assembly-level OP codes which this interpreter steps through instruction-by-instruction.<br><br><b>Architecture:</b><ul><li><b>Interpreter.cs</b> — Main execution loop; parses and executes OP code instructions sequentially</li><li><b>Instruction.cs</b> — Data model representing individual assembly instructions (opcode + operands)</li><li><b>Variable.cs</b> — Register and memory variable management for the virtual machine</li><li><b>ColorCoder.cs</b> — Syntax highlighting for the in-game terminal; color-codes keywords; registers; and literals</li></ul>Designed as a Git submodule consumed by bitnaughts.unity; enabling modular development of the language engine independent of the game client.",
+          "TECH": "🌿🎵"
         },
         {
           "ID": "bitnaughts-github-io",
@@ -59,7 +40,8 @@
           "TITLE": "WebGL",
           "MOTTO": "Play the demo in your browser!",
           "GITHUB": "https://github.com/bitnaughts/bitnaughts.github.io",
-          "TEXT": "<b>WebGL Front-End — <a href='https://bitnaughts.io'>bitnaughts.io</a></b><br>The web-hosted runtime that serves Unity WebGL builds directly in the browser.</b><br><br><b>Pages:</b><ul><li><b>play.html</b> — Primary single-player game interface</li><li><b>duo.html</b> — Multiplayer / co-op mode</li><li><b>alpha.html</b> — Alpha testing build</li><li><b>portal.html</b> — Landing page and navigation portal</li></ul><b>Key Directories:</b><ul><li><b>Build/</b> — Compiled Unity WebGL artifacts (.unityweb; .json; UnityLoader.js)</li><li><b>StreamingAssets/</b> — Runtime data files loaded by Unity at play-time</li><li><b>TemplateData/</b> — Loading screen and progress bar assets</li><li><b>assets/</b> — Static images and media</li><li><b>documentation/</b> — Project docs and guides</li></ul>"
+          "TEXT": "<b>WebGL Front-End — <a href='https://bitnaughts.io'>bitnaughts.io</a></b><br>The web-hosted runtime that serves Unity WebGL builds directly in the browser.</b><br><br><b>Pages:</b><ul><li><b>play.html</b> — Primary single-player game interface</li><li><b>duo.html</b> — Multiplayer / co-op mode</li><li><b>alpha.html</b> — Alpha testing build</li><li><b>portal.html</b> — Landing page and navigation portal</li></ul><b>Key Directories:</b><ul><li><b>Build/</b> — Compiled Unity WebGL artifacts (.unityweb; .json; UnityLoader.js)</li><li><b>StreamingAssets/</b> — Runtime data files loaded by Unity at play-time</li><li><b>TemplateData/</b> — Loading screen and progress bar assets</li><li><b>assets/</b> — Static images and media</li><li><b>documentation/</b> — Project docs and guides</li></ul>",
+          "TECH": "🎮🔺"
         },
         {
           "ID": "bitnaughts-voice",
@@ -67,7 +49,8 @@
           "TITLE": "Narrator",
           "MOTTO": "Forays into A.I. narration",
           "GITHUB": "https://github.com/bitnaughts/bitnaughts.voice",
-          "TEXT": "<b>A.I. Voice Narration — TorToiSe TTS</b><br>A fork of <b>neonbjb/tortoise-tts</b> adapted for in-game AI narration. TorToiSe is a multi-voice text-to-speech system that uses an <b>autoregressive decoder</b> paired with a <b>diffusion model</b> to generate highly realistic speech.<br><br><b>Capabilities:</b><ul><li>Multi-voice synthesis — clone and generate speech in different character voices from short reference clips</li><li>High-quality prosody and intonation via autoregressive sequence modeling</li><li>Diffusion-based audio refinement for natural-sounding output</li><li>Configurable voice presets for distinct in-game characters and narrators</li></ul><b>Use Case:</b> Generate dynamic AI narration for BitNaughts' tutorial sequences; mission briefings; and in-game lore — replacing static audio recordings with procedurally generated speech.<br><b>License:</b> Apache-2.0"
+          "TEXT": "<b>A.I. Voice Narration — TorToiSe TTS</b><br>A fork of <b>neonbjb/tortoise-tts</b> adapted for in-game AI narration. TorToiSe is a multi-voice text-to-speech system that uses an <b>autoregressive decoder</b> paired with a <b>diffusion model</b> to generate highly realistic speech.<br><br><b>Capabilities:</b><ul><li>Multi-voice synthesis — clone and generate speech in different character voices from short reference clips</li><li>High-quality prosody and intonation via autoregressive sequence modeling</li><li>Diffusion-based audio refinement for natural-sounding output</li><li>Configurable voice presets for distinct in-game characters and narrators</li></ul><b>Use Case:</b> Generate dynamic AI narration for BitNaughts' tutorial sequences; mission briefings; and in-game lore — replacing static audio recordings with procedurally generated speech.<br><b>License:</b> Apache-2.0",
+          "TECH": "🐢"
         },
         {
           "ID": "bitnaughts-mainframe",
@@ -75,7 +58,8 @@
           "TITLE": "Azure",
           "MOTTO": "Serverless cloud resources for persistence",
           "GITHUB": "https://github.com/bitnaughts/bitnaughts.mainframe",
-          "TEXT": "<b>Serverless Back-End — <a href='https://bitnaughts.azurewebsites.net'>bitnaughts.azurewebsites.net</a></b><br>An <b>Azure Function App</b> written in C# that provides cloud persistence for multiplayer game state. Hosted as a serverless endpoint with two HTTP-triggered functions.<br><br><b>Functions:</b><ul><li><b>Ping()</b> — Multiplayer state sync via <b>MongoDB</b>; upserts player data keyed by name; returns all other players' state (uses ♖ delimiter). Connection secured with <b>TLS 1.2</b> and TTL indexes for automatic document expiry (<code>expireAfterSeconds: 10</code>).</li><li><b>Mainframe()</b> — Git-based persistence layer; clones <b>bitnaughts.db</b> repo to temp storage; reads/writes player save files as .txt; then commits and pushes changes back via LibGit2Sharp.</li></ul><b>Stack:</b> Azure Functions; MongoDB (CosmosDB-compatible); LibGit2Sharp; Newtonsoft.Json"
+          "TEXT": "<b>Serverless Back-End — <a href='https://bitnaughts.azurewebsites.net'>bitnaughts.azurewebsites.net</a></b><br>An <b>Azure Function App</b> written in C# that provides cloud persistence for multiplayer game state. Hosted as a serverless endpoint with two HTTP-triggered functions.<br><br><b>Functions:</b><ul><li><b>Ping()</b> — Multiplayer state sync via <b>MongoDB</b>; upserts player data keyed by name; returns all other players' state (uses ♖ delimiter). Connection secured with <b>TLS 1.2</b> and TTL indexes for automatic document expiry (<code>expireAfterSeconds: 10</code>).</li><li><b>Mainframe()</b> — Git-based persistence layer; clones <b>bitnaughts.db</b> repo to temp storage; reads/writes player save files as .txt; then commits and pushes changes back via LibGit2Sharp.</li></ul><b>Stack:</b> Azure Functions; MongoDB (CosmosDB-compatible); LibGit2Sharp; Newtonsoft.Json",
+          "TECH": "🔷⛅🍃🎵"
         }
       ]
     },
@@ -93,18 +77,18 @@
           "TEXT": "<ul style=\"list-style-type: disc\"><li>Brought Azure Machine Learning Online Endpoints' data plane to general availability, now serving 8 billion real-time inferencing requests per day.</li><li>Volunteering as DRI Champ to spearhead engineering process improvements.</li><li>Deployed microservices across 30 regions on Azure Virtual Machine Scale Sets and set up telemetry flows in Azure Data Explorer and dashboards in PowerBI.</li><li>Created Envoy Proxy build pipeline with Bazel, and implemented C++ filters:<ul><li>SHA-256 key-based authentication filter with CORS preflight support.</li><li>Azure Active Directory authentication filter with LRU decision cache.</li><li>Global rate limit access control filter with Go microservice, Redis cache.</li></ul></li><li>Designed and built an agentless Jupyter notebook validation pipeline with Azure DevOps Pipelines, Azure ML SDK and Azure Functions to improve runner CI. <a href=\"#projects\" onclick=\"event.preventDefault(); navigateToModal('projects','azuremlops')\">Azure MLOps →</a></li></ul>",
           "domain": "software",
           "shortname": "MICRO<br>SOFT",
-          "whisper": "🧠"
+          "TECH": "🧱📨🔷⛅🔴📓📋🏎️🐹"
         },
         {
           "ID": "ventana",
-          "NAME": "🔬 Ventana",
+          "NAME": "🧬 Ventana",
           "TITLE": "SWE Intern",
           "MOTTO": "Improving the quality of life for all patients afflicted with cancer",
           "DATE": "Summer 2018",
           "LOCATION": "Santa Clara, California",
-          "TEXT": "<ul style=\"list-style-type: disc\"><li>Pushed feature-adds and bug-fixes for MEAN stack digital pathology web app.</li><li>Prototyped OpenSeaDragon-esque image and annotation renderer in Pixi.Js.</li><li>Modernized Nagios server monitoring with Icinga, Graphite and Grafana.</li></ul><figure class='modal-figure'><img src='images/ventana-poster.png' alt='Ventana internship poster'></figure>",
+          "TEXT": "<ul style=\"list-style-type: disc\"><li>Pushed feature-adds and bug-fixes for MEAN stack digital pathology web app.</li><li>Prototyped OpenSeaDragon-esque image and annotation renderer in Pixi.Js.</li><li>Modernized Nagios server monitoring with Icinga, Graphite and Grafana.</li></ul><figure class='modal-figure'><img src='png/ventana-poster.png' alt='Ventana internship poster'></figure>",
           "domain": "software",
-          "whisper": "🧬"
+          "TECH": "🥞🧚🔥"
         },
         {
           "ID": "vicelab",
@@ -114,14 +98,14 @@
           "DATE": "Winter 2018",
           "LOCATION": "Merced, California",
           "GITHUB": "https://github.com/vicelab",
-          "TEXT": "<ul style=\"list-style-type: disc\"><li>Led team to develop heuristic and ML scripts in Google Earth Engine to model and predict California's agricultural fallowing using observation satellite data.</li><li>Onboarded lab to GitHub and open-sourced scripts written in Python, C# and R.</li><li>Refurbished lab's website, now hosting on GitHub Pages: <a href=\"http://vicelab.net\">vicelab.net</a>.</li></ul><figure class='modal-figure'><img src='images/vicelab_page.png' alt='VICE Lab website'></figure>",
+          "TEXT": "<ul style=\"list-style-type: disc\"><li>Led team to develop heuristic and ML scripts in Google Earth Engine to model and predict California's agricultural fallowing using observation satellite data.</li><li>Onboarded lab to GitHub and open-sourced scripts written in Python, C# and R.</li><li>Refurbished lab's website, now hosting on GitHub Pages: <a href=\"http://vicelab.net\">vicelab.net</a>.</li></ul><figure class='modal-figure'><img src='png/vicelab_page.png' alt='VICE Lab website'></figure>",
           "domain": "research",
           "shortname": "VICE<br>LAB",
-          "whisper": "🌾"
+          "TECH": "🐙🌍🎵🐍📊"
         },
         {
           "ID": "andeslab",
-          "NAME": "📡 ANDES Lab",
+          "NAME": "🏭 ANDES Lab",
           "TITLE": "Computational RA",
           "MOTTO": "Providing solutions to grand challenge problems around building &amp; deploying usable systems",
           "DATE": "Spring 2019",
@@ -129,7 +113,7 @@
           "TEXT": "<ul style=\"list-style-type: disc\"><li>Visualized InfluxDB data for HVAC predictive control system in Python, Grafana.</li></ul>",
           "domain": "research",
           "shortname": "ANDES<br>LAB",
-          "whisper": "🏭"
+          "TECH": "⏱️🔥🐍"
         },
         {
           "ID": "maces",
@@ -141,7 +125,7 @@
           "GITHUB": "https://github.com/Mutilar/Firmi-1",
           "TEXT": "<ul style=\"list-style-type: disc\"><li>Worked on <a href=\"#projects\" onclick=\"event.preventDefault(); navigateToModal('projects','firmi')\">Firmi</a> to 3D-print Fermi surfaces via Marching cubes in Fortran90.</li></ul>",
           "domain": "research",
-          "whisper": "🚀"
+          "TECH": "🧮"
         },
         {
           "ID": "citris",
@@ -151,33 +135,31 @@
           "DATE": "Summer 2017, Winter 2017",
           "LOCATION": "Merced, California",
           "GITHUB": "https://github.com/citris-ucmerced",
-          "TEXT": "<ul style=\"list-style-type: disc\"><li>Developed GitOps content management system via jQuery and CSV files to replace Drupal stack, now hosting on GitHub Pages: <a href=\"https://citris.ucmerced.edu\">citris.ucmerced.edu</a>.</li></ul><figure class='modal-figure'><img src='images/citris-page.png' alt='CITRIS & Banatao Institute website'></figure><figure class='modal-figure'><img src='images/cyberaware_page.png' alt='CyberAware event page'></figure><figure class='modal-figure'><img src='images/mac_page.png' alt='Mobile App Challenge page'></figure><figure class='modal-figure'><img src='images/citris-group.png' alt='CITRIS & Banatao Institute group photo'></figure>",
+          "TEXT": "<ul style=\"list-style-type: disc\"><li>Developed GitOps content management system via jQuery and CSV files to replace Drupal stack, now hosting on GitHub Pages: <a href=\"https://citris.ucmerced.edu\">citris.ucmerced.edu</a>.</li></ul><figure class='modal-figure'><img src='png/citris-page.png' alt='CITRIS & Banatao Institute website'></figure><figure class='modal-figure'><img src='png/cyberaware_page.png' alt='CyberAware event page'></figure><figure class='modal-figure'><img src='png/mac_page.png' alt='Mobile App Challenge page'></figure><figure class='modal-figure'><img src='png/citris-group.png' alt='CITRIS & Banatao Institute group photo'></figure>",
           "domain": "software",
           "shortname": "CITRIS",
-          "whisper": "🏙️"
+          "TECH": "💧💲🐙"
         },
         {
           "ID": "hackmerced",
-          "NAME": "💻 HackMerced",
+          "NAME": "🧑‍💻 HackMerced",
           "TITLE": "Director",
           "MOTTO": "Bringing technological innovation to the heart of the San Joaquin Valley since 2016",
           "DATE": "Fall 2019",
           "LOCATION": "Merced, California",
           "GITHUB": "https://github.com/HackMerced",
           "TEXT": "<ul style=\"list-style-type: disc\"><li>Hosted MLH hackathon for 300 students, fundraising $20,000 from sponsors!</li></ul>",
-          "domain": "software",
-          "whisper": "🧑‍💻"
+          "domain": "software"
         },
         {
           "ID": "learnbeat",
-          "NAME": "📚 LearnBEAT",
+          "NAME": "🌱 LearnBEAT",
           "TITLE": "Instructor",
           "MOTTO": "Increasing scientific literacy in the Central Valley through project-based learning",
           "DATE": "Oct 2017 - Dec 2017",
           "LOCATION": "Merced, California",
-          "TEXT": "<ul style=\"list-style-type: disc\"><li>Taught hands-on STEM workshops to underserved K–12 students in the Central Valley, increasing scientific literacy through interactive experiments and project-based learning.</li></ul><figure class='modal-figure'><img src='images/learnbeat-people.png' alt='Learn BEAT team'></figure>",
-          "domain": "research",
-          "whisper": "🌱"
+          "TEXT": "<ul style=\"list-style-type: disc\"><li>Taught hands-on STEM workshops to underserved K–12 students in the Central Valley, increasing scientific literacy through interactive experiments and project-based learning.</li></ul><figure class='modal-figure'><img src='png/learnbeat-people.png' alt='Learn BEAT team'></figure>",
+          "domain": "research"
         },
         {
           "ID": "acm",
@@ -187,12 +169,11 @@
           "DATE": "Summer 2017",
           "LOCATION": "Merced, California",
           "TEXT": "<ul style=\"list-style-type: disc\"><li>Organized outreach events and coding workshops to promote computing as a science and profession.</li></ul>",
-          "domain": "research",
-          "whisper": "🤝"
+          "domain": "research"
         },
         {
           "ID": "alamorobotics",
-          "NAME": "🤖 Alamo Robotics",
+          "NAME": "🧑‍🏫 Alamo Robotics",
           "TITLE": "Volunteer",
           "MOTTO": "Using Lego Mindstorm as a platform to teach the next generation of engineers",
           "DATE": "Summer 2015",
@@ -200,22 +181,20 @@
           "TEXT": "<ul style=\"list-style-type: disc\"><li>Mentored young students in programming and building robots with Lego Mindstorm, fostering problem-solving and engineering skills in the next generation.</li></ul>",
           "domain": "robotics",
           "quadrant": "robotics",
-          "shortname": "ALAMO<br>ROBOTICS",
-          "whisper": "🧑‍🏫"
+          "shortname": "ALAMO<br>ROBOTICS"
         },
         {
           "ID": "summerofgamedesign",
-          "NAME": "🕹️ Summer of Game Design",
+          "NAME": "🧑‍🏫 Summer of Game Design",
           "TITLE": "Instructor, Founder",
           "MOTTO": "Using game design as an engaging medium to teach computer science",
           "DATE": "Summer 2015, Summer 2016",
           "LOCATION": "Danville, California",
           "GITHUB": "https://github.com/Mutilar/SpaceNinjas",
-          "TEXT": "<ul style=\"list-style-type: disc\"><li>Co-founded non-profit game programming summer camp, fundraising $25,000!</li><li>Created <a href=\"#games\" onclick=\"event.preventDefault(); navigateToModal('games','spaceninjas')\">SpaceNinjas</a>, a boilerplate 2D platformer used as a teaching aid.</li></ul><figure class='modal-figure'><img src='images/summerofgamedesign-website.png' alt='Summer of Game Design website'></figure>",
+          "TEXT": "<ul style=\"list-style-type: disc\"><li>Co-founded non-profit game programming summer camp, fundraising $25,000!</li><li>Created <a href=\"#games\" onclick=\"event.preventDefault(); navigateToModal('games','spaceninjas')\">SpaceNinjas</a>, a boilerplate 2D platformer used as a teaching aid.</li></ul><figure class='modal-figure'><img src='png/summerofgamedesign-website.png' alt='Summer of Game Design website'></figure>",
           "domain": "games",
           "quadrant": "games",
-          "shortname": "SUMMER OF<br>GAME DESIGN",
-          "whisper": "🧑‍🏫"
+          "shortname": "SUMMER OF<br>GAME DESIGN"
         },
         {
           "ID": "redtierobotics",
@@ -224,12 +203,12 @@
           "MOTTO": "Inspiring STEM excellence in Danville &amp; communities across the world",
           "DATE": "Winter 2014 - Spring 2015, Fall 2015 - Winter 2015, Spring 2016",
           "LOCATION": "Danville, California",
-          "TEXT": "<ul style=\"list-style-type: disc\"><li>Managed a team of four to design and implement systems to align with mechanical and programming teams' specifications.</li><li>Designed, modeled (AutoCAD) and integrated robotic electrical systems including a power distribution system, motor controllers, sensors, and central microprocessors under tight spatial and weight constraints.</li><li>Responsible for soldering, crimping, and general assembly of electrical systems, emphasizing quality of work to assure high reliability during competitions.</li><li>Contracted by <a href=\"#projects\" onclick=\"event.preventDefault(); navigateToModal('projects','amaxesd')\">AMAX</a> to design and integrate circuitry to provide a haptic and visual feedback security measure for engineers assembling server components.</li><li>Fundraised, managed and allocated spending of $18,000 to fund each year's build season.</li></ul><figure class='modal-figure'><img src='images/redtie_signed.png' alt='Red Tie Robotics FRC 1458 team signed photo'></figure><figure class='modal-figure'><img src='images/redtie-wire.png' alt='Red Tie Robotics wiring'></figure><figure class='modal-figure'><img src='images/redtie-learning.png' alt='Red Tie Robotics learning session'></figure><figure class='modal-figure'><img src='images/redtie-robot.png' alt='Red Tie Robotics robot'></figure>",
+          "TEXT": "<ul style=\"list-style-type: disc\"><li>Managed a team of four to design and implement systems to align with mechanical and programming teams' specifications.</li><li>Designed, modeled (AutoCAD) and integrated robotic electrical systems including a power distribution system, motor controllers, sensors, and central microprocessors under tight spatial and weight constraints.</li><li>Responsible for soldering, crimping, and general assembly of electrical systems, emphasizing quality of work to assure high reliability during competitions.</li><li>Contracted by <a href=\"#projects\" onclick=\"event.preventDefault(); navigateToModal('projects','amaxesd')\">AMAX</a> to design and integrate circuitry to provide a haptic and visual feedback security measure for engineers assembling server components.</li><li>Fundraised, managed and allocated spending of $18,000 to fund each year's build season.</li></ul><figure class='modal-figure'><img src='png/redtie_signed.png' alt='Red Tie Robotics FRC 1458 team signed photo'></figure><figure class='modal-figure'><img src='png/redtie-wire.png' alt='Red Tie Robotics wiring'></figure><figure class='modal-figure'><img src='png/redtie-learning.png' alt='Red Tie Robotics learning session'></figure><figure class='modal-figure'><img src='png/redtie-robot.png' alt='Red Tie Robotics robot'></figure>",
           "domain": "robotics",
           "source": "education",
           "quadrant": "robotics",
           "shortname": "RED TIE<br>ROBOTICS",
-          "whisper": "🛠️"
+          "TECH": "📏"
         }
       ]
     },
@@ -247,7 +226,7 @@
           "domain": "education",
           "quadrant": "robotics",
           "shortname": "CSE<br>180",
-          "whisper": "🤖"
+          "TECH": "🏗️🤖🐧🏎️"
         },
         {
           "ID": "cse165",
@@ -259,7 +238,7 @@
           "TEXT": "<ul style=\"list-style-type: disc\"><li>Completed six labs and a final project exploring core OOP concepts — classes, inheritance, polymorphism, templates, and operator overloading — in C and C++.</li><li>Built progressively complex programs emphasizing clean abstractions, encapsulation, and modular design patterns.</li><li>Developed a comprehensive final project demonstrating mastery of object-oriented design principles and software architecture.</li><li>Practiced disciplined version control and code organization across a multi-lab coursework repository.</li></ul>",
           "domain": "education",
           "shortname": "CSE<br>165",
-          "whisper": "📦"
+          "TECH": "⚙️🏎️"
         },
         {
           "ID": "cse160",
@@ -271,7 +250,7 @@
           "TEXT": "<ul style=\"list-style-type: disc\"><li>Implemented four networking projects covering transport protocols, routing, and distributed communication using nesC, Python, and C.</li><li>Built a TCP connector module handling reliable data transfer, flow control, and congestion management from scratch.</li><li>Completed homework assignments on network architecture, protocol design, and the OSI/TCP-IP model.</li><li>Gained hands-on experience with sensor network programming in nesC alongside traditional socket programming in Python and C.</li></ul>",
           "domain": "education",
           "shortname": "CSE<br>160",
-          "whisper": "🌐"
+          "TECH": "⚙️📡🐍"
         },
         {
           "ID": "cse120",
@@ -283,7 +262,7 @@
           "TEXT": "<ul style=\"list-style-type: disc\"><li>Collaborated with a team to build <a href=\"#projects\" onclick=\"event.preventDefault(); navigateToModal('projects','motleymoves')\">MotleyMoves</a>, a web application to streamline race creation and participant tracking for a local nonprofit running club.</li><li>Developed a serverless C#/.NET backend on Azure Function Apps with an Azure SQL Database, handling 15+ API endpoints for race management, GPS tracking, and medical records.</li><li>Built a mobile-friendly front-end with Mapbox-powered interactive race course maps, Google Sign-In authentication, and FullCalendar event views.</li><li>Practiced agile software engineering methodologies including requirements gathering, sprint planning, and iterative delivery.</li></ul>",
           "domain": "education",
           "shortname": "CSE<br>120",
-          "whisper": "🛠️"
+          "TECH": "🟦🔷🎵🗄️"
         },
         {
           "ID": "cse111",
@@ -295,11 +274,11 @@
           "TEXT": "<ul style=\"list-style-type: disc\"><li>Designed and implemented relational database schemas across eight labs and a final project using T-SQL and SQLite.</li><li>Wrote complex SQL queries involving joins, subqueries, aggregations, views, stored procedures, and triggers to solve real-world data modeling problems.</li><li>Built a C# database application integrating programmatic data access with SQL backend logic.</li><li>Studied normalization theory, ER modeling, transaction management, and indexing strategies for database performance optimization.</li></ul>",
           "domain": "education",
           "shortname": "CSE<br>111",
-          "whisper": "🗃️"
+          "TECH": "🪶🎵🗄️"
         },
         {
           "ID": "cse100",
-          "NAME": "📊 CSE 100",
+          "NAME": "📈 CSE 100",
           "TITLE": "Algorithms",
           "MOTTO": "The art of solving problems efficiently",
           "DATE": "Spring 2018",
@@ -307,7 +286,7 @@
           "TEXT": "<ul style=\"list-style-type: disc\"><li>Implemented 17 algorithm labs in C++ covering sorting (insertion, merge, quick, heap, bucket, radix), searching (linear, binary), and advanced data structures (hash maps, BSTs).</li><li>Built graph algorithms including BFS/DFS traversal and minimum spanning trees (Kruskal's and Prim's).</li><li>Implemented dynamic programming solutions for rod cutting, matrix chain multiplication, and Huffman coding.</li><li>Analyzed time and space complexity of each algorithm, comparing theoretical bounds with empirical benchmarks via shell scripts.</li></ul>",
           "domain": "education",
           "shortname": "CSE<br>100",
-          "whisper": "📈"
+          "TECH": "🏎️"
         },
         {
           "ID": "cse031",
@@ -320,7 +299,7 @@
           "domain": "education",
           "quadrant": "robotics",
           "shortname": "CSE<br>31",
-          "whisper": "⚙️"
+          "TECH": "⚙️🔩"
         },
         {
           "ID": "cse030",
@@ -332,7 +311,7 @@
           "TEXT": "<ul style=\"list-style-type: disc\"><li>Implemented fundamental data structures in C++ across 13 labs and 2 homework assignments — linked lists, stacks, queues, trees, heaps, and hash tables.</li><li>Built and tested each structure from scratch, emphasizing pointer manipulation, dynamic memory allocation, and algorithmic efficiency.</li><li>Studied the trade-offs between sequential and linked representations, balancing time complexity with memory overhead.</li><li>Developed debugging and testing practices for complex pointer-based data structures in a systems programming environment.</li></ul>",
           "domain": "education",
           "shortname": "CSE<br>30",
-          "whisper": "⚙️"
+          "TECH": "🏎️"
         },
         {
           "ID": "cse015",
@@ -344,7 +323,7 @@
           "TEXT": "<ul style=\"list-style-type: disc\"><li>Completed 11 written homework assignments and 4 Python programming assignments covering logic, proofs, set theory, combinatorics, and graph theory.</li><li>Implemented discrete math concepts programmatically in Python — truth tables, set operations, counting algorithms, and graph traversals.</li><li>Studied propositional and predicate logic, proof techniques (direct, contradiction, induction), relations, functions, and recurrence relations.</li><li>Built foundational mathematical reasoning skills essential for algorithm analysis, cryptography, and formal verification.</li></ul>",
           "domain": "education",
           "shortname": "CSE<br>15",
-          "whisper": "🔢"
+          "TECH": "🐍"
         },
         {
           "ID": "ropgamedesign",
@@ -355,8 +334,8 @@
           "TEXT": "<ul style=\"list-style-type: disc\"><li>Designed and developed 2D and 3D games in Unity using C#, iterating through full game development cycles from concept and prototyping to playtesting and polish.</li><li>Created game design documents covering mechanics, level design, player progression, and user experience for original game concepts.</li><li>Implemented core gameplay systems including player controllers, enemy AI, collision detection, scoring, and UI menus.</li><li>Collaborated with peers on team-based projects, managing asset pipelines, version control, and integration of art, audio, and code.</li></ul>",
           "domain": "education",
           "quadrant": "games",
-          "shortname": "ROP<br>GAME<br>DESIGN",
-          "whisper": "⚙️"
+          "shortname": "GAME<br>DESIGN",
+          "TECH": "🎮🎵"
         },
         {
           "ID": "roparchitecture",
@@ -367,8 +346,8 @@
           "TEXT": "<ul style=\"list-style-type: disc\"><li>Created architectural drawings and floor plans using AutoCAD and Revit, applying drafting standards and dimensioning conventions.</li><li>Designed residential and commercial building models with attention to structural integrity, spatial flow, and building code compliance.</li><li>Built physical scale models and 3D-printed prototypes to visualize and present architectural concepts.</li><li>Studied architectural history, materials science, and sustainable design principles alongside hands-on CAD/CAM workflows.</li></ul>",
           "domain": "education",
           "quadrant": "robotics",
-          "shortname": "ROP<br>ARCHI<br>TECTURE",
-          "whisper": "📐"
+          "shortname": "ARCHI<br>TECTURE",
+          "TECH": "📏🏛️"
         },
         {
           "ID": "apjava",
@@ -379,7 +358,7 @@
           "TEXT": "<ul style=\"list-style-type: disc\"><li>Studied object-oriented programming in Java covering classes, inheritance, polymorphism, interfaces, and abstract classes.</li><li>Implemented data structures and algorithms including arrays, ArrayLists, sorting (selection, insertion, merge), searching (linear, binary), and recursion.</li><li>Completed AP-style free-response and multiple-choice practice covering control flow, string manipulation, 2D arrays, and object design.</li><li>Scored on the AP Computer Science A exam, demonstrating proficiency in Java fundamentals and computational thinking.</li></ul>",
           "domain": "education",
           "shortname": "AP<br>JAVA",
-          "whisper": "♨️"
+          "TECH": "♨️"
         }
       ]
     },
@@ -387,17 +366,30 @@
       "id": "projects",
       "items": [
         {
-          "ID": "marp",
-          "NAME": "🤖 MARP",
-          "TITLE": "Personal Project",
-          "MOTTO": "4-axis robot with wireless teleoperation &amp; real-time video streaming",
+          "ID": "marppi",
+          "NAME": "🤖 marp.brain",
+          "TITLE": "🧠 Raspberry Pi 5",
+          "MOTTO": "4-axis stepper control with dual input via USB joystick or Wi-Fi Direct UDP, low-latency H.264 video streaming &amp; auto-stop safety",
           "DATE": "Winter 2025 - Present",
-          "LOCATION": "Bellevue, Washington",
-          "GITHUB": "https://github.com/Mutilar/Marp",
-          "TEXT": "<h3>The Idea</h3><p>MARP is a 4-axis robot platform with wireless teleoperation and real-time video streaming: a Raspberry Pi 5 brain, a Valve Steam Deck controller, and a modular architecture split across focused repos.</p><h3>How It Works</h3><p>The Pi 5 runs <a href='https://github.com/Mutilar/MarpPi' target='_blank'>marp.brain</a>: 4-axis stepper control (2 drive + 2 turret) via lgpio, dual input switching between USB joystick and Wi-Fi Direct UDP, MJPEG video multiplexing across Pi Camera and Kinect sources, and auto-stop safety on connection loss. The Steam Deck runs <a href='https://github.com/Mutilar/MarpGamepad' target='_blank'>marp.gamepad</a>: a Unity 6.0 teleoperation client with live video feed, native controller support, and source switching. Wi-Fi Direct lets the Pi act as its own hotspot for field operation without a router.</p><h3>The Grind</h3><p>Two repos, two platforms, one control loop. The Pi side is Python/C++ with systemd services for boot-ready deployment; the Deck side is C#/ShaderLab with automated build-and-deploy scripts. Kinect integration vendors libfreenect as a submodule for RGB, depth, IR, accelerometer, and motor/LED control.</p>",
+          "GITHUB": "https://github.com/Mutilar/MarpPi",
+          "TEXT": "<b>Raspberry Pi 5 Robot Controller</b><br>Drives a 4-axis robot (2 drive steppers + 2 turret steppers) using <b>lgpio</b> for precise GPIO timing. Written in <b>Python (74.2%); C++ (10.0%); Shell (8.2%); HTML (5.7%)</b>; built with CMake.<br><br><b>Features:</b><ul><li><b>Dual Input</b> — Seamlessly switches between local USB joystick (Xbox) and network UDP packets (JSON on port <code>5005</code>) with automatic failover</li><li><b>Wi-Fi Direct</b> — Acts as Group Owner hotspot (<code>DIRECT-xx-Robot-Pi5</code>) for field connection without a router; DHCP via dnsmasq</li><li><b>Safety</b> — Auto-stops all motors if network connection is lost for &gt;1 second</li><li><b>Video Multiplexer</b> — Unified MJPEG stream on port <code>5600</code> with hot-swap between sources (Pi Camera; Kinect RGB; IR; depth map); configurable resolution and quality</li><li><b>Kinect Support</b> — Vendors <a href='https://github.com/OpenKinect/libfreenect'>libfreenect</a> as a submodule for RGB/depth/IR; accelerometer; and motor/LED control</li><li><b>Systemd Integration</b> — Auto-starts wifi-direct; stepper-controller; and video-stream services on boot</li></ul><b>Hardware Pinout (BCM GPIO):</b><ul><li>Left Drive: 5/6/13 · Right Drive: 19/26/21</li><li>Turret Pan: 23/24/25 · Turret Tilt: 12/16/20</li><li>Activity LED: GPIO 18</li></ul><b>Diagrams:</b> High-Level Wiring; Data Flow; User Story; System Architecture (Mermaid-sourced)<br><b>Dependencies:</b> liblgpio-dev; nlohmann-json3-dev; dnsmasq; rpicam-vid; libfreenect",
           "domain": "robotics",
           "quadrant": "robotics",
-          "whisper": "🤖"
+          "shortname": "MARP<br>Brain",
+          "TECH": "🏗️📌📷🍓🏎️🌐🐍"
+        },
+        {
+          "ID": "marpgamepad",
+          "NAME": "🕹️ marp.gamepad",
+          "TITLE": "🎮 Valve Steamdeck",
+          "MOTTO": "Wireless teleoperation with real-time video feed, native Steam Deck &amp; Xbox controller support via Unity's Input System",
+          "DATE": "Winter 2025 - Present",
+          "GITHUB": "https://github.com/Mutilar/MarpGamepad",
+          "TEXT": "<b>MARP Gamepad — Wireless Teleoperation Client</b><br>A <b>Unity 6.0</b> client-side control application designed primarily for the <b>Valve Steam Deck</b>; enabling wireless teleoperation and real-time video streaming over a local Wi-Fi network. Written in <b>ShaderLab (44.8%); C# (43.9%); HLSL (9.2%); PowerShell (1.7%); Shell (0.4%)</b>.<br><br><b>Features:</b><ul><li><b>Wireless Teleoperation</b> — Control the robot's mobility; head movements; and expressive outputs over shared local Wi-Fi</li><li><b>Live Video Feed</b> — Receives and displays real-time MJPEG stream from the robot's onboard cameras/sensors at <code>http://192.168.4.1:5600/stream.mjpg</code></li><li><b>Input Support</b> — Native Steam Deck controls and Xbox Elite Controller via Unity's Input System package; dual joysticks for drive (left) and turret (right)</li><li><b>Source Switching</b> — Switch between Pi Camera; Kinect RGB; IR; and depth feeds from the client via HTTP or TCP socket</li></ul><b>Hardware Specs:</b><ul><li>Steam Deck: 5–20V USB-C PD; ≤3.0A; ≤45W; 11.7&quot; × 4.6&quot; × 1.9&quot;</li><li>Xbox Controller: 5V; ≤1.5A; ≤7.5W (optional/dev input)</li></ul><b>Control Protocol:</b> UDP JSON packets to <code>192.168.4.1:5005</code> — <code>{joysticks: {left: [x;y]; right: [x;y]}}</code> with values from -1.0 to 1.0<br><b>Build Target:</b> Linux (Steam Deck architecture)<br><b>Deployment:</b> <code>build_deploy.ps1</code> (PowerShell) and <code>launch.sh</code> for automated build and deploy",
+          "domain": "robotics",
+          "quadrant": "robotics",
+          "shortname": "MARP<br>Gamepad",
+          "TECH": "🐧🎮🎵💠🌈"
         },
         {
           "ID": "duskrosecodex",
@@ -408,8 +400,8 @@
           "LOCATION": "Bellevue, Washington",
           "TEXT": "<h3>The Idea</h3><p>The Dusk Rose Codex transforms two <a href='https://en.wikipedia.org/wiki/Magic:_The_Gathering' target='_blank'>Magic: The Gathering</a> Commander decks into satirical <a href='https://mtg.fandom.com/wiki/Vorthos' target='_blank'>Vorthos</a> scripture. Two primordial gods — Order and Chaos — spawn three factions (Faithful, Greedy, Defiant), except faith doesn't save, wealth doesn't protect, and rebellion doesn't free. What culminates is wry <a href='https://en.wikipedia.org/wiki/Mythopoeia' target='_blank'>mythopoeia</a> that subverts tired clichés, hand-bound in crimson thread as a physical codex.</p><h3>How It Works</h3><p>The project spans two tools. <strong>DeckLore</strong> is a vanilla JS web app (ES modules, Scryfall API, MTG Fandom wiki scraper) that transforms deck CSV exports into interactive narrative experiences: grid visualization with category grouping, card-by-card lore tagging (protagonist, ally, antagonist, artifact, location, event), a chapter-based narrative builder with drag-and-drop cards and woven flavor text, and a wiki discovery system that scrapes character histories, card references, and story appearances with 24-hour localStorage caching. The <strong>Codex itself</strong> is typeset in LaTeX with Cinzel Decorative headings and Old Standard TT body text, illustrated with AI-generated card art (ComfyUI pipelines for style transfer, frame interpolation, and transform workflows), and compiled into a hand-bound PDF. A <a href='https://www.youtube.com/watch?v=0_k_snZ1DYk' target='_blank'>companion video</a> (3:26) presents the finished artifact.</p><h3>The Grind</h3><p>DeckLore's architecture is fully modular: <code>csvParser.js</code>, <code>scryfallApi.js</code>, <code>cardStore.js</code>, and <code>wikiScraper.js</code> in the data layer; <code>Card.js</code>, <code>LoreEntry.js</code>, and <code>DeckLore.js</code> as models; 14 view components from <code>DeckGrid</code> to <code>BibleView</code> to <code>WikiDiscoveryView</code>. The wiki scraper extracts Represented In, Associated Cards, Depicted In, and Quoted In references, highlighting cards that appear in your deck. The LaTeX pipeline went through multiple iterations — <code>the_nobles_bible.tex</code>, <code>the_nobles_bible_clean.tex</code>, <code>the_nobles_bible_phyrexian.tex</code> — before the Phyrexian-transliterated final version. Every card in both decks is cross-referenced against MTG lore to build a coherent satirical theology from 200 singleton cards.</p>",
           "domain": "software",
-          "quadrant": "games",
-          "whisper": "📜"
+          "shortname": "Dusk<br>Rose",
+          "quadrant": "games"
         },
         {
           "ID": "azuremlops",
@@ -419,10 +411,10 @@
           "DATE": "Summer 2019",
           "LOCATION": "Bellevue, Washington",
           "GITHUB": "https://github.com/Mutilar/AzureMLOperationalization",
-          "TEXT": "<h3>The Idea</h3><p>Azure ML Operationalization replaces agent-bound CI/CD with an agentless pipeline: Azure DevOps triggers an Azure Service Bus message, which fires an Azure Function that submits notebook Runs directly to Azure ML Compute. Notebooks validate without queuing behind other builds, and failures surface as DevOps Test Runs for debugging in the pipeline UI.</p><figure class='modal-figure'><img src='images/azuremlops-mission.png' alt='AzureML Ops mission and goals'></figure><h3>How It Works</h3><p>Three moving parts: an agentless DevOps Pipeline publishes a message to Azure Service Bus via <code>PublishToAzureServiceBus@1</code>, an Azure Function (<code>run_notebook_service_bus</code>) picks it up and orchestrates the run, and Azure ML Compute executes the notebook. The Function authenticates to the ML Workspace via Service Principal, fetches the target repository, injects try-catch callbacks around each notebook cell for completion signaling, submits Runs with configurable compute targets and Conda environments, and polls for results. When runs finish, the Function posts Test Run results, attachments, and status updates back to DevOps via the REST API, then closes the pipeline with a callback. A separate agent-based deployment pipeline handles <code>pytest</code> unit testing, packaging, and <code>AzureFunctionApp@1</code> deployment.</p><figure class='modal-figure'><img src='images/azuremlops-sequence.png' alt='Sequence diagram showing the agentless pipeline flow'></figure><h3>The Grind</h3><p>The codebase is split into focused handler modules: <code>azureml_handler.py</code> (Workspace auth, Experiment/Run/RunConfig management), <code>devops_handler.py</code> (pipeline callbacks, Test Run CRUD, attachments, repository downloads), <code>file_handler.py</code> (staging, snapshot builds, Conda dependency injection, notebook callback injection/removal), and <code>notebook_handler.py</code> (cell-level code injection and scrubbing). Pipeline configuration is driven by DevOps variables; 20+ parameters covering Service Bus connections, compute targets, Docker images, repository versions, and Service Principal credentials.</p><figure class='modal-figure'><img src='images/azuremlops-next.png' alt='AzureML Ops next steps and future work'></figure>",
+          "TEXT": "<h3>The Idea</h3><p>Azure ML Operationalization replaces agent-bound CI/CD with an agentless pipeline: Azure DevOps triggers an Azure Service Bus message, which fires an Azure Function that submits notebook Runs directly to Azure ML Compute. Notebooks validate without queuing behind other builds, and failures surface as DevOps Test Runs for debugging in the pipeline UI.</p><figure class='modal-figure'><img src='png/azuremlops-mission.png' alt='AzureML Ops mission and goals'></figure><h3>How It Works</h3><p>Three moving parts: an agentless DevOps Pipeline publishes a message to Azure Service Bus via <code>PublishToAzureServiceBus@1</code>, an Azure Function (<code>run_notebook_service_bus</code>) picks it up and orchestrates the run, and Azure ML Compute executes the notebook. The Function authenticates to the ML Workspace via Service Principal, fetches the target repository, injects try-catch callbacks around each notebook cell for completion signaling, submits Runs with configurable compute targets and Conda environments, and polls for results. When runs finish, the Function posts Test Run results, attachments, and status updates back to DevOps via the REST API, then closes the pipeline with a callback. A separate agent-based deployment pipeline handles <code>pytest</code> unit testing, packaging, and <code>AzureFunctionApp@1</code> deployment.</p><figure class='modal-figure'><img src='png/azuremlops-sequence.png' alt='Sequence diagram showing the agentless pipeline flow'></figure><h3>The Grind</h3><p>The codebase is split into focused handler modules: <code>azureml_handler.py</code> (Workspace auth, Experiment/Run/RunConfig management), <code>devops_handler.py</code> (pipeline callbacks, Test Run CRUD, attachments, repository downloads), <code>file_handler.py</code> (staging, snapshot builds, Conda dependency injection, notebook callback injection/removal), and <code>notebook_handler.py</code> (cell-level code injection and scrubbing). Pipeline configuration is driven by DevOps variables; 20+ parameters covering Service Bus connections, compute targets, Docker images, repository versions, and Service Principal credentials.</p><figure class='modal-figure'><img src='png/azuremlops-next.png' alt='AzureML Ops next steps and future work'></figure>",
           "domain": "software",
-          "shortname": "AZURE<br>MLOPS",
-          "whisper": "⚡"
+          "shortname": "Azure<br>MLOps",
+          "TECH": "🔷🐳"
         },
         {
           "ID": "home-iot",
@@ -432,11 +424,11 @@
           "DATE": "Winter 2019",
           "LOCATION": "Merced, California",
           "GITHUB": "https://github.com/Mutilar/home-control-panel",
-          "TEXT": "<h3>The Idea</h3><p>Smart home control lives behind glass: flat touchscreens and voice assistants with no tactile feedback. Home Control Panel is a physical control surface built from toggle switches, rotary encoders, sliding potentiometers, and 7-segment displays, wall-mounted in a picture frame. A thought experiment on whether physical controls can coexist with modern home automation.</p><figure class='modal-figure'><img src='images/home-iot-wire.png' alt='Home IoT Panel wiring'></figure><h3>How It Works</h3><p>A Raspberry Pi with a 10-inch SunFounder touchscreen serves as the brain, running a web-based UI (<code>index.html</code> + <code>index.css</code>) alongside a Python backend (<code>console.py</code>) and JavaScript controller (<code>console.js</code>) that interface with the physical I/O. The panel has 15 SPST toggle switches with red LED covers, KY-040 rotary encoders with threaded knobs, a double-row sliding linear potentiometer, and a 4-bit 7-segment LED display, all mounted in a Quadro 12×20 picture frame backed by a Kydex thermoformable sheet. Total build cost: ~$300.</p><figure class='modal-figure'><img src='images/home-iot-front.png' alt='Home IoT Panel front view'></figure><h3>The Grind</h3><p>Every component was sourced off Amazon and hand-wired. Toggle switches need satisfying throw, encoders need precise detents, sliders need smooth travel; choosing the right parts took as long as wiring them. The panel controls lights, climate, and media from a single wall-mounted surface.</p><figure class='modal-figure'><img src='images/home-iot-touch.png' alt='Home IoT Panel touchscreen'></figure>",
+          "TEXT": "<h3>The Idea</h3><p>Smart home control lives behind glass: flat touchscreens and voice assistants with no tactile feedback. Home Control Panel is a physical control surface built from toggle switches, rotary encoders, sliding potentiometers, and 7-segment displays, wall-mounted in a picture frame. A thought experiment on whether physical controls can coexist with modern home automation.</p><figure class='modal-figure'><img src='png/home-iot-wire.png' alt='Home IoT Panel wiring'></figure><h3>How It Works</h3><p>A Raspberry Pi with a 10-inch SunFounder touchscreen serves as the brain, running a web-based UI (<code>index.html</code> + <code>index.css</code>) alongside a Python backend (<code>console.py</code>) and JavaScript controller (<code>console.js</code>) that interface with the physical I/O. The panel has 15 SPST toggle switches with red LED covers, KY-040 rotary encoders with threaded knobs, a double-row sliding linear potentiometer, and a 4-bit 7-segment LED display, all mounted in a Quadro 12×20 picture frame backed by a Kydex thermoformable sheet. Total build cost: ~$300.</p><figure class='modal-figure'><img src='png/home-iot-front.png' alt='Home IoT Panel front view'></figure><h3>The Grind</h3><p>Every component was sourced off Amazon and hand-wired. Toggle switches need satisfying throw, encoders need precise detents, sliders need smooth travel; choosing the right parts took as long as wiring them. The panel controls lights, climate, and media from a single wall-mounted surface.</p><figure class='modal-figure'><img src='png/home-iot-touch.png' alt='Home IoT Panel touchscreen'></figure>",
           "domain": "robotics",
           "quadrant": "robotics",
-          "shortname": "IOT<br>PANEL",
-          "whisper": "📡"
+          "shortname": "IoT<br>Panel",
+          "TECH": "🍓⚡🐍"
         },
         {
           "ID": "motleymoves",
@@ -448,7 +440,8 @@
           "GITHUB": "https://github.com/plebeiathon/MotleyMoves",
           "TEXT": "<h3>The Idea</h3><p>Modesto Moves is a nonprofit training club with 250+ participants across Modesto, Ripon, and Manteca, running everything on pen and paper. We built MotleyMoves to digitize the operation: event planning, participant tracking, check-in/check-out, medical records, and race mapping in one mobile-friendly web app.</p><h3>How It Works</h3><p>A serverless C#.NET Azure Function App serves as the API layer, connecting an Azure SQL Database to an HTML/CSS/JS front-end. Google Sign-In handles auth, MapBox renders interactive race course maps with draggable markers for bathrooms, refreshments, and parking, and FullCalendar displays upcoming events. Admins can create events, draw race routes on a map, track attendance with timestamps, and view participant medical info from the browser. We enrolled in Azure Cloud for Nonprofits ($5,000/year in credits) to keep the back-end running at zero cost.</p><h3>The Grind</h3><p>The C# back-end has 15+ Azure Function endpoints handling race point CRUD, GPS position updates, medical record management, and attendance tracking. We redesigned the entire administrative workflow, built it with scalability to neighboring communities in mind, and added an attendance incentive system.</p>",
           "domain": "software",
-          "whisper": "🏃"
+          "shortname": "Motley<br>Moves",
+          "TECH": "🗺️🔷🎵🎨🌐🗄️"
         },
         {
           "ID": "breeze",
@@ -458,9 +451,10 @@
           "DATE": "Fall 2019",
           "LOCATION": "Merced, California",
           "GITHUB": "https://github.com/plebeiathon/Breeze",
-          "TEXT": "<h3>The Idea</h3><p>Breeze turns a smartphone into an IoT air quality sensor by plugging off-the-shelf sensors into the audio aux jack: no Bluetooth pairing, no proprietary hardware, no app downloads. Plug in and start collecting data. A submission to Keysight's IoT Innovation Challenge.</p><figure class='modal-figure'><img src='images/wire-diagram.png' alt='Wire diagram showing analog sensor readout converted to 8kHz PWM for aux jack transmission'></figure><h3>How It Works</h3><p>Sensor data streams through the aux jack into a web dashboard built on Paper Dashboard, where Mapbox GL JS renders air quality heatmaps with interpolated color ramps (blue for clean, red for hazardous). Users can zoom from a global view down to street level, with the heatmap transitioning to individual data point circles at higher zoom. A Stats page shows historical trends via Chartist.js and a My Device page manages connected sensors.</p><figure class='modal-figure'><img src='images/network-diagram.png' alt='Network diagram showing data flow from air quality sensors through microprocessors and phones to database and web application'></figure><h3>The Grind</h3><p>The aux jack approach avoids wireless protocol configuration, companion app installs, and battery-powered sensor nodes. Any phone with a headphone jack becomes a node in a distributed air quality network. The visualization layer is built from GeoJSON data sources with custom heatmap weight, intensity, radius, and opacity interpolations tuned per zoom level.</p>",
+          "TEXT": "<h3>The Idea</h3><p>Breeze turns a smartphone into an IoT air quality sensor by plugging off-the-shelf sensors into the audio aux jack: no Bluetooth pairing, no proprietary hardware, no app downloads. Plug in and start collecting data. A submission to Keysight's IoT Innovation Challenge.</p><figure class='modal-figure'><img src='png/wire-diagram.png' alt='Wire diagram showing analog sensor readout converted to 8kHz PWM for aux jack transmission'></figure><h3>How It Works</h3><p>Sensor data streams through the aux jack into a web dashboard built on Paper Dashboard, where Mapbox GL JS renders air quality heatmaps with interpolated color ramps (blue for clean, red for hazardous). Users can zoom from a global view down to street level, with the heatmap transitioning to individual data point circles at higher zoom. A Stats page shows historical trends via Chartist.js and a My Device page manages connected sensors.</p><figure class='modal-figure'><img src='png/network-diagram.png' alt='Network diagram showing data flow from air quality sensors through microprocessors and phones to database and web application'></figure><h3>The Grind</h3><p>The aux jack approach avoids wireless protocol configuration, companion app installs, and battery-powered sensor nodes. Any phone with a headphone jack becomes a node in a distributed air quality network. The visualization layer is built from GeoJSON data sources with custom heatmap weight, intensity, radius, and opacity interpolations tuned per zoom level.</p>",
           "domain": "software",
-          "whisper": "💨"
+          "shortname": "Breeze",
+          "TECH": "📉🗺️💚📶"
         },
         {
           "ID": "firmi",
@@ -470,40 +464,43 @@
           "DATE": "Spring 2018",
           "LOCATION": "Merced, California",
           "GITHUB": "https://github.com/Mutilar/Firmi-1",
-          "TEXT": "<h3>The Idea</h3><p>Fermi surfaces define the electronic behavior of metals but are hard to visualize from a textbook. As part of the MACES NASA MUREP experience at UC Merced, we used the Firmi utility to turn Fermi surface data into 3D-printed models for in-classroom teaching.</p><h3>How It Works</h3><p>Firmi converts calculated Fermi surfaces into 3D-printable geometry. Starting from electronic structure calculations (Quantum ESPRESSO, Wannier90), the pipeline reads <code>bxsf</code> files in XCrySDen format and applies a Marching Cubes algorithm (implemented in Fortran90) to generate isosurface meshes. The output is an OpenSCAD <code>.scad</code> file that renders the Fermi surface as a solid volume, exported to STL for printing. Examples include fcc copper and fcc lead on 20×20×20 k-grids.</p><h3>The Grind</h3><p>The Marching Cubes implementation handles non-orthogonal parallelipiped reciprocal lattice vectors with periodic boundary conditions and cell translation to close surfaces. Tuning k-grid resolution is a balancing act: too fine and OpenSCAD runs out of memory, too coarse and the physics is lost. The printed models let students rotate a copper Fermi surface in their hands instead of reading about it in a diagram.</p><figure class='modal-figure'><img src='images/firmi_poster.png' alt='Firmi project poster'><figcaption>Firmi project poster</figcaption></figure>",
+          "TEXT": "<h3>The Idea</h3><p>Fermi surfaces define the electronic behavior of metals but are hard to visualize from a textbook. As part of the MACES NASA MUREP experience at UC Merced, we used the Firmi utility to turn Fermi surface data into 3D-printed models for in-classroom teaching.</p><h3>How It Works</h3><p>Firmi converts calculated Fermi surfaces into 3D-printable geometry. Starting from electronic structure calculations (Quantum ESPRESSO, Wannier90), the pipeline reads <code>bxsf</code> files in XCrySDen format and applies a Marching Cubes algorithm (implemented in Fortran90) to generate isosurface meshes. The output is an OpenSCAD <code>.scad</code> file that renders the Fermi surface as a solid volume, exported to STL for printing. Examples include fcc copper and fcc lead on 20×20×20 k-grids.</p><h3>The Grind</h3><p>The Marching Cubes implementation handles non-orthogonal parallelipiped reciprocal lattice vectors with periodic boundary conditions and cell translation to close surfaces. Tuning k-grid resolution is a balancing act: too fine and OpenSCAD runs out of memory, too coarse and the physics is lost. The printed models let students rotate a copper Fermi surface in their hands instead of reading about it in a diagram.</p><figure class='modal-figure'><img src='png/firmi_poster.png' alt='Firmi project poster'><figcaption>Firmi project poster</figcaption></figure>",
           "domain": "research",
-          "whisper": "⚛️"
+          "shortname": "Firmi",
+          "TECH": "📐🧮"
         },
         {
           "ID": "ozone",
-          "NAME": "🗠 Ozone",
+          "NAME": "🥈 Ozone",
           "TITLE": "Innovate to Grow",
           "MOTTO": "Accessing sustainability initiatives interactively",
           "DATE": "Spring 2018",
           "LOCATION": "Merced, California",
           "GITHUB": "https://github.com/SSites/Ozone",
           "WIN": "Second Place",
-          "TEXT": "<h3>The Idea</h3><p>UC Merced's Department of Sustainability had no central way to show students, faculty, and visitors what green initiatives existed on campus or where to find them. Through Engineering Service Learning, we built Ozone: an interactive web app mapping every sustainability resource on campus, designed to live at sustainability.ucmerced.edu/map.</p><figure class='modal-figure'><img src='images/ozone-desktop.png' alt='Ozone desktop view'></figure><h3>How It Works</h3><p>A React front-end with three themed Mapbox GL JS maps (Environmental, Economic, and Social), each rendering GeoJSON polygon overlays of campus buildings. Point-of-interest markers are loaded from CSV data via Axios and PapaParse, covering water refill stations, Ozzi reusable container stations, LEED labs, EV charging, bike racks, community gardens, bus stops, gender-neutral bathrooms, and more. Each marker gets a unique Font Awesome icon and color, with popups showing descriptions and locations. The maps support geolocation tracking, navigation controls, and a 3D pitch toggle for building extrusions.</p><figure class='modal-figure'><img src='images/ozone-phone.png' alt='Ozone mobile view'></figure><h3>The Grind</h3><p>Every building on UC Merced's campus is hand-mapped as a GeoJSON polygon with precise coordinates: COB1, COB2, SE1, SE2, Mariposa, Tuolumne, Cathedral, Half Dome, Valley Terrace. Three separate map components each load their own themed CSV datasets and render dozens of categorized markers with custom icon switching. Built on Node/Express with Jest testing.</p><figure class='modal-figure'><img src='images/ozone_poster.png' alt='Ozone project poster'></figure>",
+          "TEXT": "<h3>The Idea</h3><p>UC Merced's Department of Sustainability had no central way to show students, faculty, and visitors what green initiatives existed on campus or where to find them. Through Engineering Service Learning, we built Ozone: an interactive web app mapping every sustainability resource on campus, designed to live at sustainability.ucmerced.edu/map.</p><figure class='modal-figure'><img src='png/ozone-desktop.png' alt='Ozone desktop view'></figure><h3>How It Works</h3><p>A React front-end with three themed Mapbox GL JS maps (Environmental, Economic, and Social), each rendering GeoJSON polygon overlays of campus buildings. Point-of-interest markers are loaded from CSV data via Axios and PapaParse, covering water refill stations, Ozzi reusable container stations, LEED labs, EV charging, bike racks, community gardens, bus stops, gender-neutral bathrooms, and more. Each marker gets a unique Font Awesome icon and color, with popups showing descriptions and locations. The maps support geolocation tracking, navigation controls, and a 3D pitch toggle for building extrusions.</p><figure class='modal-figure'><img src='png/ozone-phone.png' alt='Ozone mobile view'></figure><h3>The Grind</h3><p>Every building on UC Merced's campus is hand-mapped as a GeoJSON polygon with precise coordinates: COB1, COB2, SE1, SE2, Mariposa, Tuolumne, Cathedral, Half Dome, Valley Terrace. Three separate map components each load their own themed CSV datasets and render dozens of categorized markers with custom icon switching. Built on Node/Express with Jest testing.</p><figure class='modal-figure'><img src='png/ozone_poster.png' alt='Ozone project poster'></figure>",
           "domain": "software",
-          "whisper": "🥈"
+          "shortname": "Ozone",
+          "TECH": "🚂🃏🗺️💚⚛️"
         },
         {
           "ID": "iterate",
-          "NAME": "ℹ Iterate",
+          "NAME": "🏆 Iterate",
           "TITLE": "Mobile App Challenge",
           "MOTTO": "The Rosetta Stone of Programming",
           "DATE": "Winter 2016",
           "LOCATION": "Merced, California",
           "GITHUB": "https://github.com/Mutilar/iterate",
           "WIN": "$5,000 Grand Prize",
-          "TEXT": "<h3>The Idea</h3><p>Iterate is a mobile code editor that uses Java/Arduino syntax but lets you build programs through guided tap-based selections instead of raw typing. It sits between block-based tools like Scratch and writing real code. Built for UC Merced's CITRIS Mobile App Challenge.</p><figure class='modal-figure'><img src='images/iterate_judge.png' alt='Iterate judging at CITRIS Mobile App Challenge'></figure><h3>How It Works</h3><p>Built in Unity with C#, the app runs on a 1,300+ line CodeManager that acts as both editor and interpreter. Users tap a line to enter edit mode, then construct code through cascading option menus: Create Variable → Integer/Double/Boolean/String → name it → assign a value. Flow control (if/else, while, for loops), Arduino hardware calls (pinMode, digitalWrite, analogRead, analogWrite, Serial.begin/print/println, servo.attach/write, delay, map), and variable scoping are all handled through the same tap-driven UI. A ColorCoder class provides real-time syntax highlighting (keywords in blue, objects in teal, strings in amber, comments in green) by injecting Unity rich text color tags on every frame. Pre-built lesson templates (Windmill, Servos, Stopwatch) load from Resources as starting scaffolds.</p><figure class='modal-figure'><img src='images/iterate_people.png' alt='Iterate team'></figure><h3>The Grind</h3><p>The editor tracks variable scope by scanning every line above the cursor for declarations, dynamically populating only valid options at each step; you cannot write a syntax error. The whole thing compiles to WebGL for in-browser play on any device. $5,000 Grand Prize at the 2017 CITRIS Mobile App Challenge. <a href='https://iterateco.de' target='_blank'>Try it live →</a></p><figure class='modal-figure'><img src='images/iterate_poster.png' alt='Iterate project poster'></figure>",
+          "TEXT": "<h3>The Idea</h3><p>Iterate is a mobile code editor that uses Java/Arduino syntax but lets you build programs through guided tap-based selections instead of raw typing. It sits between block-based tools like Scratch and writing real code. Built for UC Merced's CITRIS Mobile App Challenge.</p><figure class='modal-figure'><img src='png/iterate_judge.png' alt='Iterate judging at CITRIS Mobile App Challenge'></figure><h3>How It Works</h3><p>Built in Unity with C#, the app runs on a 1,300+ line CodeManager that acts as both editor and interpreter. Users tap a line to enter edit mode, then construct code through cascading option menus: Create Variable → Integer/Double/Boolean/String → name it → assign a value. Flow control (if/else, while, for loops), Arduino hardware calls (pinMode, digitalWrite, analogRead, analogWrite, Serial.begin/print/println, servo.attach/write, delay, map), and variable scoping are all handled through the same tap-driven UI. A ColorCoder class provides real-time syntax highlighting (keywords in blue, objects in teal, strings in amber, comments in green) by injecting Unity rich text color tags on every frame. Pre-built lesson templates (Windmill, Servos, Stopwatch) load from Resources as starting scaffolds.</p><figure class='modal-figure'><img src='png/iterate_people.png' alt='Iterate team'></figure><h3>The Grind</h3><p>The editor tracks variable scope by scanning every line above the cursor for declarations, dynamically populating only valid options at each step; you cannot write a syntax error. The whole thing compiles to WebGL for in-browser play on any device. $5,000 Grand Prize at the 2017 CITRIS Mobile App Challenge. <a href='https://iterateco.de' target='_blank'>Try it live →</a></p><figure class='modal-figure'><img src='png/iterate_poster.png' alt='Iterate project poster'></figure>",
           "domain": "games",
           "quadrant": "games",
-          "whisper": "🏆"
+          "shortname": "Iterate",
+          "TECH": "🔌🎮🔺🎵♨️"
         },
         {
           "ID": "dogpark",
-          "NAME": "🐕 Dog Park",
+          "NAME": "🥈 Dog Park",
           "TITLE": "Pitchfest",
           "MOTTO": "Tinder for pet adoption",
           "DATE": "Spring 2017",
@@ -511,8 +508,8 @@
           "WIN": "Finalist",
           "TEXT": "<h3>The Idea</h3><p>Millions of shelter animals are euthanized every year because the adoption process is inconvenient, not because they're unadoptable. DogPark applies the Tinder swipe model to pet adoption: browse shelter animal profiles, match with ones that fit your lifestyle, and connect with the shelter directly.</p><h3>How It Works</h3><p>A mobile-first swipe interface surfaces shelter animal profiles with photos, temperament info, and compatibility details. Users swipe right on animals they're interested in, building a shortlist. The app connects shelters with potential adopters who don't know where to start, reducing the friction between wanting a pet and actually going to a shelter.</p><h3>The Grind</h3><p>Pitched at UC Merced's Pitchfest 2016, selected as a Finalist. Most of the work was in framing the problem and the pitch itself rather than building out a full product.</p>",
           "domain": "software",
-          "shortname": "DOG<br>PARK",
-          "whisper": "🥈"
+          "shortname": "Dog<br>Park",
+          "TECH": ""
         },
         {
           "ID": "amaxesd",
@@ -521,11 +518,11 @@
           "MOTTO": "ESD for AMAX's ISO 9001 manufacturing",
           "DATE": "Winter 2014",
           "LOCATION": "Fremont, California",
-          "TEXT": "<h3>The Idea</h3><p>Electrostatic discharge damages server components in ways that don't show up until well short of expected MTBF. As an ISO 9001 manufacturer building servers for Fortune 500 brands, AMAX needed to detect ESD bracelet disconnections instantly on a busy production floor. FIRST Robotics Team 1458 (the Red Ties) took the project.</p><blockquote><p>In school, we learn a lot of theoretical principles. Our participation in FRC has allowed us to put those theories into practice, but in a game environment. This project with AMAX has taken that one step further and allowed us to understand these principles in a real-world situation.</p><cite>David Hungerman (brother), FRC 1458</cite></blockquote><h3>How It Works</h3><p>Standard ESD bracelets wired through analog ESD monitors with connectivity to LED light poles. When an operator's bracelet loses ground (disconnected or improperly seated) the light pole fires immediately, giving floor-wide visual identification. No software lag, no manual checks: automated monitoring that integrates into AMAX's existing assembly lines.</p><blockquote><p>We are very proud of the members of Team 1458 for accomplishing this project with AMAX. The mission of FIRST is to inspire young people to be science and technology leaders by building skills just like this. The fact that these students were able to put those skills into practical use so early in their careers is a testament to the success of FIRST. This just underscores that FIRST is about more than robots.</p><cite>Jim Beck, California Senior Regional Director, US FIRST</cite></blockquote><h3>The Grind</h3><p>High school students solving a real manufacturing problem for a real company. We went from classroom principles to a product AMAX deployed on their production lines.</p><figure class='modal-figure'><img src='images/amax-pole.png' alt='AMAX ESD light pole alert system on the production floor'></figure>",
+          "TEXT": "<h3>The Idea</h3><p>Electrostatic discharge damages server components in ways that don't show up until well short of expected MTBF. As an ISO 9001 manufacturer building servers for Fortune 500 brands, AMAX needed to detect ESD bracelet disconnections instantly on a busy production floor. FIRST Robotics Team 1458 (the Red Ties) took the project.</p><blockquote><p>In school, we learn a lot of theoretical principles. Our participation in FRC has allowed us to put those theories into practice, but in a game environment. This project with AMAX has taken that one step further and allowed us to understand these principles in a real-world situation.</p><cite>David Hungerman (brother), FRC 1458</cite></blockquote><h3>How It Works</h3><p>Standard ESD bracelets wired through analog ESD monitors with connectivity to LED light poles. When an operator's bracelet loses ground (disconnected or improperly seated) the light pole fires immediately, giving floor-wide visual identification. No software lag, no manual checks: automated monitoring that integrates into AMAX's existing assembly lines.</p><blockquote><p>We are very proud of the members of Team 1458 for accomplishing this project with AMAX. The mission of FIRST is to inspire young people to be science and technology leaders by building skills just like this. The fact that these students were able to put those skills into practical use so early in their careers is a testament to the success of FIRST. This just underscores that FIRST is about more than robots.</p><cite>Jim Beck, California Senior Regional Director, US FIRST</cite></blockquote><h3>The Grind</h3><p>High school students solving a real manufacturing problem for a real company. We went from classroom principles to a product AMAX deployed on their production lines.</p><figure class='modal-figure'><img src='png/amax-pole.png' alt='AMAX ESD light pole alert system on the production floor'></figure>",
           "domain": "robotics",
           "quadrant": "robotics",
           "shortname": "AMAX<br>ESD",
-          "whisper": "⚡"
+          "TECH": ""
         }
       ]
     },
@@ -534,7 +531,7 @@
       "items": [
         {
           "ID": "motorskills",
-          "NAME": "🦾 MotorSkills",
+          "NAME": "🥇 MotorSkills",
           "TITLE": "SLO Hacks",
           "MOTTO": "ML-driven Intelligence for Industrial IoT",
           "DATE": "Feb 2019",
@@ -545,21 +542,23 @@
           "domain": "robotics",
           "source": "projects",
           "quadrant": "robotics",
-          "whisper": "🥇"
+          "shortname": "Motor<br>Skills",
+          "TECH": "💚📶☁️"
         },
         {
           "ID": "gasleek",
-          "NAME": "⛽ GasLeek",
+          "NAME": "🏆 GasLeek",
           "TITLE": "ValleyHacks",
           "MOTTO": "Applying linear regression to gas prices to help save money at the pump",
           "DATE": "Jan 2019",
           "LOCATION": "Modesto, California",
           "GITHUB": "https://github.com/plebeiathon/gasLEEK",
           "WIN": "First Place",
-          "TEXT": "<h3>The Idea</h3><p>3.5 million truckers refuel 130+ times a year; even a few cents per gallon adds up to billions. GasLeek forecasts gas price trends with machine learning so drivers can time their fill-ups. The acronym: Gas LinEar rEgression Kode.</p><h3>How It Works</h3><p>An LSTM neural network trained on historical weekly gas price data, converting time-series readings into supervised learning problems with differencing and MinMax scaling. The model outputs persistence forecasts and projected savings, visualized on a React dashboard (Chart.js) with weekly, monthly, and annual price views, a MapBox gas station map, and a volatility-based savings calculator.</p><h3>The Grind</h3><p>The full pipeline runs from raw CSV parsing in Python through a Keras LSTM model to a live React front-end pulling data via Axios; two separate stacks wired into one product. We dealt with TensorFlow setup, DeckGL map layers, and real-time CSV parsing, and took First Place.</p><figure class='modal-figure'><img src='images/gasleek-dashboard.png' alt='GasLeek dashboard'></figure>",
+          "TEXT": "<h3>The Idea</h3><p>3.5 million truckers refuel 130+ times a year; even a few cents per gallon adds up to billions. GasLeek forecasts gas price trends with machine learning so drivers can time their fill-ups. The acronym: Gas LinEar rEgression Kode.</p><h3>How It Works</h3><p>An LSTM neural network trained on historical weekly gas price data, converting time-series readings into supervised learning problems with differencing and MinMax scaling. The model outputs persistence forecasts and projected savings, visualized on a React dashboard (Chart.js) with weekly, monthly, and annual price views, a MapBox gas station map, and a volatility-based savings calculator.</p><h3>The Grind</h3><p>The full pipeline runs from raw CSV parsing in Python through a Keras LSTM model to a live React front-end pulling data via Axios; two separate stacks wired into one product. We dealt with TensorFlow setup, DeckGL map layers, and real-time CSV parsing, and took First Place.</p><figure class='modal-figure'><img src='png/gasleek-dashboard.png' alt='GasLeek dashboard'></figure>",
           "domain": "software",
           "source": "projects",
-          "whisper": "🏆"
+          "shortname": "Gas<br>Leek",
+          "TECH": "📈🧠🗺️⚛️🔶🐍"
         },
         {
           "ID": "chemistry",
@@ -569,31 +568,31 @@
           "DATE": "Dec 2018",
           "LOCATION": "Santa Cruz, California",
           "GITHUB": "https://github.com/plebeiathon/ChemisTRY",
-          "TEXT": "<h3>The Idea</h3><p>Physical project-based learning kits are expensive and single-use; most schools can't afford them. We built a digital alternative: AR lesson plans covering the same standards-aligned chemistry curriculum at a fraction of the cost. Students interact with Amazon Alexa in a 3D chemistry sandbox to explore exothermic reactions and radioactivity from their classroom.</p><h3>How It Works</h3><p>AR.JS handles the augmented reality layer on a Node.JS back-end wired into a full AWS stack: the AWS SDK, Lambda for serverless compute, DynamoDB for NoSQL storage, and the Alexa Developer Console for voice interaction. Point a classroom webcam at a marker, talk to Alexa, and the 3D chemistry scene loads in-browser.</p><h3>The Grind</h3><p>Most of the time went into maintaining a secure connection between Alexa and a classroom webcam through AWS; getting that many AWS services to talk to each other took longer than building the AR itself. The end result is a working proof of concept that replaces static videos with interactive AR.</p><figure class='modal-figure'><img src='images/chemistry-demo.png' alt='ChemisTRY AR demo'></figure>",
+          "TEXT": "<h3>The Idea</h3><p>Physical project-based learning kits are expensive and single-use; most schools can't afford them. We built a digital alternative: AR lesson plans covering the same standards-aligned chemistry curriculum at a fraction of the cost. Students interact with Amazon Alexa in a 3D chemistry sandbox to explore exothermic reactions and radioactivity from their classroom.</p><h3>How It Works</h3><p>AR.JS handles the augmented reality layer on a Node.JS back-end wired into a full AWS stack: the AWS SDK, Lambda for serverless compute, DynamoDB for NoSQL storage, and the Alexa Developer Console for voice interaction. Point a classroom webcam at a marker, talk to Alexa, and the 3D chemistry scene loads in-browser.</p><h3>The Grind</h3><p>Most of the time went into maintaining a secure connection between Alexa and a classroom webcam through AWS; getting that many AWS services to talk to each other took longer than building the AR itself. The end result is a working proof of concept that replaces static videos with interactive AR.</p><figure class='modal-figure'><img src='png/chemistry-demo.png' alt='ChemisTRY AR demo'></figure>",
           "domain": "software",
           "source": "projects",
-          "shortname": "CHEMIS<br>TRY",
-          "whisper": "🧪"
+          "shortname": "Chemis<br>TRY",
+          "TECH": "📱💚🗣️🟠🦕"
         },
         {
           "ID": "sriracha",
-          "NAME": "🦿 SRIRACHA",
+          "NAME": "🥉 SRIRACHA",
           "TITLE": "SDHacks",
           "MOTTO": "Search & Rescue Informatic Robot Assistant Clearing Hazardous Areas",
           "DATE": "Fall 2018",
           "LOCATION": "San Diego, California",
           "GITHUB": "https://github.com/plebeiathon/sriracha",
           "WIN": "Third Place",
-          "TEXT": "<h3>The Idea</h3><p>After Indonesia's earthquake, first responders were searching collapsed buildings with no structural information. SRIRACHA (Search and Rescue Informatic Robot Assisting in Charting Hazardous Areas) is an RC tank with an oscillating range-finder that enters first and constructs 3D point clouds of the structure in real time.</p><h3>How It Works</h3><p>An Arduino Mega drives the tank and its sweeping range-finder, streaming sensor data over Bluetooth (HC-06) to a Node.JS server via a custom serial communication protocol. JavaScript parses the incoming data and Pixi.JS renders it into a live 3D point cloud visualization: a map of the building as the robot explores it.</p><h3>The Grind</h3><p>Serial communication was the main problem; we burned through multiple libraries before landing on SerialPort for low-level Bluetooth access and real-time data streaming. We wrote our own communication protocol from scratch, which meant learning networking fundamentals by debugging them. SD Hacks mentors helped with Node.JS file streaming and wireless strategy; we took Third Place.</p><figure class='modal-figure'><img src='images/sriracha-people.png' alt='SRIRACHA team at SDHacks'></figure>",
+          "TEXT": "<h3>The Idea</h3><p>After Indonesia's earthquake, first responders were searching collapsed buildings with no structural information. SRIRACHA (Search and Rescue Informatic Robot Assisting in Charting Hazardous Areas) is an RC tank with an oscillating range-finder that enters first and constructs 3D point clouds of the structure in real time.</p><h3>How It Works</h3><p>An Arduino Mega drives the tank and its sweeping range-finder, streaming sensor data over Bluetooth (HC-06) to a Node.JS server via a custom serial communication protocol. JavaScript parses the incoming data and Pixi.JS renders it into a live 3D point cloud visualization: a map of the building as the robot explores it.</p><h3>The Grind</h3><p>Serial communication was the main problem; we burned through multiple libraries before landing on SerialPort for low-level Bluetooth access and real-time data streaming. We wrote our own communication protocol from scratch, which meant learning networking fundamentals by debugging them. SD Hacks mentors helped with Node.JS file streaming and wireless strategy; we took Third Place.</p><figure class='modal-figure'><img src='png/sriracha-people.png' alt='SRIRACHA team at SDHacks'></figure>",
           "domain": "robotics",
           "source": "projects",
           "quadrant": "robotics",
           "shortname": "SRIR<br>ACHA",
-          "whisper": "🥉"
+          "TECH": "💚🧚🔌📶⚡"
         },
         {
           "ID": "smartank",
-          "NAME": "🚜 SMARTank",
+          "NAME": "🥇 SMARTank",
           "TITLE": "HackFresno",
           "MOTTO": "An autonomous soil moisture sensing robot, reducing the barrier of entry to IOT farming",
           "DATE": "Apr 2018",
@@ -605,67 +604,69 @@
           "source": "projects",
           "quadrant": "robotics",
           "shortname": "SMAR<br>TANK",
-          "whisper": "🥇"
+          "TECH": "🔌"
         },
         {
           "ID": "blindsight",
-          "NAME": "👨‍🦯 BlindSight",
+          "NAME": "🥉 BlindSight",
           "TITLE": "CitrusHack",
           "MOTTO": "Giving the visually-impaired haptic sight",
           "DATE": "Mar 2018",
           "LOCATION": "Riverside, California",
           "GITHUB": "https://github.com/plebeiathon/blindsight",
           "WIN": "Third Place",
-          "TEXT": "<h3>The Idea</h3><p>Two teams with the same idea merged to build a wearable haptic system for the visually impaired. An ultrasonic sensor on a stepper motor scans the environment and translates distances into vibrations through an array of haptic modules, all mounted on a top hat.</p><h3>How It Works</h3><p>Built on a Raspberry Pi with 3D-printed parts and a vibration motor array. The ultrasonic sensor sweeps on a stepper motor, mapping distances from the body and converting them into haptic feedback in real time. We traded sensor precision for responsiveness; the system was reactive enough to detect someone stepping into your path.</p><h3>The Grind</h3><p>A Qualcomm board that refused to connect to WiFi, vague wiring bugs that ate hours, and constant trade-offs between precision and speed. We navigated a hallway eyes-closed using nothing but vibrations, which was enough to validate the concept. Third Place.</p><figure class='modal-figure'><img src='images/blindsight-people.png' alt='Blindsight team at CitrusHack'></figure>",
+          "TEXT": "<h3>The Idea</h3><p>Two teams with the same idea merged to build a wearable haptic system for the visually impaired. An ultrasonic sensor on a stepper motor scans the environment and translates distances into vibrations through an array of haptic modules, all mounted on a top hat.</p><h3>How It Works</h3><p>Built on a Raspberry Pi with 3D-printed parts and a vibration motor array. The ultrasonic sensor sweeps on a stepper motor, mapping distances from the body and converting them into haptic feedback in real time. We traded sensor precision for responsiveness; the system was reactive enough to detect someone stepping into your path.</p><h3>The Grind</h3><p>A Qualcomm board that refused to connect to WiFi, vague wiring bugs that ate hours, and constant trade-offs between precision and speed. We navigated a hallway eyes-closed using nothing but vibrations, which was enough to validate the concept. Third Place.</p><figure class='modal-figure'><img src='png/blindsight-people.png' alt='Blindsight team at CitrusHack'></figure>",
           "domain": "robotics",
           "source": "projects",
           "quadrant": "robotics",
-          "whisper": "🥉"
+          "shortname": "Blind<br>Sight",
+          "TECH": "🍓"
         },
         {
           "ID": "seerauber",
-          "NAME": "🧭 SeeRäuber",
+          "NAME": "🥈 SeeRäuber",
           "TITLE": "SacHacks",
           "MOTTO": "Polygonal pirates prowling the Pacific",
           "DATE": "Winter 2018",
           "LOCATION": "Sacramento, California",
           "GITHUB": "https://github.com/plebeiathon/seerauber",
           "WIN": "Second Place",
-          "TEXT": "<h3>The Idea</h3><p>SeeRäuber is a pirate strategy game where you write code to build ships, direct fleets, and govern an empire. A tarot system introduces randomness: each card draw can disrupt your plans, forcing you to adapt your code on the fly. The game sits between programming puzzle and resource management.</p><figure class='modal-figure'><img src='images/seerauber-ship.png' alt='SeeRäuber pirate ship'></figure><h3>How It Works</h3><p>Built in Unity3D with C#. A custom visual programming language uses drag-and-drop code blocks with loops, conditionals, tasks, and variables to control your pirate crew's AI. Each pirate has simulated needs (hunger, thirst, sleep, sailing) and an interpreter evaluates your nested code blocks to generate task queues in real time. A state machine tracks day/night cycles, combat, and sailing conditions, with procedurally generated pirate names and Shakespearean insults.</p><figure class='modal-figure'><img src='images/seerauber-code.png' alt='SeeRäuber visual programming interface'></figure><h3>The Grind</h3><p>We built a code interpreter from scratch in 24 hours: a recursive block evaluator that parses nested conditionals, loops, and boolean expressions to drive pirate AI. The drag-and-drop UI, need system, and state machine all had to connect into one game loop in a single sprint. Second Place at SacHacks with a playable WebGL build.</p>",
+          "TEXT": "<h3>The Idea</h3><p>SeeRäuber is a pirate strategy game where you write code to build ships, direct fleets, and govern an empire. A tarot system introduces randomness: each card draw can disrupt your plans, forcing you to adapt your code on the fly. The game sits between programming puzzle and resource management.</p><figure class='modal-figure'><img src='png/seerauber-ship.png' alt='SeeRäuber pirate ship'></figure><h3>How It Works</h3><p>Built in Unity3D with C#. A custom visual programming language uses drag-and-drop code blocks with loops, conditionals, tasks, and variables to control your pirate crew's AI. Each pirate has simulated needs (hunger, thirst, sleep, sailing) and an interpreter evaluates your nested code blocks to generate task queues in real time. A state machine tracks day/night cycles, combat, and sailing conditions, with procedurally generated pirate names and Shakespearean insults.</p><figure class='modal-figure'><img src='png/seerauber-code.png' alt='SeeRäuber visual programming interface'></figure><h3>The Grind</h3><p>We built a code interpreter from scratch in 24 hours: a recursive block evaluator that parses nested conditionals, loops, and boolean expressions to drive pirate AI. The drag-and-drop UI, need system, and state machine all had to connect into one game loop in a single sprint. Second Place at SacHacks with a playable WebGL build.</p>",
           "domain": "games",
           "source": "projects",
           "quadrant": "games",
-          "shortname": "SEA<br>RÄUBER",
-          "whisper": "🥈"
+          "shortname": "Sea<br>Räuber",
+          "TECH": "🎮🔺🎵"
         },
         {
           "ID": "gist",
-          "NAME": "🌾 GISt",
+          "NAME": "🥇 GISt",
           "TITLE": "HackDavis",
           "MOTTO": "AR to fill in the missing link from farm-to-table",
           "DATE": "Jan 2018",
           "LOCATION": "Davis, California",
           "GITHUB": "https://github.com/plebeiathon/GISt",
           "WIN": "Best Environment Hack",
-          "TEXT": "<h3>The Idea</h3><p>Most people have no idea where their produce comes from, which means they have no idea about its environmental impact either. GISt is a farm-to-table AR app: point your phone at produce and see where your food was grown, how it got to you, and what that journey cost the planet.</p><figure class='modal-figure'><img src='images/gist_app.png' alt='GISt AR app in action'></figure><h3>How It Works</h3><p>AR powered by Vuforia through Unity3D, with UX prototyped in Axure RP 8 and built in C#. Farm data, GIS layers, and maps are pulled live via the OSIsoft API, MapBox, JavaScript, and JSON, overlaid onto real-world products through the camera feed.</p><figure class='modal-figure'><img src='images/gist_team.png' alt='GISt team at HackDavis'></figure><h3>The Grind</h3><p>Android SDK and Java JDK errors ate most of the early hours on the mobile build. The working prototype had to juggle three separate APIs (AR, mapping, farm data) across different platforms and languages. Best Environment Hack.</p>",
+          "TEXT": "<h3>The Idea</h3><p>Most people have no idea where their produce comes from, which means they have no idea about its environmental impact either. GISt is a farm-to-table AR app: point your phone at produce and see where your food was grown, how it got to you, and what that journey cost the planet.</p><figure class='modal-figure'><img src='png/gist_app.png' alt='GISt AR app in action'></figure><h3>How It Works</h3><p>AR powered by Vuforia through Unity3D, with UX prototyped in Axure RP 8 and built in C#. Farm data, GIS layers, and maps are pulled live via the OSIsoft API, MapBox, JavaScript, and JSON, overlaid onto real-world products through the camera feed.</p><figure class='modal-figure'><img src='png/gist_team.png' alt='GISt team at HackDavis'></figure><h3>The Grind</h3><p>Android SDK and Java JDK errors ate most of the early hours on the mobile build. The working prototype had to juggle three separate APIs (AR, mapping, farm data) across different platforms and languages. Best Environment Hack.</p>",
           "domain": "software",
           "source": "projects",
-          "shortname": "GIST",
-          "whisper": "🥇"
+          "shortname": "GISt",
+          "TECH": "🗺️👁️🎮🎵♨️⚡"
         },
         {
           "ID": "digestquest",
-          "NAME": "🥫 DigestQuest",
+          "NAME": "🥇 DigestQuest",
           "TITLE": "HackMerced",
           "MOTTO": "OCR as a FitBit for your stomach",
           "DATE": "Sep 2017",
           "LOCATION": "Merced, California",
           "GITHUB": "https://github.com/plebeiathon/DigestQuest",
           "WIN": "Best in Design",
-          "TEXT": "<h3>The Idea</h3><p>Snap a photo of a nutrition label and DigestQuest breaks down your diet calorie by calorie. No manual entry: point your phone camera at the label and the app reads it for you.</p><h3>How It Works</h3><p>A web app built around Tesseract's JavaScript OCR API. Raw OCR output is messy, so we wrote a custom heuristic algorithm that applies representativeness matching to map garbled text to actual nutritional values. Parsed results feed into a back-end database and are visualized in a display designed to be readable at a glance.</p><h3>The Grind</h3><p>36 hours of DNS battles and wrangling JQuery and Node.js into talking to Tesseract on a web platform. We walked in barely knowing JavaScript or image processing APIs and left with a working multi-language OCR pipeline and a Best in Design win.</p><figure class='modal-figure'><img src='images/digestquest-people.png' alt='DigestQuest team at HackMerced'></figure>",
+          "TEXT": "<h3>The Idea</h3><p>Snap a photo of a nutrition label and DigestQuest breaks down your diet calorie by calorie. No manual entry: point your phone camera at the label and the app reads it for you.</p><h3>How It Works</h3><p>A web app built around Tesseract's JavaScript OCR API. Raw OCR output is messy, so we wrote a custom heuristic algorithm that applies representativeness matching to map garbled text to actual nutritional values. Parsed results feed into a back-end database and are visualized in a display designed to be readable at a glance.</p><h3>The Grind</h3><p>36 hours of DNS battles and wrangling JQuery and Node.js into talking to Tesseract on a web platform. We walked in barely knowing JavaScript or image processing APIs and left with a working multi-language OCR pipeline and a Best in Design win.</p><figure class='modal-figure'><img src='png/digestquest-people.png' alt='DigestQuest team at HackMerced'></figure>",
           "domain": "software",
           "source": "projects",
-          "whisper": "🥇"
+          "shortname": "Digest<br>Quest",
+          "TECH": "💲💚🔍⚡"
         }
       ]
     },
@@ -682,8 +683,7 @@
           "domain": "games",
           "source": "projects",
           "quadrant": "games",
-          "shortname": "NOBLES",
-          "whisper": "👑"
+          "shortname": "Nobles"
         },
         {
           "ID": "the-demons",
@@ -695,8 +695,7 @@
           "domain": "games",
           "source": "projects",
           "quadrant": "games",
-          "shortname": "DEMONS",
-          "whisper": "👹"
+          "shortname": "Demons"
         },
         {
           "ID": "popvuj",
@@ -707,7 +706,7 @@
           "domain": "games",
           "source": "projects",
           "quadrant": "games",
-          "whisper": "⛪"
+          "shortname": "Pop<br>Vuj"
         },
         {
           "ID": "bitnaughts",
@@ -720,8 +719,8 @@
           "domain": "games",
           "source": "projects",
           "quadrant": "games",
-          "shortname": "BIT<br>NAUGHTS",
-          "whisper": "☄️"
+          "shortname": "Bit<br>Naughts",
+          "TECH": "🔷🌿🎮🔺🎵"
         },
         {
           "ID": "graviton",
@@ -732,27 +731,28 @@
           "PLAY": "games/Graviton/index.html",
           "PLAY_W": 1080,
           "PLAY_H": 1920,
-          "TEXT": "<h3>The Idea</h3><p>Classic arcade games like Space Invaders and Missile Command never stopped being fun; they just stopped being made. Graviton combines slow-descending alien swarms with strategic satellite defense: a retro sci-fi tower defense game built from scratch at a hackathon.</p><figure class='modal-figure'><img src='images/graviton-menu.png' alt='Graviton menu screen'></figure><h3>How It Works</h3><p>Built in Unity with C#. A 630+ line GameManager handles wave spawning, path generation, satellite placement, and an in-game economy. 5 escalating levels, each a procedurally timed sequence of ship deployments using randomized ship types with distinct scale, speed, and health values. Players purchase and place orbital satellites via a rocket launch animation system. Satellites come in 3 weapon tiers (ConventionalRifle, PlasmaCannon, LaserBeam), each upgradeable for damage and range. Turret rotation uses predictive lead-target aiming, calculating intercept angles from projectile speed, distance, and enemy velocity. The ProjectileManager pools 6 projectile types plus 50 explosion instances with randomized animator controllers. An intro scene plays a radio dialogue cutscene with a Scrambler text effect before dropping into gameplay. Sprites in Paint.NET, audio in Audacity, 12+ ship variants.</p><figure class='modal-figure'><img src='images/graviton-gameplay.png' alt='Graviton gameplay'></figure><h3>The Grind</h3><p>Two thousand lines of C# in under two days. The lesson: build the skeleton first. We burned hours on animations and sound effects that only slowed debugging. The win screen says it all: 'The Scientists got the Graviton Accelerator running, repelling the Alien Invasion!' Starting from nothing and shipping a game with cutscenes, 5 winnable waves, upgrade trees, and pooled particle explosions in a hackathon window teaches you what to cut and what to keep.</p>",
+          "TEXT": "<h3>The Idea</h3><p>Classic arcade games like Space Invaders and Missile Command never stopped being fun; they just stopped being made. Graviton combines slow-descending alien swarms with strategic satellite defense: a retro sci-fi tower defense game built from scratch at a hackathon.</p><figure class='modal-figure'><img src='png/graviton-menu.png' alt='Graviton menu screen'></figure><h3>How It Works</h3><p>Built in Unity with C#. A 630+ line GameManager handles wave spawning, path generation, satellite placement, and an in-game economy. 5 escalating levels, each a procedurally timed sequence of ship deployments using randomized ship types with distinct scale, speed, and health values. Players purchase and place orbital satellites via a rocket launch animation system. Satellites come in 3 weapon tiers (ConventionalRifle, PlasmaCannon, LaserBeam), each upgradeable for damage and range. Turret rotation uses predictive lead-target aiming, calculating intercept angles from projectile speed, distance, and enemy velocity. The ProjectileManager pools 6 projectile types plus 50 explosion instances with randomized animator controllers. An intro scene plays a radio dialogue cutscene with a Scrambler text effect before dropping into gameplay. Sprites in Paint.NET, audio in Audacity, 12+ ship variants.</p><figure class='modal-figure'><img src='png/graviton-gameplay.png' alt='Graviton gameplay'></figure><h3>The Grind</h3><p>Two thousand lines of C# in under two days. The lesson: build the skeleton first. We burned hours on animations and sound effects that only slowed debugging. The win screen says it all: 'The Scientists got the Graviton Accelerator running, repelling the Alien Invasion!' Starting from nothing and shipping a game with cutscenes, 5 winnable waves, upgrade trees, and pooled particle explosions in a hackathon window teaches you what to cut and what to keep.</p>",
           "domain": "games",
           "source": "projects",
           "quadrant": "games",
-          "whisper": "🌸"
+          "shortname": "Grav<br>iton",
+          "TECH": "🎧🖌️🎮🎵"
         },
         {
           "ID": "spaceninjas",
-          "NAME": "🕹️ SpaceNinjas",
+          "NAME": "🥷 SpaceNinjas",
           "MOTTO": "2D Platformer",
           "DATE": "Spring 2015",
           "GITHUB": "https://github.com/Mutilar/SpaceNinjas",
           "PLAY": "games/SpaceNinjas/index.html",
           "PLAY_W": 960,
           "PLAY_H": 522,
-          "TEXT": "<h3>The Idea</h3><p>Teaching game design means giving students something they can break apart and rebuild. SpaceNinjas is a 2D side-scrolling ninja platformer built as a boilerplate for Monte Vista's Summer of Game Design: a ready-made Unity project students crack open on day one to learn C# by tweaking a working game instead of staring at blank scripts.</p><figure class='modal-figure'><img src='images/spaceninjas-start.png' alt='SpaceNinjas start screen'></figure><h3>How It Works</h3><p>Built in Unity 5 with C#. The repo ships two parallel script architectures. The first is a fully hardcoded reference game (player.cs at 269 lines, enemy.cs, enemyRanged.cs) with every mechanic inline and heavily commented: A/D movement, W/Space jump via Rigidbody2D.AddForce, left-click sword swing using Physics2D.Raycast, right-click throwing stars via Instantiate. Melee enemies chase via sight-distance detection and swing with raycasts; ranged enemies fire laser projectiles while keeping distance. The second architecture is a set of modular Person_ components (Person_Health, Person_AttackMelee, Person_AttackRanged, Movement_SideScroller, Movement_TopDown, MovementAI_SideScroller, MovementAI_TopDown) with public bool toggles (AI_enabled, SFX_enabled, death_reset, death_deletion) so students compose behaviors via the Unity Inspector without touching code. 3 HP hearts, 3 ammo stars, a cameraFollow script, moving island platforms, and a Dojo finish trigger round out the package.</p><figure class='modal-figure'><img src='images/spaceninjas-end.png' alt='SpaceNinjas end screen'></figure><h3>The Grind</h3><p>The dual-architecture approach (one monolithic 'here is the whole game' script and one modular 'drag-and-drop behaviors' toolkit) meant writing every system twice. But that's the teaching trick: students see the messy reality first, then learn why components exist. Every line is commented like a textbook. A student who has never opened Unity can play the game in five minutes and start modifying it in ten.</p>",
+          "TEXT": "<h3>The Idea</h3><p>Teaching game design means giving students something they can break apart and rebuild. SpaceNinjas is a 2D side-scrolling ninja platformer built as a boilerplate for Monte Vista's Summer of Game Design: a ready-made Unity project students crack open on day one to learn C# by tweaking a working game instead of staring at blank scripts.</p><figure class='modal-figure'><img src='png/spaceninjas-start.png' alt='SpaceNinjas start screen'></figure><h3>How It Works</h3><p>Built in Unity 5 with C#. The repo ships two parallel script architectures. The first is a fully hardcoded reference game (player.cs at 269 lines, enemy.cs, enemyRanged.cs) with every mechanic inline and heavily commented: A/D movement, W/Space jump via Rigidbody2D.AddForce, left-click sword swing using Physics2D.Raycast, right-click throwing stars via Instantiate. Melee enemies chase via sight-distance detection and swing with raycasts; ranged enemies fire laser projectiles while keeping distance. The second architecture is a set of modular Person_ components (Person_Health, Person_AttackMelee, Person_AttackRanged, Movement_SideScroller, Movement_TopDown, MovementAI_SideScroller, MovementAI_TopDown) with public bool toggles (AI_enabled, SFX_enabled, death_reset, death_deletion) so students compose behaviors via the Unity Inspector without touching code. 3 HP hearts, 3 ammo stars, a cameraFollow script, moving island platforms, and a Dojo finish trigger round out the package.</p><figure class='modal-figure'><img src='png/spaceninjas-end.png' alt='SpaceNinjas end screen'></figure><h3>The Grind</h3><p>The dual-architecture approach (one monolithic 'here is the whole game' script and one modular 'drag-and-drop behaviors' toolkit) meant writing every system twice. But that's the teaching trick: students see the messy reality first, then learn why components exist. Every line is commented like a textbook. A student who has never opened Unity can play the game in five minutes and start modifying it in ten.</p>",
           "domain": "games",
           "source": "work",
           "quadrant": "games",
-          "shortname": "SPACE<br>NINJAS",
-          "whisper": "🥷"
+          "shortname": "Space<br>Ninjas",
+          "TECH": "🎮🎵"
         },
         {
           "ID": "voodoo",
@@ -763,12 +763,12 @@
           "PLAY": "games/Voodoo/index.html",
           "PLAY_W": 1024,
           "PLAY_H": 768,
-          "TEXT": "<h3>The Idea</h3><p>VooDoo is a side-scrolling lane-pusher in the spirit of <em>Age of War</em>: you spawn pixel-art warriors, set their waypoints across procedurally generated terrain, and watch your tribe clash with waves of voodoo-cursed enemies. You never fight directly; you point and your warband marches. When only the boss remains, you take direct platformer control.</p><figure class='modal-figure'><img src='images/voodoo-menu.png' alt='VooDoo menu screen'></figure><h3>How It Works</h3><p>Four warrior classes: shield-bearing Farmers, sword-wielding Soldiers, spell-casting Priests, and elite horned Witchdoctors, each hand-sprited with idle, march, and attack animations. Click the terrain to set waypoints; your minions march, fight, and die on their own. The battlefield is procedurally assembled from tile-sets of grassy slopes, dirt flats, and jagged transitions, so no two levels look the same. An 11-level campaign across 3 acts builds to boss encounters where the game switches genres: direct platformer control, dodging thrown swords and targeted explosions in multi-phase arena fights. Two complementary tactics emerge: <em>Towering</em> (stack ranged units behind melee walls) and <em>Rushing</em> (flood the lane with expendable fighters). A continuous survival mode ramps the spawn rate until your tribe finally falls.</p><figure class='modal-figure'><img src='images/voodoo-final.png' alt='VooDoo final boss'></figure><h3>The Grind</h3><p>Hand-animated in Paint.NET from open-source assets: four warrior classes across multiple animation states, three tiers of enemies, and three distinct bosses. Scripted cutscenes, a 16-phase interactive tutorial, and persistent kill/death tracking across all 11 levels. Way too big for a student project. The scope was absurd, the variable names are irreverent, and the codebase has scars; but every level plays to completion and every boss goes down.</p>",
+          "TEXT": "<h3>The Idea</h3><p>VooDoo is a side-scrolling lane-pusher in the spirit of <em>Age of War</em>: you spawn pixel-art warriors, set their waypoints across procedurally generated terrain, and watch your tribe clash with waves of voodoo-cursed enemies. You never fight directly; you point and your warband marches. When only the boss remains, you take direct platformer control.</p><figure class='modal-figure'><img src='png/voodoo-menu.png' alt='VooDoo menu screen'></figure><h3>How It Works</h3><p>Four warrior classes: shield-bearing Farmers, sword-wielding Soldiers, spell-casting Priests, and elite horned Witchdoctors, each hand-sprited with idle, march, and attack animations. Click the terrain to set waypoints; your minions march, fight, and die on their own. The battlefield is procedurally assembled from tile-sets of grassy slopes, dirt flats, and jagged transitions, so no two levels look the same. An 11-level campaign across 3 acts builds to boss encounters where the game switches genres: direct platformer control, dodging thrown swords and targeted explosions in multi-phase arena fights. Two complementary tactics emerge: <em>Towering</em> (stack ranged units behind melee walls) and <em>Rushing</em> (flood the lane with expendable fighters). A continuous survival mode ramps the spawn rate until your tribe finally falls.</p><figure class='modal-figure'><img src='png/voodoo-final.png' alt='VooDoo final boss'></figure><h3>The Grind</h3><p>Hand-animated in Paint.NET from open-source assets: four warrior classes across multiple animation states, three tiers of enemies, and three distinct bosses. Scripted cutscenes, a 16-phase interactive tutorial, and persistent kill/death tracking across all 11 levels. Way too big for a student project. The scope was absurd, the variable names are irreverent, and the codebase has scars; but every level plays to completion and every boss goes down.</p>",
           "domain": "games",
           "source": "projects",
           "quadrant": "games",
-          "shortname": "VOO<br>DOO",
-          "whisper": "🎨"
+          "shortname": "Voo<br>Doo",
+          "TECH": "🖌️"
         },
         {
           "ID": "galconq",
@@ -779,7 +779,8 @@
           "domain": "games",
           "source": "projects",
           "quadrant": "games",
-          "whisper": "🌌"
+          "shortname": "Gal<br>Conq",
+          "TECH": "🎮🪟"
         }
       ]
     },
@@ -797,8 +798,7 @@
           "domain": "games",
           "source": "projects",
           "quadrant": "games",
-          "shortname": "NOBLES",
-          "whisper": "👑"
+          "shortname": "NOBLES"
         },
         {
           "ID": "the-demons",
@@ -811,8 +811,7 @@
           "domain": "games",
           "source": "projects",
           "quadrant": "games",
-          "shortname": "DEMONS",
-          "whisper": "👹"
+          "shortname": "DEMONS"
         }
       ]
     }
@@ -828,12 +827,12 @@
         "📡 Envoy"
       ],
       "bitnaughts": [
-        "🎮 Code<sup>Gamified</sup>",
-        "👁️ See<sup>CODE</sup>",
-        "🔄 Try<sup>CODE</sup>",
-        "🎓 Learn<sup>CODE</sup>",
-        "💻 4<sup>Hacks</sup>",
-        "🌍 Play<sup>It</sup>"
+        "🎮 CODE GAMIFIED",
+        "👁️ SEE CODE",
+        "🔄 TRY CODE",
+        "🎓 LEARN CODE",
+        "💻 4 HACKS",
+        "🌍 PLAY IT"
       ],
       "redtierobotics|Electrician": [
         "⚡ AMAX"

@@ -1,29 +1,29 @@
 // ═══════════════════════════════════════════════════════════════
-//  INLINE PDF VIEWER (replaces pdfviewer.html)
+//  INLINE PDF VIEWER (replaces pdf.html)
 //  Uses PDF.js loaded dynamically; renders spread-view into
 //  #pdf-viewer inside the PDF modal.
 // ═══════════════════════════════════════════════════════════════
 
-let pdfViewerReady = false;
+let pdfReady = false;
 let pdfjsLib = null;
 
-// PDF.js is loaded via a <script type="module"> in index.html which sets
+// PDF.js is loaded via a <script type="module"> in INDEX.html which sets
 // window.__pdfjsLib and dispatches 'pdfjsReady'. We just wait for that.
 function loadPdfJs() {
-  if (pdfViewerReady) return Promise.resolve();
+  if (pdfReady) return Promise.resolve();
   if (window.__pdfjsLib) {
     pdfjsLib = window.__pdfjsLib;
-    pdfViewerReady = true;
+    pdfReady = true;
     return Promise.resolve();
   }
   return new Promise((resolve, reject) => {
     window.addEventListener('pdfjsReady', () => {
       pdfjsLib = window.__pdfjsLib;
-      pdfViewerReady = true;
+      pdfReady = true;
       resolve();
     }, { once: true });
     setTimeout(() => {
-      if (!pdfViewerReady) reject(new Error('PDF.js failed to load'));
+      if (!pdfReady) reject(new Error('PDF.js failed to load'));
     }, 15000);
   });
 }
@@ -121,7 +121,7 @@ async function renderPdfInline(pdfUrl, opts) {
   window.addEventListener('resize', newHandler);
 }
 
-function clearPdfViewer(viewerId) {
+function clearpdf(viewerId) {
   const id = viewerId || 'pdf-viewer';
   const viewer = document.getElementById(id);
   if (viewer) viewer.innerHTML = '';

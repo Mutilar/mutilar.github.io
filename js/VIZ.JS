@@ -2,15 +2,15 @@
 //  VIZ.JS — Shared visualization utilities
 //
 //  Extracts common pan/zoom, filter-toggle, and theme-config
-//  logic used by mermaid-view.js, skill-tree.js, and timeline.js.
+//  logic used by MERMAID.JS, SKILLTREE.JS, and TIMELINE.JS.
 //  Each consumer calls the factory functions with its own options.
 // ═══════════════════════════════════════════════════════════════
 
 // ── Thematic config (single source of truth) ─────────────────
 // Maps category → { color (RGB string), icon (FA class), label, emoji }
-// skill-tree.js and timeline.js both consume this.
+// SKILLTREE.JS and TIMELINE.JS both consume this.
 //
-// NOTE: timeline.js uses "0,164,239" for software; skill-tree uses "0,120,212".
+// NOTE: TIMELINE.JS uses "0,164,239" for software; skilltree uses "0,120,212".
 // Each consumer picks the color it needs from this shared config.
 // The `altColor` field holds the alternate where they differ.
 const VIZ_THEMES = {
@@ -27,10 +27,10 @@ const VIZ_THEMES = {
 //
 // Two classification axes exist:
 //
-//  1. DOMAIN — what discipline an item belongs to (used by timeline.js)
+//  1. DOMAIN — what discipline an item belongs to (used by TIMELINE.JS)
 //     Categories: robotics, games, software, research, education
 //
-//  2. SOURCE — where the item originated (used by skill-tree.js)
+//  2. SOURCE — where the item originated (used by SKILLTREE.JS)
 //     Categories: work, education, projects
 //
 //  3. QUADRANT — spatial direction on the knowledge graph
@@ -41,11 +41,14 @@ const VIZ_THEMES = {
 // These maps are populated at runtime from PORTFOLIO.json
 // by data.js. Items without an entry default to "software".
 
+const VIZ_IS_MOBILE = window.matchMedia("(max-width: 768px)").matches;
+const VIZ_MIN_SCALE = 0.3;
+const VIZ_MAX_SCALE = 4;
 const VIZ_DOMAIN_MAP = {};
 const VIZ_SOURCE_MAP = {};
 const VIZ_QUADRANT_MAP = {};
-const VIZ_WHISPER_MAP = {};      // skill-tree whisper emoji per item
-const VIZ_SHORTNAME_MAP = {};    // skill-tree circle label overrides
+const VIZ_WHISPER_MAP = {};      // skilltree whisper emoji per item
+const VIZ_SHORTNAME_MAP = {};    // skilltree circle label overrides
 const VIZ_TIMELINE = {           // timeline whispers, name/title overrides
   whispers: {},
   nameOverrides: {},
@@ -72,8 +75,8 @@ const VIZ_TIMELINE = {           // timeline whispers, name/title overrides
 // ═══════════════════════════════════════════════════════════════
 function initPanZoom(viewport, world, transform, opts) {
   opts = opts || {};
-  var minScale       = opts.minScale       || 0.5;
-  var maxScale       = opts.maxScale       || 2;
+  var minScale       = opts.minScale       || VIZ_MIN_SCALE;
+  var maxScale       = opts.maxScale       || VIZ_MAX_SCALE;
   var getBounds      = opts.getBounds      || function () { return null; };
   var onUpdate       = opts.onUpdate       || function () {};
   var ignoreSelector = opts.ignoreSelector || null;
@@ -240,7 +243,7 @@ function initPanZoom(viewport, world, transform, opts) {
 //      themeBtns,        // NodeList of per-theme buttons
 //      onFilter,         // () => void  — called when filters change
 //      soloLogic,        // optional fn(filter, activeFilters, allThemes) → void
-//                        //   for custom solo-toggle logic (skill-tree groups)
+//                        //   for custom solo-toggle logic (skilltree groups)
 //    });
 //    // Returns { syncUI }
 // ═══════════════════════════════════════════════════════════════
@@ -412,8 +415,8 @@ function animateCameraFit(transform, updateFn, opts) {
   var vpW      = opts.vpWidth  || 800;
   var vpH      = opts.vpHeight || 600;
   var bounds   = opts.bounds;  // { x, y, w, h }
-  var minScale = opts.minScale || 0.1;
-  var maxScale = opts.maxScale || 4;
+  var minScale = opts.minScale || VIZ_MIN_SCALE;
+  var maxScale = opts.maxScale || VIZ_MAX_SCALE;
   var pad      = opts.padding  !== undefined ? opts.padding : 40;
   var duration = opts.duration !== undefined ? opts.duration : 800;
   var doAnimate = opts.animate !== undefined ? opts.animate : true;
@@ -481,7 +484,7 @@ function animateCameraFit(transform, updateFn, opts) {
 //      onStatic,       // () => void — called when switching TO static
 //      staticLabel,    // optional (default "📌 Static")
 //      dynamicLabel,   // optional (default "🔀 Dynamic")
-//      startStatic,    // optional (default true)
+//      startStatic,    // optional (default VIZ_IS_MOBILE)
 //    });
 //    // Returns { isStatic(), setStatic(bool) }
 // ═══════════════════════════════════════════════════════════════
@@ -493,7 +496,7 @@ function createLayoutToggle(cfg) {
   var dynamicLabel = cfg.dynamicLabel || "\uD83D\uDD00";
   var staticColor  = cfg.staticColor  || "0,120,212";   // MSFT Blue
   var dynamicColor = cfg.dynamicColor || "242,80,34";   // MSFT Red
-  var _static      = cfg.startStatic !== undefined ? cfg.startStatic : true;
+  var _static      = cfg.startStatic !== undefined ? cfg.startStatic : VIZ_IS_MOBILE;
 
   function syncUI() {
     if (!btn) return;

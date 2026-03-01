@@ -20,7 +20,7 @@ graph TD
 
     subgraph CLOUD["☁️ CLOUD"]
         direction LR
-        subgraph HOSTING["☁️ HOSTING"]
+        subgraph HOSTING["🖥️ HOSTING"]
             direction LR
             GITHUB["🐙 GITHUB PAGES"]
             CNAME["🌐 ROUTE 53"]
@@ -28,58 +28,60 @@ graph TD
         end
         subgraph CDN["📦 CDN"]
             direction LR
-            PDFJS["📰 PDF.JS"]
-            FONTAWESOME["🔣 FontAwesome.SVG"]
+            PDFJS["📰 PDF.js"]
+            FONTAWESOME["🔣 FontAwesome *.svg"]
         end
     end
 
-    subgraph SHELL["🗂️ SHELL"]
-        direction LR
+    subgraph SHELL["🗂️ REPO"]
+        direction TB
         subgraph ENTRY["🏠 ENTRY"]
             direction LR
-            READMEMD["📖 README.MD"]
-            LICENSETXT["📜 LICENSE.TXT"]
-            INDEXHTML["📄 INDEX.HTML"]
+            READMEMD["📎 README.md"]
+            LICENSETXT["📜 LICENSE.txt"]
+            INDEXHTML["📄 INDEX.html"]
+            STYLESCSS["🎨 STYLE.css"]
         end
-        subgraph GUIDE["🎨 GUIDE"]
+        subgraph ASSETS["📂 MEDIA"]
             direction LR
-            STYLESCSS["🎨 STYLE.CSS"]
+            subgraph DOCS["📎 DOCS"]
+                direction TB
+                PORTFOLIOJSON["📋 PORTFOLIO.json"]
+                CARDSCSV["🃏 CARDS.csv"]
+                RESUME["📄 3 *.PDF"]
+                ARCHMD["🧜‍♀️ *.MD"]
+            end
+            subgraph MEDIAFILES["🎞️ MEDIA"]
+                direction TB
+                PNGS["📸 350 *.png, *.gif"]
+                GIFS["🎞️ 6 *.gif"]
+                GAMEBUILDS["🎮 6 *.unityweb"]
+                AUDIOFILES["🎵 5 *.mp3"]
+            end
         end
-        subgraph DOCS["📎 DOCS"]
-            direction LR
-            RESUME["📄 12 *.PDF"]
-            ARCHMD["🧜‍♀️ *.MD"]
+        subgraph SCRIPTS["⚙️ SCRIPTS"]
+            direction TB
+            subgraph ENGINE["🔩 ENGINE"]
+                direction LR
+                CONSOLEJS["🔎 CONSOLE.js"]
+                SCROLLJS["📜 SCROLL.js"]
+                DATAJS["📊 DATA.js"]
+                MODALSJS["🪟 MODAL.js"]
+                VIZJS["📈 VIZ.js"]
+                RADIOJS["🎵 RADIO.js"]
+            end
+            subgraph UI["🌌 U.I."]
+                direction LR
+                THEMEJS["🌓 THEME.js"]
+                PARALLAXJS["🫧 PARALLAX.js"]
+                pdfJS["📕 PDF.js"]
+                SKILLTREEJS["🧭 SKILLTREE.js"]
+                MERMAIDVIEWJS["🧜 MERMAID.js"]
+                TIMELINEJS["🕰️ TIMELINE.js"]
+            end
         end
     end
-    subgraph MEDIA["🖼️ MEDIA"]
-        direction LR
-        PORTFOLIOJSON["📋 PORTFOLIO.JSON"]
-        CARDSCSV["🃏 CARDS.CSV"]
-        IMAGEPNGS["📸 350 *.PNG, *.GIF"]
-        GAMEBUILDS["🎮 16 *.UNITYWEB"]
-        AUDIOFILES["🎵 5 *.MP3"]
-    end
-    subgraph SCRIPTS["⚙️ SCRIPTS"]
-        direction TB
-        subgraph ENGINE["🔩 ENGINE"]
-            direction LR
-            SCROLLJS["📜 SCROLL.JS"]
-            DATAJS["📊 DATA.JS"]
-            CONSOLEJS["🔎 CONSOLE.JS"]
-            PDFVIEWERJS["📕 PDF.JS"]
-            VIZJS["📈 VIZ.JS"]
-            RADIOJS["🎵 RADIO.JS"]
-        end
-        subgraph UI["🌌 U.I."]
-            direction LR
-            THEMEJS["🌓 THEME.JS"]
-            MODALSJS["🪟 MODAL.JS"]
-            PARALLAXJS["🫧 PARALLAX.JS"]
-            SKILLTREEJS["🧭 SKILLTREE.JS"]
-            MERMAIDVIEWJS["🧜 MERMAID.JS"]
-            TIMELINEJS["🕰️ TIMELINE.JS"]
-        end
-    end
+    
 
     subgraph UX["🧠 U.X."]
         direction LR
@@ -111,7 +113,7 @@ graph TD
 
     %% ── 4. CDN → SCRIPTS (libs consumed by JS) ─────────────
 
-    PDFJS -.->|"pdf()"| PDFVIEWERJS
+    PDFJS -.->|"pdf()"| pdfJS
 
     %% ── 4b. DATA.JS → shared globals ───────────────────────
 
@@ -130,7 +132,7 @@ graph TD
 
     DATAJS -->|"fetch()"| PORTFOLIOJSON
     MODALSJS -->|"fetchCSV()"| CARDSCSV
-    PDFVIEWERJS -.->|"fetch()"| RESUME
+    pdfJS -.->|"fetch()"| RESUME
     RADIOJS -.->|"fetch()"| AUDIOFILES
     MERMAIDVIEWJS -.->|"fetch()"| ARCHMD
 
@@ -148,7 +150,7 @@ graph TD
     MERMAIDVIEWJS -.->|"diagram()"| MAP
     SKILLTREEJS -.->|"graph()"| MAP
     TIMELINEJS -.->|"timeline()"| MAP
-    PDFVIEWERJS -.->|"getDocument()"| VIEW
+    pdfJS -.->|"getDocument()"| VIEW
     MODALSJS -.->|"open()"| EMB
     MODALSJS -.->|"open()"| VIEW
     MODALSJS -.->|"iframe()"| LINK
@@ -159,24 +161,24 @@ graph TD
     class PDFJS,CNAME,CNAMEFILE config
     class STYLESCSS,FONTAWESOME style
     class CONSOLEJS,SCROLLJS,DATAJS engine
-    class VIZJS,PDFVIEWERJS,RADIOJS engine
-    class MODALSJS,PARALLAXJS,THEMEJS aes
+    class VIZJS,MODALSJS,RADIOJS engine
+    class pdfJS,PARALLAXJS,THEMEJS aes
     class MERMAIDVIEWJS,SKILLTREEJS,TIMELINEJS aes
     class PORTFOLIOJSON,CARDSCSV data
     class ARCHMD data
-    class IMAGEPNGS data
-    class RESUME,GAMEBUILDS,AUDIOFILES data
+    class PNGS data
+    class RESUME,GIFS,GAMEBUILDS,AUDIOFILES data
     class TILES,RADIO,VIEW ux
     class MAP,HINT,EMB,LINK ux
 
     %% ── CLASS DEFINITIONS ───────────────────────────────────
 
     classDef hosting fill:#f7a799,stroke:#f25022,color:#5a1000,stroke-width:2px
-    classDef config fill:#f7a799,stroke:#f25022,color:#5a1000,stroke-width:1.5px
+    classDef config fill:#ffd6a0,stroke:#e87400,color:#5a2d00,stroke-width:1.5px
     classDef style fill:#e0f0ff,stroke:#0078d4,color:#002050,stroke-width:1.5px
-    classDef data fill:#e0f0ff,stroke:#0078d4,color:#002050,stroke-width:1.5px
+    classDef data fill:#c4d4f5,stroke:#4052b5,color:#1a1a5e,stroke-width:1.5px
     classDef engine fill:#c8e6a0,stroke:#7fba00,color:#2d4a00,stroke-width:1.5px
-    classDef aes fill:#c8e6a0,stroke:#7fba00,color:#2d4a00,stroke-width:1.5px
+    classDef aes fill:#a0e6d6,stroke:#00a884,color:#003d2e,stroke-width:1.5px
     classDef ux fill:#fff3c4,stroke:#ffb900,color:#4a3200,stroke-width:2px
 
     %% ── SUBGRAPH STYLES ────────────────────────────────────
@@ -186,16 +188,14 @@ graph TD
     style CDN fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
 
     style SHELL fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
-    style DOCS fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
     style ENTRY fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
-
-    style MEDIA fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
+    style ASSETS fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
+    style DOCS fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
+    style MEDIAFILES fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
 
     style SCRIPTS fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
     style ENGINE fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
     style UI fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
-
-    style TOOLS fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
 
     style UX fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
 

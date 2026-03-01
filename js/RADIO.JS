@@ -3,11 +3,11 @@
 // ═══════════════════════════════════════════════════════════════
 (() => {
   const playlist = [
-    { src: "radio/corporate.mp3", title: "Corporate" },
-    { src: "radio/electric.mp3", title: "Electric" },
-    { src: "radio/emotional.mp3", title: "Emotional" },
-    { src: "radio/ethereal.mp3", title: "Ethereal" },
-    { src: "radio/positive.mp3", title: "Positive" }
+    { src: "mp3/corporate.mp3", title: "Corporate" },
+    { src: "mp3/electric.mp3", title: "Electric" },
+    { src: "mp3/emotional.mp3", title: "Emotional" },
+    { src: "mp3/ethereal.mp3", title: "Ethereal" },
+    { src: "mp3/positive.mp3", title: "Positive" }
   ];
 
   let currentTrack = 0;

@@ -6,8 +6,8 @@ The site has three visualization modals that evolved independently but now share
 
 | Prefix | Modal | Owner JS |
 |---|---|---|
-| `.mm-*` | Mermaid diagram viewer (Architecture, MARP) | `mermaid-view.js` |
-| `.kg-*` | Knowledge Graph / Skill Tree | `skill-tree.js` |
+| `.mm-*` | Mermaid diagram viewer (Architecture, MARP) | `mermaid.js` |
+| `.kg-*` | Knowledge Graph / Skill Tree | `skilltree.js` |
 | `.timeline-*` | Timeline swimlane | `timeline.js` |
 
 Shared utilities already live in `viz.js` (`VIZ_THEMES`, `initPanZoom`, `createFilterSystem`, `animateCameraFit`, `createLayoutToggle`, `createCrossfader`). The CSS was never unified.
@@ -125,8 +125,8 @@ KG (L4904) and timeline (L4423) have identical mobile filter resizing (`padding:
 
 | # | What | Detail |
 |---|---|---|
-| J1 | `buildFilters()` in `mermaid-view.js` | Re-implements ~80% of `createFilterSystem()` from `viz.js`. Extend `createFilterSystem` with `setOnly()`, `addFilter()`, `setAll()`, `setNone()` API methods, then refactor mermaid-view to use it. |
-| J2 | Explore hint creation | `skill-tree.js` (L1517-1537) and `mermaid-view.js` (L1648-1662) create nearly identical DOM structures. Extract into `viz.js`. |
+| J1 | `buildFilters()` in `mermaid.js` | Re-implements ~80% of `createFilterSystem()` from `viz.js`. Extend `createFilterSystem` with `setOnly()`, `addFilter()`, `setAll()`, `setNone()` API methods, then refactor mermaid to use it. |
+| J2 | Explore hint creation | `skill-tree.js` (L1517-1537) and `mermaid.js` (L1648-1662) create nearly identical DOM structures. Extract into `viz.js`. |
 | J3 | Tour stop wiring | Both register `pointerdown`+`wheel` on viewport to cancel explore tours. Extract into shared utility. |
 
 ---

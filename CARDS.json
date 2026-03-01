@@ -6,1208 +6,1207 @@
       "items": [
         {
           "ID": "imperial_seal",
-          "NAME": "Imperial Seal",
-          "WHISPER": "🔏",
+          "NAME": "🔏 Imperial Seal",
           "CATEGORY": "🔍",
           "SALT": 1.35,
           "COLOR": "⚫",
           "CMC": 1,
           "RARITY": "🟠",
           "TYPE": "🔮",
-          "PRICE": 179.99
+          "PRICE": 179.99,
+          "SHORTNAME": "Imperial<br>Seal"
         },
         {
           "ID": "vampiric_tutor",
-          "NAME": "Vampiric 🔍",
-          "WHISPER": "🩸",
+          "NAME": "🩸 Vampiric 🔍",
           "CATEGORY": "🔍",
           "SALT": 1.6,
           "COLOR": "⚫",
           "CMC": 1,
           "RARITY": "🟠",
           "TYPE": "⚡",
-          "PRICE": 84.99
+          "PRICE": 84.99,
+          "SHORTNAME": "Vampiric"
         },
         {
           "ID": "reanimate",
-          "NAME": "Reanimate",
-          "WHISPER": "⚰️",
+          "NAME": "⚰️ Reanimate",
           "CATEGORY": "🌀",
           "SALT": 0.79,
           "COLOR": "⚫",
           "CMC": 1,
           "RARITY": "🟡",
           "TYPE": "🔮",
-          "PRICE": 11.99
+          "PRICE": 11.99,
+          "SHORTNAME": "Re<br>animate"
         },
         {
           "ID": "sol_ring",
-          "NAME": "Sol Ring",
-          "WHISPER": "💍",
+          "NAME": "💍 Sol Ring",
           "CATEGORY": "🌱",
           "SALT": 1.46,
           "COLOR": "💎",
           "CMC": 1,
           "RARITY": "🔵",
           "TYPE": "✨",
-          "PRICE": 2.49
+          "PRICE": 2.49,
+          "SHORTNAME": "Sol<br>Ring"
         },
         {
           "ID": "damn",
-          "NAME": "Damn",
-          "WHISPER": "🪦",
+          "NAME": "🪦 Damn",
           "CATEGORY": "🧹",
           "SALT": 0.36,
           "COLOR": "⚫",
           "CMC": 2,
           "RARITY": "🟡",
           "TYPE": "🔮",
-          "PRICE": 2.79
+          "PRICE": 2.79,
+          "SHORTNAME": "Damn"
         },
         {
           "ID": "demonic_tutor",
-          "NAME": "Demonic 🔍",
-          "WHISPER": "📜",
+          "NAME": "📜 Demonic 🔍",
           "CATEGORY": "🔍",
           "SALT": 1.58,
           "COLOR": "⚫",
           "CMC": 2,
           "RARITY": "🟠",
           "TYPE": "🔮",
-          "PRICE": 74.99
+          "PRICE": 74.99,
+          "SHORTNAME": "Demonic"
         },
         {
           "ID": "enlightened_tutor",
-          "NAME": "Enlightened 🔍",
-          "WHISPER": "🌩️",
+          "NAME": "🌩️ Enlightened 🔍",
           "CATEGORY": "🔍",
           "SALT": 1.15,
           "COLOR": "⚪",
           "CMC": 1,
           "RARITY": "🟡",
           "TYPE": "⚡",
-          "PRICE": 37.99
+          "PRICE": 37.99,
+          "SHORTNAME": "Enlightened"
         },
         {
           "ID": "arcane_signet",
-          "NAME": "Arcane Signet",
-          "WHISPER": "💎",
+          "NAME": "💎 Arcane Signet",
           "CATEGORY": "🌱",
           "SALT": 0.24,
           "COLOR": "⚪🔴⚫",
           "CMC": 2,
           "RARITY": "⚪",
           "TYPE": "✨",
-          "PRICE": 0.99
+          "PRICE": 0.99,
+          "SHORTNAME": "Arcane<br>Signet"
         },
         {
           "ID": "sidequest_catch_a_fish",
-          "NAME": "Sidequest: Catch a Fish",
-          "WHISPER": "🐟",
+          "NAME": "🐟 Sidequest: Catch a Fish",
           "CATEGORY": "🌱",
           "SALT": 0.19,
           "COLOR": "⚪",
           "CMC": 3,
           "RARITY": "🔵",
           "TYPE": "🌩️",
-          "PRICE": 0.35
+          "PRICE": 0.35,
+          "SHORTNAME": "Sidequest<br>Catch"
         },
         {
           "ID": "cooking_campsite",
-          "NAME": "Cooking Campsite",
-          "WHISPER": "🏕️",
+          "NAME": "🏕️ Cooking Campsite",
           "CATEGORY": "🌱",
           "SALT": 0.19,
           "COLOR": "⚪",
           "CMC": 0,
           "RARITY": "🔵",
           "TYPE": "⛈️",
-          "PRICE": 0.35
+          "PRICE": 0.35,
+          "SHORTNAME": "Cooking<br>Campsite"
         },
         {
           "ID": "anguished_unmaking",
-          "NAME": "Anguished Unmaking",
-          "WHISPER": "💔",
+          "NAME": "💔 Anguished Unmaking",
           "CATEGORY": "🧹",
           "SALT": 0.23,
           "COLOR": "⚪⚫",
           "CMC": 3,
           "RARITY": "🟡",
           "TYPE": "⚡",
-          "PRICE": 4.49
+          "PRICE": 4.49,
+          "SHORTNAME": "Anguished<br>Unmaking"
         },
         {
           "ID": "wedding_announcement",
-          "NAME": "Wedding Announcement",
-          "WHISPER": "💌",
+          "NAME": "💌 Wedding Announcement",
           "CATEGORY": "📤",
           "SALT": 0.33,
           "COLOR": "⚪",
           "CMC": 3,
           "RARITY": "🟡",
           "TYPE": "🌩️",
-          "PRICE": 0.79
+          "PRICE": 0.79,
+          "SHORTNAME": "Wedding<br>Announcement"
         },
         {
           "ID": "wedding_festivity",
-          "NAME": "Wedding Festivity",
-          "WHISPER": "🎉",
+          "NAME": "🎉 Wedding Festivity",
           "CATEGORY": "📤",
           "SALT": 0.33,
           "COLOR": "⚪",
           "CMC": 0,
           "RARITY": "🟡",
           "TYPE": "🌩️",
-          "PRICE": 0.79
+          "PRICE": 0.79,
+          "SHORTNAME": "Wedding<br>Festivity"
         },
         {
           "ID": "heralds_horn",
-          "NAME": "Herald's Horn",
-          "WHISPER": "📯",
+          "NAME": "📯 Herald's Horn",
           "CATEGORY": "🌱",
           "SALT": 0.21,
           "COLOR": "💎",
           "CMC": 3,
           "RARITY": "🔵",
           "TYPE": "✨",
-          "PRICE": 6.49
+          "PRICE": 6.49,
+          "SHORTNAME": "Herald<br>Horn"
         },
         {
           "ID": "victimize",
-          "NAME": "Victimize",
-          "WHISPER": "⚖️",
+          "NAME": "⚖️ Victimize",
           "CATEGORY": "🌀",
           "SALT": 0.32,
           "COLOR": "⚫",
           "CMC": 3,
           "RARITY": "🔵",
           "TYPE": "🔮",
-          "PRICE": 1.49
+          "PRICE": 1.49,
+          "SHORTNAME": "Victi<br>mize"
         },
         {
           "ID": "patchwork_banner",
-          "NAME": "Patchwork Banner",
-          "WHISPER": "🚩",
+          "NAME": "🚩 Patchwork Banner",
           "CATEGORY": "🌱",
           "SALT": 0.5,
           "COLOR": "⚪🔴⚫",
           "CMC": 3,
           "RARITY": "🔵",
           "TYPE": "✨",
-          "PRICE": 10.99
+          "PRICE": 10.99,
+          "SHORTNAME": "Patchwork<br>Banner"
         },
         {
           "ID": "anointed_procession",
-          "NAME": "Anointed Procession",
-          "WHISPER": "👼",
+          "NAME": "👼 Anointed Procession",
           "CATEGORY": "👥",
           "SALT": 0.96,
           "COLOR": "⚪",
           "CMC": 4,
           "RARITY": "🟡",
           "TYPE": "🌩️",
-          "PRICE": 69.99
+          "PRICE": 69.99,
+          "SHORTNAME": "Anointed<br>Procession"
         },
         {
           "ID": "smothering_tithe",
-          "NAME": "Smothering Tithe",
-          "WHISPER": "💰",
+          "NAME": "💰 Smothering Tithe",
           "CATEGORY": "🌱",
           "SALT": 2.58,
           "COLOR": "⚪",
           "CMC": 4,
           "RARITY": "🟠",
           "TYPE": "🌩️",
-          "PRICE": 64.99
+          "PRICE": 64.99,
+          "SHORTNAME": "Smothering<br>Tithe"
         },
         {
           "ID": "ruinous_ultimatum",
-          "NAME": "Ruinous Ultimatum",
-          "WHISPER": "💥",
+          "NAME": "💥 Ruinous Ultimatum",
           "CATEGORY": "🧹",
           "SALT": 1.02,
           "COLOR": "⚪🔴⚫",
           "CMC": 7,
           "RARITY": "🟡",
           "TYPE": "🔮",
-          "PRICE": 2.99
+          "PRICE": 2.99,
+          "SHORTNAME": "Ruinous<br>Ultimatum"
         },
         {
           "ID": "vanquishers_banner",
-          "NAME": "Vanquisher's Banner",
-          "WHISPER": "🏆",
+          "NAME": "🏆 Vanquisher's Banner",
           "CATEGORY": "📤",
           "SALT": 0.26,
           "COLOR": "💎",
           "CMC": 5,
           "RARITY": "🟡",
           "TYPE": "✨",
-          "PRICE": 6.49
+          "PRICE": 6.49,
+          "SHORTNAME": "Vanquisher<br>Banner"
         },
         {
           "ID": "dazzling_theater",
-          "NAME": "Dazzling Theater",
-          "WHISPER": "🎭",
+          "NAME": "🎭 Dazzling Theater",
           "CATEGORY": "🌱",
           "SALT": 0.24,
           "COLOR": "⚪",
           "CMC": 4,
           "RARITY": "🟡",
           "TYPE": "🌩️",
-          "PRICE": 1.79
+          "PRICE": 1.79,
+          "SHORTNAME": "Dazzling<br>Theater"
         },
         {
           "ID": "prop_room",
-          "NAME": "Prop Room",
-          "WHISPER": "🎪",
+          "NAME": "🎪 Prop Room",
           "CATEGORY": "🌱",
           "SALT": 0.24,
           "COLOR": "⚪",
           "CMC": 3,
           "RARITY": "🟡",
           "TYPE": "🌩️",
-          "PRICE": 1.79
+          "PRICE": 1.79,
+          "SHORTNAME": "Prop<br>Room"
         },
         {
           "ID": "all_out_assault",
-          "NAME": "All-Out Assault",
-          "WHISPER": "⚡",
+          "NAME": "⚡ All-Out Assault",
           "CATEGORY": "💪",
           "SALT": 0.32,
           "COLOR": "⚪🔴⚫",
           "CMC": 5,
           "RARITY": "🟠",
           "TYPE": "🌩️",
-          "PRICE": 4.49
+          "PRICE": 4.49,
+          "SHORTNAME": "All-Out<br>Assault"
         },
         {
           "ID": "falkenrath_gorger",
-          "NAME": "Falkenrath Gorger",
-          "WHISPER": "😤",
+          "NAME": "😤 Falkenrath Gorger",
           "CATEGORY": "📤",
           "SALT": 0.32,
           "COLOR": "🔴",
           "CMC": 1,
           "RARITY": "🟡",
           "TYPE": "🧛",
-          "PRICE": 0.49
+          "PRICE": 0.49,
+          "SHORTNAME": "Falkenrath<br>Gorger"
         },
         {
           "ID": "master_of_dark_rites",
-          "NAME": "Master of Dark Rites",
-          "WHISPER": "🕯️",
+          "NAME": "🕯️ Master of Dark Rites",
           "CATEGORY": "🌱",
           "SALT": 0.22,
           "COLOR": "⚫",
           "CMC": 1,
           "RARITY": "🟡",
           "TYPE": "🧛",
-          "PRICE": 3.49
+          "PRICE": 3.49,
+          "SHORTNAME": "Master<br>Rites"
         },
         {
           "ID": "knight_of_the_ebon_legion",
-          "NAME": "Knight of the Ebon Legion",
-          "WHISPER": "🗡️",
+          "NAME": "🗡️ Knight of the Ebon Legion",
           "CATEGORY": "💪",
           "SALT": 0.14,
           "COLOR": "⚫",
           "CMC": 1,
           "RARITY": "🟡",
           "TYPE": "🧛",
-          "PRICE": 3.49
+          "PRICE": 3.49,
+          "SHORTNAME": "Knight<br>Legion"
         },
         {
           "ID": "vampire_socialite",
-          "NAME": "Vampire Socialite",
-          "WHISPER": "🥂",
+          "NAME": "🥂 Vampire Socialite",
           "CATEGORY": "Pump",
           "SALT": 0.07,
           "COLOR": "🔴⚫",
           "CMC": 2,
           "RARITY": "🔵",
           "TYPE": "🧛",
-          "PRICE": 0.79
+          "PRICE": 0.79,
+          "SHORTNAME": "Vampire<br>Socialite"
         },
         {
           "ID": "cordial_vampire",
-          "NAME": "Cordial Vampire",
-          "WHISPER": "🍷",
+          "NAME": "🍷 Cordial Vampire",
           "CATEGORY": "💪",
           "SALT": 0.42,
           "COLOR": "⚫",
           "CMC": 2,
           "RARITY": "🟡",
           "TYPE": "🧛",
-          "PRICE": 1.79
+          "PRICE": 1.79,
+          "SHORTNAME": "Cordial<br>Vampire"
         },
         {
           "ID": "charismatic_conqueror",
-          "NAME": "Charismatic Conqueror",
-          "WHISPER": "👑",
+          "NAME": "👑 Charismatic Conqueror",
           "CATEGORY": "👥",
           "SALT": 0.8,
           "COLOR": "⚪",
           "CMC": 2,
           "RARITY": "🟡",
           "TYPE": "🧛",
-          "PRICE": 18.99
+          "PRICE": 18.99,
+          "SHORTNAME": "Charismatic<br>Conqueror"
         },
         {
           "ID": "legion_lieutenant",
-          "NAME": "Legion Lieutenant",
-          "WHISPER": "⚔️",
+          "NAME": "⚔️ Legion Lieutenant",
           "CATEGORY": "💪",
           "SALT": 0.11,
           "COLOR": "⚪⚫",
           "CMC": 2,
           "RARITY": "🔵",
           "TYPE": "🧛",
-          "PRICE": 0.35
+          "PRICE": 0.35,
+          "SHORTNAME": "Legion<br>Lieutenant"
         },
         {
           "ID": "welcoming_vampire",
-          "NAME": "Welcoming Vampire",
-          "WHISPER": "🤝",
+          "NAME": "🤝 Welcoming Vampire",
           "CATEGORY": "📤",
           "SALT": 0.22,
           "COLOR": "⚪",
           "CMC": 3,
           "RARITY": "🟡",
           "TYPE": "🧛",
-          "PRICE": 2.29
+          "PRICE": 2.29,
+          "SHORTNAME": "Welcoming<br>Vampire"
         },
         {
           "ID": "rakish_heir",
-          "NAME": "Rakish Heir",
-          "WHISPER": "🎲",
+          "NAME": "🎲 Rakish Heir",
           "CATEGORY": "💪",
           "SALT": 0.16,
           "COLOR": "🔴",
           "CMC": 3,
           "RARITY": "🔵",
           "TYPE": "🧛",
-          "PRICE": 0.69
+          "PRICE": 0.69,
+          "SHORTNAME": "Rakish<br>Heir"
         },
         {
           "ID": "mavren_fein_dusk_apostle",
-          "NAME": "Mavren Fein, Dusk Apostle",
-          "WHISPER": "🌅",
+          "NAME": "🌅 Mavren Fein, Dusk Apostle",
           "CATEGORY": "👥",
           "SALT": 0.23,
           "COLOR": "⚪",
           "CMC": 3,
           "RARITY": "🟡",
           "TYPE": "🧛",
-          "PRICE": 0.49
+          "PRICE": 0.49,
+          "SHORTNAME": "Mavren<br>Fein"
         },
         {
           "ID": "stromkirk_captain",
-          "NAME": "Stromkirk Captain",
-          "WHISPER": "🛡️",
+          "NAME": "🛡️ Stromkirk Captain",
           "CATEGORY": "💪",
           "SALT": 0.16,
           "COLOR": "🔴⚫",
           "CMC": 3,
           "RARITY": "🔵",
           "TYPE": "🧛",
-          "PRICE": 1.79
+          "PRICE": 1.79,
+          "SHORTNAME": "Stromkirk<br>Captain"
         },
         {
           "ID": "laurine_the_diversion",
-          "NAME": "Laurine, the Diversion",
-          "WHISPER": "🎯",
+          "NAME": "🎯 Laurine, the Diversion",
           "CATEGORY": "🪓",
           "SALT": 0.5,
           "COLOR": "🔴",
           "CMC": 3,
           "RARITY": "🟡",
           "TYPE": "🧛",
-          "PRICE": 0.49
+          "PRICE": 0.49,
+          "SHORTNAME": "Laur<br>ine"
         },
         {
           "ID": "blood_crypt",
-          "NAME": "Blood Crypt",
-          "WHISPER": "🩻",
+          "NAME": "🩻 Blood Crypt",
           "CATEGORY": "🌋",
           "SALT": 0.22,
           "COLOR": "⚫🔴",
           "CMC": 0,
           "RARITY": "🟡",
           "TYPE": "⛈️",
-          "PRICE": 20.99
+          "PRICE": 20.99,
+          "SHORTNAME": "Blood<br>Crypt"
         },
         {
           "ID": "vito_thorn_of_the_dusk_rose",
-          "NAME": "Vito, Thorn of the Dusk Rose",
-          "WHISPER": "🥀",
+          "NAME": "🥀 Vito, Thorn of the Dusk Rose",
           "CATEGORY": "🩸",
           "SALT": 0.95,
           "COLOR": "⚫",
           "CMC": 3,
           "RARITY": "🟡",
           "TYPE": "🧛",
-          "PRICE": 10.99
+          "PRICE": 10.99,
+          "SHORTNAME": "Vito"
         },
         {
           "ID": "markov_baron",
-          "NAME": "Markov Baron",
-          "WHISPER": "🧛",
+          "NAME": "🧛 Markov Baron",
           "CATEGORY": "💪 ",
           "SALT": 0.11,
           "COLOR": "⚫",
           "CMC": 3,
           "RARITY": "🔵",
           "TYPE": "🧛",
-          "PRICE": 0.79
+          "PRICE": 0.79,
+          "SHORTNAME": "Markov<br>Baron"
         },
         {
           "ID": "edgar_charmed_groom",
-          "NAME": "Edgar, Charmed Groom",
-          "WHISPER": "💒",
+          "NAME": "💒 Edgar, Charmed Groom",
           "CATEGORY": "👥",
           "SALT": 0.15,
           "COLOR": "⚪⚫",
           "CMC": 4,
           "RARITY": "🟡",
           "TYPE": "🧛",
-          "PRICE": 5.49
+          "PRICE": 5.49,
+          "SHORTNAME": "Edgar"
         },
         {
           "ID": "edgar_markovs_coffin",
-          "NAME": "Edgar Markov's Coffin",
-          "WHISPER": "⚱️",
+          "NAME": "⚱️ Edgar Markov's Coffin",
           "CATEGORY": "👥",
           "SALT": 0.15,
           "COLOR": "⚪⚫",
           "CMC": 0,
           "RARITY": "🟡",
           "TYPE": "✨",
-          "PRICE": 5.49
+          "PRICE": 5.49,
+          "SHORTNAME": "Markov<br>Coffin"
         },
         {
           "ID": "kamber_the_plunderer",
-          "NAME": "Kamber, the Plunderer",
-          "WHISPER": "🏴‍☠️",
+          "NAME": "🏴‍☠️ Kamber, the Plunderer",
           "CATEGORY": "📤",
           "SALT": 0,
           "COLOR": "⚫",
           "CMC": 4,
           "RARITY": "🟡",
           "TYPE": "🧛",
-          "PRICE": 0.49
+          "PRICE": 0.49,
+          "SHORTNAME": "Kamber"
         },
         {
           "ID": "baron_bertram_graywater",
-          "NAME": "Baron Bertram Graywater",
-          "WHISPER": "🎩",
+          "NAME": "🎩 Baron Bertram Graywater",
           "CATEGORY": "👥",
           "SALT": 0.16,
           "COLOR": "⚪⚫",
           "CMC": 4,
           "RARITY": "🔵",
           "TYPE": "🧛",
-          "PRICE": 0.35
+          "PRICE": 0.35,
+          "SHORTNAME": "Bertram<br>Graywater"
         },
         {
           "ID": "olivia_opulent_outlaw",
-          "NAME": "Olivia, Opulent Outlaw",
-          "WHISPER": "💃",
+          "NAME": "💃 Olivia, Opulent Outlaw",
           "CATEGORY": "🌱",
           "SALT": 0.19,
           "COLOR": "⚪🔴⚫",
           "CMC": 4,
           "RARITY": "🟠",
           "TYPE": "🧛",
-          "PRICE": 8.49
+          "PRICE": 8.49,
+          "SHORTNAME": "Olivia"
         },
         {
           "ID": "sanctum_seeker",
-          "NAME": "Sanctum Seeker",
-          "WHISPER": "⛪",
+          "NAME": "⛪ Sanctum Seeker",
           "CATEGORY": "🩸",
           "SALT": 0.28,
           "COLOR": "⚫",
           "CMC": 4,
           "RARITY": "🟡",
           "TYPE": "🧛",
-          "PRICE": 0.49
+          "PRICE": 0.49,
+          "SHORTNAME": "Sanctum<br>Seeker"
         },
         {
           "ID": "olivia_crimson_bride",
-          "NAME": "Olivia, Crimson Bride",
-          "WHISPER": "👰",
+          "NAME": "👰 Olivia, Crimson Bride",
           "CATEGORY": "🌀",
           "SALT": 0.39,
           "COLOR": "🔴⚫",
           "CMC": 6,
           "RARITY": "🟠",
           "TYPE": "🧛",
-          "PRICE": 8.99
+          "PRICE": 8.99,
+          "SHORTNAME": "Olivia"
         },
         {
           "ID": "aclazotz_deepest_betrayal",
-          "NAME": "Aclazotz, Deepest Betrayal",
-          "WHISPER": "🦇",
+          "NAME": "🦇 Aclazotz, Deepest Betrayal",
           "CATEGORY": "📤",
           "SALT": 0.71,
           "COLOR": "⚫",
           "CMC": 5,
           "RARITY": "🟠",
           "TYPE": "🧛",
-          "PRICE": 8.99
+          "PRICE": 8.99,
+          "SHORTNAME": "Acla<br>zotz"
         },
         {
           "ID": "temple_of_the_dead",
-          "NAME": "Temple of the Dead",
-          "WHISPER": "⛩️",
+          "NAME": "⛩️ Temple of the Dead",
           "CATEGORY": "📤",
           "SALT": 0.71,
           "COLOR": "⚫",
           "CMC": 0,
           "RARITY": "🟠",
           "TYPE": "⛈️",
-          "PRICE": 8.99
+          "PRICE": 8.99,
+          "SHORTNAME": "Temple<br>Dead"
         },
         {
           "ID": "ojer_taq_deepest_foundation",
-          "NAME": "Ojer Taq, Deepest Foundation",
-          "WHISPER": "🏛️",
+          "NAME": "🏛️ Ojer Taq, Deepest Foundation",
           "CATEGORY": "👥",
           "SALT": 0.98,
           "COLOR": "⚪",
           "CMC": 6,
           "RARITY": "🟠",
           "TYPE": "🧛",
-          "PRICE": 39.99
+          "PRICE": 39.99,
+          "SHORTNAME": "Ojer<br>Taq"
         },
         {
           "ID": "temple_of_civilization",
-          "NAME": "Temple of Civilization",
-          "WHISPER": "🌄",
+          "NAME": "🌄 Temple of Civilization",
           "CATEGORY": "👥",
           "SALT": 0.98,
           "COLOR": "⚪",
           "CMC": 0,
           "RARITY": "🟠",
           "TYPE": "⛈️",
-          "PRICE": 39.99
+          "PRICE": 39.99,
+          "SHORTNAME": "Temple<br>Civilization"
         },
         {
           "ID": "godless_shrine",
-          "NAME": "Godless Shrine",
-          "WHISPER": "🏚️",
+          "NAME": "🏚️ Godless Shrine",
           "CATEGORY": "🌋",
           "SALT": 0.13,
           "COLOR": "⚫⚪",
           "CMC": 0,
           "RARITY": "🟡",
           "TYPE": "⛈️",
-          "PRICE": 13.99
+          "PRICE": 13.99,
+          "SHORTNAME": "Godless<br>Shrine"
         },
         {
           "ID": "shadowy_backstreet",
-          "NAME": "Shadowy Backstreet",
-          "WHISPER": "🌑",
+          "NAME": "🌑 Shadowy Backstreet",
           "CATEGORY": "🌋",
           "SALT": 0.17,
           "COLOR": "⚫⚪",
           "CMC": 0,
           "RARITY": "🟡",
           "TYPE": "⛈️",
-          "PRICE": 17.99
+          "PRICE": 17.99,
+          "SHORTNAME": "Shadowy<br>Backstreet"
         },
         {
           "ID": "path_of_ancestry",
-          "NAME": "Path of Ancestry",
-          "WHISPER": "🧬",
+          "NAME": "🧬 Path of Ancestry",
           "CATEGORY": "🌋",
           "SALT": 0.13,
           "COLOR": "⚫🔴⚪",
           "CMC": 0,
           "RARITY": "⚪",
           "TYPE": "⛈️",
-          "PRICE": 0.39
+          "PRICE": 0.39,
+          "SHORTNAME": "Path<br>Ancestry"
         },
         {
           "ID": "command_tower",
-          "NAME": "Command Tower",
-          "WHISPER": "🏰",
+          "NAME": "🏰 Command Tower",
           "CATEGORY": "🌋",
           "SALT": 0.38,
           "COLOR": "⚫🔴⚪",
           "CMC": 0,
           "RARITY": "⚪",
           "TYPE": "⛈️",
-          "PRICE": 0.79
+          "PRICE": 0.79,
+          "SHORTNAME": "Command<br>Tower"
         },
         {
           "ID": "savai_triome",
-          "NAME": "Savai Triome",
-          "WHISPER": "🗻",
+          "NAME": "🗻 Savai Triome",
           "CATEGORY": "🌋",
           "SALT": 0.27,
           "COLOR": "⚫🔴⚪",
           "CMC": 0,
           "RARITY": "🟡",
           "TYPE": "⛈️",
-          "PRICE": 29.99
+          "PRICE": 29.99,
+          "SHORTNAME": "Savai<br>Triome"
         },
         {
           "ID": "marsh_flats",
-          "NAME": "Marsh Flats",
-          "WHISPER": "🌿",
+          "NAME": "🌿 Marsh Flats",
           "CATEGORY": "🌋",
           "SALT": 0.33,
           "COLOR": "⚫⚪",
           "CMC": 0,
           "RARITY": "🟡",
           "TYPE": "⛈️",
-          "PRICE": 34.99
+          "PRICE": 34.99,
+          "SHORTNAME": "Marsh<br>Flats"
         },
         {
           "ID": "shattered_sanctum",
-          "NAME": "Shattered Sanctum",
-          "WHISPER": "🪟",
+          "NAME": "🪟 Shattered Sanctum",
           "CATEGORY": "🌋",
           "SALT": 0.06,
           "COLOR": "⚫⚪",
           "CMC": 0,
           "RARITY": "🟡",
           "TYPE": "⛈️",
-          "PRICE": 6.49
+          "PRICE": 6.49,
+          "SHORTNAME": "Shattered<br>Sanctum"
         },
         {
           "ID": "raucous_theater",
-          "NAME": "Raucous Theater",
-          "WHISPER": "🎶",
+          "NAME": "🎶 Raucous Theater",
           "CATEGORY": "🌋",
           "SALT": 0.2,
           "COLOR": "⚫🔴",
           "CMC": 0,
           "RARITY": "🟡",
           "TYPE": "⛈️",
-          "PRICE": 19.99
+          "PRICE": 19.99,
+          "SHORTNAME": "Raucous<br>Theater"
         },
         {
           "ID": "bloodstained_mire",
-          "NAME": "Bloodstained Mire",
-          "WHISPER": "🩸",
+          "NAME": "🩸 Bloodstained Mire",
           "CATEGORY": "🌋",
           "SALT": 0.19,
           "COLOR": "⚫🔴",
           "CMC": 0,
           "RARITY": "🟡",
           "TYPE": "⛈️",
-          "PRICE": 22.99
+          "PRICE": 22.99,
+          "SHORTNAME": "Bloodstained<br>Mire"
         },
         {
           "ID": "elegant_parlor",
-          "NAME": "Elegant Parlor",
-          "WHISPER": "🪞",
+          "NAME": "🪞 Elegant Parlor",
           "CATEGORY": "🌋",
           "SALT": 0.11,
           "COLOR": "🔴⚪",
           "CMC": 0,
           "RARITY": "🟡",
           "TYPE": "⛈️",
-          "PRICE": 17.99
+          "PRICE": 17.99,
+          "SHORTNAME": "Elegant<br>Parlor"
         },
         {
           "ID": "arid_mesa",
-          "NAME": "Arid Mesa",
-          "WHISPER": "🏜️",
+          "NAME": "🏜️ Arid Mesa",
           "CATEGORY": "🌋",
           "SALT": 0.2,
           "COLOR": "🔴⚪",
           "CMC": 0,
           "RARITY": "🟡",
           "TYPE": "⛈️",
-          "PRICE": 34.99
+          "PRICE": 34.99,
+          "SHORTNAME": "Arid<br>Mesa"
         },
         {
           "ID": "sacred_foundry",
-          "NAME": "Sacred Foundry",
-          "WHISPER": "🔥",
+          "NAME": "🔥 Sacred Foundry",
           "CATEGORY": "🌋",
           "SALT": 0.16,
           "COLOR": "🔴⚪",
           "CMC": 0,
           "RARITY": "🟡",
           "TYPE": "⛈️",
-          "PRICE": 15.99
+          "PRICE": 15.99,
+          "SHORTNAME": "Sacred<br>Foundry"
         },
         {
           "ID": "haunted_ridge",
-          "NAME": "Haunted Ridge",
-          "WHISPER": "👻",
+          "NAME": "👻 Haunted Ridge",
           "CATEGORY": "🌋",
           "SALT": 0.18,
           "COLOR": "⚫🔴",
           "CMC": 0,
           "RARITY": "🟡",
           "TYPE": "⛈️",
-          "PRICE": 11.99
+          "PRICE": 11.99,
+          "SHORTNAME": "Haunted<br>Ridge"
         },
         {
           "ID": "voldaren_estate",
-          "NAME": "Voldaren Estate",
-          "WHISPER": "🏡",
+          "NAME": "🏡 Voldaren Estate",
           "CATEGORY": "🌋",
           "SALT": 0.09,
           "COLOR": "⚫🔴⚪",
           "CMC": 0,
           "RARITY": "🟡",
           "TYPE": "⛈️",
-          "PRICE": 0.59
+          "PRICE": 0.59,
+          "SHORTNAME": "Voldaren<br>Estate"
         },
         {
           "ID": "secluded_courtyard",
-          "NAME": "Secluded Courtyard",
-          "WHISPER": "🌳",
+          "NAME": "🌳 Secluded Courtyard",
           "CATEGORY": "🌋",
           "SALT": 0.02,
           "COLOR": "⚫🔴⚪",
           "CMC": 0,
           "RARITY": "🔵",
           "TYPE": "⛈️",
-          "PRICE": 0.59
+          "PRICE": 0.59,
+          "SHORTNAME": "Secluded<br>Courtyard"
         },
         {
           "ID": "sundown_pass",
-          "NAME": "Sundown Pass",
-          "WHISPER": "🌇",
+          "NAME": "🌇 Sundown Pass",
           "CATEGORY": "🌋",
           "SALT": 0.11,
           "COLOR": "🔴⚪",
           "CMC": 0,
           "RARITY": "🟡",
           "TYPE": "⛈️",
-          "PRICE": 12.99
+          "PRICE": 12.99,
+          "SHORTNAME": "Sundown<br>Pass"
         },
         {
           "ID": "vault_of_the_archangel",
-          "NAME": "Vault of the Archangel",
-          "WHISPER": "😇",
+          "NAME": "😇 Vault of the Archangel",
           "CATEGORY": "🌋",
           "SALT": 0.24,
           "COLOR": "⚫⚪",
           "CMC": 0,
           "RARITY": "🟡",
           "TYPE": "⛈️",
-          "PRICE": 1.79
+          "PRICE": 1.79,
+          "SHORTNAME": "Vault<br>Archangel"
         },
         {
           "ID": "takenuma_abandoned_mire",
-          "NAME": "Takenuma, Abandoned Mire",
-          "WHISPER": "🏯",
+          "NAME": "🏯 Takenuma, Abandoned Mire",
           "CATEGORY": "🌋",
           "SALT": 0.22,
           "COLOR": "⚫",
           "CMC": 0,
           "RARITY": "🟡",
           "TYPE": "⛈️",
-          "PRICE": 15.99
+          "PRICE": 15.99,
+          "SHORTNAME": "Take<br>numa"
         },
         {
           "ID": "anje_maid_of_dishonor",
-          "NAME": "Anje, Maid of Dishonor",
-          "WHISPER": "🍺",
+          "NAME": "🍺 Anje, Maid of Dishonor",
           "CATEGORY": "📤",
           "SALT": 0.35,
           "COLOR": "🔴⚫",
           "CMC": 4,
           "RARITY": "🟡",
           "TYPE": "🧛",
-          "PRICE": 0.79
+          "PRICE": 0.79,
+          "SHORTNAME": "Anje"
         },
         {
           "ID": "bloodletter_of_aclazotz",
-          "NAME": "Bloodletter of Aclazotz",
-          "WHISPER": "✍️",
+          "NAME": "✍️ Bloodletter of Aclazotz",
           "CATEGORY": "🩸",
           "SALT": 1.09,
           "COLOR": "⚫",
           "CMC": 4,
           "RARITY": "🟠",
           "TYPE": "🧛",
-          "PRICE": 37.99
+          "PRICE": 37.99,
+          "SHORTNAME": "Bloodletter<br>Aclazotz"
         },
         {
           "ID": "bloodthirsty_conqueror",
-          "NAME": "Bloodthirsty Conqueror",
-          "WHISPER": "🦅",
+          "NAME": "🦅 Bloodthirsty Conqueror",
           "CATEGORY": "💖",
           "SALT": 1.31,
           "COLOR": "⚫",
           "CMC": 5,
           "RARITY": "🟠",
           "TYPE": "🧛",
-          "PRICE": 44.99
+          "PRICE": 44.99,
+          "SHORTNAME": "Bloodthirsty<br>Conqueror"
         },
         {
           "ID": "roaming_throne",
-          "NAME": "Roaming Throne",
-          "WHISPER": "🪑",
+          "NAME": "🪑 Roaming Throne",
           "CATEGORY": "📚",
           "SALT": 1.45,
           "COLOR": "💎",
           "CMC": 4,
           "RARITY": "🟡",
           "TYPE": "✨",
-          "PRICE": 74.99
+          "PRICE": 74.99,
+          "SHORTNAME": "Roaming<br>Throne"
         },
         {
           "ID": "crackling_doom",
-          "NAME": "Crackling Doom",
-          "WHISPER": "⚡",
+          "NAME": "⚡ Crackling Doom",
           "CATEGORY": "🧹",
           "SALT": 0.31,
           "COLOR": "⚪🔴⚫",
           "CMC": 3,
           "RARITY": "🔵",
           "TYPE": "⚡",
-          "PRICE": 0.39
+          "PRICE": 0.39,
+          "SHORTNAME": "Crackling<br>Doom"
         },
         {
           "ID": "march_of_the_canonized",
-          "NAME": "March of the Canonized",
-          "WHISPER": "🕊️",
+          "NAME": "🕊️ March of the Canonized",
           "CATEGORY": "👥",
           "SALT": 0.22,
           "COLOR": "⚪",
           "CMC": 2,
           "RARITY": "🟡",
           "TYPE": "🌩️",
-          "PRICE": 0.69
+          "PRICE": 0.69,
+          "SHORTNAME": "March<br>Canonized"
         },
         {
           "ID": "forerunner_of_the_legion",
-          "NAME": "Forerunner of the Legion",
-          "WHISPER": "📣",
+          "NAME": "📣 Forerunner of the Legion",
           "CATEGORY": "🔍",
           "SALT": 0.62,
           "COLOR": "⚪",
           "CMC": 3,
           "RARITY": "🔵",
           "TYPE": "🧛",
-          "PRICE": 2.49
+          "PRICE": 2.49,
+          "SHORTNAME": "Forerunner<br>Legion"
         },
         {
           "ID": "akromas_will",
-          "NAME": "Akroma's Will",
-          "WHISPER": "🙏",
+          "NAME": "🙏 Akroma's Will",
           "CATEGORY": "🪬",
           "SALT": 1.18,
           "COLOR": "⚪",
           "CMC": 4,
           "RARITY": "🟡",
           "TYPE": "⚡",
-          "PRICE": 16.99
+          "PRICE": 16.99,
+          "SHORTNAME": "Akroma<br>Will"
         },
         {
           "ID": "florian_voldaren_scion",
-          "NAME": "Florian, Voldaren Scion",
-          "WHISPER": "🔍",
+          "NAME": "🔍 Florian, Voldaren Scion",
           "CATEGORY": "📤",
           "SALT": 0.22,
           "COLOR": "🔴⚫",
           "CMC": 3,
           "RARITY": "🟡",
           "TYPE": "🧛",
-          "PRICE": 0.79
+          "PRICE": 0.79,
+          "SHORTNAME": "Florian,<br>Voldaren"
         },
         {
           "ID": "malakir_rebirth",
-          "NAME": "Malakir Rebirth",
-          "WHISPER": "🔄",
+          "NAME": "🔄 Malakir Rebirth",
           "CATEGORY": "🪬",
           "SALT": 0.21,
           "COLOR": "⚫",
           "CMC": 1,
           "RARITY": "🔵",
           "TYPE": "⚡",
-          "PRICE": 15.99
+          "PRICE": 15.99,
+          "SHORTNAME": "Malakir<br>Rebirth"
         },
         {
           "ID": "malakir_mire",
-          "NAME": "Malakir Mire",
-          "WHISPER": "🌫️",
+          "NAME": "🌫️ Malakir Mire",
           "CATEGORY": "🪬",
           "SALT": 0.21,
           "COLOR": "⚫",
           "CMC": 0,
           "RARITY": "🔵",
           "TYPE": "⛈️",
-          "PRICE": 15.99
+          "PRICE": 15.99,
+          "SHORTNAME": "Malakir<br>Mire"
         },
         {
           "ID": "tarrians_journal",
-          "NAME": "Tarrian's Journal",
-          "WHISPER": "📓",
+          "NAME": "📓 Tarrian's Journal",
           "CATEGORY": "📤",
           "SALT": 0.13,
           "COLOR": "⚫",
           "CMC": 2,
           "RARITY": "🟡",
           "TYPE": "✨",
-          "PRICE": 0.79
+          "PRICE": 0.79,
+          "SHORTNAME": "Tarrian<br>Journal"
         },
         {
           "ID": "the_tomb_of_aclazotz",
-          "NAME": "The Tomb of Aclazotz",
-          "WHISPER": "🦇",
+          "NAME": "🦇 The Tomb of Aclazotz",
           "CATEGORY": "📤",
           "SALT": 0.13,
           "COLOR": "⚫",
           "CMC": 0,
           "RARITY": "🟡",
           "TYPE": "⛈️",
-          "PRICE": 0.79
+          "PRICE": 0.79,
+          "SHORTNAME": "Tomb<br>Aclazotz"
         },
         {
           "ID": "phyrexian_reclamation",
-          "NAME": "Phyrexian Reclamation",
-          "WHISPER": "♻️",
+          "NAME": "♻️ Phyrexian Reclamation",
           "CATEGORY": "🌀",
           "SALT": 0.37,
           "COLOR": "⚫",
           "CMC": 1,
           "RARITY": "🔵",
           "TYPE": "🌩️",
-          "PRICE": 2.99
+          "PRICE": 2.99,
+          "SHORTNAME": "Phyrexian<br>Reclamation"
         },
         {
           "ID": "thought_vessel",
-          "NAME": "Thought Vessel",
-          "WHISPER": "🧠",
+          "NAME": "🧠 Thought Vessel",
           "CATEGORY": "🌱",
           "SALT": 0.27,
           "COLOR": "💎",
           "CMC": 2,
           "RARITY": "⚪",
           "TYPE": "✨",
-          "PRICE": 3.49
+          "PRICE": 3.49,
+          "SHORTNAME": "Thought<br>Vessel"
         },
         {
           "ID": "champion_of_dusk",
-          "NAME": "Champion of Dusk",
-          "WHISPER": "🌑",
+          "NAME": "🌑 Champion of Dusk",
           "CATEGORY": "📤",
           "SALT": 0.22,
           "COLOR": "⚫",
           "CMC": 5,
           "RARITY": "🟡",
           "TYPE": "🧛",
-          "PRICE": 0.69
+          "PRICE": 0.69,
+          "SHORTNAME": "Champion<br>Dusk"
         },
         {
           "ID": "vault_of_champions",
-          "NAME": "Vault of Champions",
-          "WHISPER": "🏦",
+          "NAME": "🏦 Vault of Champions",
           "CATEGORY": "🌋",
           "SALT": 0.21,
           "COLOR": "⚫⚪",
           "CMC": 0,
           "RARITY": "🟡",
           "TYPE": "⛈️",
-          "PRICE": 20.99
+          "PRICE": 20.99,
+          "SHORTNAME": "Vault<br>Champions"
         },
         {
           "ID": "elenda_saint_of_dusk",
-          "NAME": "Elenda, Saint of Dusk",
-          "WHISPER": "⭐",
+          "NAME": "⭐ Elenda, Saint of Dusk",
           "CATEGORY": "💖",
           "SALT": 0.19,
           "COLOR": "⚪⚫",
           "CMC": 4,
           "RARITY": "🟡",
           "TYPE": "🧛",
-          "PRICE": 0.59
+          "PRICE": 0.59,
+          "SHORTNAME": "Elenda"
         },
         {
           "ID": "blightstep_pathway",
-          "NAME": "Blightstep Pathway",
-          "WHISPER": "🌑",
+          "NAME": "🌑 Blightstep Pathway",
           "CATEGORY": "🌋",
           "SALT": 0.03,
           "COLOR": "⚫",
           "CMC": 0,
           "RARITY": "🟡",
           "TYPE": "⛈️",
-          "PRICE": 8.99
+          "PRICE": 8.99,
+          "SHORTNAME": "Blightstep<br>Pathway"
         },
         {
           "ID": "searstep_pathway",
-          "NAME": "Searstep Pathway",
-          "WHISPER": "🔥",
+          "NAME": "🔥 Searstep Pathway",
           "CATEGORY": "🌋",
           "SALT": 0.03,
           "COLOR": "🔴",
           "CMC": 0,
           "RARITY": "🟡",
           "TYPE": "⛈️",
-          "PRICE": 8.99
+          "PRICE": 8.99,
+          "SHORTNAME": "Searstep<br>Pathway"
         },
         {
           "ID": "needleverge_pathway",
-          "NAME": "Needleverge Pathway",
-          "WHISPER": "📍",
+          "NAME": "📍 Needleverge Pathway",
           "CATEGORY": "🌋",
           "SALT": 0.13,
           "COLOR": "🔴",
           "CMC": 0,
           "RARITY": "🟡",
           "TYPE": "⛈️",
-          "PRICE": 4.99
+          "PRICE": 4.99,
+          "SHORTNAME": "Needleverge<br>Pathway"
         },
         {
           "ID": "pillarverge_pathway",
-          "NAME": "Pillarverge Pathway",
-          "WHISPER": "🪨",
+          "NAME": "🪨 Pillarverge Pathway",
           "CATEGORY": "🌋",
           "SALT": 0.13,
           "COLOR": "⚪",
           "CMC": 0,
           "RARITY": "🟡",
           "TYPE": "⛈️",
-          "PRICE": 4.99
+          "PRICE": 4.99,
+          "SHORTNAME": "Pillarverge<br>Pathway"
         },
         {
           "ID": "we_ride_at_dawn",
-          "NAME": "We Ride at Dawn",
-          "WHISPER": "🐴",
+          "NAME": "🐴 We Ride at Dawn",
           "CATEGORY": "🌱",
           "SALT": 0,
           "COLOR": "⚪",
           "CMC": 3,
           "RARITY": "🟡",
           "TYPE": "🌩️",
-          "PRICE": 0.49
+          "PRICE": 0.49,
+          "SHORTNAME": "Ride<br>Dawn"
         },
         {
           "ID": "brightclimb_pathway",
-          "NAME": "Brightclimb Pathway",
-          "WHISPER": "☀️",
+          "NAME": "☀️ Brightclimb Pathway",
           "CATEGORY": "🌋",
           "SALT": 0.14,
           "COLOR": "⚪",
           "CMC": 0,
           "RARITY": "🟡",
           "TYPE": "⛈️",
-          "PRICE": 5.99
+          "PRICE": 5.99,
+          "SHORTNAME": "Brightclimb<br>Pathway"
         },
         {
           "ID": "grimclimb_pathway",
-          "NAME": "Grimclimb Pathway",
-          "WHISPER": "🌘",
+          "NAME": "🌘 Grimclimb Pathway",
           "CATEGORY": "🌋",
           "SALT": 0.14,
           "COLOR": "⚫",
           "CMC": 0,
           "RARITY": "🟡",
           "TYPE": "⛈️",
-          "PRICE": 5.99
+          "PRICE": 5.99,
+          "SHORTNAME": "Grimclimb<br>Pathway"
         },
         {
           "ID": "edgar_markov",
-          "NAME": "Edgar Markov",
-          "WHISPER": "🧛‍♂️",
+          "NAME": "🧛‍♂️ Edgar Markov",
           "CATEGORY": "🌟",
           "SALT": 2.05,
           "COLOR": "⚪🔴⚫",
           "CMC": 6,
           "RARITY": "🟠",
           "TYPE": "🧛",
-          "PRICE": 39.99
+          "PRICE": 39.99,
+          "SHORTNAME": "Edgar<br>Markov"
         },
         {
           "ID": "black_market_connections",
-          "NAME": "Black Market Connections",
-          "WHISPER": "🕶️",
+          "NAME": "🕶️ Black Market Connections",
           "CATEGORY": "📤",
           "SALT": 0.56,
           "COLOR": "⚫",
           "CMC": 3,
           "RARITY": "🟡",
           "TYPE": "🌩️",
-          "PRICE": 22.99
+          "PRICE": 22.99,
+          "SHORTNAME": "Market<br>Connections"
         },
         {
           "ID": "detection_tower",
-          "NAME": "Detection Tower",
-          "WHISPER": "🔭",
+          "NAME": "🔭 Detection Tower",
           "CATEGORY": "🌋",
           "SALT": 0.19,
           "COLOR": "💎",
           "CMC": 0,
           "RARITY": "🟡",
           "TYPE": "⛈️",
-          "PRICE": 3.49
+          "PRICE": 3.49,
+          "SHORTNAME": "Detection<br>Tower"
         },
         {
           "ID": "vito_fanatic_of_aclazotz",
-          "NAME": "Vito, Fanatic of Aclazotz",
-          "WHISPER": "🦴",
+          "NAME": "🦴 Vito, Fanatic of Aclazotz",
           "CATEGORY": "🩸",
           "SALT": 0.47,
           "COLOR": "⚪⚫",
           "CMC": 4,
           "RARITY": "🟠",
           "TYPE": "🧛",
-          "PRICE": 0.99
+          "PRICE": 0.99,
+          "SHORTNAME": "Vito"
         },
         {
           "ID": "life_insurance",
-          "NAME": "Life Insurance",
-          "WHISPER": "📋",
+          "NAME": "📋 Life Insurance",
           "CATEGORY": "🌱",
           "SALT": 0.31,
           "COLOR": "⚪⚫",
           "CMC": 5,
           "RARITY": "🟡",
           "TYPE": "🌩️",
-          "PRICE": 0.49
+          "PRICE": 0.49,
+          "SHORTNAME": "Life<br>Insurance"
         },
         {
           "ID": "blood_artist",
-          "NAME": "Blood Artist",
-          "WHISPER": "🎨",
+          "NAME": "🎨 Blood Artist",
           "CATEGORY": "🩸",
           "SALT": 0.56,
           "COLOR": "⚫",
           "CMC": 2,
           "RARITY": "🔵",
           "TYPE": "🧛",
-          "PRICE": 3.99
+          "PRICE": 3.99,
+          "SHORTNAME": "Blood<br>Artist"
         },
         {
           "ID": "exquisite_blood",
-          "NAME": "Exquisite Blood",
-          "WHISPER": "🍸",
+          "NAME": "🍸 Exquisite Blood",
           "CATEGORY": "💖",
           "SALT": 1.59,
           "COLOR": "⚫",
           "CMC": 5,
           "RARITY": "🟡",
           "TYPE": "🌩️",
-          "PRICE": 32.99
+          "PRICE": 32.99,
+          "SHORTNAME": "Exquisite<br>Blood"
         },
         {
           "ID": "drana_liberator_of_malakir",
-          "NAME": "Drana, Liberator of Malakir",
-          "WHISPER": "🗡️",
+          "NAME": "🗡️ Drana, Liberator of Malakir",
           "CATEGORY": "💪",
           "SALT": 0.19,
           "COLOR": "⚫",
           "CMC": 3,
           "RARITY": "🟠",
           "TYPE": "🧛",
-          "PRICE": 1.79
+          "PRICE": 1.79,
+          "SHORTNAME": "Drana"
         },
         {
           "ID": "honeymoon_hearse",
-          "NAME": "Honeymoon Hearse",
-          "WHISPER": "🛞",
+          "NAME": "🛞 Honeymoon Hearse",
           "CATEGORY": "🛞",
           "SALT": 0.5,
           "COLOR": "🔴",
@@ -1215,151 +1214,152 @@
           "RARITY": "🔵",
           "TYPE": "✨",
           "PRICE": 0.35,
-          "SECONDARY_CATEGORIES": "Artifact"
+          "SECONDARY_CATEGORIES": "Artifact",
+          "SHORTNAME": "Honeymoon<br>Hearse"
         },
         {
           "ID": "rakdos_guildgate",
-          "NAME": "Rakdos Guildgate",
-          "WHISPER": "🚪",
+          "NAME": "🚪 Rakdos Guildgate",
           "CATEGORY": "🌋",
           "SALT": 0.05,
           "COLOR": "⚫🔴",
           "CMC": 0,
           "RARITY": "⚪",
           "TYPE": "⛈️",
-          "PRICE": 0.35
+          "PRICE": 0.35,
+          "SHORTNAME": "Rakdos<br>Guildgate"
         },
         {
           "ID": "mazes_end",
-          "NAME": "Maze's End",
-          "WHISPER": "🔮",
+          "NAME": "🔮 Maze's End",
           "CATEGORY": "🌋",
           "SALT": 0.55,
           "COLOR": "💎",
           "CMC": 0,
           "RARITY": "🟠",
           "TYPE": "⛈️",
-          "PRICE": 1.99
+          "PRICE": 1.99,
+          "SHORTNAME": "Maze<br>End"
         },
         {
           "ID": "boros_guildgate",
-          "NAME": "Boros Guildgate",
-          "WHISPER": "🚪",
+          "NAME": "🚪 Boros Guildgate",
           "CATEGORY": "🌋",
           "SALT": 0.12,
           "COLOR": "🔴⚪",
           "CMC": 0,
           "RARITY": "⚪",
           "TYPE": "⛈️",
-          "PRICE": 0.35
+          "PRICE": 0.35,
+          "SHORTNAME": "Boros<br>Guildgate"
         },
         {
           "ID": "orzhov_guildgate",
-          "NAME": "Orzhov Guildgate",
-          "WHISPER": "🚪",
+          "NAME": "🚪 Orzhov Guildgate",
           "CATEGORY": "🌋",
           "SALT": 0.04,
           "COLOR": "⚫⚪",
           "CMC": 0,
           "RARITY": "⚪",
           "TYPE": "⛈️",
-          "PRICE": 0.39
+          "PRICE": 0.39,
+          "SHORTNAME": "Orzhov<br>Guildgate"
         },
         {
           "ID": "castle_locthwain",
-          "NAME": "Castle Locthwain",
-          "WHISPER": "🏴",
+          "NAME": "🏴 Castle Locthwain",
           "CATEGORY": "🌋",
           "SALT": 0.1,
           "COLOR": "⚫",
           "CMC": 0,
           "RARITY": "🟡",
           "TYPE": "⛈️",
-          "PRICE": 5.99
+          "PRICE": 5.99,
+          "SHORTNAME": "Castle<br>Locthwain"
         },
         {
           "ID": "the_meathook_massacre",
-          "NAME": "The Meathook Massacre",
-          "WHISPER": "🪝",
+          "NAME": "🪝 The Meathook Massacre",
           "CATEGORY": "🧹",
           "SALT": 0.99,
           "COLOR": "⚫",
           "CMC": 2,
           "RARITY": "🟠",
           "TYPE": "🌩️",
-          "PRICE": 32.99
+          "PRICE": 32.99,
+          "SHORTNAME": "Meathook<br>Massacre"
         },
         {
           "ID": "luxury_suite",
-          "NAME": "Luxury Suite",
-          "WHISPER": "🛋️",
+          "NAME": "🛋️ Luxury Suite",
           "CATEGORY": "🌋",
           "SALT": 0.09,
           "COLOR": "⚫🔴",
           "CMC": 0,
           "RARITY": "🟡",
           "TYPE": "⛈️",
-          "PRICE": 37.99
+          "PRICE": 37.99,
+          "SHORTNAME": "Luxury<br>Suite"
         },
         {
           "ID": "seal_of_the_guildpact",
-          "NAME": "Seal of the Guildpact",
-          "WHISPER": "🔮",
+          "NAME": "🔮 Seal of the Guildpact",
           "CATEGORY": "🌱",
           "SALT": 0.29,
           "COLOR": "💎",
           "CMC": 5,
           "RARITY": "🟡",
           "TYPE": "✨",
-          "PRICE": 0.69
+          "PRICE": 0.69,
+          "SHORTNAME": "Seal<br>Guildpact"
         },
         {
           "ID": "heirloom_mirror",
-          "NAME": "Heirloom Mirror",
-          "WHISPER": "🪞",
+          "NAME": "🪞 Heirloom Mirror",
           "CATEGORY": "📤",
           "SALT": 0.07,
           "COLOR": "⚫",
           "CMC": 2,
           "RARITY": "🔵",
           "TYPE": "✨",
-          "PRICE": 0.35
+          "PRICE": 0.35,
+          "SHORTNAME": "Heirloom<br>Mirror"
         },
         {
           "ID": "inherited_fiend",
-          "NAME": "Inherited Fiend",
-          "WHISPER": "😈",
+          "NAME": "😈 Inherited Fiend",
           "CATEGORY": "📤",
           "SALT": 0.07,
           "COLOR": "⚫",
           "CMC": 0,
           "RARITY": "🔵",
           "TYPE": "🧛",
-          "PRICE": 0.35
+          "PRICE": 0.35,
+          "SHORTNAME": "Inherited<br>Fiend"
         },
         {
           "ID": "white_lotus_tile",
-          "NAME": "White Lotus Tile",
-          "WHISPER": "🪷",
+          "NAME": "🪷 White Lotus Tile",
           "CATEGORY": "🌱",
           "SALT": 0,
           "COLOR": "⚪🔴⚫",
           "CMC": 4,
           "RARITY": "🟠",
           "TYPE": "✨",
-          "PRICE": 6.49
+          "PRICE": 6.49,
+          "SHORTNAME": "White<br>Lotus"
         },
         {
           "ID": "urborg_tomb_of_yawgmoth",
-          "NAME": "Urborg, Tomb of Yawgmoth",
-          "WHISPER": "💀",
+          "NAME": "💀 Urborg, Tomb of Yawgmoth",
           "CATEGORY": "🌋",
           "SALT": 0.49,
           "COLOR": "⚫",
           "CMC": 0,
           "RARITY": "🟡",
           "TYPE": "⛈️",
-          "PRICE": 64.99
+          "PRICE": 64.99,
+          "SHORTNAME": "Urborg"
         }
       ]
     },
@@ -1369,1244 +1369,1243 @@
       "items": [
         {
           "ID": "imperial_seal",
-          "NAME": "Imperial Seal",
-          "WHISPER": "🔏",
+          "NAME": "🔏 Imperial Seal",
           "CATEGORY": "🔍",
           "SALT": 1.35,
           "COLOR": "⚫",
           "CMC": 1,
           "RARITY": "🟠",
           "TYPE": "🔮",
-          "PRICE": 179.99
+          "PRICE": 179.99,
+          "SHORTNAME": "Imperial<br>Seal"
         },
         {
           "ID": "vampiric_tutor",
-          "NAME": "Vampiric 🔍",
-          "WHISPER": "🩸",
+          "NAME": "🩸 Vampiric 🔍",
           "CATEGORY": "🔍",
           "SALT": 1.6,
           "COLOR": "⚫",
           "CMC": 1,
           "RARITY": "🟠",
           "TYPE": "⚡",
-          "PRICE": 84.99
+          "PRICE": 84.99,
+          "SHORTNAME": "Vampiric"
         },
         {
           "ID": "reanimate",
-          "NAME": "Reanimate",
-          "WHISPER": "⚰️",
+          "NAME": "⚰️ Reanimate",
           "CATEGORY": "🌀",
           "SALT": 0.79,
           "COLOR": "⚫",
           "CMC": 1,
           "RARITY": "🟡",
           "TYPE": "🔮",
-          "PRICE": 11.99
+          "PRICE": 11.99,
+          "SHORTNAME": "Re<br>animate"
         },
         {
           "ID": "thoughtseize",
-          "NAME": "Thoughtseize",
-          "WHISPER": "🧠",
+          "NAME": "🧠 Thoughtseize",
           "CATEGORY": "📤",
           "SALT": 0.93,
           "COLOR": "⚫",
           "CMC": 1,
           "RARITY": "🟡",
           "TYPE": "🔮",
-          "PRICE": 9.99
+          "PRICE": 9.99,
+          "SHORTNAME": "Thought<br>seize"
         },
         {
           "ID": "entomb",
-          "NAME": "Entomb",
-          "WHISPER": "⚰️",
+          "NAME": "⚰️ Entomb",
           "CATEGORY": "🔍",
           "SALT": 0.92,
           "COLOR": "⚫",
           "CMC": 1,
           "RARITY": "🟡",
           "TYPE": "⚡",
-          "PRICE": 15.99
+          "PRICE": 15.99,
+          "SHORTNAME": "Entomb"
         },
         {
           "ID": "enlightened_tutor",
-          "NAME": "Enlightened 🔍",
-          "WHISPER": "🌩️",
+          "NAME": "🌩️ Enlightened 🔍",
           "CATEGORY": "🔍",
           "SALT": 1.15,
           "COLOR": "⚪",
           "CMC": 1,
           "RARITY": "🟡",
           "TYPE": "⚡",
-          "PRICE": 37.99
+          "PRICE": 37.99,
+          "SHORTNAME": "Enlightened"
         },
         {
           "ID": "demonic_tutor",
-          "NAME": "Demonic 🔍",
-          "WHISPER": "📜",
+          "NAME": "📜 Demonic 🔍",
           "CATEGORY": "🔍",
           "SALT": 1.58,
           "COLOR": "⚫",
           "CMC": 2,
           "RARITY": "🟠",
           "TYPE": "🔮",
-          "PRICE": 74.99
+          "PRICE": 74.99,
+          "SHORTNAME": "Demonic"
         },
         {
           "ID": "arcane_signet",
-          "NAME": "Arcane Signet",
-          "WHISPER": "💎",
+          "NAME": "💎 Arcane Signet",
           "CATEGORY": "🌱",
           "SALT": 0.24,
           "COLOR": "⚪⚫",
           "CMC": 2,
           "RARITY": "⚪",
           "TYPE": "✨",
-          "PRICE": 0.99
+          "PRICE": 0.99,
+          "SHORTNAME": "Arcane<br>Signet"
         },
         {
           "ID": "legions_landing",
-          "NAME": "Legion's Landing",
-          "WHISPER": "⛵",
+          "NAME": "⛵ Legion's Landing",
           "CATEGORY": "🌱",
           "SALT": 0.13,
           "COLOR": "⚪",
           "CMC": 1,
           "RARITY": "🟡",
           "TYPE": "🌩️",
-          "PRICE": 5.99
+          "PRICE": 5.99,
+          "SHORTNAME": "Legion<br>Landing"
         },
         {
           "ID": "adanto_the_first_fort",
-          "NAME": "Adanto, the First Fort",
-          "WHISPER": "🏰",
+          "NAME": "🏰 Adanto, the First Fort",
           "CATEGORY": "🌱",
           "SALT": 0.13,
           "COLOR": "⚪",
           "CMC": 0,
           "RARITY": "🟡",
           "TYPE": "⛈️",
-          "PRICE": 5.99
+          "PRICE": 5.99,
+          "SHORTNAME": "Adanto"
         },
         {
           "ID": "sol_ring",
-          "NAME": "Sol Ring",
-          "WHISPER": "💍",
+          "NAME": "💍 Sol Ring",
           "CATEGORY": "🌱",
           "SALT": 1.46,
           "COLOR": "💎",
           "CMC": 1,
           "RARITY": "🔵",
           "TYPE": "✨",
-          "PRICE": 2.49
+          "PRICE": 2.49,
+          "SHORTNAME": "Sol<br>Ring"
         },
         {
           "ID": "pyre_of_heroes",
-          "NAME": "Pyre of Heroes",
-          "WHISPER": "🔥",
+          "NAME": "🔥 Pyre of Heroes",
           "CATEGORY": "🔍",
           "SALT": 0.4,
           "COLOR": "💎",
           "CMC": 2,
           "RARITY": "🟡",
           "TYPE": "✨",
-          "PRICE": 3.99
+          "PRICE": 3.99,
+          "SHORTNAME": "Pyre<br>Heroes"
         },
         {
           "ID": "victimize",
-          "NAME": "Victimize",
-          "WHISPER": "⚖️",
+          "NAME": "⚖️ Victimize",
           "CATEGORY": "🌀",
           "SALT": 0.32,
           "COLOR": "⚫",
           "CMC": 3,
           "RARITY": "🔵",
           "TYPE": "🔮",
-          "PRICE": 1.49
+          "PRICE": 1.49,
+          "SHORTNAME": "Victi<br>mize"
         },
         {
           "ID": "profane_procession",
-          "NAME": "Profane Procession",
-          "WHISPER": "⛓️",
+          "NAME": "⛓️ Profane Procession",
           "CATEGORY": "🧹",
           "SALT": 0.32,
           "COLOR": "⚪⚫",
           "CMC": 3,
           "RARITY": "🟡",
           "TYPE": "🌩️",
-          "PRICE": 0.49
+          "PRICE": 0.49,
+          "SHORTNAME": "Profane<br>Procession"
         },
         {
           "ID": "tomb_of_the_dusk_rose",
-          "NAME": "Tomb of the Dusk Rose",
-          "WHISPER": "🌹",
+          "NAME": "🌹 Tomb of the Dusk Rose",
           "CATEGORY": "🧹",
           "SALT": 0.32,
           "COLOR": "⚫🔴⚪",
           "CMC": 0,
           "RARITY": "🟡",
           "TYPE": "⛈️",
-          "PRICE": 0.49
+          "PRICE": 0.49,
+          "SHORTNAME": "Tomb<br>Dusk"
         },
         {
           "ID": "anguished_unmaking",
-          "NAME": "Anguished Unmaking",
-          "WHISPER": "💔",
+          "NAME": "💔 Anguished Unmaking",
           "CATEGORY": "🧹",
           "SALT": 0.23,
           "COLOR": "⚪⚫",
           "CMC": 3,
           "RARITY": "🟡",
           "TYPE": "⚡",
-          "PRICE": 4.49
+          "PRICE": 4.49,
+          "SHORTNAME": "Anguished<br>Unmaking"
         },
         {
           "ID": "meathook_massacre_ii",
-          "NAME": "Meathook Massacre II",
-          "WHISPER": "🪝",
+          "NAME": "🪝 Meathook Massacre II",
           "CATEGORY": "🧹",
           "SALT": 0.56,
           "COLOR": "⚫",
           "CMC": 4,
           "RARITY": "🟠",
           "TYPE": "🌩️",
-          "PRICE": 2.79
+          "PRICE": 2.79,
+          "SHORTNAME": "Meathook<br>Massacre"
         },
         {
           "ID": "indulgent_aristocrat",
-          "NAME": "Indulgent Aristocrat",
-          "WHISPER": "🎩",
+          "NAME": "🎩 Indulgent Aristocrat",
           "CATEGORY": "🪓",
           "SALT": 0.17,
           "COLOR": "⚫",
           "CMC": 1,
           "RARITY": "🔵",
           "TYPE": "🧛",
-          "PRICE": 0.35
+          "PRICE": 0.35,
+          "SHORTNAME": "Indulgent<br>Aristocrat"
         },
         {
           "ID": "master_of_dark_rites",
-          "NAME": "Master of Dark Rites",
-          "WHISPER": "🕯️",
+          "NAME": "🕯️ Master of Dark Rites",
           "CATEGORY": "🌱",
           "SALT": 0.22,
           "COLOR": "⚫",
           "CMC": 1,
           "RARITY": "🟡",
           "TYPE": "🧛",
-          "PRICE": 3.49
+          "PRICE": 3.49,
+          "SHORTNAME": "Master<br>Rites"
         },
         {
           "ID": "knight_of_the_ebon_legion",
-          "NAME": "Knight of the Ebon Legion",
-          "WHISPER": "🗡️",
+          "NAME": "🗡️ Knight of the Ebon Legion",
           "CATEGORY": "💪",
           "SALT": 0.14,
           "COLOR": "⚫",
           "CMC": 1,
           "RARITY": "🟡",
           "TYPE": "🧛",
-          "PRICE": 3.49
+          "PRICE": 3.49,
+          "SHORTNAME": "Knight<br>Legion"
         },
         {
           "ID": "bloodghast",
-          "NAME": "Bloodghast",
-          "WHISPER": "👤",
+          "NAME": "👤 Bloodghast",
           "CATEGORY": "🌀",
           "SALT": 0.27,
           "COLOR": "⚫",
           "CMC": 2,
           "RARITY": "🟡",
           "TYPE": "🧛",
-          "PRICE": 2.49
+          "PRICE": 2.49,
+          "SHORTNAME": "Blood<br>ghast"
         },
         {
           "ID": "cordial_vampire",
-          "NAME": "Cordial Vampire",
-          "WHISPER": "🍷",
+          "NAME": "🍷 Cordial Vampire",
           "CATEGORY": "💪",
           "SALT": 0.42,
           "COLOR": "⚫",
           "CMC": 2,
           "RARITY": "🟡",
           "TYPE": "🧛",
-          "PRICE": 1.79
+          "PRICE": 1.79,
+          "SHORTNAME": "Cordial<br>Vampire"
         },
         {
           "ID": "charismatic_conqueror",
-          "NAME": "Charismatic Conqueror",
-          "WHISPER": "👑",
+          "NAME": "👑 Charismatic Conqueror",
           "CATEGORY": "👥",
           "SALT": 0.8,
           "COLOR": "⚪",
           "CMC": 2,
           "RARITY": "🟡",
           "TYPE": "🧛",
-          "PRICE": 18.99
+          "PRICE": 18.99,
+          "SHORTNAME": "Charismatic<br>Conqueror"
         },
         {
           "ID": "sorin_imperious_bloodlord",
-          "NAME": "Sorin, Imperious Bloodlord",
-          "WHISPER": "🧛‍♂️",
+          "NAME": "🧛‍♂️ Sorin, Imperious Bloodlord",
           "CATEGORY": "🌱",
           "SALT": 0.56,
           "COLOR": "⚫",
           "CMC": 3,
           "RARITY": "🟠",
           "TYPE": "🧛",
-          "PRICE": 5.99
+          "PRICE": 5.99,
+          "SHORTNAME": "Sorin"
         },
         {
           "ID": "vito_thorn_of_the_dusk_rose",
-          "NAME": "Vito, Thorn of the Dusk Rose",
-          "WHISPER": "🥀",
+          "NAME": "🥀 Vito, Thorn of the Dusk Rose",
           "CATEGORY": "🩸",
           "SALT": 0.95,
           "COLOR": "⚫",
           "CMC": 3,
           "RARITY": "🟡",
           "TYPE": "🧛",
-          "PRICE": 10.99
+          "PRICE": 10.99,
+          "SHORTNAME": "Vito"
         },
         {
           "ID": "preacher_of_the_schism",
-          "NAME": "Preacher of the Schism",
-          "WHISPER": "📖",
+          "NAME": "📖 Preacher of the Schism",
           "CATEGORY": "📤",
           "SALT": 0.25,
           "COLOR": "⚫",
           "CMC": 3,
           "RARITY": "🟡",
           "TYPE": "🧛",
-          "PRICE": 2.49
+          "PRICE": 2.49,
+          "SHORTNAME": "Preacher<br>Schism"
         },
         {
           "ID": "ruthless_lawbringer",
-          "NAME": "Ruthless Lawbringer",
-          "WHISPER": "⚖️",
+          "NAME": "⚖️ Ruthless Lawbringer",
           "CATEGORY": "🧹",
           "SALT": 0.04,
           "COLOR": "⚪⚫",
           "CMC": 3,
           "RARITY": "🔵",
           "TYPE": "🧛",
-          "PRICE": 0.39
+          "PRICE": 0.39,
+          "SHORTNAME": "Ruthless<br>Lawbringer"
         },
         {
           "ID": "baron_bertram_graywater",
-          "NAME": "Baron Bertram Graywater",
-          "WHISPER": "🎩",
+          "NAME": "🎩 Baron Bertram Graywater",
           "CATEGORY": "👥",
           "SALT": 0.16,
           "COLOR": "⚪⚫",
           "CMC": 4,
           "RARITY": "🔵",
           "TYPE": "🧛",
-          "PRICE": 0.35
+          "PRICE": 0.35,
+          "SHORTNAME": "Bertram<br>Graywater"
         },
         {
           "ID": "edgar_charmed_groom",
-          "NAME": "Edgar, Charmed Groom",
-          "WHISPER": "💒",
+          "NAME": "💒 Edgar, Charmed Groom",
           "CATEGORY": "👥",
           "SALT": 0.15,
           "COLOR": "⚪⚫",
           "CMC": 4,
           "RARITY": "🟡",
           "TYPE": "🧛",
-          "PRICE": 6.99
+          "PRICE": 6.99,
+          "SHORTNAME": "Edgar"
         },
         {
           "ID": "edgar_markovs_coffin",
-          "NAME": "Edgar Markov's Coffin",
-          "WHISPER": "⚱️",
+          "NAME": "⚱️ Edgar Markov's Coffin",
           "CATEGORY": "👥",
           "SALT": 0.15,
           "COLOR": "⚪⚫",
           "CMC": 0,
           "RARITY": "🟡",
           "TYPE": "✨",
-          "PRICE": 6.99
+          "PRICE": 6.99,
+          "SHORTNAME": "Markov<br>Coffin"
         },
         {
           "ID": "twilight_prophet",
-          "NAME": "Twilight Prophet",
-          "WHISPER": "🌒",
+          "NAME": "🌒 Twilight Prophet",
           "CATEGORY": "📤",
           "SALT": 0.29,
           "COLOR": "⚫",
           "CMC": 4,
           "RARITY": "🟠",
           "TYPE": "🧛",
-          "PRICE": 2.29
+          "PRICE": 2.29,
+          "SHORTNAME": "Twilight<br>Prophet"
         },
         {
           "ID": "bloodline_keeper",
-          "NAME": "Bloodline Keeper",
-          "WHISPER": "🩸",
+          "NAME": "🩸 Bloodline Keeper",
           "CATEGORY": "👥",
           "SALT": 0.28,
           "COLOR": "⚫",
           "CMC": 4,
           "RARITY": "🟠",
           "TYPE": "🧛",
-          "PRICE": 7.49
+          "PRICE": 7.49,
+          "SHORTNAME": "Bloodline<br>Keeper"
         },
         {
           "ID": "lord_of_lineage",
-          "NAME": "Lord of Lineage",
-          "WHISPER": "👑",
+          "NAME": "👑 Lord of Lineage",
           "CATEGORY": "👥",
           "SALT": 0.28,
           "COLOR": "⚫",
           "CMC": 0,
           "RARITY": "🟠",
           "TYPE": "🧛",
-          "PRICE": 7.49
+          "PRICE": 7.49,
+          "SHORTNAME": "Lord<br>Lineage"
         },
         {
           "ID": "sanctum_seeker",
-          "NAME": "Sanctum Seeker",
-          "WHISPER": "⛪",
+          "NAME": "⛪ Sanctum Seeker",
           "CATEGORY": "🩸",
           "SALT": 0.28,
           "COLOR": "⚫",
           "CMC": 4,
           "RARITY": "🟡",
           "TYPE": "🧛",
-          "PRICE": 0.49
+          "PRICE": 0.49,
+          "SHORTNAME": "Sanctum<br>Seeker"
         },
         {
           "ID": "elenda_the_dusk_rose",
-          "NAME": "Elenda, the Dusk Rose",
-          "WHISPER": "🌹",
+          "NAME": "🌹 Elenda, the Dusk Rose",
           "CATEGORY": "👥",
           "SALT": 0.28,
           "COLOR": "⚪⚫",
           "CMC": 4,
           "RARITY": "🟠",
           "TYPE": "🧛",
-          "PRICE": 5.99
+          "PRICE": 5.99,
+          "SHORTNAME": "Elenda"
         },
         {
           "ID": "carmen_cruel_skymarcher",
-          "NAME": "Carmen, Cruel Skymarcher",
-          "WHISPER": "🦅",
+          "NAME": "🦅 Carmen, Cruel Skymarcher",
           "CATEGORY": "🌀",
           "SALT": 0.32,
           "COLOR": "⚪⚫",
           "CMC": 5,
           "RARITY": "🟠",
           "TYPE": "🧛",
-          "PRICE": 9.99
+          "PRICE": 9.99,
+          "SHORTNAME": "Carmen"
         },
         {
           "ID": "queens_bay_paladin",
-          "NAME": "Queen's Bay Paladin",
-          "WHISPER": "🛡️",
+          "NAME": "🛡️ Queen's Bay Paladin",
           "CATEGORY": "🌀",
           "SALT": 0.33,
           "COLOR": "⚫",
           "CMC": 5,
           "RARITY": "🟡",
           "TYPE": "🧛",
-          "PRICE": 0.49
+          "PRICE": 0.49,
+          "SHORTNAME": "Queen<br>Paladin"
         },
         {
           "ID": "cavern_of_souls",
-          "NAME": "Cavern of Souls",
-          "WHISPER": "🕳️",
+          "NAME": "🕳️ Cavern of Souls",
           "CATEGORY": "🌋",
           "SALT": 0.67,
           "COLOR": "⚫🔴⚪",
           "CMC": 0,
           "RARITY": "🟠",
           "TYPE": "⛈️",
-          "PRICE": 69.99
+          "PRICE": 69.99,
+          "SHORTNAME": "Cavern<br>Souls"
         },
         {
           "ID": "command_tower",
-          "NAME": "Command Tower",
-          "WHISPER": "🏰",
+          "NAME": "🏰 Command Tower",
           "CATEGORY": "🌋",
           "SALT": 0.38,
           "COLOR": "⚫🔴⚪",
           "CMC": 0,
           "RARITY": "⚪",
           "TYPE": "⛈️",
-          "PRICE": 0.79
+          "PRICE": 0.79,
+          "SHORTNAME": "Command<br>Tower"
         },
         {
           "ID": "anowon_the_ruin_sage",
-          "NAME": "Anowon, the Ruin Sage",
-          "WHISPER": "📕",
+          "NAME": "📕 Anowon, the Ruin Sage",
           "CATEGORY": "🧹",
           "SALT": 0.75,
           "COLOR": "⚫",
           "CMC": 5,
           "RARITY": "🟡",
           "TYPE": "🧛",
-          "PRICE": 3.49
+          "PRICE": 3.49,
+          "SHORTNAME": "Anowon"
         },
         {
           "ID": "butcher_of_malakir",
-          "NAME": "Butcher of Malakir",
-          "WHISPER": "🪓",
+          "NAME": "🪓 Butcher of Malakir",
           "CATEGORY": "🧹",
           "SALT": 1,
           "COLOR": "⚫",
           "CMC": 7,
           "RARITY": "🟡",
           "TYPE": "🧛",
-          "PRICE": 0.79
+          "PRICE": 0.79,
+          "SHORTNAME": "Butcher<br>Malakir"
         },
         {
           "ID": "path_of_ancestry",
-          "NAME": "Path of Ancestry",
-          "WHISPER": "🧬",
+          "NAME": "🧬 Path of Ancestry",
           "CATEGORY": "🌋",
           "SALT": 0.13,
           "COLOR": "⚫🔴⚪",
           "CMC": 0,
           "RARITY": "⚪",
           "TYPE": "⛈️",
-          "PRICE": 0.39
+          "PRICE": 0.39,
+          "SHORTNAME": "Path<br>Ancestry"
         },
         {
           "ID": "secluded_courtyard",
-          "NAME": "Secluded Courtyard",
-          "WHISPER": "🌳",
+          "NAME": "🌳 Secluded Courtyard",
           "CATEGORY": "🌋",
           "SALT": 0.02,
           "COLOR": "⚫🔴⚪",
           "CMC": 0,
           "RARITY": "🔵",
           "TYPE": "⛈️",
-          "PRICE": 0.59
+          "PRICE": 0.59,
+          "SHORTNAME": "Secluded<br>Courtyard"
         },
         {
           "ID": "three_tree_city",
-          "NAME": "Three Tree City",
-          "WHISPER": "🌲",
+          "NAME": "🌲 Three Tree City",
           "CATEGORY": "🌋",
           "SALT": 0.48,
           "COLOR": "⚫🔴⚪",
           "CMC": 0,
           "RARITY": "🟡",
           "TYPE": "⛈️",
-          "PRICE": 37.99
+          "PRICE": 37.99,
+          "SHORTNAME": "Three<br>Tree"
         },
         {
           "ID": "godless_shrine",
-          "NAME": "Godless Shrine",
-          "WHISPER": "🏚️",
+          "NAME": "🏚️ Godless Shrine",
           "CATEGORY": "🌋",
           "SALT": 0.13,
           "COLOR": "⚫⚪",
           "CMC": 0,
           "RARITY": "🟡",
           "TYPE": "⛈️",
-          "PRICE": 13.99
+          "PRICE": 13.99,
+          "SHORTNAME": "Godless<br>Shrine"
         },
         {
           "ID": "marsh_flats",
-          "NAME": "Marsh Flats",
-          "WHISPER": "🌿",
+          "NAME": "🌿 Marsh Flats",
           "CATEGORY": "🌋",
           "SALT": 0.33,
           "COLOR": "⚫⚪",
           "CMC": 0,
           "RARITY": "🟡",
           "TYPE": "⛈️",
-          "PRICE": 34.99
+          "PRICE": 34.99,
+          "SHORTNAME": "Marsh<br>Flats"
         },
         {
           "ID": "sunlit_marsh",
-          "NAME": "Sunlit Marsh",
-          "WHISPER": "🌅",
+          "NAME": "🌅 Sunlit Marsh",
           "CATEGORY": "🌋",
           "SALT": 0.11,
           "COLOR": "⚫⚪",
           "CMC": 0,
           "RARITY": "⚪",
           "TYPE": "⛈️",
-          "PRICE": 0.35
+          "PRICE": 0.35,
+          "SHORTNAME": "Sunlit<br>Marsh"
         },
         {
           "ID": "urzas_cave",
-          "NAME": "Urza's Cave",
-          "WHISPER": "🕳️",
+          "NAME": "🕳️ Urza's Cave",
           "CATEGORY": "🌋",
           "SALT": 0.24,
           "COLOR": "💎",
           "CMC": 0,
           "RARITY": "🔵",
           "TYPE": "⛈️",
-          "PRICE": 3.49
+          "PRICE": 3.49,
+          "SHORTNAME": "Urza<br>Cave"
         },
         {
           "ID": "shadowy_backstreet",
-          "NAME": "Shadowy Backstreet",
-          "WHISPER": "🌑",
+          "NAME": "🌑 Shadowy Backstreet",
           "CATEGORY": "🌋",
           "SALT": 0.17,
           "COLOR": "⚫⚪",
           "CMC": 0,
           "RARITY": "🟡",
           "TYPE": "⛈️",
-          "PRICE": 17.99
+          "PRICE": 17.99,
+          "SHORTNAME": "Shadowy<br>Backstreet"
         },
         {
           "ID": "bleachbone_verge",
-          "NAME": "Bleachbone Verge",
-          "WHISPER": "🦴",
+          "NAME": "🦴 Bleachbone Verge",
           "CATEGORY": "🌋",
           "SALT": 0.12,
           "COLOR": "⚫⚪",
           "CMC": 0,
           "RARITY": "🟡",
           "TYPE": "⛈️",
-          "PRICE": 14.99
+          "PRICE": 14.99,
+          "SHORTNAME": "Bleachbone<br>Verge"
         },
         {
           "ID": "temple_of_silence",
-          "NAME": "Temple of Silence",
-          "WHISPER": "🤫",
+          "NAME": "🤫 Temple of Silence",
           "CATEGORY": "🌋",
           "SALT": 0.03,
           "COLOR": "⚫⚪",
           "CMC": 0,
           "RARITY": "🟡",
           "TYPE": "⛈️",
-          "PRICE": 0.49
+          "PRICE": 0.49,
+          "SHORTNAME": "Temple<br>Silence"
         },
         {
           "ID": "caves_of_koilos",
-          "NAME": "Caves of Koilos",
-          "WHISPER": "⛰️",
+          "NAME": "⛰️ Caves of Koilos",
           "CATEGORY": "🌋",
           "SALT": 0.12,
           "COLOR": "⚫⚪",
           "CMC": 0,
           "RARITY": "🟡",
           "TYPE": "⛈️",
-          "PRICE": 1.99
+          "PRICE": 1.99,
+          "SHORTNAME": "Caves<br>Koilos"
         },
         {
           "ID": "tainted_field",
-          "NAME": "Tainted Field",
-          "WHISPER": "🌾",
+          "NAME": "🌾 Tainted Field",
           "CATEGORY": "🌋",
           "SALT": 0.01,
           "COLOR": "⚫⚪",
           "CMC": 0,
           "RARITY": "🔵",
           "TYPE": "⛈️",
-          "PRICE": 0.59
+          "PRICE": 0.59,
+          "SHORTNAME": "Tainted<br>Field"
         },
         {
           "ID": "shattered_sanctum",
-          "NAME": "Shattered Sanctum",
-          "WHISPER": "🪟",
+          "NAME": "🪟 Shattered Sanctum",
           "CATEGORY": "🌋",
           "SALT": 0.06,
           "COLOR": "⚫⚪",
           "CMC": 0,
           "RARITY": "🟡",
           "TYPE": "⛈️",
-          "PRICE": 6.49
+          "PRICE": 6.49,
+          "SHORTNAME": "Shattered<br>Sanctum"
         },
         {
           "ID": "isolated_chapel",
-          "NAME": "Isolated Chapel",
-          "WHISPER": "⛪",
+          "NAME": "⛪ Isolated Chapel",
           "CATEGORY": "🌋",
           "SALT": 0.17,
           "COLOR": "⚫⚪",
           "CMC": 0,
           "RARITY": "🟡",
           "TYPE": "⛈️",
-          "PRICE": 1.29
+          "PRICE": 1.29,
+          "SHORTNAME": "Isolated<br>Chapel"
         },
         {
           "ID": "phyrexian_tower",
-          "NAME": "Phyrexian Tower",
-          "WHISPER": "🗼",
+          "NAME": "🗼 Phyrexian Tower",
           "CATEGORY": "🌋",
           "SALT": 0.41,
           "COLOR": "⚫",
           "CMC": 0,
           "RARITY": "🟠",
           "TYPE": "⛈️",
-          "PRICE": 34.99
+          "PRICE": 34.99,
+          "SHORTNAME": "Phyrexian<br>Tower"
         },
         {
           "ID": "concealed_courtyard",
-          "NAME": "Concealed Courtyard",
-          "WHISPER": "🌿",
+          "NAME": "🌿 Concealed Courtyard",
           "CATEGORY": "🌋",
           "SALT": 0.12,
           "COLOR": "⚫⚪",
           "CMC": 0,
           "RARITY": "🟡",
           "TYPE": "⛈️",
-          "PRICE": 2.29
+          "PRICE": 2.29,
+          "SHORTNAME": "Concealed<br>Courtyard"
         },
         {
           "ID": "vault_of_the_archangel",
-          "NAME": "Vault of the Archangel",
-          "WHISPER": "😇",
+          "NAME": "😇 Vault of the Archangel",
           "CATEGORY": "🌋",
           "SALT": 0.24,
           "COLOR": "⚫⚪",
           "CMC": 0,
           "RARITY": "🟡",
           "TYPE": "⛈️",
-          "PRICE": 1.79
+          "PRICE": 1.79,
+          "SHORTNAME": "Vault<br>Archangel"
         },
         {
           "ID": "thespians_stage",
-          "NAME": "Thespian's Stage",
-          "WHISPER": "🎭",
+          "NAME": "🎭 Thespian's Stage",
           "CATEGORY": "🌋",
           "SALT": 0.37,
           "COLOR": "💎",
           "CMC": 0,
           "RARITY": "🟡",
           "TYPE": "⛈️",
-          "PRICE": 0.99
+          "PRICE": 0.99,
+          "SHORTNAME": "Thespian<br>Stage"
         },
         {
           "ID": "dark_ritual",
-          "NAME": "Dark Ritual",
-          "WHISPER": "🕯️",
+          "NAME": "🕯️ Dark Ritual",
           "CATEGORY": "🌱",
           "SALT": 0.67,
           "COLOR": "⚫",
           "CMC": 1,
           "RARITY": "⚪",
           "TYPE": "⚡",
-          "PRICE": 7.99
+          "PRICE": 7.99,
+          "SHORTNAME": "Dark<br>Ritual"
         },
         {
           "ID": "nighthawk_scavenger",
-          "NAME": "Nighthawk Scavenger",
-          "WHISPER": "🦇",
+          "NAME": "🦇 Nighthawk Scavenger",
           "CATEGORY": "💖",
           "SALT": 0.21,
           "COLOR": "⚫",
           "CMC": 3,
           "RARITY": "🟡",
           "TYPE": "🧛",
-          "PRICE": 0.79
+          "PRICE": 0.79,
+          "SHORTNAME": "Nighthawk<br>Scavenger"
         },
         {
           "ID": "vampire_of_the_dire_moon",
-          "NAME": "Vampire of the Dire Moon",
-          "WHISPER": "🌙",
+          "NAME": "🌙 Vampire of the Dire Moon",
           "CATEGORY": "💖",
           "SALT": 0.12,
           "COLOR": "⚫",
           "CMC": 1,
           "RARITY": "🔵",
           "TYPE": "🧛",
-          "PRICE": 1.49
+          "PRICE": 1.49,
+          "SHORTNAME": "Vampire<br>Dire"
         },
         {
           "ID": "fetid_heath",
-          "NAME": "Fetid Heath",
-          "WHISPER": "🌾",
+          "NAME": "🌾 Fetid Heath",
           "CATEGORY": "🌋",
           "SALT": 0.09,
           "COLOR": "⚫⚪",
           "CMC": 0,
           "RARITY": "🟡",
           "TYPE": "⛈️",
-          "PRICE": 1.29
+          "PRICE": 1.29,
+          "SHORTNAME": "Fetid<br>Heath"
         },
         {
           "ID": "glass_cast_heart",
-          "NAME": "Glass-Cast Heart",
-          "WHISPER": "❤️‍🔥",
+          "NAME": "❤️‍🔥 Glass-Cast Heart",
           "CATEGORY": "👥",
           "SALT": 0.18,
           "COLOR": "⚫",
           "CMC": 3,
           "RARITY": "🟡",
           "TYPE": "✨",
-          "PRICE": 0.69
+          "PRICE": 0.69,
+          "SHORTNAME": "Glass-Cast<br>Heart"
         },
         {
           "ID": "whip_of_erebos",
-          "NAME": "Whip of Erebos",
-          "WHISPER": "🐍",
+          "NAME": "🐍 Whip of Erebos",
           "CATEGORY": "🌀",
           "SALT": 0.44,
           "COLOR": "⚫",
           "CMC": 4,
           "RARITY": "🟡",
           "TYPE": "✨",
-          "PRICE": 8.99
+          "PRICE": 8.99,
+          "SHORTNAME": "Whip<br>Erebos"
         },
         {
           "ID": "vampire_cutthroat",
-          "NAME": "Vampire Cutthroat",
-          "WHISPER": "🔪",
+          "NAME": "🔪 Vampire Cutthroat",
           "CATEGORY": "💖",
           "SALT": 0,
           "COLOR": "⚫",
           "CMC": 1,
           "RARITY": "🔵",
           "TYPE": "🧛",
-          "PRICE": 1.79
+          "PRICE": 1.79,
+          "SHORTNAME": "Vampire<br>Cutthroat"
         },
         {
           "ID": "shizo_deaths_storehouse",
-          "NAME": "Shizo, Death's Storehouse",
-          "WHISPER": "☠️",
+          "NAME": "☠️ Shizo, Death's Storehouse",
           "CATEGORY": "🌋",
           "SALT": 0.34,
           "COLOR": "⚫",
           "CMC": 0,
           "RARITY": "🟡",
           "TYPE": "⛈️",
-          "PRICE": 42.99
+          "PRICE": 42.99,
+          "SHORTNAME": "Shizo"
         },
         {
           "ID": "treacherous_greed",
-          "NAME": "Treacherous Greed",
-          "WHISPER": "💸",
+          "NAME": "💸 Treacherous Greed",
           "CATEGORY": "📤",
           "SALT": 0.29,
           "COLOR": "⚪⚫",
           "CMC": 3,
           "RARITY": "🟡",
           "TYPE": "⚡",
-          "PRICE": 0.49
+          "PRICE": 0.49,
+          "SHORTNAME": "Treacherous<br>Greed"
         },
         {
           "ID": "fell_the_profane",
-          "NAME": "Fell the Profane",
-          "WHISPER": "⬇️",
+          "NAME": "⬇️ Fell the Profane",
           "CATEGORY": "🧹",
           "SALT": 0.18,
           "COLOR": "⚫",
           "CMC": 4,
           "RARITY": "🔵",
           "TYPE": "⚡",
-          "PRICE": 7.49
+          "PRICE": 7.49,
+          "SHORTNAME": "Fell<br>Profane"
         },
         {
           "ID": "fell_mire",
-          "NAME": "Fell Mire",
-          "WHISPER": "🌫️",
+          "NAME": "🌫️ Fell Mire",
           "CATEGORY": "🧹",
           "SALT": 0.18,
           "COLOR": "⚫",
           "CMC": 0,
           "RARITY": "🔵",
           "TYPE": "⛈️",
-          "PRICE": 7.49
+          "PRICE": 7.49,
+          "SHORTNAME": "Fell<br>Mire"
         },
         {
           "ID": "necropolis_regent",
-          "NAME": "Necropolis Regent",
-          "WHISPER": "👸",
+          "NAME": "👸 Necropolis Regent",
           "CATEGORY": "💪",
           "SALT": 0.21,
           "COLOR": "⚫",
           "CMC": 6,
           "RARITY": "🟠",
           "TYPE": "🧛",
-          "PRICE": 0.99
+          "PRICE": 0.99,
+          "SHORTNAME": "Necropolis<br>Regent"
         },
         {
           "ID": "luminous_broodmoth",
-          "NAME": "Luminous Broodmoth",
-          "WHISPER": "🦋",
+          "NAME": "🦋 Luminous Broodmoth",
           "CATEGORY": "🌀",
           "SALT": 0.58,
           "COLOR": "⚪",
           "CMC": 4,
           "RARITY": "🟠",
           "TYPE": "🧛",
-          "PRICE": 1.99
+          "PRICE": 1.99,
+          "SHORTNAME": "Luminous<br>Broodmoth"
         },
         {
           "ID": "tarrians_journal",
-          "NAME": "Tarrian's Journal",
-          "WHISPER": "📓",
+          "NAME": "📓 Tarrian's Journal",
           "CATEGORY": "📤",
           "SALT": 0.13,
           "COLOR": "⚫",
           "CMC": 2,
           "RARITY": "🟡",
           "TYPE": "✨",
-          "PRICE": 0.79
+          "PRICE": 0.79,
+          "SHORTNAME": "Tarrian<br>Journal"
         },
         {
           "ID": "the_tomb_of_aclazotz",
-          "NAME": "The Tomb of Aclazotz",
-          "WHISPER": "🦇",
+          "NAME": "🦇 The Tomb of Aclazotz",
           "CATEGORY": "📤",
           "SALT": 0.13,
           "COLOR": "⚫",
           "CMC": 0,
           "RARITY": "🟡",
           "TYPE": "⛈️",
-          "PRICE": 0.79
+          "PRICE": 0.79,
+          "SHORTNAME": "Tomb<br>Aclazotz"
         },
         {
           "ID": "bloodvial_purveyor",
-          "NAME": "Bloodvial Purveyor",
-          "WHISPER": "💉",
+          "NAME": "💉 Bloodvial Purveyor",
           "CATEGORY": "👥",
           "SALT": 0.22,
           "COLOR": "⚫",
           "CMC": 4,
           "RARITY": "🟡",
           "TYPE": "🧛",
-          "PRICE": 0.69
+          "PRICE": 0.69,
+          "SHORTNAME": "Bloodvial<br>Purveyor"
         },
         {
           "ID": "alhammarrets_archive",
-          "NAME": "Alhammarret's Archive",
-          "WHISPER": "📚",
+          "NAME": "📚 Alhammarret's Archive",
           "CATEGORY": "📤",
           "SALT": 0.51,
           "COLOR": "💎",
           "CMC": 5,
           "RARITY": "🟠",
           "TYPE": "✨",
-          "PRICE": 12.99
+          "PRICE": 12.99,
+          "SHORTNAME": "Alhammarret<br>Archive"
         },
         {
           "ID": "erebos_god_of_the_dead",
-          "NAME": "Erebos, God of the Dead",
-          "WHISPER": "💀",
+          "NAME": "💀 Erebos, God of the Dead",
           "CATEGORY": "📤",
           "SALT": 0.43,
           "COLOR": "⚫",
           "CMC": 4,
           "RARITY": "🟠",
           "TYPE": "🧛",
-          "PRICE": 16.99
+          "PRICE": 16.99,
+          "SHORTNAME": "Erebos"
         },
         {
           "ID": "shadowspear",
-          "NAME": "Shadowspear",
-          "WHISPER": "🔱",
+          "NAME": "🔱 Shadowspear",
           "CATEGORY": "💖",
           "SALT": 0.75,
           "COLOR": "💎",
           "CMC": 1,
           "RARITY": "🟡",
           "TYPE": "✨",
-          "PRICE": 59.99
+          "PRICE": 59.99,
+          "SHORTNAME": "Shadow<br>spear"
         },
         {
           "ID": "pearl_medallion",
-          "NAME": "Pearl Medallion",
-          "WHISPER": "🪙",
+          "NAME": "🪙 Pearl Medallion",
           "CATEGORY": "🌱",
           "SALT": 0.23,
           "COLOR": "💎",
           "CMC": 2,
           "RARITY": "🟡",
           "TYPE": "✨",
-          "PRICE": 7.99
+          "PRICE": 7.99,
+          "SHORTNAME": "Pearl<br>Medallion"
         },
         {
           "ID": "helm_of_the_host",
-          "NAME": "Helm of the Host",
-          "WHISPER": "⛑️",
+          "NAME": "⛑️ Helm of the Host",
           "CATEGORY": "📚",
           "SALT": 0.97,
           "COLOR": "💎",
           "CMC": 4,
           "RARITY": "🟡",
           "TYPE": "✨",
-          "PRICE": 10.99
+          "PRICE": 10.99,
+          "SHORTNAME": "Helm<br>Host"
         },
         {
           "ID": "dictate_of_erebos",
-          "NAME": "Dictate of Erebos",
-          "WHISPER": "📜",
+          "NAME": "📜 Dictate of Erebos",
           "CATEGORY": "🧹",
           "SALT": 1.88,
           "COLOR": "⚫",
           "CMC": 5,
           "RARITY": "🟡",
           "TYPE": "🌩️",
-          "PRICE": 19.99
+          "PRICE": 19.99,
+          "SHORTNAME": "Dictate<br>Erebos"
         },
         {
           "ID": "jet_medallion",
-          "NAME": "Jet Medallion",
-          "WHISPER": "🖤",
+          "NAME": "🖤 Jet Medallion",
           "CATEGORY": "🌱",
           "SALT": 0.22,
           "COLOR": "💎",
           "CMC": 2,
           "RARITY": "🟡",
           "TYPE": "✨",
-          "PRICE": 16.99
+          "PRICE": 16.99,
+          "SHORTNAME": "Jet<br>Medallion"
         },
         {
           "ID": "clavileno_first_of_the_blessed",
-          "NAME": "Clavileño, First of the Blessed",
-          "WHISPER": "😇",
+          "NAME": "😇 Clavileño, First of the Blessed",
           "CATEGORY": "🌟",
           "SALT": 0.36,
           "COLOR": "⚪⚫",
           "CMC": 3,
           "RARITY": "🟠",
           "TYPE": "🧛",
-          "PRICE": 1.79
+          "PRICE": 1.79,
+          "SHORTNAME": "Clavi<br>leño"
         },
         {
           "ID": "the_golden_throne",
-          "NAME": "The Golden Throne",
-          "WHISPER": "👑",
+          "NAME": "👑 The Golden Throne",
           "CATEGORY": "🌱",
           "SALT": 0.65,
           "COLOR": "⚪⚫",
           "CMC": 4,
           "RARITY": "🟡",
           "TYPE": "✨",
-          "PRICE": 16.99
+          "PRICE": 16.99,
+          "SHORTNAME": "Golden<br>Throne"
         },
         {
           "ID": "scrubland",
-          "NAME": "Scrubland",
-          "WHISPER": "🏜️",
+          "NAME": "🏜️ Scrubland",
           "CATEGORY": "🌋",
           "SALT": 0.83,
           "COLOR": "⚫⚪",
           "CMC": 0,
           "RARITY": "🟡",
           "TYPE": "⛈️",
-          "PRICE": 549.99
+          "PRICE": 549.99,
+          "SHORTNAME": "Scrub<br>land"
         },
         {
           "ID": "urborg_tomb_of_yawgmoth",
-          "NAME": "Urborg, Tomb of Yawgmoth",
-          "WHISPER": "💀",
+          "NAME": "💀 Urborg, Tomb of Yawgmoth",
           "CATEGORY": "🌋",
           "SALT": 0.49,
           "COLOR": "⚫",
           "CMC": 0,
           "RARITY": "🟡",
           "TYPE": "⛈️",
-          "PRICE": 64.99
+          "PRICE": 64.99,
+          "SHORTNAME": "Urborg"
         },
         {
           "ID": "agadeems_awakening",
-          "NAME": "Agadeem's Awakening",
-          "WHISPER": "🌊",
+          "NAME": "🌊 Agadeem's Awakening",
           "CATEGORY": "🌀",
           "SALT": 0.43,
           "COLOR": "⚫",
           "CMC": 3,
           "RARITY": "🟠",
           "TYPE": "🔮",
-          "PRICE": 37.99
+          "PRICE": 37.99,
+          "SHORTNAME": "Agadeem<br>Awakening"
         },
         {
           "ID": "agadeem_the_undercrypt",
-          "NAME": "Agadeem, the Undercrypt",
-          "WHISPER": "🕸️",
+          "NAME": "🕸️ Agadeem, the Undercrypt",
           "CATEGORY": "🌀",
           "SALT": 0.43,
           "COLOR": "⚫",
           "CMC": 0,
           "RARITY": "🟠",
           "TYPE": "⛈️",
-          "PRICE": 37.99
+          "PRICE": 37.99,
+          "SHORTNAME": "Agad<br>eem"
         },
         {
           "ID": "grim_tutor",
-          "NAME": "Grim 🔍",
-          "WHISPER": "💀",
+          "NAME": "💀 Grim 🔍",
           "CATEGORY": "🔍",
           "SALT": 0.91,
           "COLOR": "⚫",
           "CMC": 3,
           "RARITY": "🟠",
           "TYPE": "🔮",
-          "PRICE": 32.99
+          "PRICE": 32.99,
+          "SHORTNAME": "Grim"
         },
         {
           "ID": "legion_lieutenant",
-          "NAME": "Legion Lieutenant",
-          "WHISPER": "⚔️",
+          "NAME": "⚔️ Legion Lieutenant",
           "CATEGORY": "💪 ",
           "SALT": 0.11,
           "COLOR": "⚪⚫",
           "CMC": 2,
           "RARITY": "🔵",
           "TYPE": "🧛",
-          "PRICE": 0.35
+          "PRICE": 0.35,
+          "SHORTNAME": "Legion<br>Lieutenant"
         },
         {
           "ID": "bishop_of_rebirth",
-          "NAME": "Bishop of Rebirth",
-          "WHISPER": "✝️",
+          "NAME": "✝️ Bishop of Rebirth",
           "CATEGORY": "🌀",
           "SALT": 0.36,
           "COLOR": "⚪",
           "CMC": 5,
           "RARITY": "🟡",
           "TYPE": "🧛",
-          "PRICE": 0.69
+          "PRICE": 0.69,
+          "SHORTNAME": "Bishop<br>Rebirth"
         },
         {
           "ID": "elendas_hierophant",
-          "NAME": "Elenda's Hierophant",
-          "WHISPER": "🕊️",
+          "NAME": "🕊️ Elenda's Hierophant",
           "CATEGORY": "👥",
           "SALT": 0.25,
           "COLOR": "⚪",
           "CMC": 3,
           "RARITY": "🟡",
           "TYPE": "🧛",
-          "PRICE": 4.99
+          "PRICE": 4.99,
+          "SHORTNAME": "Elenda<br>Hierophant"
         },
         {
           "ID": "march_of_the_canonized",
-          "NAME": "March of the Canonized",
-          "WHISPER": "🕊️",
+          "NAME": "🕊️ March of the Canonized",
           "CATEGORY": "👥",
           "SALT": 0.22,
           "COLOR": "⚪",
           "CMC": 2,
           "RARITY": "🟡",
           "TYPE": "🌩️",
-          "PRICE": 0.69
+          "PRICE": 0.69,
+          "SHORTNAME": "March<br>Canonized"
         },
         {
           "ID": "vona_butcher_of_magan",
-          "NAME": "Vona, Butcher of Magan",
-          "WHISPER": "🪓",
+          "NAME": "🪓 Vona, Butcher of Magan",
           "CATEGORY": "🧹",
           "SALT": 0.5,
           "COLOR": "⚪⚫",
           "CMC": 5,
           "RARITY": "🟠",
           "TYPE": "🧛",
-          "PRICE": 0.99
+          "PRICE": 0.99,
+          "SHORTNAME": "Vona"
         },
         {
           "ID": "damn",
-          "NAME": "Damn",
-          "WHISPER": "🪦",
+          "NAME": "🪦 Damn",
           "CATEGORY": "🧹",
           "SALT": 0.36,
           "COLOR": "⚫",
           "CMC": 2,
           "RARITY": "🟡",
           "TYPE": "🔮",
-          "PRICE": 2.79
+          "PRICE": 2.79,
+          "SHORTNAME": "Damn"
         },
         {
           "ID": "call_the_bloodline",
-          "NAME": "Call the Bloodline",
-          "WHISPER": "📞",
+          "NAME": "📞 Call the Bloodline",
           "CATEGORY": "📤",
           "SALT": 0.62,
           "COLOR": "⚫",
           "CMC": 2,
           "RARITY": "🔵",
           "TYPE": "🌩️",
-          "PRICE": 0.35
+          "PRICE": 0.35,
+          "SHORTNAME": "Call<br>Bloodline"
         },
         {
           "ID": "nykthos_shrine_to_nyx",
-          "NAME": "Nykthos, Shrine to Nyx",
-          "WHISPER": "⭐",
+          "NAME": "⭐ Nykthos, Shrine to Nyx",
           "CATEGORY": "🌋",
           "SALT": 0.91,
           "COLOR": "⚫🔴⚪",
           "CMC": 0,
           "RARITY": "🟡",
           "TYPE": "⛈️",
-          "PRICE": 64.99
+          "PRICE": 64.99,
+          "SHORTNAME": "Nykt<br>hos"
         },
         {
           "ID": "mavren_fein_dusk_apostle",
-          "NAME": "Mavren Fein, Dusk Apostle",
-          "WHISPER": "🌅",
+          "NAME": "🌅 Mavren Fein, Dusk Apostle",
           "CATEGORY": "👥",
           "SALT": 0.23,
           "COLOR": "⚪",
           "CMC": 3,
           "RARITY": "🟡",
           "TYPE": "🧛",
-          "PRICE": 0.49
+          "PRICE": 0.49,
+          "SHORTNAME": "Mavren<br>Fein"
         },
         {
           "ID": "takenuma_abandoned_mire",
-          "NAME": "Takenuma, Abandoned Mire",
-          "WHISPER": "🏯",
+          "NAME": "🏯 Takenuma, Abandoned Mire",
           "CATEGORY": "🌋",
           "SALT": 0.22,
           "COLOR": "⚫",
           "CMC": 0,
           "RARITY": "🟡",
           "TYPE": "⛈️",
-          "PRICE": 15.99
+          "PRICE": 15.99,
+          "SHORTNAME": "Take<br>numa"
         },
         {
           "ID": "castle_locthwain",
-          "NAME": "Castle Locthwain",
-          "WHISPER": "🏴",
+          "NAME": "🏴 Castle Locthwain",
           "CATEGORY": "🌋",
           "SALT": 0.1,
           "COLOR": "⚫",
           "CMC": 0,
           "RARITY": "🟡",
           "TYPE": "⛈️",
-          "PRICE": 5.99
+          "PRICE": 5.99,
+          "SHORTNAME": "Castle<br>Locthwain"
         },
         {
           "ID": "malakir_rebirth",
-          "NAME": "Malakir Rebirth",
-          "WHISPER": "🔄",
+          "NAME": "🔄 Malakir Rebirth",
           "CATEGORY": "🪬",
           "SALT": 0.21,
           "COLOR": "⚫",
           "CMC": 1,
           "RARITY": "🔵",
           "TYPE": "⚡",
-          "PRICE": 15.99
+          "PRICE": 15.99,
+          "SHORTNAME": "Malakir<br>Rebirth"
         },
         {
           "ID": "malakir_mire",
-          "NAME": "Malakir Mire",
-          "WHISPER": "🌫️",
+          "NAME": "🌫️ Malakir Mire",
           "CATEGORY": "🪬",
           "SALT": 0.21,
           "COLOR": "⚫",
           "CMC": 0,
           "RARITY": "🔵",
           "TYPE": "⛈️",
-          "PRICE": 15.99
+          "PRICE": 15.99,
+          "SHORTNAME": "Malakir<br>Mire"
         },
         {
           "ID": "thought_vessel",
-          "NAME": "Thought Vessel",
-          "WHISPER": "🧠",
+          "NAME": "🧠 Thought Vessel",
           "CATEGORY": "🌱",
           "SALT": 0.27,
           "COLOR": "💎",
           "CMC": 2,
           "RARITY": "⚪",
           "TYPE": "✨",
-          "PRICE": 3.49
+          "PRICE": 3.49,
+          "SHORTNAME": "Thought<br>Vessel"
         },
         {
           "ID": "dusk_legion_dreadnought",
-          "NAME": "Dusk Legion Dreadnought",
-          "WHISPER": "⛵",
+          "NAME": "⛵ Dusk Legion Dreadnought",
           "CATEGORY": "🛞",
           "SALT": 0.07,
           "COLOR": "💎",
@@ -2614,79 +2613,80 @@
           "RARITY": "🔵",
           "TYPE": "✨",
           "PRICE": 0.35,
-          "SECONDARY_CATEGORIES": "Artifact"
+          "SECONDARY_CATEGORIES": "Artifact",
+          "SHORTNAME": "Legion<br>Dreadnought"
         },
         {
           "ID": "brightclimb_pathway",
-          "NAME": "Brightclimb Pathway",
-          "WHISPER": "☀️",
+          "NAME": "☀️ Brightclimb Pathway",
           "CATEGORY": "🌋",
           "SALT": 0.14,
           "COLOR": "⚪",
           "CMC": 0,
           "RARITY": "🟡",
           "TYPE": "⛈️",
-          "PRICE": 5.99
+          "PRICE": 5.99,
+          "SHORTNAME": "Brightclimb<br>Pathway"
         },
         {
           "ID": "grimclimb_pathway",
-          "NAME": "Grimclimb Pathway",
-          "WHISPER": "🌘",
+          "NAME": "🌘 Grimclimb Pathway",
           "CATEGORY": "🌋",
           "SALT": 0.14,
           "COLOR": "⚫",
           "CMC": 0,
           "RARITY": "🟡",
           "TYPE": "⛈️",
-          "PRICE": 5.99
+          "PRICE": 5.99,
+          "SHORTNAME": "Grimclimb<br>Pathway"
         },
         {
           "ID": "lifeline",
-          "NAME": "Lifeline",
-          "WHISPER": "❤️‍🩹",
+          "NAME": "❤️‍🩹 Lifeline",
           "CATEGORY": "🌀",
           "SALT": 0.46,
           "COLOR": "💎",
           "CMC": 5,
           "RARITY": "🟡",
           "TYPE": "✨",
-          "PRICE": 44.99
+          "PRICE": 44.99,
+          "SHORTNAME": "Life<br>line"
         },
         {
           "ID": "contamination",
-          "NAME": "Contamination",
-          "WHISPER": "☣️",
+          "NAME": "☣️ Contamination",
           "CATEGORY": "🔒",
           "SALT": 1.5,
           "COLOR": "⚫",
           "CMC": 3,
           "RARITY": "🟡",
           "TYPE": "🌩️",
-          "PRICE": 8.99
+          "PRICE": 8.99,
+          "SHORTNAME": "Contam<br>ination"
         },
         {
           "ID": "flare_of_malice",
-          "NAME": "Flare of Malice",
-          "WHISPER": "🔥",
+          "NAME": "🔥 Flare of Malice",
           "CATEGORY": "🧹",
           "SALT": 0.62,
           "COLOR": "⚫",
           "CMC": 4,
           "RARITY": "🟡",
           "TYPE": "⚡",
-          "PRICE": 3.99
+          "PRICE": 3.99,
+          "SHORTNAME": "Flare<br>Malice"
         },
         {
           "ID": "bolass_citadel",
-          "NAME": "Bolas's Citadel",
-          "WHISPER": "🏰",
+          "NAME": "🏰 Bolas's Citadel",
           "CATEGORY": "📤",
           "SALT": 1.72,
           "COLOR": "⚫",
           "CMC": 6,
           "RARITY": "🟡",
           "TYPE": "✨",
-          "PRICE": 12.99
+          "PRICE": 12.99,
+          "SHORTNAME": "Bolas<br>Citadel"
         }
       ]
     }

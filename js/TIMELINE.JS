@@ -18,7 +18,7 @@
   function _tlStopAutoScroll() { if (_tlAutoScrollRAF) { cancelAnimationFrame(_tlAutoScrollRAF); _tlAutoScrollRAF = null; } }
   const CALENDAR_PAD = 0; // px buffer top & bottom of timeline
 
-  /* ── Thematic work-stream categories (from viz.js) ────────── */
+  /* ── Thematic work-stream categories (from VIZ.JS) ────────── */
   // timeline uses VIZ_THEMES with altColor for software
   const themeConfig = {};
   ["robotics", "games", "software", "research", "education"].forEach(function (k) {
@@ -65,7 +65,7 @@
   timelineModalClose.addEventListener("click", closeTimelineModal);
   timelineModal.addEventListener("click", e => { if (e.target === timelineModal) closeTimelineModal(); });
 
-  // ── Filter buttons (via viz.js shared filter system) ────────
+  // ── Filter buttons (via VIZ.JS shared filter system) ────────
   const allThemes = ["robotics", "games", "software", "research", "education"];
   const allBtn = timelineModal.querySelector('.viz-filter[data-filter="all"]');
   const themeBtns = timelineModal.querySelectorAll('.viz-filter:not([data-filter="all"])');
@@ -78,7 +78,7 @@
     onFilter: applyFilter,
   });
 
-  /* ── Layout toggle (Static / Dynamic) via shared viz.js utility ── */
+  /* ── Layout toggle (Static / Dynamic) via shared VIZ.JS utility ── */
   const _layoutToggle = createLayoutToggle({
     btn: "tlLayoutToggle",
     onDynamic: function () { if (timelineBuilt) applyFilter(); },
@@ -772,7 +772,7 @@
   }
 
   /* ── Whisper accomplishments for tall slivers ───────────── */
-  // Data loaded from VIZ_TIMELINE.whispers (populated by data.js from portfolio.json)
+  // Data loaded from VIZ_TIMELINE.whispers (populated by DATA.JS from portfolio.json)
   const whisperData = VIZ_TIMELINE.whispers || {};
 
   function getWhisperKey(item, titleOverride) {

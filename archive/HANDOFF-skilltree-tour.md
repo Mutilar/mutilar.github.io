@@ -6,7 +6,7 @@ The portfolio site at `mutilar.github.io` has three interactive visualization mo
 
 | Modal | File | Has Tour Animation? |
 |-------|------|-------------------|
-| Architecture Diagram | `js/mermaid-view.js` | ✅ "Explore" glow sequence — walks through filter categories one at a time, fitting the camera to each subset |
+| Architecture Diagram | `js/mermaid.js` | ✅ "Explore" glow sequence — walks through filter categories one at a time, fitting the camera to each subset |
 | Timeline | `js/timeline.js` | ✅ Slow auto-scroll from top to bottom on hint click |
 | **Knowledge Graph** | **`js/skill-tree.js`** | ❌ **MISSING — this is the task** |
 
@@ -26,7 +26,7 @@ The filter system uses `createFilterSystem()` from `js/viz.js` with custom `solo
 
 ## Desired Animation Sequence
 
-A "Traverse the Graph" button/hint (similar to mermaid-view's explore hint) should trigger a scripted walkthrough. The sequence builds the graph progressively, telling the story of the user's journey:
+A "Traverse the Graph" button/hint (similar to mermaid's explore hint) should trigger a scripted walkthrough. The sequence builds the graph progressively, telling the story of the user's journey:
 
 ### Phase 1 — Software Quadrant (SE)
 | Step | Delay | Active Filters | What appears |
@@ -56,9 +56,9 @@ At step 9 all 6 filters are active = full graph.
 At **each step**, after updating filters:
 1. Compute the bounding box of all **visible** (non-hidden) nodes
 2. Smoothly animate `_transform` (x, y, scale) to fit that bounding box centered in the viewport with padding
-3. Use a spring/slerp easing (match the feel of mermaid-view's `fitView()` — smooth ~500ms transition)
+3. Use a spring/slerp easing (match the feel of mermaid's `fitView()` — smooth ~500ms transition)
 
-**Reference implementation:** In `mermaid-view.js`, the explore tour's `fitView()` function (search for `fitView` around line ~1280) computes target x/y/scale from node bounding boxes and animates via `state._update()`. The skill-tree needs an equivalent that:
+**Reference implementation:** In `mermaid.js`, the explore tour's `fitView()` function (search for `fitView` around line ~1280) computes target x/y/scale from node bounding boxes and animates via `state._update()`. The skill-tree needs an equivalent that:
 - Iterates `_nodes.filter(n => !n._hidden)` to get world-space `targetX`/`targetY` bounds
 - Computes scale to fit those bounds in the viewport (with ~20% padding)
 - Clamps scale to `[_KG_MIN_SCALE, _KG_MAX_SCALE]`

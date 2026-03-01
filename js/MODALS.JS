@@ -1,6 +1,6 @@
 // ═════════════════════════════════════════════════════════════════
 //  GLOBALS FROM DATA.JS  —  fetchCSV(), modalState
-//  (data.js is loaded before modals.js)
+//  (DATA.JS is loaded before MODALS.JS)
 // ═════════════════════════════════════════════════════════════════
 
 // ═════════════════════════════════════════════════════════════════
@@ -60,7 +60,7 @@ function _trapFocus(e) {
 document.addEventListener("keydown", _trapFocus);
 
 // ═══════════════════════════════════════════════════════════════
-//  MODAL SYSTEM  (modalState provided by data.js)
+//  MODAL SYSTEM  (modalState provided by DATA.JS)
 // ═══════════════════════════════════════════════════════════════
 const modal = document.getElementById("modal");
 const modalClose = document.getElementById("modalClose");
@@ -75,7 +75,7 @@ function openModal(dataset, id, imgExt) {
   modalImg.style.display = "none";
   modalImg.onload = function () { this.style.display = ""; };
   modalImg.onerror = function () { this.style.display = "none"; };
-  modalImg.src = "images/" + id + (imgExt || ".png");
+  modalImg.src = "png/" + id + (imgExt || ".png");
   modalImg.alt = item.NAME || "";
 
   document.getElementById("modal-name").innerHTML = (item.NAME || "").replace(/<br\s*\/?>/gi, " ");
@@ -168,11 +168,11 @@ modal.addEventListener("click", e => { if (e.target === modal) closeModal(); });
 // Safe no-ops for modal close functions that may not be defined yet
 window.closeDeckModal = window.closeDeckModal || function() {};
 
-// Safe no-op for timeline modal close until timeline.js loads
+// Safe no-op for timeline modal close until TIMELINE.JS loads
 window.closeTimelineModal = window.closeTimelineModal || function() {};
 window.closeKnowledgeModal = window.closeKnowledgeModal || function() {};
 
-document.addEventListener("keydown", e => { if (e.key === "Escape") { closeModal(); closePdfModal(); closeResumePdfModal(); closeLinkModal(); closeGameModal(); window.closeMarpModal(); window.closeArchModal(); closeBitnaughtsModal(); closeBitnaughtsIphoneModal(); window.closeDeckModal(); window.closeTimelineModal(); window.closeKnowledgeModal(); } });
+document.addEventListener("keydown", e => { if (e.key === "Escape") { closeModal(); closePdfModal(); closeResumePdfModal(); closeLinkModal(); closeGameModal(); window.closeMarpModal(); window.closeArchModal(); window.closeTentimesModal(); closeBitnaughtsModal(); closeBitnaughtsIphoneModal(); window.closeDeckModal(); window.closeTimelineModal(); window.closeKnowledgeModal(); } });
 
 // ── Footer year (safe alternative to document.write) ──
 const footerYear = document.getElementById("footer-year");
@@ -184,6 +184,7 @@ const _modalOpeners = {
   pdfModal: function() { openPdfModal(); },
   bitnaughtsIphoneModal: function() { openBitnaughtsIphoneModal(); },
   archModal: function() { window.openArchModal(); },
+  tentimesModal: function() { window.openTentimesModal && window.openTentimesModal(); },
   timelineModal: function() { window.openTimelineModal && window.openTimelineModal(); },
   knowledgeModal: function() { window.openKnowledgeModal && window.openKnowledgeModal(); },
   mtgTreeModal: function() { window.openMtgTreeModal && window.openMtgTreeModal(); },
@@ -216,9 +217,9 @@ document.addEventListener("keydown", function(e) {
 });
 
 // ═══════════════════════════════════════════════════════════════
-//  SITE ARCHITECTURE MODAL — handled by mermaid-view.js
-// ═══════════════════════════════════════════════════════════════
-// openArchModal / closeArchModal are defined in mermaid-view.js
+//  SITE ARCHITECTURE MODAL — handled by MERMAID.JS
+// ═════════════════════════════════════════════════════════════════
+// openArchModal / closeArchModal are defined in MERMAID.JS
 window.openArchModal  = window.openArchModal  || function() {};
 window.closeArchModal = window.closeArchModal || function() {};
 
@@ -229,22 +230,133 @@ const quiltModal = document.getElementById("quilt-modal");
 const quiltModalClose = document.getElementById("quiltModalClose");
 
 function openQuiltModal() {
+  if (typeof _dismissBioToast === "function") _dismissBioToast();
   toggleModal(quiltModal, true);
 }
 
+var _stopBioTour = null;
+
 function closeQuiltModal() {
+  if (_stopBioTour) _stopBioTour();
   toggleModal(quiltModal, false);
 }
 
 quiltModalClose.addEventListener("click", closeQuiltModal);
 quiltModal.addEventListener("click", e => { if (e.target === quiltModal) closeQuiltModal(); });
 
+// ── Bio Tour ─────────────────────────────────────────────────
+(function () {
+  var hint = document.getElementById("bioExploreHint");
+  var card = quiltModal.querySelector(".modal-card");
+  if (!hint || !card) return;
+
+  var HINT_DEFAULT = '<strong>Explore</strong><span class="scroll-arrow">🐧</span>';
+  var _cf = createCrossfader();
+  var _raf = null;
+  var _scrolling = false;
+
+  // Tour stops for crossfading the hint label as we scroll past them
+  function getStops() {
+    return Array.from(card.querySelectorAll("[data-bio-tour]")).map(function (el) {
+      return { el: el, label: el.getAttribute("data-bio-tour") };
+    });
+  }
+
+  function stopScroll() {
+    if (_raf) { cancelAnimationFrame(_raf); _raf = null; }
+    if (!_scrolling) return;
+    _scrolling = false;
+    hint.classList.remove("exploring");
+    _cf.fade(hint, HINT_DEFAULT);
+    hint.style.opacity = 1;
+    hint.style.pointerEvents = '';
+  }
+
+  function startScroll() {
+    if (_scrolling) { stopScroll(); return; }
+
+    var maxS = card.scrollHeight - card.clientHeight;
+    if (card.scrollTop >= maxS - 1) {
+      card.scrollTo({ top: 0, behavior: "smooth" });
+      _cf.fade(hint, HINT_DEFAULT);
+      return;
+    }
+
+    _scrolling = true;
+    hint.classList.add("exploring");
+
+    var SLOW = 100;  // px/s at top
+    var FAST = 200;  // px/s at bottom
+    var lastT = null;
+    var interrupted = false;
+    var stops = getStops();
+    var lastStopIdx = -1;
+
+    function onUser() { interrupted = true; }
+    card.addEventListener("wheel", onUser, { once: true, passive: true });
+    card.addEventListener("touchstart", onUser, { once: true, passive: true });
+    card.addEventListener("pointerdown", onUser, { once: true });
+
+    function step(ts) {
+      if (interrupted) { cleanup(); return; }
+      if (!lastT) lastT = ts;
+      var dt = (ts - lastT) / 1000;
+      lastT = ts;
+
+      var maxS = card.scrollHeight - card.clientHeight;
+      var progress = maxS > 0 ? card.scrollTop / maxS : 1;
+      var speed = SLOW + (FAST - SLOW) * progress;
+
+      card.scrollTop += speed * dt;
+
+      // Crossfade hint label when we pass a tour stop
+      var scrollMid = card.scrollTop + card.clientHeight * 0.4;
+      for (var i = stops.length - 1; i >= 0; i--) {
+        if (stops[i].el.offsetTop <= scrollMid) {
+          if (i !== lastStopIdx) {
+            lastStopIdx = i;
+            var label = stops[i].label;
+            var m = label.match(/^(\p{Emoji_Presentation}|\p{Emoji}\uFE0F?)\s*/u);
+            var emoji = m ? m[1] : '🐧';
+            var text = m ? label.slice(m[0].length) : label;
+            _cf.fade(hint, '<strong>' + text + '</strong><span class="scroll-arrow">' + emoji + '</span>');
+          }
+          break;
+        }
+      }
+
+      if (card.scrollTop >= maxS - 1) { cleanup(); return; }
+      _raf = requestAnimationFrame(step);
+    }
+
+    function cleanup() {
+      card.removeEventListener("wheel", onUser);
+      card.removeEventListener("touchstart", onUser);
+      card.removeEventListener("pointerdown", onUser);
+      stopScroll();
+    }
+
+    _raf = requestAnimationFrame(step);
+  }
+
+  hint.addEventListener("click", function (e) { e.preventDefault(); startScroll(); });
+
+  _stopBioTour = stopScroll;
+})();
+
 // ═══════════════════════════════════════════════════════════════
-//  MARP DIAGRAM MODAL — handled by mermaid-view.js
-// ═══════════════════════════════════════════════════════════════
-// openMarpModal / closeMarpModal are defined in mermaid-view.js
+//  MARP DIAGRAM MODAL — handled by MERMAID.JS
+// ═════════════════════════════════════════════════════════════════
+// openMarpModal / closeMarpModal are defined in MERMAID.JS
 window.openMarpModal  = window.openMarpModal  || function() {};
 window.closeMarpModal = window.closeMarpModal || function() {};
+
+// ═══════════════════════════════════════════════════════════════
+//  TENTIMES DIAGRAM MODAL — handled by MERMAID.JS
+// ═════════════════════════════════════════════════════════════════
+// openTentimesModal / closeTentimesModal are defined in MERMAID.JS
+window.openTentimesModal  = window.openTentimesModal  || function() {};
+window.closeTentimesModal = window.closeTentimesModal || function() {};
 
 // ═══════════════════════════════════════════════════════════════
 //  BITNAUGHTS GALLERY MODAL
@@ -303,7 +415,7 @@ function openPdfModal() {
 
 function closePdfModal() {
   toggleModal(pdfModal, false);
-  clearPdfViewer();
+  clearpdf();
 }
 
 pdfModalClose.addEventListener("click", closePdfModal);
@@ -322,7 +434,7 @@ function openResumePdfModal() {
 
 function closeResumePdfModal() {
   toggleModal(resumePdfModal, false);
-  clearPdfViewer("resume-pdf-viewer");
+  clearpdf("resume-pdf-viewer");
 }
 
 resumePdfModalClose.addEventListener("click", closeResumePdfModal);

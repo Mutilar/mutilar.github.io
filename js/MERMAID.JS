@@ -6,7 +6,7 @@
 //  arrows inside a pannable/zoomable viewport.  Instantiated once
 //  for the Architecture modal and once for the MARP wiring modal.
 //
-//  Matches the knowledge-graph.js / timeline.js aesthetic.
+//  Matches the SKILLTREE.JS / TIMELINE.JS aesthetic.
 // ═══════════════════════════════════════════════════════════════
 (() => {
 
@@ -924,7 +924,7 @@
   }
 
   /* ═════════════════════════════════════════════════════════════
-     5. PAN & ZOOM  (delegates to shared initPanZoom in viz.js)
+     5. PAN & ZOOM  (delegates to shared initPanZoom in VIZ.JS)
      ═════════════════════════════════════════════════════════════ */
 
   function _initPanZoom(viewport, state) {
@@ -1399,7 +1399,7 @@
         .then(r => { if (!r.ok) throw new Error("HTTP " + r.status); return r.text(); })
         .then(md => {
           const m = md.match(/```mermaid\s*\n([\s\S]*?)```/);
-          if (!m) { console.warn("[mermaid-view] No mermaid block in", cfg.mdFile); return; }
+          if (!m) { console.warn("[mermaid] No mermaid block in", cfg.mdFile); return; }
           _ast = parseMermaid(m[1]);
           _legend = extractLegend(_ast);
           _colors = colorsFromAST(_ast.classDefs);
@@ -1433,7 +1433,7 @@
 
           requestAnimationFrame(() => fitView(false));
         })
-        .catch(err => console.error("[mermaid-view]", cfg.mdFile, err));
+        .catch(err => console.error("[mermaid]", cfg.mdFile, err));
     }
 
     // ── Auto-explore tour ────────────────────────────────────
@@ -1629,6 +1629,16 @@
     mdFile:      "MARP.md",
     openGlobal:  "openMarpModal",
     closeGlobal: "closeMarpModal",
+  });
+
+  // ── TenTimes Architecture ──────────────────────────────────
+  createDiagram({
+    modalId:     "tentimes-modal",
+    closeId:     "tentimesModalClose",
+    filterId:    "tentimes-filters",
+    mdFile:      "TENTIMES.md",
+    openGlobal:  "openTentimesModal",
+    closeGlobal: "closeTentimesModal",
   });
 
 })();

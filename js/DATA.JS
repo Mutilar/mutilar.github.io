@@ -1,8 +1,8 @@
 // ═══════════════════════════════════════════════════════════════
 //  JSON DATA LOADER — replaces CSV + PapaParse
 //
-//  Loads PORTFOLIO.json, populates modalState for modals.js,
-//  builds VIZ_DOMAIN_MAP & VIZ_SOURCE_MAP for viz.js consumers,
+//  Loads PORTFOLIO.json, populates modalState for MODALS.JS,
+//  builds VIZ_DOMAIN_MAP & VIZ_SOURCE_MAP for VIZ.JS consumers,
 //  and renders entry-card grids.
 // ═══════════════════════════════════════════════════════════════
 
@@ -61,7 +61,7 @@ function _splitCSVRow(line) {
 }
 
 // ═══════════════════════════════════════════════════════════════
-//  MODAL STATE  —  shared global written here, read by modals.js
+//  MODAL STATE  —  shared global written here, read by MODALS.JS
 // ═══════════════════════════════════════════════════════════════
 const modalState = { work: null, education: null, projects: null, hackathons: null, games: null, marp: null, bitnaughts: null, mtg: null };
 
@@ -123,74 +123,85 @@ const _gridConfigs = {
   mtg:        { gridId: "mtg-grid",        imgExt: ".png", modalImgExt: ".png" },
 };
 
-fetch("PORTFOLIO.json?v=" + Date.now()).then(r => {
-  if (!r.ok) throw new Error(`HTTP ${r.status}`);
-  return r.json();
-}).then(data => {
-  // Build VIZ maps from item fields
-  // These globals are consumed by viz.js, timeline.js, skill-tree.js
-  data.sections.forEach(section => {
-    section.items.forEach(item => {
-      if (item.domain)    VIZ_DOMAIN_MAP[item.ID] = item.domain;
-      // source: explicit field, or fall back to section id
-      VIZ_SOURCE_MAP[item.ID] = item.source || section.id;
-      if (item.quadrant)  VIZ_QUADRANT_MAP[item.ID] = item.quadrant;
-      if (item.whisper)   VIZ_WHISPER_MAP[item.ID] = item.whisper;
-      if (item.shortname) VIZ_SHORTNAME_MAP[item.ID] = item.shortname;
-    });
-  });
+(async () => {
+  try {
+    const r = await fetch("PORTFOLIO.json?v=" + Date.now());
+    if (!r.ok) throw new Error(`HTTP ${r.status}`);
 
-  // Populate timeline metadata
-  if (data.timeline) {
-    Object.assign(VIZ_TIMELINE.whispers, data.timeline.whispers || {});
-    Object.assign(VIZ_TIMELINE.nameOverrides, data.timeline.nameOverrides || {});
-    Object.assign(VIZ_TIMELINE.titleOverrides, data.timeline.titleOverrides || {});
-  }
-
-  // Populate modalState and render grids
-  data.sections.forEach(section => {
-    const sectionId = section.id;
-    const cfg = _gridConfigs[sectionId];
-    if (!cfg) return;
-
-    modalState[sectionId] = section.items;
-    const g = document.getElementById(cfg.gridId);
-    if (!g) return;
-
-    if (!section.items.length) {
-      g.innerHTML = '<p style="color:rgba(255,255,255,0.5);font-style:italic;padding:16px;">Failed to load data. Please refresh.</p>';
-      return;
+    const text = await r.text();
+    let data;
+    try {
+      data = JSON.parse(text);
+    } catch (e) {
+      throw new SyntaxError(e.message);
     }
 
-    // MTG section: deck items get deck modal click override
-    if (sectionId === "mtg") {
-      section.items.forEach(function (i) {
-        const card = buildEntryCard(i, "mtg", cfg);
-        if (i.DECK && i.DECK.trim()) {
-          const newCard = card.cloneNode(true);
-          if (window._revealObserver) window._revealObserver.observe(newCard);
-          newCard.addEventListener("click", function () { openDeckModal(i); });
-          g.appendChild(newCard);
-        } else {
-          g.appendChild(card);
-        }
+    // Build VIZ maps from item fields
+    // These globals are consumed by VIZ.JS, TIMELINE.JS, SKILLTREE.JS
+    data.sections.forEach(section => {
+      section.items.forEach(item => {
+        if (item.domain)    VIZ_DOMAIN_MAP[item.ID] = item.domain;
+        // source: explicit field, or fall back to section id
+        VIZ_SOURCE_MAP[item.ID] = item.source || section.id;
+        if (item.quadrant)  VIZ_QUADRANT_MAP[item.ID] = item.quadrant;
+        if (item.whisper)   VIZ_WHISPER_MAP[item.ID] = item.whisper;
+        if (item.shortname) VIZ_SHORTNAME_MAP[item.ID] = item.shortname;
       });
-    } else {
-      section.items.forEach(i => g.appendChild(buildEntryCard(i, sectionId, cfg)));
-    }
-  });
+    });
 
-  // Signal that data is loaded (for consumers that poll modalState)
-  window.dispatchEvent(new Event("portfolioDataReady"));
-}).catch(err => {
-  console.error("[portfolio.json]", err);
-  Object.values(_gridConfigs).forEach(cfg => {
-    const g = document.getElementById(cfg.gridId);
-    if (g && !g.children.length) {
-      g.innerHTML = '<p style="color:rgba(255,255,255,0.5);font-style:italic;padding:16px;">Failed to load data. Please refresh.</p>';
+    // Populate timeline metadata
+    if (data.timeline) {
+      Object.assign(VIZ_TIMELINE.whispers, data.timeline.whispers || {});
+      Object.assign(VIZ_TIMELINE.nameOverrides, data.timeline.nameOverrides || {});
+      Object.assign(VIZ_TIMELINE.titleOverrides, data.timeline.titleOverrides || {});
     }
-  });
-});
+
+    // Populate modalState and render grids
+    data.sections.forEach(section => {
+      const sectionId = section.id;
+      const cfg = _gridConfigs[sectionId];
+      if (!cfg) return;
+
+      modalState[sectionId] = section.items;
+      const g = document.getElementById(cfg.gridId);
+      if (!g) return;
+
+      if (!section.items.length) {
+        g.innerHTML = '<p style="color:rgba(255,255,255,0.5);font-style:italic;padding:16px;">Failed to load data. Please refresh.</p>';
+        return;
+      }
+
+      // MTG section: deck items get deck modal click override
+      if (sectionId === "mtg") {
+        section.items.forEach(function (i) {
+          const card = buildEntryCard(i, "mtg", cfg);
+          if (i.DECK && i.DECK.trim()) {
+            const newCard = card.cloneNode(true);
+            if (window._revealObserver) window._revealObserver.observe(newCard);
+            newCard.addEventListener("click", function () { openDeckModal(i); });
+            g.appendChild(newCard);
+          } else {
+            g.appendChild(card);
+          }
+        });
+      } else {
+        section.items.forEach(i => g.appendChild(buildEntryCard(i, sectionId, cfg)));
+      }
+    });
+
+    // Signal that data is loaded (for consumers that poll modalState)
+    window.dispatchEvent(new Event("portfolioDataReady"));
+
+  } catch (err) {
+    console.error("[portfolio.json]", err);
+    Object.values(_gridConfigs).forEach(cfg => {
+      const g = document.getElementById(cfg.gridId);
+      if (g && !g.children.length) {
+        g.innerHTML = '<p style="color:rgba(255,255,255,0.5);font-style:italic;padding:16px;">Failed to load data. Please refresh.</p>';
+      }
+    });
+  }
+})();
 
 // ── MARP BOM (Bill of Materials) — deferred until modal opens ──
 let _bomLoaded = false;

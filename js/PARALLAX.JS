@@ -13,7 +13,7 @@
   const BASE_BG_LIGHT = [232, 236, 241];
   let BASE_BG = document.documentElement.classList.contains("light-mode") ? BASE_BG_LIGHT : BASE_BG_DARK;
 
-  // Listen for theme changes from theme.js
+  // Listen for theme changes from THEME.JS
   window.addEventListener("theme-changed", (e) => {
     BASE_BG = e.detail.light ? BASE_BG_LIGHT : BASE_BG_DARK;
   });
