@@ -151,11 +151,12 @@
   <!-- ▓▓▓ WINDOW 1: Hero — attention background peeks through ▓▓▓ -->
   <div class="parallax-window parallax-window-hero" id="home" data-attention="1" data-colors="242,80,34; 127,186,0; 0,164,239; 255,185,0">
     <div class="glass-tile hero-card reveal">
-      <a href="javascript:void(0)" onclick="openQuiltModal()">
+      <a class="hero-portrait-link" href="javascript:void(0)" onclick="openQuiltModal()">
         <img class="hero-portrait" src="png/brian.png" alt="Brian Hungerman">
+        <span class="hero-portrait-penguin" aria-hidden="true"><span class="hero-penguin-bg" id="heroPenguinBgA">🌍</span><span class="hero-penguin-bg hero-penguin-bg-b" id="heroPenguinBgB"></span><span class="hero-penguin-emoji">🐧</span></span>
       </a>
       <div class="hero-text">
-        <h1 class="hero-name"><span class="emoji-reset">🐧</span> Brian Hungerman</h1>
+        <h1 class="hero-name">Brian Hungerman</h1>
         <hr>
         <p class="hero-tagline">
           <strong>Senior <a href="#" onclick="event.preventDefault(); openLinkModal('https://en.wikipedia.org/wiki/Software_engineering', 'Software Engineering');">Software Engineer</a></strong><br><strong>Incubating <a href="#" onclick="event.preventDefault(); openLinkModal('https://en.wikipedia.org/wiki/Artificial_intelligence', 'Artificial Intelligence');">A.I.</a></strong> <strong><a href="#" onclick="event.preventDefault(); openLinkModal('https://en.wikipedia.org/wiki/User_experience', 'User Experience');">U.X.</a> with</strong><br><strong>Microsoft <a href="#" onclick="event.preventDefault(); openLinkModal('https://www.microsoft.com/applied-sciences', 'Microsoft Applied Sciences');">Applied Sciences</a></strong>
@@ -196,6 +197,32 @@
             <div class="step step-right">...to prototyping <strong><a href="#bitnaughts">BitNaughts</a>: Code Gamified</strong>;</div>
             <div class="step-summary">I'm constantly learning new things, especially in <strong><a href="#" onclick="event.preventDefault(); openLinkModal('https://en.wikipedia.org/wiki/Graph_theory', 'Graph Theory');">Graph Theory</a></strong> & <strong><a href="#" onclick="event.preventDefault(); openLinkModal('https://en.wikipedia.org/wiki/Gamification', 'Gamification');">Gamification</a></strong>!</div>
           </div>
+      </div>
+      <div class="card-grid card-grid-wide" style="margin-bottom:32px;">
+        <div class="glass-tile video-card reveal" style="cursor:pointer;" role="button" tabindex="0" aria-label="Open Graph of Knowledge" data-action="scroll-open" data-open="knowledgeModal">
+          <div class="video-label">🧭 SKILLTREE<span class="card-action-badge badge-dive" style="margin-left:auto;">🔍 PORT</span><span class="card-action-badge badge-mtg" onclick="event.stopPropagation(); window.openMtgTreeModal && window.openMtgTreeModal();" role="button" tabindex="0" aria-label="Open MTG Skill Tree">🃏 MTG</span></div>
+          <div class="video-wrap">
+            <img src="png/graph.png" alt="Graph of Knowledge" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" loading="lazy">
+          </div>
+        </div>
+        <div class="glass-tile video-card reveal" style="cursor:pointer;" role="button" tabindex="0" aria-label="See more in Timeline" data-action="scroll-open" data-open="timelineModal">
+          <div class="video-label">🕰️ ROADMAP<span class="card-action-badge badge-dive">🔍 MORE</span></div>
+          <div class="video-wrap">
+            <img src="png/timeline.png" alt="Timeline" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" loading="lazy">
+          </div>
+        </div>
+        <div class="glass-tile video-card reveal" style="cursor:pointer;" role="button" tabindex="0" aria-label="See more about Architecture" onclick="openArchModal()">
+          <div class="video-label">🧜 DIAGRAMS<span class="card-action-badge badge-dive" style="margin-left:auto;" onclick="event.stopPropagation(); window.openMarpModal && window.openMarpModal();" role="button" tabindex="0" aria-label="Open MARP Diagram">🤖 MARP</span><span class="card-action-badge badge-mermaid" onclick="event.stopPropagation(); window.openArchModal && window.openArchModal();" role="button" tabindex="0" aria-label="Open Architecture Diagram">🧜 ARCH</span><span class="card-action-badge badge-tentimes" onclick="event.stopPropagation(); window.openTentimesModal && window.openTentimesModal();" role="button" tabindex="0" aria-label="Open TenTimes Diagram">🚂 TENTIMES</span></div>
+          <div class="video-wrap">
+            <img src="png/arch.png" alt="Architecture" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" loading="lazy">
+          </div>
+        </div>        
+        <div class="glass-tile video-card reveal" style="cursor:pointer;" role="button" tabindex="0" aria-label="Open Constellation Map" onclick="window.openMapModal && window.openMapModal()">
+          <div class="video-label">🌌 SKILLS<span class="card-action-badge badge-dive">🔍 TECH</span></div>
+          <div class="video-wrap">
+            <img src="png/constellation.png" alt="Constellation Map" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" loading="lazy">
+          </div>
+        </div>
       </div>
       <div class="key-figures-grid">
         <a class="glass-tile key-figure reveal" href="#work" onclick="event.preventDefault(); navigateToModal('work','microsoft')">
@@ -239,37 +266,10 @@
           <span class="key-figure-label">Magna Cum Laude</span>
         </a>
       </div>
-      <hr>
-      <div class="card-grid card-grid-wide" style="margin-bottom:32px;">
-        <div class="glass-tile video-card reveal" style="cursor:pointer;" role="button" tabindex="0" aria-label="Open Graph of Knowledge" data-action="scroll-open" data-open="knowledgeModal">
-          <div class="video-label">🧭 SKILLTREE<span class="card-action-badge badge-dive" style="margin-left:auto;">🔍 PORT</span><span class="card-action-badge badge-mtg" onclick="event.stopPropagation(); window.openMtgTreeModal && window.openMtgTreeModal();" role="button" tabindex="0" aria-label="Open MTG Skill Tree">🃏 MTG</span></div>
-          <div class="video-wrap">
-            <img src="png/graph.png" alt="Graph of Knowledge" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" loading="lazy">
-          </div>
-        </div>
-        <div class="glass-tile video-card reveal" style="cursor:pointer;" role="button" tabindex="0" aria-label="See more in Timeline" data-action="scroll-open" data-open="timelineModal">
-          <div class="video-label">🕰️ ROADMAP<span class="card-action-badge badge-dive">🔍 MORE</span></div>
-          <div class="video-wrap">
-            <img src="png/timeline.png" alt="Timeline" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" loading="lazy">
-          </div>
-        </div>
-        <div class="glass-tile video-card reveal" style="cursor:pointer;" role="button" tabindex="0" aria-label="See more about Architecture" onclick="openArchModal()">
-          <div class="video-label">🧜 DIAGRAMS<span class="card-action-badge badge-dive" style="margin-left:auto;" onclick="event.stopPropagation(); window.openMarpModal && window.openMarpModal();" role="button" tabindex="0" aria-label="Open MARP Diagram">🤖 MARP</span><span class="card-action-badge badge-mermaid" onclick="event.stopPropagation(); window.openArchModal && window.openArchModal();" role="button" tabindex="0" aria-label="Open Architecture Diagram">🧜 ARCH</span><span class="card-action-badge badge-tentimes" onclick="event.stopPropagation(); window.openTentimesModal && window.openTentimesModal();" role="button" tabindex="0" aria-label="Open TenTimes Diagram">🚂 TENTIMES</span></div>
-          <div class="video-wrap">
-            <img src="png/arch.png" alt="Architecture" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" loading="lazy">
-          </div>
-        </div>        
-        <div class="glass-tile video-card reveal" style="cursor:pointer;" role="button" tabindex="0" aria-label="Open Constellation Map" onclick="window.openMapModal && window.openMapModal()">
-          <div class="video-label">🌌 SKILLS<span class="card-action-badge badge-dive">🔍 TECH</span></div>
-          <div class="video-wrap">
-            <img src="png/constellation.png" alt="Constellation Map" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" loading="lazy">
-          </div>
-        </div>
-      </div>
     </div>
     <a href="#marp" class="scroll-hint">
-      <strong>MARP</strong>
-      <span class="scroll-arrow">🤖</span>
+      <strong>Traverse</strong>
+      <span class="scroll-arrow">🔭</span>
     </a>
   </div>
 
@@ -1052,7 +1052,7 @@
       <!-- ── Colophon ── -->
       <p class="bio-colophon">A penguin who makes things.</p>
 
-      <div class="scroll-hint bio-explore-hint" id="bioExploreHint" style="cursor:pointer;"><strong>Explore</strong><span class="scroll-arrow">🐧</span></div>
+      <div class="scroll-hint bio-explore-hint" id="bioExploreHint" style="cursor:pointer;"><strong>Traverse</strong><span class="scroll-arrow">🔭</span></div>
 
     </div>
   </div>

@@ -814,10 +814,75 @@ a.scroll-hint:hover strong {
   object-fit: cover;
   border: 3px solid rgba(255, 255, 255, 0.25);
   flex-shrink: 0;
-  transition: border-color 0.4s, box-shadow 0.4s;
+  transition: border-color 0.4s, box-shadow 0.4s, opacity 0.35s;
   box-shadow: 0 0 15px rgba(255, 255, 255, 0.15),
               0 0 40px rgba(255, 255, 255, 0.08),
               0 0 80px rgba(255, 255, 255, 0.04);
+}
+
+/* Portrait link container */
+.hero-portrait-link {
+  position: relative;
+  display: inline-block;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* Penguin overlay */
+.hero-portrait-penguin {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 10px;
+  font-size: 194px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: #000;
+  border: 3px solid rgba(255, 255, 255, 0.7);
+  box-shadow: 0 0 25px rgba(255, 255, 255, 0.4),
+              0 0 60px rgba(255, 255, 255, 0.15),
+              0 0 120px rgba(255, 255, 255, 0.06);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+}
+
+.hero-portrait-link:hover .hero-portrait {
+  opacity: 0;
+}
+
+.hero-portrait-link:hover .hero-portrait-penguin {
+  opacity: 1;
+}
+
+.hero-penguin-emoji {
+  display: inline-block;
+  position: relative;
+  z-index: 2;
+}
+
+.hero-penguin-bg {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-bottom: 40px;
+  font-size: 388px;
+  z-index: 1;
+  opacity: 0.35;
+  transition: opacity 0.8s ease;
+  pointer-events: none;
+}
+
+.hero-penguin-bg-b {
+  opacity: 0;
+}
+
+.hero-portrait-link:hover .hero-penguin-emoji {
+  animation: kg-penguin-bounce 1s ease infinite;
 }
 
 .hero-portrait:hover {
@@ -2952,6 +3017,14 @@ html.light-mode .hero-portrait {
 html.light-mode .hero-portrait:hover {
   border-color: rgba(0, 0, 0, 0.25);
   box-shadow: 0 6px 30px rgba(0, 0, 0, 0.15);
+}
+
+html.light-mode .hero-portrait-penguin {
+  background: #fff;
+  border-color: rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.2),
+              0 0 60px rgba(0, 0, 0, 0.08),
+              0 0 120px rgba(0, 0, 0, 0.03);
 }
 
 html.light-mode .section-heading {

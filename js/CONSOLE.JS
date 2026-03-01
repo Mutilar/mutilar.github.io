@@ -55,8 +55,20 @@
       el.style.opacity    = "0";
     });
 
-    // Remove after fade completes
-    setTimeout(function () { if (el.parentNode) el.remove(); }, 400);
+    // After fade, collapse height so siblings slide up smoothly
+    setTimeout(function () {
+      if (!el.parentNode) return;
+      var h = el.offsetHeight;
+      el.style.transition = "none";
+      el.style.height = h + "px";
+      el.style.marginBottom = getComputedStyle(el).marginBottom;
+      el.style.overflow = "hidden";
+      void el.offsetHeight;
+      el.style.transition = "height 0.3s ease, margin-bottom 0.3s ease";
+      el.style.height = "0px";
+      el.style.marginBottom = "0px";
+      setTimeout(function () { if (el.parentNode) el.remove(); }, 320);
+    }, 380);
   }
 
   function stringify(args) {
@@ -659,6 +671,14 @@
   /* ── Greeting ────────────────────────────────────────────── */
   _log(GREETING);
   addLine(GREETING, "log");
+  if (container && container.lastElementChild) {
+    var greetTile = container.lastElementChild;
+    greetTile.style.cursor = "pointer";
+    greetTile.classList.add("dev-toast-link");
+    greetTile._onTap = function () {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    };
+  }
 
   /* ── Bio prompt (after 1 s) ─────────────────────────────── */
   var _bioTile = null;
@@ -689,5 +709,46 @@
       };
     }
   }, 2000);
+
+  /* ── Section waypoints ──────────────────────────────────── */
+  // Log a toast when the user scrolls past each section heading
+  (function () {
+    var headings = document.querySelectorAll(".section-heading");
+    if (!headings.length) return;
+
+    var fired = {};
+
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        var el = entry.target;
+        var label = el.textContent.trim();
+        if (fired[label]) return;
+        fired[label] = true;
+
+        // Find the closest ancestor with an id for the anchor
+        var anchor = el.closest("[id]");
+        var anchorId = anchor ? anchor.id : null;
+
+        _log(label);
+        addLine(label, "log");
+
+        // Make the toast tile clickable to scroll back to that section
+        if (anchorId && container && container.lastElementChild) {
+          var tile = container.lastElementChild;
+          tile.style.cursor = "pointer";
+          tile.classList.add("dev-toast-link");
+          tile._onTap = (function (id) {
+            return function () {
+              var target = document.getElementById(id);
+              if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
+            };
+          })(anchorId);
+        }
+      });
+    }, { threshold: 0.5 });
+
+    headings.forEach(function (h) { observer.observe(h); });
+  })();
 
 })();

@@ -244,13 +244,36 @@ function closeQuiltModal() {
 quiltModalClose.addEventListener("click", closeQuiltModal);
 quiltModal.addEventListener("click", e => { if (e.target === quiltModal) closeQuiltModal(); });
 
+// ── Hero penguin background cycle ────────────────────────────
+(function () {
+  var a = document.getElementById("heroPenguinBgA");
+  var b = document.getElementById("heroPenguinBgB");
+  if (!a || !b) return;
+  var emojis = ["🌍","🌎","🌏", "🏙️","🌁","🌇","🌆","🌃","🌌"];
+  var idx = 0;
+  var front = a;   // currently visible
+  var back = b;    // currently hidden
+
+  setInterval(function () {
+    idx = (idx + 1) % emojis.length;
+    back.textContent = emojis[idx];
+    // Crossfade: back in, front out
+    back.style.opacity = "0.35";
+    front.style.opacity = "0";
+    // Swap roles
+    var tmp = front;
+    front = back;
+    back = tmp;
+  }, 750);
+})();
+
 // ── Bio Tour ─────────────────────────────────────────────────
 (function () {
   var hint = document.getElementById("bioExploreHint");
   var card = quiltModal.querySelector(".modal-card");
   if (!hint || !card) return;
 
-  var HINT_DEFAULT = '<strong>Explore</strong><span class="scroll-arrow">🐧</span>';
+  var HINT_DEFAULT = '<strong>Traverse</strong><span class="scroll-arrow">🔭</span>';
   var _cf = createCrossfader();
   var _raf = null;
   var _scrolling = false;

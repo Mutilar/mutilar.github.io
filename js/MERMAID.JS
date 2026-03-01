@@ -1596,7 +1596,7 @@
     if (vp) {
       createExploreHint({
         viewport: vp,
-        label: '<strong>Explore</strong><span class="scroll-arrow">\uD83D\uDD2D</span>',
+        label: '<strong>Traverse</strong><span class="scroll-arrow">🔭</span>',
         onStart: startExplore,
         isTouring: function () { return _exploring; },
         onCancel: stopExplore,
