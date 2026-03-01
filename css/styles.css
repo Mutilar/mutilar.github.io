@@ -794,23 +794,27 @@ a.scroll-hint:hover strong {
    HERO
    ═══════════════════════════════════════════════════════════════ */
 .hero-card {
-  max-width: 925px;
+  max-width: 500px;
   width: 100%;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 32px;
-  padding: 48px 40px;
+  gap: 16px;
+  padding: 36px 32px;
 }
 
 .hero-text {
   text-align: center;
   flex: 1;
   min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .hero-portrait {
-  width: 375px;
-  height: 375px;
+  width: 300px;
+  height: 300px;
   border-radius: 50%;
   object-fit: cover;
   border: 3px solid rgba(255, 255, 255, 0.25);
@@ -901,11 +905,21 @@ a.scroll-hint:hover strong {
   font-size: 42px;
   font-weight: 700;
   letter-spacing: -1px;
-  margin-bottom: 12px;
+  margin-bottom: 2px;
   background: linear-gradient(135deg, #fff 0%, rgba(255, 255, 255, 0.7) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+}
+.hero-name .hero-surname {
+  display: block;
+  font-size: 0.52em;
+  font-weight: 300;
+  letter-spacing: 0.05em;
+  -webkit-text-fill-color: rgba(255, 255, 255, 0.6);
+}
+html.light-mode .hero-name .hero-surname {
+  -webkit-text-fill-color: rgba(0, 0, 0, 0.45);
 }
 .hero-name .emoji-reset {
   -webkit-text-fill-color: initial;
@@ -915,10 +929,9 @@ a.scroll-hint:hover strong {
 }
 
 .hero-tagline {
-  font-size: 26px;
+  font-size: 28px;
   color: rgba(255, 255, 255, 0.75);
-  margin-bottom: 8px;
-  line-height: 1.7;
+  line-height: 1.6;
 }
 
 .hero-tagline strong a {
@@ -946,6 +959,7 @@ a.scroll-hint:hover strong {
   gap: 8px;
   flex-wrap: wrap;
   justify-content: center;
+  margin-top: 16px;
 }
 
 .hero-links a {

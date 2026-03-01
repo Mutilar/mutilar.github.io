@@ -412,7 +412,7 @@ quiltModal.addEventListener("click", e => { if (e.target === quiltModal) closeQu
     penguin.style.opacity = "";
     penguin.style.transition = "";
     if (circle) circle.style.setProperty("--glow", glowMap[emojis[0]]);
-    timer = setInterval(step, 1500);
+    timer = setInterval(step, 1000);
   }
 
   function stop() {
@@ -493,6 +493,8 @@ quiltModal.addEventListener("click", e => { if (e.target === quiltModal) closeQu
     var lastStopIdx = -1;
 
     function onUser() { interrupted = true; }
+    function hintSwallow(e) { e.stopPropagation(); }
+    hint.addEventListener("pointerdown", hintSwallow);
     card.addEventListener("wheel", onUser, { once: true, passive: true });
     card.addEventListener("touchstart", onUser, { once: true, passive: true });
     card.addEventListener("pointerdown", onUser, { once: true });
@@ -508,7 +510,7 @@ quiltModal.addEventListener("click", e => { if (e.target === quiltModal) closeQu
       card.scrollTop += SPEED * dt;
 
       // Crossfade hint label when we pass a tour stop
-      var scrollMid = card.scrollTop + card.clientHeight * 0.4 + 100;
+      var scrollMid = card.scrollTop + card.clientHeight * 0.4 + 50;
       for (var i = stops.length - 1; i >= 0; i--) {
         if (stops[i].el.offsetTop <= scrollMid) {
           if (i !== lastStopIdx) {
@@ -546,6 +548,7 @@ quiltModal.addEventListener("click", e => { if (e.target === quiltModal) closeQu
     }
 
     _tourCleanup = function () {
+      hint.removeEventListener("pointerdown", hintSwallow);
       card.removeEventListener("wheel", onUser);
       card.removeEventListener("touchstart", onUser);
       card.removeEventListener("pointerdown", onUser);
