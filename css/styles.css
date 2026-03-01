@@ -849,11 +849,13 @@ a.scroll-hint:hover strong {
   transition: opacity 0.35s ease;
 }
 
-.hero-portrait-link:hover .hero-portrait {
+.hero-portrait-link:hover .hero-portrait,
+.hero-portrait-link.hover .hero-portrait {
   opacity: 0;
 }
 
-.hero-portrait-link:hover .hero-portrait-penguin {
+.hero-portrait-link:hover .hero-portrait-penguin,
+.hero-portrait-link.hover .hero-portrait-penguin {
   opacity: 1;
 }
 
@@ -881,7 +883,8 @@ a.scroll-hint:hover strong {
   opacity: 0;
 }
 
-.hero-portrait-link:hover .hero-penguin-emoji {
+.hero-portrait-link:hover .hero-penguin-emoji,
+.hero-portrait-link.hover .hero-penguin-emoji {
   animation: kg-penguin-bounce 1s ease infinite;
 }
 
