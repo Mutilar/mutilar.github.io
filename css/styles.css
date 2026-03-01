@@ -152,6 +152,7 @@ a.scroll-hint:hover strong {
 
 .scroll-hint .scroll-arrow {
   font-size: 20px;
+  order: -1;
 }
 
 .parallax-window-hero .scroll-hint {
@@ -627,10 +628,10 @@ a.scroll-hint:hover strong {
   min-width: 0;
 }
 
-.section-blurb .step { margin-bottom: 6px; }
-.section-blurb .step-left { text-align: left; }
-.section-blurb .step-center { text-align: center; }
-.section-blurb .step-right { text-align: right; }
+.section-blurb .step, .bio-symbol-block .step, .bio-principle-block .step { margin-bottom: 6px; color: rgba(255, 255, 255, 0.75); font-size: 13.5px; line-height: 1.75; }
+.section-blurb .step-left, .bio-symbol-block .step-left, .bio-principle-block .step-left { text-align: left; }
+.section-blurb .step-center, .bio-symbol-block .step-center, .bio-principle-block .step-center { text-align: center; }
+.section-blurb .step-right, .bio-symbol-block .step-right, .bio-principle-block .step-right { text-align: right; }
 
 .section-blurb .step-summary {
   margin-top: 12px;
@@ -1493,6 +1494,31 @@ html.light-mode .card-action-badge.badge-static {
   margin-top: 12px;
 }
 
+/* ── Bio quote crossfade viewer ── */
+.bio-quote-viewer {
+  position: relative;
+  margin: 16px 0;
+}
+
+.modal-card .modal-body .bio-quote-viewer .bio-quote-layer {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+  margin: 0;
+}
+
+.modal-card .modal-body .bio-quote-viewer .bio-quote-layer.bio-quote-active {
+  position: relative;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal-card .modal-body .bio-quote-viewer blockquote.bio-quote-layer {
+  margin: 0;
+}
+
 .modal-card .modal-body .modal-figure {
   position: relative;
   margin: 20px 0;
@@ -1674,29 +1700,68 @@ html.light-mode .card-action-badge.badge-static {
 }
 
 .bio-stat {
+  --bio-glow: 255, 215, 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 14px 8px;
   border-radius: 12px;
-  background: linear-gradient(135deg, rgba(255, 215, 0, 0.06) 0%, rgba(255, 255, 255, 0.02) 100%);
-  border: 1px solid rgba(255, 215, 0, 0.15);
-  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  background: linear-gradient(135deg, rgba(var(--bio-glow), 0.06) 0%, rgba(255, 255, 255, 0.02) 100%);
+  border: 1px solid rgba(var(--bio-glow), 0.15);
+  transition: box-shadow 0.3s ease, transform 0.3s ease, border-color 0.3s ease, background 0.3s ease;
 }
 
 .bio-stat:hover {
-  box-shadow: 0 0 16px rgba(255, 215, 0, 0.35), 0 0 32px rgba(255, 215, 0, 0.12);
+  box-shadow: 0 0 16px rgba(var(--bio-glow), 0.35), 0 0 32px rgba(var(--bio-glow), 0.12);
   transform: scale(1.03);
+}
+
+.bio-stat-active {
+  box-shadow: 0 0 12px rgba(var(--bio-glow), 0.30), 0 0 24px rgba(var(--bio-glow), 0.10);
+  border-color: rgba(var(--bio-glow), 0.4);
 }
 
 .bio-stat-link {
   cursor: pointer;
 }
 
+/* ── Bio image viewer (crossfade) ── */
+.bio-img-viewer {
+  --bio-viewer-glow: 255, 215, 0;
+  position: relative;
+  width: 100%;
+  border-radius: 14px;
+  overflow: hidden;
+  margin-bottom: 12px;
+  border: 1px solid rgba(var(--bio-viewer-glow), 0.25);
+  aspect-ratio: 16 / 9;
+  background: rgba(var(--bio-viewer-glow), 0.06);
+  box-shadow:
+    0 0 16px rgba(var(--bio-viewer-glow), 0.25),
+    0 0 40px rgba(var(--bio-viewer-glow), 0.12),
+    inset 0 0 30px rgba(var(--bio-viewer-glow), 0.06);
+  transition: border-color 0.5s ease, background 0.5s ease, box-shadow 0.5s ease;
+}
+
+.bio-img-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+}
+
+.bio-img-layer.bio-img-active {
+  opacity: 1;
+}
+
 .bio-stat-value {
   font-size: 22px;
   font-weight: 800;
-  color: rgba(255, 215, 0, 0.85);
+  color: rgba(255, 255, 255, 0.9);
   line-height: 1.1;
 }
 
@@ -1705,7 +1770,7 @@ html.light-mode .card-action-badge.badge-static {
   font-weight: 600;
   letter-spacing: 0.5px;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.4);
+  color: rgba(var(--bio-glow), 0.7);
   margin-top: 4px;
 }
 
@@ -1726,13 +1791,19 @@ html.light-mode .card-action-badge.badge-static {
   position: relative;
   margin: 16px 0;
   padding: 16px 20px;
-  border-left: 3px solid rgba(255, 215, 0, 0.25);
-  background: linear-gradient(135deg, rgba(255, 215, 0, 0.04) 0%, rgba(255, 255, 255, 0.01) 100%);
+  border-left: 3px solid rgba(130, 200, 255, 0.3);
+  background: linear-gradient(135deg, rgba(130, 200, 255, 0.04) 0%, rgba(255, 255, 255, 0.01) 100%);
   border-radius: 0 12px 12px 0;
 }
 
 .bio-symbol-block + .bio-symbol-block {
   margin-top: 12px;
+}
+
+.bio-symbol-block h4 {
+  margin: 0 0 8px 0;
+  font-size: 14px;
+  color: rgba(130, 200, 255, 0.85);
 }
 
 .bio-symbol-block p {
@@ -3327,20 +3398,33 @@ html.light-mode .bio-modal-card .modal-body h4 {
 }
 
 html.light-mode .bio-stat {
-  background: linear-gradient(135deg, rgba(180, 130, 0, 0.06) 0%, rgba(0, 0, 0, 0.01) 100%);
-  border-color: rgba(180, 130, 0, 0.18);
+  background: linear-gradient(135deg, rgba(var(--bio-glow), 0.08) 0%, rgba(0, 0, 0, 0.01) 100%);
+  border-color: rgba(var(--bio-glow), 0.2);
 }
 
 html.light-mode .bio-stat:hover {
-  box-shadow: 0 0 16px rgba(180, 130, 0, 0.25), 0 0 32px rgba(180, 130, 0, 0.1);
+  box-shadow: 0 0 16px rgba(var(--bio-glow), 0.25), 0 0 32px rgba(var(--bio-glow), 0.1);
+}
+
+html.light-mode .bio-stat-active {
+  box-shadow: 0 0 12px rgba(var(--bio-glow), 0.20), 0 0 24px rgba(var(--bio-glow), 0.08);
+  border-color: rgba(var(--bio-glow), 0.35);
+}
+
+html.light-mode .bio-img-viewer {
+  border-color: rgba(var(--bio-viewer-glow), 0.2);
+  background: rgba(var(--bio-viewer-glow), 0.05);
+  box-shadow:
+    0 0 14px rgba(var(--bio-viewer-glow), 0.18),
+    0 0 32px rgba(var(--bio-viewer-glow), 0.08);
 }
 
 html.light-mode .bio-stat-value {
-  color: rgba(140, 95, 0, 0.9);
+  color: rgba(0, 0, 0, 0.85);
 }
 
 html.light-mode .bio-stat-label {
-  color: rgba(0, 0, 0, 0.4);
+  color: rgba(var(--bio-glow), 0.85);
 }
 
 html.light-mode .bio-section-lead {
@@ -3348,11 +3432,17 @@ html.light-mode .bio-section-lead {
 }
 
 html.light-mode .bio-symbol-block {
-  border-left-color: rgba(180, 130, 0, 0.35);
-  background: linear-gradient(135deg, rgba(180, 130, 0, 0.06) 0%, rgba(0, 0, 0, 0.01) 100%);
+  border-left-color: rgba(0, 100, 200, 0.3);
+  background: linear-gradient(135deg, rgba(0, 100, 200, 0.05) 0%, rgba(0, 0, 0, 0.01) 100%);
 }
 
-html.light-mode .bio-symbol-block p {
+html.light-mode .bio-symbol-block h4 {
+  color: rgba(0, 100, 200, 0.85);
+}
+
+html.light-mode .bio-symbol-block p,
+html.light-mode .bio-symbol-block .step,
+html.light-mode .bio-principle-block .step {
   color: rgba(0, 0, 0, 0.65);
 }
 

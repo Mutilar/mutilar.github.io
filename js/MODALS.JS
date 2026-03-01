@@ -244,6 +244,111 @@ function closeQuiltModal() {
 quiltModalClose.addEventListener("click", closeQuiltModal);
 quiltModal.addEventListener("click", e => { if (e.target === quiltModal) closeQuiltModal(); });
 
+// ── Overscroll bounce ────────────────────────────────────────
+(function () {
+  var card = quiltModal.querySelector(".modal-card");
+  var bouncing = false;
+  card.addEventListener("scroll", function () {
+    if (bouncing) return;
+    var st = card.scrollTop;
+    var maxScroll = card.scrollHeight - card.clientHeight;
+    if (st <= 0 || st >= maxScroll) {
+      bouncing = true;
+      var dir = st <= 0 ? 1 : -1;
+      card.style.transition = "transform 0.15s ease-out";
+      card.style.transform = "translateY(" + (dir * 12) + "px)";
+      setTimeout(function () {
+        card.style.transition = "transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)";
+        card.style.transform = "";
+        setTimeout(function () {
+          card.style.transition = "";
+          bouncing = false;
+        }, 300);
+      }, 150);
+    }
+  }, { passive: true });
+})();
+
+// ── Bio image + quote viewer crossfade ───────────────────────
+(function () {
+  // For each bio-stat-row that has tiles with data-bio-img,
+  // find the sibling bio-img-viewer and bio-quote-viewer above it
+  // and wire up hover crossfade for both.
+  var rows = quiltModal.querySelectorAll(".bio-stat-row");
+  rows.forEach(function (row) {
+    var tiles = row.querySelectorAll("[data-bio-img]");
+    if (!tiles.length) return;
+
+    // Walk backwards for img-viewer, forwards for quote-viewer
+    var viewer = null, quoteViewer = null;
+    var sib = row.previousElementSibling;
+    while (sib) {
+      if (!viewer && sib.classList.contains("bio-img-viewer")) { viewer = sib; break; }
+      sib = sib.previousElementSibling;
+    }
+    sib = row.nextElementSibling;
+    while (sib) {
+      if (sib.classList.contains("bio-quote-viewer")) { quoteViewer = sib; break; }
+      if (sib.classList.contains("bio-symbol-block") || sib.classList.contains("bio-principle-block") || sib.tagName === "H3" || sib.tagName === "HR") break;
+      sib = sib.nextElementSibling;
+    }
+
+    var layers = viewer ? viewer.querySelectorAll(".bio-img-layer") : [];
+    var quotes = quoteViewer ? quoteViewer.querySelectorAll(".bio-quote-layer") : [];
+
+    // Apply per-tile --bio-glow from data-bio-color
+    tiles.forEach(function (tile) {
+      var c = tile.dataset.bioColor;
+      if (c) tile.style.setProperty("--bio-glow", c);
+    });
+
+    // Set initial viewer glow from the first active tile
+    var firstActive = row.querySelector(".bio-stat-active");
+    if (firstActive && firstActive.dataset.bioColor && viewer) {
+      viewer.style.setProperty("--bio-viewer-glow", firstActive.dataset.bioColor);
+    }
+
+    function activate(tile) {
+      var idx = parseInt(tile.dataset.bioImg, 10);
+      if (isNaN(idx)) return;
+
+      // Remove active from all tiles in this row
+      tiles.forEach(function (t) { t.classList.remove("bio-stat-active"); });
+      tile.classList.add("bio-stat-active");
+
+      // Crossfade images
+      if (layers.length) {
+        layers.forEach(function (l) { l.classList.remove("bio-img-active"); });
+        if (layers[idx]) layers[idx].classList.add("bio-img-active");
+      }
+
+      // Crossfade quotes
+      if (quotes.length) {
+        quotes.forEach(function (q) { q.classList.remove("bio-quote-active"); });
+        if (quotes[idx]) quotes[idx].classList.add("bio-quote-active");
+      }
+
+      // Push glow color to viewer
+      var c = tile.dataset.bioColor;
+      if (c && viewer) viewer.style.setProperty("--bio-viewer-glow", c);
+    }
+
+    tiles.forEach(function (tile) {
+      tile.addEventListener("mouseenter", function () { activate(tile); });
+      tile.addEventListener("focus", function () { activate(tile); });
+    });
+
+    // Make image viewer clickable — triggers the active tile's action
+    if (viewer) {
+      viewer.style.cursor = "pointer";
+      viewer.addEventListener("click", function () {
+        var active = row.querySelector(".bio-stat-active[data-action]");
+        if (active) active.click();
+      });
+    }
+  });
+})();
+
 // ── Hero penguin background cycle ────────────────────────────
 (function () {
   var a = document.getElementById("heroPenguinBgA");
@@ -342,14 +447,28 @@ quiltModal.addEventListener("click", e => { if (e.target === quiltModal) closeQu
   // Tour stops for crossfading the hint label as we scroll past them
   function getStops() {
     return Array.from(card.querySelectorAll("[data-bio-tour]")).map(function (el) {
-      return { el: el, label: el.getAttribute("data-bio-tour") };
+      // Find the bio-stat-row associated with this tour stop's section
+      var tiles = [];
+      var sib = el.nextElementSibling;
+      while (sib) {
+        if (sib.classList.contains("bio-stat-row")) {
+          tiles = Array.from(sib.querySelectorAll("[data-bio-img]"));
+          break;
+        }
+        // Stop if we hit the next section
+        if (sib.hasAttribute("data-bio-tour") || sib.tagName === "H3") break;
+        sib = sib.nextElementSibling;
+      }
+      return { el: el, label: el.getAttribute("data-bio-tour"), tiles: tiles };
     });
   }
 
+  var _tourCleanup = null;
   function stopScroll() {
     if (_raf) { cancelAnimationFrame(_raf); _raf = null; }
     if (!_scrolling) return;
     _scrolling = false;
+    if (_tourCleanup) { _tourCleanup(); _tourCleanup = null; }
     hint.classList.remove("exploring");
     _cf.fade(hint, HINT_DEFAULT);
     hint.style.opacity = 1;
@@ -357,8 +476,6 @@ quiltModal.addEventListener("click", e => { if (e.target === quiltModal) closeQu
   }
 
   function startScroll() {
-    if (_scrolling) { stopScroll(); return; }
-
     var maxS = card.scrollHeight - card.clientHeight;
     if (card.scrollTop >= maxS - 1) {
       card.scrollTo({ top: 0, behavior: "smooth" });
@@ -369,8 +486,7 @@ quiltModal.addEventListener("click", e => { if (e.target === quiltModal) closeQu
     _scrolling = true;
     hint.classList.add("exploring");
 
-    var SLOW = 100;  // px/s at top
-    var FAST = 200;  // px/s at bottom
+    var SPEED = 80;  // px/s constant
     var lastT = null;
     var interrupted = false;
     var stops = getStops();
@@ -388,13 +504,11 @@ quiltModal.addEventListener("click", e => { if (e.target === quiltModal) closeQu
       lastT = ts;
 
       var maxS = card.scrollHeight - card.clientHeight;
-      var progress = maxS > 0 ? card.scrollTop / maxS : 1;
-      var speed = SLOW + (FAST - SLOW) * progress;
 
-      card.scrollTop += speed * dt;
+      card.scrollTop += SPEED * dt;
 
       // Crossfade hint label when we pass a tour stop
-      var scrollMid = card.scrollTop + card.clientHeight * 0.4;
+      var scrollMid = card.scrollTop + card.clientHeight * 0.4 + 100;
       for (var i = stops.length - 1; i >= 0; i--) {
         if (stops[i].el.offsetTop <= scrollMid) {
           if (i !== lastStopIdx) {
@@ -405,6 +519,24 @@ quiltModal.addEventListener("click", e => { if (e.target === quiltModal) closeQu
             var text = m ? label.slice(m[0].length) : label;
             _cf.fade(hint, '<strong>' + text + '</strong><span class="scroll-arrow">' + emoji + '</span>');
           }
+
+          // Activate tiles progressively within this section's scroll range
+          var stop = stops[i];
+          if (stop.tiles.length > 1) {
+            var sectionTop = stop.el.offsetTop;
+            var sectionBot = (i + 1 < stops.length) ? stops[i + 1].el.offsetTop : maxS + card.clientHeight;
+            var sectionRange = sectionBot - sectionTop;
+            if (sectionRange > 0) {
+              var localProgress = (scrollMid - sectionTop) / sectionRange;
+              localProgress = Math.max(0, Math.min(1, localProgress));
+              var tileIdx = Math.min(Math.floor(localProgress * stop.tiles.length), stop.tiles.length - 1);
+              var activeTile = stop.tiles[tileIdx];
+              if (activeTile && !activeTile.classList.contains("bio-stat-active")) {
+                activeTile.dispatchEvent(new MouseEvent("mouseenter", { bubbles: true }));
+              }
+            }
+          }
+
           break;
         }
       }
@@ -413,17 +545,24 @@ quiltModal.addEventListener("click", e => { if (e.target === quiltModal) closeQu
       _raf = requestAnimationFrame(step);
     }
 
-    function cleanup() {
+    _tourCleanup = function () {
       card.removeEventListener("wheel", onUser);
       card.removeEventListener("touchstart", onUser);
       card.removeEventListener("pointerdown", onUser);
+    };
+
+    function cleanup() {
       stopScroll();
     }
 
     _raf = requestAnimationFrame(step);
   }
 
-  hint.addEventListener("click", function (e) { e.preventDefault(); startScroll(); });
+  hint.addEventListener("click", function (e) {
+    e.preventDefault();
+    if (_scrolling) { stopScroll(); return; }
+    startScroll();
+  });
 
   _stopBioTour = stopScroll;
 })();

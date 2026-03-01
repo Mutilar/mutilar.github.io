@@ -12,7 +12,7 @@
 
   /* ── Config ────────────────────────────────────────────────── */
   const MAX_LINES = 6;
-  const FADE_MS   = 10000;
+  const FADE_MS   = 5000;
 
   /* ── Greeting ──────────────────────────────────────────────── */
   const GREETING = "\uD83D\uDC27 Hello, World \uD83D\uDC4B\uD83C\uDFFB";

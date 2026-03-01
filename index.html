@@ -227,22 +227,22 @@
       <div class="key-figures-grid">
         <a class="glass-tile key-figure reveal" href="#work" onclick="event.preventDefault(); navigateToModal('work','microsoft')">
           <span class="key-figure-icon">☁️</span>
-          <span class="key-figure-value">8,000,000,000+</span>
-          <span class="key-figure-label">Inferences / Day</span>
+          <span class="key-figure-value">8B+</span>
+          <span class="key-figure-label">Requests / Day</span>
+        </a>
+        <a class="glass-tile key-figure reveal" href="#projects">
+          <span class="key-figure-icon">🛠️</span>
+          <span class="key-figure-value">20+</span>
+          <span class="key-figure-label">Projects</span>
         </a>
         <a class="glass-tile key-figure reveal" href="#hackathons">
           <span class="key-figure-icon">🏆</span>
-          <span class="key-figure-value">10 WINS</span>
-          <span class="key-figure-label">Competitions</span>
-        </a>
-        <a class="glass-tile key-figure reveal" href="#work" onclick="event.preventDefault(); navigateToModal('work','summerofgamedesign')">
-          <span class="key-figure-icon">👨‍🏫</span>
-          <span class="key-figure-value">100+</span>
-          <span class="key-figure-label">Students Taught</span>
+          <span class="key-figure-value">10+</span>
+          <span class="key-figure-label">Hacks</span>
         </a>
         <a class="glass-tile key-figure reveal" href="#projects" onclick="event.preventDefault(); navigateToModal('projects','iterate')">
           <span class="key-figure-icon">💰</span>
-          <span class="key-figure-value">$50,000</span>
+          <span class="key-figure-value">$50K+</span>
           <span class="key-figure-label">Fundraised</span>
         </a>
         <a class="glass-tile key-figure reveal" href="#work" onclick="event.preventDefault(); navigateToModal('work','microsoft')">
@@ -250,10 +250,10 @@
           <span class="key-figure-value">50+</span>
           <span class="key-figure-label">Regions Deployed</span>
         </a>
-        <a class="glass-tile key-figure reveal" href="#projects">
-          <span class="key-figure-icon">🛠️</span>
-          <span class="key-figure-value">20+</span>
-          <span class="key-figure-label">Projects</span>
+        <a class="glass-tile key-figure reveal" href="#work" onclick="event.preventDefault(); navigateToModal('work','summerofgamedesign')">
+          <span class="key-figure-icon">👨‍🏫</span>
+          <span class="key-figure-value">100+</span>
+          <span class="key-figure-label">Students Taught</span>
         </a>
         <a class="glass-tile key-figure reveal" href="#work" onclick="event.preventDefault(); navigateToModal('work','hackmerced')">
           <span class="key-figure-icon">🧑‍💻</span>
@@ -954,29 +954,214 @@
       </div>
     </div>
     <div class="modal-body">
-      <!-- ── Quotes ── -->
-      <!-- ── About ── -->
-      <h3 data-bio-tour="🎂 About">About Me</h3>
-      <div class="bio-about">
-      <blockquote>
-        <p>Sharing is good, and with digital technology, sharing is easy!</p>
-        <cite>Richard Stallman</cite>
-      </blockquote>
-        <div class="bio-stat-row">
-          <div class="bio-stat"><span class="bio-stat-value">🎂 27</span><span class="bio-stat-label">years old</span></div>
-          <div class="bio-stat bio-stat-link" tabindex="0" data-action="scroll-navigate" data-scroll-to="work" data-navigate-dataset="work" data-navigate-id="microsoft"><span class="bio-stat-value">🧠 8B+</span><span class="bio-stat-label">requests/day</span></div>
-          <div class="bio-stat bio-stat-link" tabindex="0" data-action="scroll-navigate" data-scroll-to="work" data-navigate-dataset="work" data-navigate-id="microsoft"><span class="bio-stat-value">☁️ 50+</span><span class="bio-stat-label">Azure regions</span></div>
-          <div class="bio-stat bio-stat-link" tabindex="0" onclick="document.getElementById('education').scrollIntoView({behavior:'smooth'})"><span class="bio-stat-value">🎓 3.74</span><span class="bio-stat-label">GPA (MCL)</span></div>
-        </div>
-      <blockquote>
-        <p>History repeats itself because nobody was listening the first time...</p>
-        <cite>Erik Qualman</cite>
-      </blockquote>
-        <div class="bio-stat-row">
-          <div class="bio-stat bio-stat-link" tabindex="0" data-action="scroll-navigate" data-scroll-to="work" data-navigate-dataset="work" data-navigate-id="microsoft"><span class="bio-stat-value">🪟 E+D</span><span class="bio-stat-label">Senior SWE</span></div>
-          <div class="bio-stat bio-stat-link" tabindex="0" data-action="scroll-navigate" data-scroll-to="work" data-navigate-dataset="work" data-navigate-id="microsoft"><span class="bio-stat-value">⚡ AML</span><span class="bio-stat-label">Inference GA</span></div>
-          <div class="bio-stat bio-stat-link" tabindex="0" onclick="document.getElementById('education').scrollIntoView({behavior:'smooth'})"><span class="bio-stat-value">🏛️ UCM</span><span class="bio-stat-label">Comp Sci & Eng</span></div>
-        </div>
+
+      <hr>
+      <!-- I: The Call -->
+      <div class="bio-symbol-block" data-bio-tour="📜 Call">
+        <div class="step step-left">Penguins hatch in desolate tundras...</div>
+        <div class="step step-right">...but it's the only land they know.</div>
+      </div>
+      <div class="bio-img-viewer">
+        <img class="bio-img-layer bio-img-active" src="png/quilting.png" alt="Quilting a penguin quilt" />
+        <img class="bio-img-layer" src="png/amax-thumbnail.png" alt="AMAX ESD station" />
+        <img class="bio-img-layer" src="png/redtie-robot.png" alt="FRC 1458 robot" />
+      </div>
+      <div class="bio-stat-row">
+        <div class="bio-stat bio-stat-link bio-stat-active" tabindex="0" data-bio-img="0" data-bio-color="255,185,0"><span class="bio-stat-value">🧵 QUILT</span><span class="bio-stat-label">first artifact</span></div>
+        <div class="bio-stat bio-stat-link" tabindex="0" data-bio-img="1" data-bio-color="127,186,0" data-action="navigate" data-navigate-dataset="projects" data-navigate-id="amaxesd"><span class="bio-stat-value">⚡ AMAX</span><span class="bio-stat-label">first contract</span></div>
+        <div class="bio-stat bio-stat-link" tabindex="0" data-bio-img="2" data-bio-color="242,80,34" data-action="navigate" data-navigate-dataset="work" data-navigate-id="redtierobotics"><span class="bio-stat-value">🤖 FRC 1458</span><span class="bio-stat-label">first robot</span></div>
+      </div>
+      <div class="bio-quote-viewer">
+        <blockquote class="bio-quote-layer bio-quote-active">
+          <p>History repeats itself because nobody was listening the first time...</p>
+          <cite>Erik Qualman</cite>
+        </blockquote>
+        <blockquote class="bio-quote-layer">
+          <p>Every child is an artist. The problem is how to remain an artist once we grow up.</p>
+          <cite>Pablo Picasso</cite>
+        </blockquote>
+        <blockquote class="bio-quote-layer">
+          <p>Start where you are. Use what you have. Do what you can.</p>
+          <cite>Arthur Ashe</cite>
+        </blockquote>
+      </div>
+
+
+      <hr>
+      <!-- II: The Threshold -->
+      <div class="bio-symbol-block" data-bio-tour="🚪 Threshold">
+        <div class="step step-left">Penguins leave the colony for the open oceans...</div>
+        <div class="step step-right">...uncharted territories ripe with opportunities.</div>
+      </div>
+      <div class="bio-img-viewer">
+        <img class="bio-img-layer bio-img-active" src="png/merced.png" alt="UC Merced" />
+        <img class="bio-img-layer" src="png/game-banner-lan.png" alt="HackMerced" />
+        <img class="bio-img-layer" src="png/graduation-frame.png" alt="Graduation" />
+      </div>
+      <div class="bio-stat-row">
+        <div class="bio-stat bio-stat-link bio-stat-active" tabindex="0" data-bio-img="0" data-bio-color="0,164,239" data-action="navigate" data-navigate-dataset="work" data-navigate-id="vicelab"><span class="bio-stat-value">🏛️ UCM</span><span class="bio-stat-label">Comp Sci & Eng</span></div>
+        <div class="bio-stat bio-stat-link" tabindex="0" data-bio-img="1" data-bio-color="127,186,0" data-action="navigate" data-navigate-dataset="work" data-navigate-id="hackmerced"><span class="bio-stat-value">🧑‍💻 300+</span><span class="bio-stat-label">hackers hosted</span></div>
+        <div class="bio-stat bio-stat-link" tabindex="0" data-bio-img="2" data-bio-color="255,185,0" data-action="navigate" data-navigate-dataset="education" data-navigate-id="cse100"><span class="bio-stat-value">🎓 3.74</span><span class="bio-stat-label">GPA (MCL)</span></div>
+      </div>
+      <div class="bio-quote-viewer">
+        <blockquote class="bio-quote-layer bio-quote-active">
+          <p>A ship in harbor is safe, but that is not what ships are built for.</p>
+          <cite>John A. Shedd</cite>
+        </blockquote>
+        <blockquote class="bio-quote-layer">
+          <p>Do not go where the path may lead; go instead where there is no path, and leave a trail.</p>
+          <cite>Ralph Waldo Emerson</cite>
+        </blockquote>
+        <blockquote class="bio-quote-layer">
+          <p>The only way to do great work is to love what you do.</p>
+          <cite>Steve Jobs</cite>
+        </blockquote>
+      </div>
+
+      
+      <hr>
+      <!-- III: The Mentor -->
+      <div class="bio-symbol-block" data-bio-tour="🧭 Mentor">
+        <div class="step step-left">Penguins press together against winter's chill...</div>
+        <div class="step step-center">...survival instincts keep one penguin alive...</div>
+        <div class="step step-right">...radiant heat means the whole colony thrives.</div>
+      </div>
+      <div class="bio-img-viewer">
+        <img class="bio-img-layer bio-img-active" src="png/citris-group.png" alt="CITRIS" />
+        <img class="bio-img-layer" src="png/game-banner.png" alt="Summer of Game Design" />
+        <img class="bio-img-layer" src="png/iterate_people.png" alt="Iterate" />
+      </div>
+      <div class="bio-stat-row">
+        <div class="bio-stat bio-stat-link bio-stat-active" tabindex="0" data-bio-img="0" data-bio-color="242,80,34" data-action="navigate" data-navigate-dataset="work" data-navigate-id="alamorobotics"><span class="bio-stat-value">🤝 5</span><span class="bio-stat-label">Orgs</span></div>
+        <div class="bio-stat bio-stat-link" tabindex="0" data-bio-img="1" data-bio-color="127,186,0" data-action="navigate" data-navigate-dataset="work" data-navigate-id="summerofgamedesign"><span class="bio-stat-value">👨‍🏫 100+</span><span class="bio-stat-label">students taught</span></div>
+        <div class="bio-stat bio-stat-link" tabindex="0" data-bio-img="2" data-bio-color="255,185,0" data-action="navigate" data-navigate-dataset="work" data-navigate-id="summerofgamedesign"><span class="bio-stat-value">💰 $50K</span><span class="bio-stat-label">fundraised</span></div>
+      </div>
+      <div class="bio-quote-viewer">
+        <blockquote class="bio-quote-layer bio-quote-active">
+          <p>If I have seen further, it is by standing on the shoulders of giants.</p>
+          <cite>Isaac Newton</cite>
+        </blockquote>
+        <blockquote class="bio-quote-layer">
+          <p>Teach me and I remember. Involve me and I learn.</p>
+          <cite>Xunzi</cite>
+        </blockquote>
+        <blockquote class="bio-quote-layer">
+          <p>The best way to find yourself is to lose yourself in the service of others.</p>
+          <cite>Gandhi</cite>
+        </blockquote>
+      </div>
+
+      <hr>
+      <!-- IV: The Abyss -->
+      <div class="bio-symbol-block" data-bio-tour="🕳️ Abyss">
+        <div class="step step-left">Penguins dive 1,800 feet into pitch-black water on a single breath...</div>
+        <div class="step step-right">...yet surface with a full gizzard.</div>
+      </div>
+      <div class="bio-img-viewer">
+        <img class="bio-img-layer bio-img-active" src="png/iterate.png" alt="Iterate hackathon win" />
+        <img class="bio-img-layer" src="png/blindsight.png" alt="Blindsight" />
+        <img class="bio-img-layer" src="png/sriracha.png" alt="SRIRACHA" />
+        <img class="bio-img-layer" src="png/motorskills.png" alt="Motor Skills" />
+      </div>
+      <div class="bio-stat-row">
+        <div class="bio-stat bio-stat-link bio-stat-active" tabindex="0" data-bio-img="0" data-bio-color="255,185,0" data-action="scroll-open" data-scroll-to="hackathons" data-open="timelineModal"><span class="bio-stat-value">🏆 8 WINS</span><span class="bio-stat-label">hackathons</span></div>
+        <div class="bio-stat bio-stat-link" tabindex="0" data-bio-img="1" data-bio-color="0,164,239" data-action="navigate" data-navigate-dataset="hackathons" data-navigate-id="blindsight"><span class="bio-stat-value">🎨 U.I.</span><span class="bio-stat-label">"How it looks"</span></div>
+        <div class="bio-stat bio-stat-link" tabindex="0" data-bio-img="2" data-bio-color="242,80,34" data-action="navigate" data-navigate-dataset="hackathons" data-navigate-id="sriracha"><span class="bio-stat-value">🧠 U.X.</span><span class="bio-stat-label">"How it feels"</span></div>
+        <div class="bio-stat bio-stat-link" tabindex="0" data-bio-img="3" data-bio-color="127,186,0" data-action="navigate" data-navigate-dataset="hackathons" data-navigate-id="motorskills"><span class="bio-stat-value">🖐️ H.C.I.</span><span class="bio-stat-label">"How you use it"</span></div>
+      </div>
+      <div class="bio-quote-viewer">
+        <blockquote class="bio-quote-layer bio-quote-active">
+          <p>It is not the critic who counts... The credit belongs to the man who is actually in the arena.</p>
+          <cite>Theodore Roosevelt</cite>
+        </blockquote>
+        <blockquote class="bio-quote-layer">
+          <p>I have not failed. I've just found 10,000 ways that won't work.</p>
+          <cite>Thomas Edison</cite>
+        </blockquote>
+        <blockquote class="bio-quote-layer">
+          <p>Under pressure, you don't rise to the occasion; you fall to the level of your training.</p>
+          <cite>Archilochus</cite>
+        </blockquote>
+        <blockquote class="bio-quote-layer">
+          <p>The hand is the cutting edge of the mind.</p>
+          <cite>Jacob Bronowski</cite>
+        </blockquote>
+      </div>
+
+      <hr>
+      <!-- V: The Transformation -->
+      <div class="bio-symbol-block" data-bio-tour="🔄 Transformation">
+        <div class="step step-left">Penguins adapted wings into flippers...</div>
+        <div class="step step-center">...they never stopped being birds...</div>
+        <div class="step step-right">...they just learned to thrive where birds never had before.</div>
+      </div>
+      <div class="bio-img-viewer">
+        <img class="bio-img-layer bio-img-active" src="png/azuremlops-mission.png" alt="Microsoft" />
+        <img class="bio-img-layer" src="png/azuremlops.png" alt="AzureML Ops" />
+        <img class="bio-img-layer" src="png/azuremlops-sequence.png" alt="AzureML sequence diagram" />
+        <img class="bio-img-layer" src="png/azuremlops-next.png" alt="AzureML shipped" />
+      </div>
+      <div class="bio-stat-row">
+        <div class="bio-stat bio-stat-link bio-stat-active" tabindex="0" data-bio-img="0" data-bio-color="0,164,239" data-action="navigate" data-navigate-dataset="work" data-navigate-id="microsoft"><span class="bio-stat-value">🌐 8B+</span><span class="bio-stat-label">inferences/day</span></div>
+        <div class="bio-stat bio-stat-link" tabindex="0" data-bio-img="1" data-bio-color="127,186,0" data-action="navigate" data-navigate-dataset="work" data-navigate-id="microsoft"><span class="bio-stat-value">☁️ 50+</span><span class="bio-stat-label">Azure regions</span></div>
+        <div class="bio-stat bio-stat-link" tabindex="0" data-bio-img="2" data-bio-color="242,80,34" data-action="navigate" data-navigate-dataset="work" data-navigate-id="microsoft"><span class="bio-stat-value">📡 C++</span><span class="bio-stat-label">Envoy filters</span></div>
+        <div class="bio-stat bio-stat-link" tabindex="0" data-bio-img="3" data-bio-color="255,185,0" data-action="navigate" data-navigate-dataset="projects" data-navigate-id="azuremlops"><span class="bio-stat-value">🚀 GA</span><span class="bio-stat-label">shipped to prod</span></div>
+      </div>
+      <div class="bio-quote-viewer">
+        <blockquote class="bio-quote-layer bio-quote-active">
+          <p>We are what we repeatedly do. Excellence, then, is not an act, but a habit.</p>
+          <cite>Will Durant</cite>
+        </blockquote>
+        <blockquote class="bio-quote-layer">
+          <p>Any sufficiently advanced technology is indistinguishable from magic.</p>
+          <cite>Arthur C. Clarke</cite>
+        </blockquote>
+        <blockquote class="bio-quote-layer">
+          <p>First, solve the problem. Then, write the code.</p>
+          <cite>John Johnson</cite>
+        </blockquote>
+        <blockquote class="bio-quote-layer">
+          <p>Real artists ship.</p>
+          <cite>Steve Jobs</cite>
+        </blockquote>
+      </div>
+
+      <hr>
+      <!-- VI: The Return -->
+      <div class="bio-symbol-block" data-bio-tour="🏠 Return">
+        <div class="step step-left">The penguin returns to the colony...</div>
+        <div class="step step-right">...carrying everything it caught in the deep.</div>
+      </div>
+
+      <div class="bio-img-viewer">
+        <img class="bio-img-layer bio-img-active" src="png/microsoft.png" alt="Microsoft E+D" />
+        <img class="bio-img-layer" src="png/marp.png" alt="Home robot" />
+        <img class="bio-img-layer" src="png/microsoft.png" alt="Microsoft infra" />
+        <img class="bio-img-layer" src="png/bible.png" alt="Dusk Rose Codex" />
+      </div>
+      <div class="bio-stat-row">
+        <div class="bio-stat bio-stat-link bio-stat-active" tabindex="0" data-bio-img="0" data-bio-color="0,164,239" data-action="navigate" data-navigate-dataset="work" data-navigate-id="microsoft"><span class="bio-stat-value">🔬 E+D</span><span class="bio-stat-label">applied sciences</span></div>
+        <div class="bio-stat bio-stat-link" tabindex="0" data-bio-img="1" data-bio-color="242,80,34" data-action="open" data-open="marpModal"><span class="bio-stat-value">🤖 HW</span><span class="bio-stat-label">home robot</span></div>
+        <div class="bio-stat bio-stat-link" tabindex="0" data-bio-img="2" data-bio-color="127,186,0" data-action="navigate" data-navigate-dataset="work" data-navigate-id="microsoft"><span class="bio-stat-value">💻 SW</span><span class="bio-stat-label">infra & UX</span></div>
+        <div class="bio-stat bio-stat-link" tabindex="0" data-bio-img="3" data-bio-color="255,185,0" data-action="navigate" data-navigate-dataset="projects" data-navigate-id="duskrosecodex"><span class="bio-stat-value">✂️ Craft</span><span class="bio-stat-label">hand-bound codex</span></div>
+      </div>
+      <div class="bio-quote-viewer">
+        <blockquote class="bio-quote-layer bio-quote-active">
+          <p>Sharing is good, and with digital technology, sharing is easy!</p>
+          <cite>Richard Stallman</cite>
+        </blockquote>
+        <blockquote class="bio-quote-layer">
+          <p>The best way to predict the future is to invent it.</p>
+          <cite>Alan Kay</cite>
+        </blockquote>
+        <blockquote class="bio-quote-layer">
+          <p>Make it work, make it right, make it fast.</p>
+          <cite>Kent Beck</cite>
+        </blockquote>
+        <blockquote class="bio-quote-layer">
+          <p>A book is proof that humans are capable of working magic.</p>
+          <cite>Carl Sagan</cite>
+        </blockquote>
       </div>
 
       <hr>
@@ -985,75 +1170,52 @@
       <h3 data-bio-tour="⚙️ Philosophy">Design Philosophy</h3>
 
       <div class="bio-principle-block">
-        <strong>Hidden depth</strong>
-        <p>Breadth satisfies at a glance. Depth rewards the curious. Traversal reveals the path.</p>
+        <div class="step step-left">Breadth satisfies at a glance...</div>
+        <div class="step step-center">...depths reward the curious...</div>
+        <div class="step step-right">...traversal reveals the path.</div>
       </div>
 
-      <div class="bio-stat-row">
-        <div class="bio-stat bio-stat-link" tabindex="0" data-action="open" data-open="knowledgeModal"><span class="bio-stat-value">👁️ Breadth</span><span class="bio-stat-label">satisfies you</span></div>
-        <div class="bio-stat bio-stat-link" tabindex="0" data-action="open" data-open="timelineModal"><span class="bio-stat-value">🔍 Depth</span><span class="bio-stat-label">rewards you</span></div>
-        <div class="bio-stat bio-stat-link" tabindex="0" data-action="open" data-open="knowledgeModal"><span class="bio-stat-value">🔭 Traversal</span><span class="bio-stat-label">shows you</span></div>
-      </div>
-
-      <hr>
-      <!-- ── Hero's Journey ── -->
-      <h3 data-bio-tour="📖 Journey">Hero's Journey</h3>
-
-      <!-- Act I: Origin -->
-      <div class="bio-symbol-block" data-bio-tour="🐧 Origin">
-        <h4>🐧 Origin</h4>
-        <p>My first artifact was <a href="#bio-quilt-img" onclick="document.getElementById('bio-quilt-img').scrollIntoView({behavior:'smooth',block:'center'});return false;">a hand-sewn penguin quilt</a>. Penguins adapted wings into flippers.</p>
+      <div class="bio-img-viewer">
+        <img class="bio-img-layer bio-img-active" src="png/graph.png" alt="Knowledge graph" />
+        <img class="bio-img-layer" src="png/timeline.png" alt="Timeline" />
+        <img class="bio-img-layer" src="png/arch.png" alt="Knowledge traversal" />
       </div>
       <div class="bio-stat-row">
-        <div class="bio-stat bio-stat-link" tabindex="0" onclick="document.getElementById('bio-quilt-img').scrollIntoView({behavior:'smooth',block:'center'})"><span class="bio-stat-value">🧵 13</span><span class="bio-stat-label">age, first artifact</span></div>
-        <div class="bio-stat bio-stat-link" tabindex="0" data-action="navigate" data-navigate-dataset="projects" data-navigate-id="amaxesd"><span class="bio-stat-value">⚡ 14</span><span class="bio-stat-label">age, ISO 9001 ESD</span></div>
-        <div class="bio-stat bio-stat-link" tabindex="0" data-action="navigate" data-navigate-dataset="work" data-navigate-id="redtierobotics"><span class="bio-stat-value">🤖 1458</span><span class="bio-stat-label">FRC team</span></div>
-        <div class="bio-stat bio-stat-link" tabindex="0" data-action="navigate" data-navigate-dataset="work" data-navigate-id="summerofgamedesign"><span class="bio-stat-value">🎓 $25K</span><span class="bio-stat-label">camp fundraised</span></div>
+        <div class="bio-stat bio-stat-link bio-stat-active" tabindex="0" data-bio-img="0" data-bio-color="0,164,239" data-action="open" data-open="knowledgeModal"><span class="bio-stat-value">👁️ Breadth</span><span class="bio-stat-label">satisfies you</span></div>
+        <div class="bio-stat bio-stat-link" tabindex="0" data-bio-img="1" data-bio-color="255,185,0" data-action="open" data-open="timelineModal"><span class="bio-stat-value">🔍 Depths</span><span class="bio-stat-label">reward you</span></div>
+        <div class="bio-stat bio-stat-link" tabindex="0" data-bio-img="2" data-bio-color="127,186,0" data-action="open" data-open="knowledgeModal"><span class="bio-stat-value">🔭 Traversal</span><span class="bio-stat-label">guides you</span></div>
       </div>
 
-      <!-- Act II: The Gauntlet -->
-      <div class="bio-symbol-block" data-bio-tour="⚔️ Gauntlet">
-        <h4>⚔️ Gauntlet</h4>
-        <p>10+ collegiate hackathons: eight wins. Finally: an internship with MSFT...</p>
+      <div class="bio-principle-block">
+        <div class="step step-left">Less is more...</div>
+        <div class="step step-center">...every element serves a role...</div>
+        <div class="step step-right">...efficiency is ruthlessly pursued.</div>
+      </div>
+
+      <div class="bio-img-viewer">
+        <img class="bio-img-layer bio-img-active" src="png/mutilar-architecture.png" alt="Site architecture" />
+        <img class="bio-img-layer" src="png/mutilar-architecture.png" alt="Site architecture" />
+        <img class="bio-img-layer" src="png/mutilar-architecture.png" alt="Site architecture" />
+        <img class="bio-img-layer" src="png/mutilar-architecture.png" alt="Site architecture" />
       </div>
       <div class="bio-stat-row">
-        <div class="bio-stat bio-stat-link" tabindex="0" data-action="scroll-open" data-scroll-to="hackathons" data-open="timelineModal"><span class="bio-stat-value">🏆 8</span><span class="bio-stat-label">hackathon wins</span></div>
-        <div class="bio-stat bio-stat-link" tabindex="0" data-action="navigate" data-navigate-dataset="education" data-navigate-id="cse100"><span class="bio-stat-value">📜 3.74</span><span class="bio-stat-label">GPA, magna</span></div>
-        <div class="bio-stat bio-stat-link" tabindex="0" data-action="navigate" data-navigate-dataset="work" data-navigate-id="microsoft"><span class="bio-stat-value">🌐 8B+</span><span class="bio-stat-label">inferences/day</span></div>
-        <div class="bio-stat bio-stat-link" tabindex="0" data-action="navigate" data-navigate-dataset="work" data-navigate-id="microsoft"><span class="bio-stat-value">☁️ 50+</span><span class="bio-stat-label">Azure regions</span></div>
+        <div class="bio-stat bio-stat-link bio-stat-active" tabindex="0" data-bio-img="0" data-bio-color="242,80,34" data-action="open" data-open="archModal"><span class="bio-stat-value">📄 1 *.html</span><span class="bio-stat-label">Page</span></div>
+        <div class="bio-stat bio-stat-link" tabindex="0" data-bio-img="1" data-bio-color="0,164,239" data-action="open" data-open="archModal"><span class="bio-stat-value">🎨 1 *.css</span><span class="bio-stat-label">Style Sheet</span></div>
+        <div class="bio-stat bio-stat-link" tabindex="0" data-bio-img="2" data-bio-color="127,186,0" data-action="open" data-open="archModal"><span class="bio-stat-value">⚙️ 12 *.js</span><span class="bio-stat-label">Scripts</span></div>
+        <div class="bio-stat bio-stat-link" tabindex="0" data-bio-img="3" data-bio-color="255,185,0" data-action="open" data-open="archModal"><span class="bio-stat-value">📦 0 NPM</span><span class="bio-stat-label">Dependencies</span></div>
       </div>
-
-      <!-- Act III: The Summit -->
-      <div class="bio-symbol-block" data-bio-tour="🏔️ Summit">
-        <h4>🏔️ Summit</h4>
-        <p>Senior SWE at Microsoft Applied Sciences. Every artifact gets the same design rigor: a home robot, a hand-bound satirical codex, and a zero-dependency portfolio site.</p>
-      </div>
-      <div class="bio-stat-row">
-        <div class="bio-stat bio-stat-link" tabindex="0" data-action="navigate" data-navigate-dataset="work" data-navigate-id="microsoft"><span class="bio-stat-value">🔬 E+D</span><span class="bio-stat-label">applied sciences</span></div>
-        <div class="bio-stat bio-stat-link" tabindex="0" data-action="open" data-open="marpModal"><span class="bio-stat-value">🤖 MARP</span><span class="bio-stat-label">home robot</span></div>
-        <div class="bio-stat bio-stat-link" tabindex="0" data-action="navigate" data-navigate-dataset="projects" data-navigate-id="duskrosecodex"><span class="bio-stat-value">📖 Codex</span><span class="bio-stat-label">hand-bound</span></div>
-      </div>
-
       <hr>
 
-     
 
-      <img class="modal-img" id="bio-quilt-img" src="png/quilting.png" alt="Brian quilting a penguin quilt" />
-
-      <div class="bio-stat-row">
-        <div class="bio-stat bio-stat-link" tabindex="0" data-action="open" data-open="archModal"><span class="bio-stat-value">📄 1</span><span class="bio-stat-label">HTML file</span></div>
-        <div class="bio-stat bio-stat-link" tabindex="0" data-action="open" data-open="archModal"><span class="bio-stat-value">🎨 1</span><span class="bio-stat-label">CSS file</span></div>
-        <div class="bio-stat bio-stat-link" tabindex="0" data-action="open" data-open="archModal"><span class="bio-stat-value">⚙️ 12</span><span class="bio-stat-label">JS files</span></div>
-        <div class="bio-stat bio-stat-link" tabindex="0" data-action="open" data-open="archModal"><span class="bio-stat-value">📦 0</span><span class="bio-stat-label">npm packages</span></div>
-      </div>
-
-      <hr>
-
-      <!-- ── Colophon ── -->
-      <p class="bio-colophon">A penguin who makes things.</p>
-
+      <!-- Copyright -->
+      <footer class="glass-footer">
+        <p><strong><a href="#" onclick="event.preventDefault(); openLinkModal('https://time.is/', 'Time.is');" style="text-decoration:none;">📅 <span id="footer-year"></span></a></strong><br><strong><a href="#" onclick="event.preventDefault(); openQuiltModal();" style="text-decoration:none;cursor:pointer;">🐧 Brian Hungerman</a></strong><br><strong><a href="#" onclick="event.preventDefault(); openLinkModal('https://brianhungerman.com', 'brianhungerman.com');"><i class="fa fa-globe"></i> brianhungerman.com</a></strong></p>
+      </footer>
       <div class="scroll-hint bio-explore-hint" id="bioExploreHint" style="cursor:pointer;"><strong>Traverse</strong><span class="scroll-arrow">🔭</span></div>
 
+      <hr>
+      <!-- ── Colophon ── -->
+      <p class="bio-colophon">Plebeian Penguin</p>
     </div>
   </div>
 </div>
@@ -1224,27 +1386,6 @@
 
     <!-- BOM (Bill of Materials) — populated from archive/csv/marp-bom.json -->
     <div class="marp-bom" id="marp-bom"></div>
-  </div>
-</div>
-
-<!-- ═══════════════════════════════════════════════════════════════
-     TENTIMES DIAGRAM MODAL
-     ═══════════════════════════════════════════════════════════════ -->
-<div class="modal-overlay" id="tentimes-modal">
-  <div class="glass-tile modal-card viz-modal-card mm-modal-card" style="position:relative;">
-    <div class="modal-sticky-bar">
-      <div class="viz-filter-group tl-glow">
-        <div class="viz-filter-row">
-          <span class="mm-filter-pills" id="tentimes-filters"></span>
-          <button class="modal-close" id="tentimesModalClose" aria-label="Close modal">&times;</button>
-        </div>
-      </div>
-    </div>
-    <div class="viz-viewport" style="cursor:grab;">
-      <div class="viz-world mm-world">
-        <svg class="mm-edges" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 6000 6000"></svg>
-      </div>
-    </div>
   </div>
 </div>
 
