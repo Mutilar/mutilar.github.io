@@ -707,6 +707,12 @@
       tile._onTap = function () {
         if (typeof openQuiltModal === "function") openQuiltModal();
       };
+      // Simulate hero portrait hover
+      var heroLink = document.querySelector(".hero-portrait-link");
+      if (heroLink) {
+        tile.addEventListener("mouseenter", function () { heroLink.classList.add("hover"); });
+        tile.addEventListener("mouseleave", function () { heroLink.classList.remove("hover"); });
+      }
     }
   }, 2000);
 

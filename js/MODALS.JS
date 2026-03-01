@@ -248,23 +248,48 @@ quiltModal.addEventListener("click", e => { if (e.target === quiltModal) closeQu
 (function () {
   var a = document.getElementById("heroPenguinBgA");
   var b = document.getElementById("heroPenguinBgB");
-  if (!a || !b) return;
+  var link = document.querySelector(".hero-portrait-link");
+  if (!a || !b || !link) return;
   var emojis = ["🌍","🌎","🌏", "🏙️","🌁","🌇","🌆","🌃","🌌"];
   var idx = 0;
-  var front = a;   // currently visible
-  var back = b;    // currently hidden
+  var front = a;
+  var back = b;
+  var timer = null;
 
-  setInterval(function () {
+  function step() {
     idx = (idx + 1) % emojis.length;
     back.textContent = emojis[idx];
-    // Crossfade: back in, front out
     back.style.opacity = "0.35";
     front.style.opacity = "0";
-    // Swap roles
     var tmp = front;
     front = back;
     back = tmp;
-  }, 750);
+  }
+
+  function start() {
+    if (timer) return;
+    idx = 0;
+    front = a; back = b;
+    a.textContent = emojis[0];
+    a.style.opacity = "0.35";
+    b.style.opacity = "0";
+    timer = setInterval(step, 750);
+  }
+
+  function stop() {
+    if (timer) { clearInterval(timer); timer = null; }
+    a.style.opacity = "0";
+    b.style.opacity = "0";
+  }
+
+  link.addEventListener("mouseenter", start);
+  link.addEventListener("mouseleave", stop);
+
+  // Also respond to programmatic .hover class toggle
+  new MutationObserver(function () {
+    if (link.classList.contains("hover")) start();
+    else if (!link.matches(":hover")) stop();
+  }).observe(link, { attributes: true, attributeFilter: ["class"] });
 })();
 
 // ── Bio Tour ─────────────────────────────────────────────────
