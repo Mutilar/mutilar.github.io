@@ -20,7 +20,7 @@ html {
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
   color: #fff;
-  background: #1B1F2B;
+  background: #1a1a1a;
   overflow-x: hidden;
   line-height: 1.6;
 }
@@ -3044,7 +3044,7 @@ html.light-mode .footer-detail-icon {
 html.light-mode .footer-detail-item:hover .footer-detail-icon {
   background: rgba(0, 120, 212, 0.15);
   border-color: rgba(0, 120, 212, 0.4);
-  color: #0064c8;
+  color: #0078D4;
   box-shadow: 0 0 8px rgba(0, 120, 212, 0.2);
 }
 
@@ -3061,7 +3061,7 @@ html.light-mode .footer-detail-desc code {
 html.light-mode .footer-detail-desc a:hover code {
   background: rgba(0, 120, 212, 0.1);
   border-color: rgba(0, 120, 212, 0.3);
-  color: #0050a0;
+  color: #0078D4;
 }
 
 html.light-mode .footer-detail-row .footer-detail-item {
@@ -3254,7 +3254,7 @@ html.light-mode .entry-card .entry-github {
 
 html.light-mode .entry-card .entry-github:hover {
   background: rgba(0, 120, 212, 0.12);
-  color: #0050a0;
+  color: #0078D4;
 }
 
 html.light-mode .entry-card .entry-logo {
@@ -5693,7 +5693,7 @@ html.light-mode .mtg-filter-sep {
 }
 
 .mtg-badge {
-  --bc: 160,160,170;
+  --bc: 160,160,160;
   display: inline-flex;
   align-items: center;
   justify-content: center;

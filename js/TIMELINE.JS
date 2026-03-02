@@ -36,34 +36,31 @@
   let activeFilters = new Set(["robotics", "games", "software", "research", "education"]);
 
   // ── Open / close ───────────────────────────────────────────
-  function openTimelineModal() {
-    _filterSys.setAll();
-    toggleModal(timelineModal, true);
-    if (!timelineBuilt) buildTimeline();
-    // Re-activate whisper HUD (hidden on close)
-    const hud = document.getElementById("tl-whisper-hud");
-    if (hud) hud.classList.add("tl-whisper-active");
-    // Start scrolled 5% down
-    requestAnimationFrame(() => {
-      const card = timelineModal.querySelector(".timeline-modal-card");
-      if (card) {
-        const target = Math.round(card.scrollHeight * 0.005);
-        card.scrollTop = target;
-      }
-    });
-  }
-  function closeTimelineModal() {
-    _tlStopAutoScroll();
-    toggleModal(timelineModal, false);
-    const hud = document.getElementById("tl-whisper-hud");
-    if (hud) hud.classList.remove("tl-whisper-active");
-  }
+  var _tlReg = registerModal("timeline-modal", {
+    onOpen: function () {
+      _filterSys.setAll();
+      if (!timelineBuilt) buildTimeline();
+      const hud = document.getElementById("tl-whisper-hud");
+      if (hud) hud.classList.add("tl-whisper-active");
+      requestAnimationFrame(() => {
+        const card = timelineModal.querySelector(".timeline-modal-card");
+        if (card) {
+          const target = Math.round(card.scrollHeight * 0.005);
+          card.scrollTop = target;
+        }
+      });
+    },
+    onClose: function () {
+      _tlStopAutoScroll();
+      const hud = document.getElementById("tl-whisper-hud");
+      if (hud) hud.classList.remove("tl-whisper-active");
+    }
+  });
+  function openTimelineModal()  { _tlReg.open(); }
+  function closeTimelineModal() { _tlReg.close(); }
 
   window.openTimelineModal  = openTimelineModal;
   window.closeTimelineModal = closeTimelineModal;
-
-  timelineModalClose.addEventListener("click", closeTimelineModal);
-  timelineModal.addEventListener("click", e => { if (e.target === timelineModal) closeTimelineModal(); });
 
   // ── Filter buttons (via VIZ.JS shared filter system) ────────
   const allThemes = ["robotics", "games", "software", "research", "education"];

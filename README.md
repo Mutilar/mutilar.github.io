@@ -6,6 +6,48 @@
 
 ---
 
+## 🐧 The Penguin's Journey
+
+A career told through six acts of a penguin that never read the manual.
+
+### 📯 Herald
+
+From thick shells, penguin hatch upon desolate tundras; only on snow and ice will they ever waddle… or so they naïvely assume. The first artifacts: a hand-sewn quilt, a FIRST Robotics competition bot, a real manufacturing contract for AMAX's assembly line. Making things before knowing what "making things" meant.
+
+### 🧭 Mentor
+
+Huddling close to keep winter's chill at bay; survival instincts keep each penguin alive, but radiant heat means the whole colony thrives. Five leadership roles, 100+ students taught across game design and robotics, $50K fundraised. The lesson: you don't learn by receiving; you learn by giving.
+
+### 🎓 Learn
+
+Kicked out of the nest, they venture to the seas; blithe to the dangers below, oblivious to the waters' depths. UC Merced, Computer Science & Engineering, Magna cum laude (3.74). Director of HackMerced hosting 300+ hackers. Nine hackathon trophies.
+
+### 🕯️ Study
+
+Diving 1,800 feet into pitch-black depths; on a single breath they hunt, only surfacing with a full gizzard. Three lenses sharpened here: U.I. ("how it looks"), U.X. ("how it feels"), H.C.I. ("how you use it"). Design intent precedes implementation; experience precedes code.
+
+### 🎯 Apply
+
+Wings adapted into flippers; they never stopped being birds, they just learned to fly underwater. The same instincts that built robots and hackathon prototypes now build platforms at Microsoft: 6 9's reliability, 50+ DCs, GA launches on Azure ML.
+
+### 🕊️ Sharing
+
+Penguins dutifully return to their colony; bringing sustenance from the abyss; regurgitating every hard-won catch. 50+ open-source repositories, 3 robots built, 6 games shipped.
+
+---
+
+## 🧠 Philosophy
+
+### Design
+
+Breadth satisfies at a glance; depths reward the curious; traversal reveals the path. Information wants order,dimensionality, and parsability.
+
+### Engineering
+
+From first-principles, until everything harmonizes, efficiency is ruthlessly pursued. One HTML file. Twelve scripts. Zero NPM dependencies. Zero frameworks. Zero build tools.
+
+---
+
 ## 🤖 MARP
 
 > *From retrofitting a decades-old robot with modern circuitry… to reimagining the control interface via a Valve Steam Deck… to enabling new A.I. experiences on a robotics platform.*
@@ -208,6 +250,57 @@ Each technology in the **Constellation Map** visualization has a unique emoji "w
 | 🗣️ Alexa | | | |
 
 > Run `node scripts/inject-tech-field.js --dry-run` to preview auto-extracted `TECH` fields, or without `--dry-run` to write them into `PORTFOLIO.json`.
+
+---
+
+## 🎨 Design System
+
+Glassmorphism, consistently applied. Every surface is frosted glass floating over a dark parallax cosmos.
+
+### Surfaces
+
+Semi-transparent black fill (`rgba(0,0,0, 0.33–0.4)`) + Gaussian blur (`backdrop-filter: blur(12–24px) saturate(1.2–1.4)`) + white hairline border (`1px solid rgba(255,255,255, 0.33)`). Nested glass panes flatten to `backdrop-filter: none` to avoid double-blur.
+
+### Palette
+
+Four accents, zero freelancers. Every non-neutral color derives from the Microsoft brand quadrant:
+
+| | Hex | Role |
+|---|---|---|
+| 🔵 | `#00A4EF` | Links, nav, selection, dive badges |
+| 🟡 | `#FFB900` | Wins, achievements, play, highlights |
+| 🔴 | `#F25022` | Errors, close, destructive actions |
+| 🟢 | `#7FBA00` | Success, log-level indicators |
+
+Category colors flow through `--tc` (RGB triplet) → `rgba(var(--tc), alpha)`. Light mode uses `--tc-light` for contrast shifts.
+
+### Glow
+
+Interactivity is communicated through luminance intensification; nothing swaps hues. Three tiers: resting (soft ambient shadow), hover (triple-layer radial bloom: tight/medium/wide), pulsing (`ease-in-out` oscillation between two shadow states for attention cues like `win-pulse`, `bio-tour-pulse`, `tile-glow-pulse`).
+
+### Motion
+
+Springy entrances; ambient idles. Scroll reveals: `translateY(30px)` over `0.7s cubic-bezier(0.4, 0, 0.2, 1)`. Elastic pops: `scale(0.88)` → overshoot `scale(1.04)` → settle, `0.5s cubic-bezier(0.34, 1.56, 0.64, 1)`. Perpetual bobs and edge-width pulses on `ease-in-out infinite`. Content swaps crossfade; no hard cuts. Full `prefers-reduced-motion: reduce` support.
+
+### Composition
+
+Parallax sandwich: fixed star canvas (`z-index: -1`) → transparent windows → frosted opaque bands → glass tiles → fixed nav (`z-index: 100`) → modal overlays (`z-index: 200+`). Content never sits directly on the canvas.
+
+### Dual Theme
+
+Light mode is a 600+ line parallel implementation via `html.light-mode` class (user-toggled, no `prefers-color-scheme`). Surfaces invert (`rgba(0,0,0,x)` ↔ `rgba(255,255,255,x)`), borders invert, text flips to `#1a1a2e`, accents shift to darker/saturated variants, every pulse animation has a `-light` counterpart.
+
+### Tokens
+
+| Token | Value | Usage |
+|---|---|---|
+| Card radius | `20px` | Tiles, modals, viewports |
+| Pill radius | `14–20px` | Badges, filters, nav links |
+| Button radius | `8–12px` | Controls, footer icons |
+| Font stack | System (`Segoe UI`, …) | Body text |
+| Mono stack | `SF Mono`, `Cascadia Code`, … | Toasts, code |
+| Base size | `16px` / `line-height: 1.6` | Root |
+| Heading weight | `700–800` | Titles, stat values |
 
 ---
 

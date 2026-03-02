@@ -1571,11 +1571,12 @@
       }, cumulative[classes.length]));
     }
 
-    function open() {
-      toggleModal(modal, true);
-      if (!state.built) load(); else requestAnimationFrame(() => fitView(false));
-    }
-    function close() { stopExplore(); toggleModal(modal, false); }
+    var _reg = registerModal(cfg.modalId, {
+      onOpen:  function () { if (!state.built) load(); else requestAnimationFrame(() => fitView(false)); },
+      onClose: function () { stopExplore(); }
+    });
+    function open()  { _reg.open(); }
+    function close() { _reg.close(); }
 
     // Wire DOM
     const vp = modal.querySelector(".viz-viewport");
@@ -1584,13 +1585,6 @@
       _svgLayer   = modal.querySelector(".mm-edges");
       if (state.world && _svgLayer) _initPanZoom(vp, state);
     }
-
-    const closeBtn = document.getElementById(cfg.closeId);
-    if (closeBtn) closeBtn.addEventListener("click", close);
-    modal.addEventListener("click", e => { if (e.target === modal) close(); });
-    document.addEventListener("keydown", e => {
-      if (e.key === "Escape" && modal.classList.contains("open")) close();
-    });
 
     // ── Explore hint ─────────────────────────────────────────
     if (vp) {

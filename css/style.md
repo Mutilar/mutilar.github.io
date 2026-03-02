@@ -1,6 +1,4 @@
-# CSS Design System Audit
-
-> Extracted motifs, tokens, and aesthetic principles from `styles.css` (6,054 lines).
+# CSS Design System (6,054 lines)
 
 ---
 

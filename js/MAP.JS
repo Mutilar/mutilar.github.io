@@ -181,36 +181,30 @@
   let activeTechFilters = new Set(TECH_CAT_KEYS);
 
   /* ─── Open / close ──────────────────────────────────────── */
-  function openMapModal() {
-    if (_filterSys) _filterSys.setAll();
-    if (_techFilterSys) _techFilterSys.setAll();
-    toggleModal(mapModal, true);
-    if (!built) {
-      // Wait for data if not yet loaded
-      if (!_hasData()) {
-        window.addEventListener("portfolioDataReady", function once() {
-          window.removeEventListener("portfolioDataReady", once);
+  var _mapReg = registerModal("map-modal", {
+    onOpen: function () {
+      if (_filterSys) _filterSys.setAll();
+      if (_techFilterSys) _techFilterSys.setAll();
+      if (!built) {
+        if (!_hasData()) {
+          window.addEventListener("portfolioDataReady", function once() {
+            window.removeEventListener("portfolioDataReady", once);
+            _build();
+          });
+        } else {
           _build();
-        });
+        }
       } else {
-        _build();
+        _applyFilters();
+        _updateTransform();
       }
-    } else {
-      _applyFilters();
-      _updateTransform();
+    },
+    onClose: function () {
+      if (_mapTour && _mapTour.isTouring()) _mapTour.stop();
     }
-  }
-
-  function closeMapModal() {
-    if (_mapTour && _mapTour.isTouring()) _mapTour.stop();
-    toggleModal(mapModal, false);
-  }
-
-  mapModalClose.addEventListener("click", closeMapModal);
-  mapModal.addEventListener("click", e => { if (e.target === mapModal) closeMapModal(); });
-  document.addEventListener("keydown", e => {
-    if (e.key === "Escape" && mapModal.classList.contains("open")) closeMapModal();
   });
+  function openMapModal()  { _mapReg.open(); }
+  function closeMapModal() { _mapReg.close(); }
 
   // Expose global open function (for onclick triggers in HTML)
   window.openMapModal = openMapModal;

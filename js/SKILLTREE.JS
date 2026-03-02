@@ -136,27 +136,20 @@ function createSkillTree(cfg) {
   }
 
   /* ── Open / close ───────────────────────────────────────── */
-  function open() {
-    _resetFilters();
-    toggleModal(modal, true);
-    if (!built) {
-      _build();
-    } else {
-      _updateTransform();
-      requestAnimationFrame(function () { _animateEntrance(); });
-    }
-  }
-
-  function close() {
-    if (cfg.onClose) cfg.onClose();
-    toggleModal(modal, false);
-  }
-
-  closeBtn.addEventListener("click", close);
-  modal.addEventListener("click", function (e) { if (e.target === modal) close(); });
-  document.addEventListener("keydown", function (e) {
-    if (e.key === "Escape" && modal.classList.contains("open")) close();
+  var _stReg = registerModal(modal.id, {
+    onOpen:  function () {
+      _resetFilters();
+      if (!built) {
+        _build();
+      } else {
+        _updateTransform();
+        requestAnimationFrame(function () { _animateEntrance(); });
+      }
+    },
+    onClose: function () { if (cfg.onClose) cfg.onClose(); }
   });
+  function open()  { _stReg.open(); }
+  function close() { _stReg.close(); }
 
   /* ── Filter wiring ──────────────────────────────────────── */
   _axes.forEach(function (ax) {
@@ -650,27 +643,19 @@ function createSkillTree(cfg) {
   let _edgeSVG = null;
 
   /* ── Open / close ─────────────────────────────────────────── */
-  function openKnowledgeModal() {
-    _filterSys.setAll();
-    toggleModal(graphModal, true);
-    if (!graphBuilt) buildGraph();
-    else updateTransform();
-    requestAnimationFrame(() => animateEntrance());
-  }
-
-  function closeKnowledgeModal() {
-    toggleModal(graphModal, false);
-  }
+  var _kgReg = registerModal("knowledge-modal", {
+    onOpen: function () {
+      _filterSys.setAll();
+      if (!graphBuilt) buildGraph();
+      else updateTransform();
+      requestAnimationFrame(() => animateEntrance());
+    }
+  });
+  function openKnowledgeModal()  { _kgReg.open(); }
+  function closeKnowledgeModal() { _kgReg.close(); }
 
   window.openKnowledgeModal  = openKnowledgeModal;
   window.closeKnowledgeModal = closeKnowledgeModal;
-
-  graphModalClose.addEventListener("click", closeKnowledgeModal);
-  graphModal.addEventListener("click", e => { if (e.target === graphModal) closeKnowledgeModal(); });
-
-  document.addEventListener("keydown", e => {
-    if (e.key === "Escape" && graphModal.classList.contains("open")) closeKnowledgeModal();
-  });
 
   /* ── Filter buttons (via VIZ.JS shared filter system) ─────── */
   const allBtn = graphModal.querySelector('.viz-filter[data-filter="all"]');
@@ -1849,25 +1834,7 @@ function createSkillTree(cfg) {
   var cardModal    = document.getElementById("mtg-card-modal");
   var cardModalImg = document.getElementById("mtg-card-view-art");
   var cardBadges   = document.getElementById("mtg-card-badges");
-  var cardModalClose = document.getElementById("mtgCardModalClose");
-
-  if (cardModalClose) {
-    cardModalClose.addEventListener("click", function () {
-      toggleModal(cardModal, false);
-    });
-  }
-  if (cardModal) {
-    cardModal.addEventListener("click", function (e) {
-      if (e.target === cardModal) toggleModal(cardModal, false);
-    });
-    // Escape closes card modal without also closing the skill tree
-    document.addEventListener("keydown", function (e) {
-      if (e.key === "Escape" && cardModal.classList.contains("open")) {
-        e.stopImmediatePropagation();
-        toggleModal(cardModal, false);
-      }
-    });
-  }
+  var _cardReg     = registerModal("mtg-card-modal");
 
   function openCardModal(card) {
     if (!cardModal) return;
@@ -1915,11 +1882,11 @@ function createSkillTree(cfg) {
     cardModalImg.alt = card.cardName || "";
     cardModalImg.style.display = card.art ? "" : "none";
 
-    toggleModal(cardModal, true);
+    _cardReg.open();
   }
 
   function closeCardModal() {
-    if (cardModal) toggleModal(cardModal, false);
+    _cardReg.close();
   }
 
   /* ── Data fetch ─────────────────────────────────────────── */

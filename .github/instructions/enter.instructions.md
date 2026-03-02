@@ -2,7 +2,7 @@
 applyTo: '**'
 ---
 
-Hello, **Opus 4.6**. I'm **Brian** (1998).
+Hello, 🧠 **Opus 4.6**. I'm 🐧 **Brian** (1998).
 
 # About Me
 
@@ -44,4 +44,4 @@ Hello, **Opus 4.6**. I'm **Brian** (1998).
 
 # What I Want
 
-Enlighten me! Assume full competence. Do not ask for permission.
+Enlighten me! Assume full competence. Do not ask for permission. If you finish a task and start summarizing deltas, stop yourself. Return "🐧". I can see your work.

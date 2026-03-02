@@ -59,6 +59,69 @@ function _trapFocus(e) {
 }
 document.addEventListener("keydown", _trapFocus);
 
+// ═════════════════════════════════════════════════════════════════
+//  MODAL REGISTRY — one function to rule them all
+//
+//  registerModal(id, { onOpen, onClose })
+//    → auto-wires: close-button click, backdrop click, Escape key
+//    → returns { open(...args), close() }
+//    → every registered modal participates in closeTopmostModal()
+// ═════════════════════════════════════════════════════════════════
+const _modalRegistry = [];   // ordered by registration; Escape closes topmost .open
+
+/**
+ * Register a modal overlay by its DOM id.
+ * @param {string} id          — the id of the .modal-overlay element
+ * @param {object} [opts]
+ * @param {function} [opts.onOpen]   — called AFTER toggleModal(el, true); receives forwarded args
+ * @param {function} [opts.onClose]  — called BEFORE toggleModal(el, false)
+ * @returns {{ open: Function, close: Function }}
+ */
+function registerModal(id, opts) {
+  opts = opts || {};
+  const el = document.getElementById(id);
+  if (!el) {
+    // Element not in DOM yet (e.g. tentimes-modal); return inert handles
+    var noop = function() {};
+    return { open: noop, close: noop };
+  }
+
+  function close() {
+    if (!el.classList.contains("open")) return;
+    if (opts.onClose) opts.onClose();
+    toggleModal(el, false);
+  }
+
+  function open() {
+    // Forward all arguments to onOpen
+    toggleModal(el, true);
+    if (opts.onOpen) opts.onOpen.apply(null, arguments);
+    var card = el.querySelector(".modal-card");
+    if (card) card.scrollTop = 0;
+  }
+
+  // Auto-wire close button (first .modal-close inside the overlay)
+  var closeBtn = el.querySelector(".modal-close");
+  if (closeBtn) closeBtn.addEventListener("click", close);
+
+  // Backdrop click
+  el.addEventListener("click", function (e) { if (e.target === el) close(); });
+
+  _modalRegistry.push({ el: el, close: close });
+  return { open: open, close: close };
+}
+
+// ── Escape key: close the topmost open modal ─────────────────
+document.addEventListener("keydown", function (e) {
+  if (e.key !== "Escape") return;
+  for (var i = _modalRegistry.length - 1; i >= 0; i--) {
+    if (_modalRegistry[i].el.classList.contains("open")) {
+      _modalRegistry[i].close();
+      return;   // only close topmost
+    }
+  }
+});
+
 // ═══════════════════════════════════════════════════════════════
 //  MODAL SYSTEM  (modalState provided by DATA.JS)
 // ═══════════════════════════════════════════════════════════════
@@ -157,22 +220,11 @@ function _fadeOutGlow() {
   }
 }
 
-function closeModal() {
-  toggleModal(modal, false);
-  _fadeOutGlow();
-}
+var _dataModal = registerModal("modal", {
+  onClose: _fadeOutGlow
+});
 
-modalClose.addEventListener("click", closeModal);
-modal.addEventListener("click", e => { if (e.target === modal) closeModal(); });
-
-// Safe no-ops for modal close functions that may not be defined yet
-window.closeDeckModal = window.closeDeckModal || function() {};
-
-// Safe no-op for timeline modal close until TIMELINE.JS loads
-window.closeTimelineModal = window.closeTimelineModal || function() {};
-window.closeKnowledgeModal = window.closeKnowledgeModal || function() {};
-
-document.addEventListener("keydown", e => { if (e.key === "Escape") { closeModal(); closePdfModal(); closeResumePdfModal(); closeLinkModal(); closeGameModal(); window.closeMarpModal(); window.closeArchModal(); window.closeTentimesModal(); closeBitnaughtsModal(); closeBitnaughtsIphoneModal(); window.closeDeckModal(); window.closeTimelineModal(); window.closeKnowledgeModal(); } });
+function closeModal() { _dataModal.close(); }
 
 // ── Footer year (safe alternative to document.write) ──
 const footerYear = document.getElementById("footer-year");
@@ -216,33 +268,20 @@ document.addEventListener("keydown", function(e) {
   }
 });
 
-// ═══════════════════════════════════════════════════════════════
-//  SITE ARCHITECTURE MODAL — handled by MERMAID.JS
-// ═════════════════════════════════════════════════════════════════
-// openArchModal / closeArchModal are defined in MERMAID.JS
-window.openArchModal  = window.openArchModal  || function() {};
-window.closeArchModal = window.closeArchModal || function() {};
+// Arch / Marp / Tentimes modals — registered by MERMAID.JS via registerModal()
 
 // ═══════════════════════════════════════════════════════════════
 // QUILTING MODAL (Easter Egg)
 // ═══════════════════════════════════════════════════════════════
-const quiltModal = document.getElementById("quilt-modal");
-const quiltModalClose = document.getElementById("quiltModalClose");
-
-function openQuiltModal() {
-  if (typeof _dismissBioToast === "function") _dismissBioToast();
-  toggleModal(quiltModal, true);
-}
-
 var _stopBioTour = null;
+var _quiltModal = registerModal("quilt-modal", {
+  onOpen:  function () { if (typeof _dismissBioToast === "function") _dismissBioToast(); },
+  onClose: function () { if (_stopBioTour) _stopBioTour(); }
+});
+var quiltModal = document.getElementById("quilt-modal");
 
-function closeQuiltModal() {
-  if (_stopBioTour) _stopBioTour();
-  toggleModal(quiltModal, false);
-}
-
-quiltModalClose.addEventListener("click", closeQuiltModal);
-quiltModal.addEventListener("click", e => { if (e.target === quiltModal) closeQuiltModal(); });
+function openQuiltModal()  { _quiltModal.open(); }
+function closeQuiltModal() { _quiltModal.close(); }
 
 // ── Overscroll bounce ────────────────────────────────────────
 var _bioTourScrolling = false;   // set by bio tour to suppress bounce
@@ -605,53 +644,18 @@ var _bioTourScrolling = false;   // set by bio tour to suppress bounce
   _stopBioTour = stopScroll;
 })();
 
-// ═══════════════════════════════════════════════════════════════
-//  MARP DIAGRAM MODAL — handled by MERMAID.JS
-// ═════════════════════════════════════════════════════════════════
-// openMarpModal / closeMarpModal are defined in MERMAID.JS
-window.openMarpModal  = window.openMarpModal  || function() {};
-window.closeMarpModal = window.closeMarpModal || function() {};
+// Marp + Tentimes modals — registered by MERMAID.JS via registerModal()
 
 // ═══════════════════════════════════════════════════════════════
-//  TENTIMES DIAGRAM MODAL — handled by MERMAID.JS
-// ═════════════════════════════════════════════════════════════════
-// openTentimesModal / closeTentimesModal are defined in MERMAID.JS
-window.openTentimesModal  = window.openTentimesModal  || function() {};
-window.closeTentimesModal = window.closeTentimesModal || function() {};
-
+//  BITNAUGHTS GALLERY MODALS
 // ═══════════════════════════════════════════════════════════════
-//  BITNAUGHTS GALLERY MODAL
-// ═══════════════════════════════════════════════════════════════
-const bitnaughtsModal = document.getElementById("bitnaughts-modal");
-const bitnaughtsModalClose = document.getElementById("bitnaughtsModalClose");
+var _bnModal       = registerModal("bitnaughts-modal");
+var _bnIphoneModal = registerModal("bitnaughts-iphone-modal");
 
-function openBitnaughtsModal() {
-  toggleModal(bitnaughtsModal, true);
-}
-
-function closeBitnaughtsModal() {
-  toggleModal(bitnaughtsModal, false);
-}
-
-bitnaughtsModalClose.addEventListener("click", closeBitnaughtsModal);
-bitnaughtsModal.addEventListener("click", e => { if (e.target === bitnaughtsModal) closeBitnaughtsModal(); });
-
-// ═══════════════════════════════════════════════════════════════
-//  BITNAUGHTS iPHONE GALLERY MODAL
-// ═══════════════════════════════════════════════════════════════
-const bitnaughtsIphoneModal = document.getElementById("bitnaughts-iphone-modal");
-const bitnaughtsIphoneModalClose = document.getElementById("bitnaughtsIphoneModalClose");
-
-function openBitnaughtsIphoneModal() {
-  toggleModal(bitnaughtsIphoneModal, true);
-}
-
-function closeBitnaughtsIphoneModal() {
-  toggleModal(bitnaughtsIphoneModal, false);
-}
-
-bitnaughtsIphoneModalClose.addEventListener("click", closeBitnaughtsIphoneModal);
-bitnaughtsIphoneModal.addEventListener("click", e => { if (e.target === bitnaughtsIphoneModal) closeBitnaughtsIphoneModal(); });
+function openBitnaughtsModal()        { _bnModal.open(); }
+function closeBitnaughtsModal()       { _bnModal.close(); }
+function openBitnaughtsIphoneModal()  { _bnIphoneModal.open(); }
+function closeBitnaughtsIphoneModal() { _bnIphoneModal.close(); }
 
 // Close modal when clicking an in-page anchor link (e.g. #games)
 // but NOT if the link navigates to another modal via navigateToModal
@@ -664,76 +668,55 @@ modal.addEventListener("click", function (e) {
 });
 
 // ═══════════════════════════════════════════════════════════════
-//  PDF VIEWER MODAL
+//  PDF VIEWER MODALS
 // ═══════════════════════════════════════════════════════════════
-const pdfModal = document.getElementById("pdf-modal");
-const pdfModalClose = document.getElementById("pdfModalClose");
+var _pdfModal = registerModal("pdf-modal", {
+  onOpen:  function () { renderPdfInline("pdf/bible.pdf"); },
+  onClose: function () { clearpdf(); }
+});
+function openPdfModal()  { _pdfModal.open(); }
+function closePdfModal() { _pdfModal.close(); }
 
-function openPdfModal() {
-  toggleModal(pdfModal, true);
-  renderPdfInline("pdf/bible.pdf");
-}
-
-function closePdfModal() {
-  toggleModal(pdfModal, false);
-  clearpdf();
-}
-
-pdfModalClose.addEventListener("click", closePdfModal);
-pdfModal.addEventListener("click", e => { if (e.target === pdfModal) closePdfModal(); });
-
-// ═══════════════════════════════════════════════════════════════
-//  RESUME PDF VIEWER MODAL
-// ═══════════════════════════════════════════════════════════════
-const resumePdfModal = document.getElementById("resume-pdf-modal");
-const resumePdfModalClose = document.getElementById("resumePdfModalClose");
-
-function openResumePdfModal() {
-  toggleModal(resumePdfModal, true);
-  renderPdfInline("pdf/resume.pdf", { viewerId: "resume-pdf-viewer", loadingId: "resume-pdf-loading", singlePage: true });
-}
-
-function closeResumePdfModal() {
-  toggleModal(resumePdfModal, false);
-  clearpdf("resume-pdf-viewer");
-}
-
-resumePdfModalClose.addEventListener("click", closeResumePdfModal);
-resumePdfModal.addEventListener("click", e => { if (e.target === resumePdfModal) closeResumePdfModal(); });
+var _resumePdfModal = registerModal("resume-pdf-modal", {
+  onOpen:  function () { renderPdfInline("pdf/resume.pdf", { viewerId: "resume-pdf-viewer", loadingId: "resume-pdf-loading", singlePage: true }); },
+  onClose: function () { clearpdf("resume-pdf-viewer"); }
+});
+function openResumePdfModal()  { _resumePdfModal.open(); }
+function closeResumePdfModal() { _resumePdfModal.close(); }
 
 // ═══════════════════════════════════════════════════════════════
 //  EXTERNAL LINK IFRAME MODAL
 // ═══════════════════════════════════════════════════════════════
-const linkModal = document.getElementById("link-modal");
-const linkModalClose = document.getElementById("linkModalClose");
-const linkIframe = document.getElementById("link-iframe");
+var _linkIframe = document.getElementById("link-iframe");
+var _linkModal = registerModal("link-modal", {
+  onClose: function () { _linkIframe.src = ""; }
+});
 
 function openLinkModal(url, title) {
   document.getElementById("link-modal-title").innerHTML = '<i class="fa fa-globe"></i> ' + (title || 'Link');
   document.getElementById("link-modal-link").href = url;
-
-  toggleModal(linkModal, true);
-
-  // Load src after modal opens
-  linkIframe.src = url;
+  _linkModal.open();
+  _linkIframe.src = url;
 }
-
-function closeLinkModal() {
-  toggleModal(linkModal, false);
-  linkIframe.src = "";
-}
-
-linkModalClose.addEventListener("click", closeLinkModal);
-linkModal.addEventListener("click", e => { if (e.target === linkModal) closeLinkModal(); });
+function closeLinkModal() { _linkModal.close(); }
 
 // ═══════════════════════════════════════════════════════════════
 //  GAME PLAYER MODAL
 // ═══════════════════════════════════════════════════════════════
-const gameModal = document.getElementById("game-modal");
-const gameModalClose = document.getElementById("gameModalClose");
-const gameIframe = document.getElementById("game-iframe");
+var _gameIframe = document.getElementById("game-iframe");
+var _gameResizeHandler = null;
 
-let gameResizeHandler = null;
+var _gameModal = registerModal("game-modal", {
+  onClose: function () {
+    _gameIframe.src = "";
+    _gameIframe.style.transform = '';
+    _gameIframe.style.width = '';
+    _gameIframe.style.height = '';
+    _gameIframe.style.left = '';
+    _gameIframe.style.top = '';
+    if (_gameResizeHandler) { window.removeEventListener('resize', _gameResizeHandler); _gameResizeHandler = null; }
+  }
+});
 
 function openGameModal(url, title, nativeW, nativeH) {
   nativeW = nativeW || 960;
@@ -742,61 +725,46 @@ function openGameModal(url, title, nativeW, nativeH) {
   document.getElementById("game-modal-title").innerHTML = '<i class="fa fa-gamepad"></i> ' + (title || 'Play');
   document.getElementById("game-modal-link").href = url;
 
-  // Set iframe to native game resolution
-  gameIframe.style.width = nativeW + 'px';
-  gameIframe.style.height = nativeH + 'px';
+  _gameIframe.style.width = nativeW + 'px';
+  _gameIframe.style.height = nativeH + 'px';
 
-  toggleModal(gameModal, true);
+  _gameModal.open();
 
   function fitIframe() {
-    const wrap = document.querySelector('.game-embed-wrap');
+    var wrap = document.querySelector('.game-embed-wrap');
     if (!wrap) return;
-    const wrapW = wrap.clientWidth;
-    const wrapH = wrap.clientHeight;
-    const sx = wrapW / nativeW;
-    const sy = wrapH / nativeH;
-    const s = Math.min(sx, sy);
-    gameIframe.style.transformOrigin = '0 0';
-    gameIframe.style.transform = 'scale(' + s + ')';
-    // Center within the wrap
-    const scaledW = nativeW * s;
-    const scaledH = nativeH * s;
-    gameIframe.style.left = ((wrapW - scaledW) / 2) + 'px';
-    gameIframe.style.top = ((wrapH - scaledH) / 2) + 'px';
+    var wrapW = wrap.clientWidth;
+    var wrapH = wrap.clientHeight;
+    var sx = wrapW / nativeW;
+    var sy = wrapH / nativeH;
+    var s = Math.min(sx, sy);
+    _gameIframe.style.transformOrigin = '0 0';
+    _gameIframe.style.transform = 'scale(' + s + ')';
+    var scaledW = nativeW * s;
+    var scaledH = nativeH * s;
+    _gameIframe.style.left = ((wrapW - scaledW) / 2) + 'px';
+    _gameIframe.style.top = ((wrapH - scaledH) / 2) + 'px';
   }
 
-  // Fit after modal opens and layout settles
-  requestAnimationFrame(() => { fitIframe(); });
+  requestAnimationFrame(fitIframe);
   setTimeout(fitIframe, 50);
 
-  if (gameResizeHandler) window.removeEventListener('resize', gameResizeHandler);
-  gameResizeHandler = fitIframe;
+  if (_gameResizeHandler) window.removeEventListener('resize', _gameResizeHandler);
+  _gameResizeHandler = fitIframe;
   window.addEventListener('resize', fitIframe);
 
-  // Load src after layout is computed
-  gameIframe.src = url;
+  _gameIframe.src = url;
 }
 
-function closeGameModal() {
-  toggleModal(gameModal, false);
-  gameIframe.src = "";
-  gameIframe.style.transform = '';
-  gameIframe.style.width = '';
-  gameIframe.style.height = '';
-  gameIframe.style.left = '';
-  gameIframe.style.top = '';
-  if (gameResizeHandler) { window.removeEventListener('resize', gameResizeHandler); gameResizeHandler = null; }
-}
-
-gameModalClose.addEventListener("click", closeGameModal);
-gameModal.addEventListener("click", e => { if (e.target === gameModal) closeGameModal(); });
+function closeGameModal() { _gameModal.close(); }
 
 // ═══════════════════════════════════════════════════════════════
 //  MTG DECK MODAL SYSTEM
 // ═══════════════════════════════════════════════════════════════
 (() => {
-  const deckModal = document.getElementById("deck-modal");
-  const deckModalClose = document.getElementById("deckModalClose");
+  var _deckReg = registerModal("deck-modal");
+  var deckModal = document.getElementById("deck-modal");
+  window.closeDeckModal = _deckReg.close;
 
   const typeIcons = {
     Planeswalker: "🌟", Creature: "🧛", Artifact: "✨",
@@ -809,15 +777,6 @@ gameModal.addEventListener("click", e => { if (e.target === gameModal) closeGame
   let sectionStates = [];
   let _allCards = null;   // loaded once from CARDS.csv
   let _cardsLoading = null;
-
-  function closeDeckModal() {
-    toggleModal(deckModal, false);
-  }
-  window.closeDeckModal = closeDeckModal;
-
-  deckModalClose.addEventListener("click", closeDeckModal);
-  deckModal.addEventListener("click", function (e) { if (e.target === deckModal) closeDeckModal(); });
-  // Note: Escape key handled by the global keydown listener above
 
   /** Load CARDS.csv once, return promise of all card rows */
   function _loadCards() {
@@ -1018,7 +977,7 @@ gameModal.addEventListener("click", e => { if (e.target === gameModal) closeGame
       });
     });
 
-    toggleModal(deckModal, true);
+    _deckReg.open();
   }
 
   function renderSectionCarousel(state) {
