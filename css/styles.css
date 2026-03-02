@@ -433,19 +433,19 @@ a.scroll-hint:hover strong {
 }
 
 .radio-player.playing .radio-btn-play {
-  background: rgba(130, 200, 255, 0.15);
-  border-color: rgba(130, 200, 255, 0.4);
-  color: rgba(130, 200, 255, 0.95);
-  box-shadow: 0 0 15px rgba(130, 200, 255, 0.25),
-              0 0 40px rgba(130, 200, 255, 0.12),
-              0 0 80px rgba(130, 200, 255, 0.06);
+  background: rgba(0, 164, 239, 0.15);
+  border-color: rgba(0, 164, 239, 0.4);
+  color: rgba(0, 164, 239, 0.95);
+  box-shadow: 0 0 15px rgba(0, 164, 239, 0.25),
+              0 0 40px rgba(0, 164, 239, 0.12),
+              0 0 80px rgba(0, 164, 239, 0.06);
 }
 
 .radio-player.playing .radio-btn-play:hover {
-  background: rgba(130, 200, 255, 0.25);
-  box-shadow: 0 0 20px rgba(130, 200, 255, 0.4),
-              0 0 50px rgba(130, 200, 255, 0.2),
-              0 0 100px rgba(130, 200, 255, 0.1);
+  background: rgba(0, 164, 239, 0.25);
+  box-shadow: 0 0 20px rgba(0, 164, 239, 0.4),
+              0 0 50px rgba(0, 164, 239, 0.2),
+              0 0 100px rgba(0, 164, 239, 0.1);
 }
 
 /* Volume */
@@ -554,18 +554,18 @@ a.scroll-hint:hover strong {
 
 /* ── Tile glow (applied when navigateToModal targets a tile) ── */
 @keyframes tile-glow-pulse {
-  0%, 100% { box-shadow: 0 0 12px 2px rgba(255,255,255,0.25), 0 0 32px 4px rgba(140,180,255,0.18); }
-  50%      { box-shadow: 0 0 20px 6px rgba(255,255,255,0.40), 0 0 48px 10px rgba(140,180,255,0.30); }
+  0%, 100% { box-shadow: 0 0 12px 2px rgba(255,255,255,0.25), 0 0 32px 4px rgba(0,164,239,0.18); }
+  50%      { box-shadow: 0 0 20px 6px rgba(255,255,255,0.40), 0 0 48px 10px rgba(0,164,239,0.30); }
 }
 .tile-glow {
   animation: tile-glow-pulse 1.2s ease-in-out infinite;
-  border-color: rgba(180,210,255,0.5) !important;
+  border-color: rgba(0,164,239,0.5) !important;
   z-index: 2;
   position: relative;
 }
 @keyframes tile-glow-fadeout {
-  0%   { box-shadow: 0 0 20px 6px rgba(255,255,255,0.40), 0 0 48px 10px rgba(140,180,255,0.30);
-         border-color: rgba(180,210,255,0.5); }
+  0%   { box-shadow: 0 0 20px 6px rgba(255,255,255,0.40), 0 0 48px 10px rgba(0,164,239,0.30);
+         border-color: rgba(0,164,239,0.5); }
   100% { box-shadow: 0 0 0 0 transparent, 0 0 0 0 transparent;
          border-color: rgba(255,255,255,0.12); }
 }
@@ -615,7 +615,7 @@ a.scroll-hint:hover strong {
 }
 
 .section-desc a {
-  color: rgba(100, 180, 255, 0.9);
+  color: rgba(0, 164, 239, 0.9);
   text-decoration: underline;
   text-underline-offset: 2px;
 }
@@ -639,7 +639,7 @@ a.scroll-hint:hover strong {
 }
 
 .section-blurb a {
-  color: rgba(100, 180, 255, 0.9);
+  color: rgba(0, 164, 239, 0.9);
   text-decoration: underline;
   text-underline-offset: 2px;
 }
@@ -689,17 +689,17 @@ a.scroll-hint:hover strong {
 }
 
 .section-badge-glow {
-  color: rgba(255, 215, 0, 0.9);
-  background: rgba(255, 215, 0, 0.1);
-  border-color: rgba(255, 215, 0, 0.3);
-  box-shadow: 0 0 8px rgba(255, 215, 0, 0.3), 0 0 20px rgba(255, 215, 0, 0.1);
+  color: rgba(255, 185, 0, 0.9);
+  background: rgba(255, 185, 0, 0.1);
+  border-color: rgba(255, 185, 0, 0.3);
+  box-shadow: 0 0 8px rgba(255, 185, 0, 0.3), 0 0 20px rgba(255, 185, 0, 0.1);
   animation: win-pulse 2s ease-in-out infinite;
 }
 
 .section-badge-glow:hover {
   color: #fff;
-  background: rgba(255, 215, 0, 0.25);
-  border-color: rgba(255, 215, 0, 0.6);
+  background: rgba(255, 185, 0, 0.25);
+  border-color: rgba(255, 185, 0, 0.6);
 }
 
 /* Responsive badge text: long on desktop, short on mobile */
@@ -935,7 +935,7 @@ html.light-mode .hero-name .hero-surname {
 }
 
 .hero-tagline strong a {
-  color: rgba(130, 200, 255, 0.95);
+  color: rgba(0, 164, 239, 0.95);
   transition: color 0.3s;
 }
 
@@ -951,7 +951,7 @@ html.light-mode .hero-name .hero-surname {
 }
 
 .hero-bio strong a {
-  color: rgba(130, 200, 255, 0.85);
+  color: rgba(0, 164, 239, 0.85);
 }
 
 .hero-links {
@@ -1085,16 +1085,16 @@ html.light-mode .hero-name .hero-surname {
   gap: 5px;
   margin-top: 10px;
   font-size: 12px;
-  color: rgba(130, 200, 255, 0.7);
+  color: rgba(0, 164, 239, 0.7);
   padding: 4px 10px;
   border-radius: 8px;
-  background: rgba(130, 200, 255, 0.08);
-  border: 1px solid rgba(130, 200, 255, 0.15);
+  background: rgba(0, 164, 239, 0.08);
+  border: 1px solid rgba(0, 164, 239, 0.15);
   transition: all 0.3s;
 }
 
 .entry-card .entry-github:hover {
-  background: rgba(130, 200, 255, 0.15);
+  background: rgba(0, 164, 239, 0.15);
   color: #fff;
 }
 
@@ -1105,12 +1105,12 @@ html.light-mode .hero-name .hero-surname {
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.3px;
-  color: rgba(255, 215, 0, 0.9);
+  color: rgba(255, 185, 0, 0.9);
   padding: 4px 10px;
   border-radius: 10px;
-  background: rgba(255, 215, 0, 0.1);
-  border: 1px solid rgba(255, 215, 0, 0.3);
-  box-shadow: 0 0 8px rgba(255, 215, 0, 0.3), 0 0 20px rgba(255, 215, 0, 0.1);
+  background: rgba(255, 185, 0, 0.1);
+  border: 1px solid rgba(255, 185, 0, 0.3);
+  box-shadow: 0 0 8px rgba(255, 185, 0, 0.3), 0 0 20px rgba(255, 185, 0, 0.1);
   white-space: nowrap;
   animation: win-pulse 2s ease-in-out infinite;
 }
@@ -1122,12 +1122,12 @@ html.light-mode .hero-name .hero-surname {
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.3px;
-  color: rgba(255, 215, 0, 0.9);
+  color: rgba(255, 185, 0, 0.9);
   padding: 5px 12px;
   border-radius: 10px;
-  background: rgba(255, 215, 0, 0.1);
-  border: 1px solid rgba(255, 215, 0, 0.3);
-  box-shadow: 0 0 8px rgba(255, 215, 0, 0.3), 0 0 20px rgba(255, 215, 0, 0.1);
+  background: rgba(255, 185, 0, 0.1);
+  border: 1px solid rgba(255, 185, 0, 0.3);
+  box-shadow: 0 0 8px rgba(255, 185, 0, 0.3), 0 0 20px rgba(255, 185, 0, 0.1);
   white-space: nowrap;
   text-decoration: none;
   cursor: pointer;
@@ -1136,33 +1136,33 @@ html.light-mode .hero-name .hero-surname {
 }
 
 .entry-card .entry-play:hover {
-  background: rgba(255, 215, 0, 0.25);
+  background: rgba(255, 185, 0, 0.25);
   color: #fff;
-  border-color: rgba(255, 215, 0, 0.6);
+  border-color: rgba(255, 185, 0, 0.6);
   transform: scale(1.05);
 }
 
 @keyframes play-pulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(100, 255, 140, 0.3); }
-  50% { box-shadow: 0 0 8px 2px rgba(100, 255, 140, 0.15); }
+  0%, 100% { box-shadow: 0 0 0 0 rgba(127, 186, 0, 0.3); }
+  50% { box-shadow: 0 0 8px 2px rgba(127, 186, 0, 0.15); }
 }
 
 @keyframes win-pulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.3); }
-  50% { box-shadow: 0 0 8px 2px rgba(255, 215, 0, 0.15); }
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255, 185, 0, 0.3); }
+  50% { box-shadow: 0 0 8px 2px rgba(255, 185, 0, 0.15); }
 }
 
 .entry-card .entry-title-highlight {
-  color: rgba(255, 215, 0, 0.9);
-  background: rgba(255, 215, 0, 0.1);
-  border: 1px solid rgba(255, 215, 0, 0.3);
+  color: rgba(255, 185, 0, 0.9);
+  background: rgba(255, 185, 0, 0.1);
+  border: 1px solid rgba(255, 185, 0, 0.3);
   font-weight: 700;
   animation: win-pulse 2s ease-in-out infinite;
 }
 
 @keyframes title-pulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.3); }
-  50% { box-shadow: 0 0 8px 2px rgba(255, 215, 0, 0.15); }
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255, 185, 0, 0.3); }
+  50% { box-shadow: 0 0 8px 2px rgba(255, 185, 0, 0.15); }
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -1232,9 +1232,9 @@ html.light-mode .hero-name .hero-surname {
   flex-shrink: 0;
   order: 10;
   color: #fff;
-  background: rgba(255, 215, 0, 0.18);
-  border: 1px solid rgba(255, 215, 0, 0.45);
-  box-shadow: 0 0 6px rgba(255, 215, 0, 0.25), inset 0 0 4px rgba(255, 215, 0, 0.08);
+  background: rgba(255, 185, 0, 0.18);
+  border: 1px solid rgba(255, 185, 0, 0.45);
+  box-shadow: 0 0 6px rgba(255, 185, 0, 0.25), inset 0 0 4px rgba(255, 185, 0, 0.08);
   animation: badgePulse 2.5s ease-in-out infinite;
 }
 
@@ -1246,34 +1246,34 @@ html.light-mode .hero-name .hero-surname {
 }
 
 .card-action-badge.badge-dive {
-  background: rgba(130, 200, 255, 0.15);
-  border: 1px solid rgba(130, 200, 255, 0.45);
-  box-shadow: 0 0 6px rgba(130, 200, 255, 0.3), inset 0 0 4px rgba(130, 200, 255, 0.08);
+  background: rgba(0, 164, 239, 0.15);
+  border: 1px solid rgba(0, 164, 239, 0.45);
+  box-shadow: 0 0 6px rgba(0, 164, 239, 0.3), inset 0 0 4px rgba(0, 164, 239, 0.08);
   animation: badgePulseDive 2.5s ease-in-out infinite;
 }
 
 @keyframes badgePulse {
-  0%, 100% { box-shadow: 0 0 6px rgba(255, 215, 0, 0.25), inset 0 0 4px rgba(255, 215, 0, 0.08); }
-  50%      { box-shadow: 0 0 14px rgba(255, 215, 0, 0.5), inset 0 0 6px rgba(255, 215, 0, 0.15); }
+  0%, 100% { box-shadow: 0 0 6px rgba(255, 185, 0, 0.25), inset 0 0 4px rgba(255, 185, 0, 0.08); }
+  50%      { box-shadow: 0 0 14px rgba(255, 185, 0, 0.5), inset 0 0 6px rgba(255, 185, 0, 0.15); }
 }
 
 @keyframes badgePulseDive {
-  0%, 100% { box-shadow: 0 0 6px rgba(130, 200, 255, 0.3), inset 0 0 4px rgba(130, 200, 255, 0.08); }
-  50%      { box-shadow: 0 0 14px rgba(130, 200, 255, 0.55), inset 0 0 6px rgba(130, 200, 255, 0.15); }
+  0%, 100% { box-shadow: 0 0 6px rgba(0, 164, 239, 0.3), inset 0 0 4px rgba(0, 164, 239, 0.08); }
+  50%      { box-shadow: 0 0 14px rgba(0, 164, 239, 0.55), inset 0 0 6px rgba(0, 164, 239, 0.15); }
 }
 
 html.light-mode .card-action-badge {
-  color: rgba(160, 110, 0, 0.95);
-  background: rgba(180, 130, 0, 0.12);
-  border-color: rgba(160, 110, 0, 0.35);
-  box-shadow: 0 0 6px rgba(160, 110, 0, 0.15), inset 0 0 4px rgba(160, 110, 0, 0.05);
+  color: rgba(255, 185, 0, 0.95);
+  background: rgba(255, 185, 0, 0.12);
+  border-color: rgba(255, 185, 0, 0.35);
+  box-shadow: 0 0 6px rgba(255, 185, 0, 0.15), inset 0 0 4px rgba(255, 185, 0, 0.05);
 }
 
 html.light-mode .card-action-badge.badge-dive {
-  color: rgba(0, 80, 160, 0.9);
-  background: rgba(0, 100, 180, 0.1);
-  border-color: rgba(0, 100, 180, 0.35);
-  box-shadow: 0 0 6px rgba(0, 100, 180, 0.15), inset 0 0 4px rgba(0, 100, 180, 0.05);
+  color: rgba(0, 120, 212, 0.9);
+  background: rgba(0, 120, 212, 0.1);
+  border-color: rgba(0, 120, 212, 0.35);
+  box-shadow: 0 0 6px rgba(0, 120, 212, 0.15), inset 0 0 4px rgba(0, 120, 212, 0.05);
 }
 
 html.light-mode .card-action-badge.badge-static {
@@ -1389,7 +1389,7 @@ html.light-mode .card-action-badge.badge-static {
   font-weight: 600;
   letter-spacing: 0.3px;
   color: rgba(255, 255, 255, 0.8);
-  background: rgba(30, 30, 40, 0.75);
+  background: rgba(30, 30, 30, 0.75);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.18);
@@ -1405,12 +1405,12 @@ html.light-mode .card-action-badge.badge-static {
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.3px;
-  color: rgba(255, 215, 0, 0.95);
-  background: rgba(40, 30, 0, 0.8);
+  color: rgba(255, 185, 0, 0.95);
+  background: rgba(35, 35, 35, 0.8);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 215, 0, 0.4);
-  box-shadow: 0 0 8px rgba(255, 215, 0, 0.3), 0 0 20px rgba(255, 215, 0, 0.1);
+  border: 1px solid rgba(255, 185, 0, 0.4);
+  box-shadow: 0 0 8px rgba(255, 185, 0, 0.3), 0 0 20px rgba(255, 185, 0, 0.1);
   white-space: nowrap;
   animation: win-pulse 2s ease-in-out infinite;
 }
@@ -1424,10 +1424,10 @@ html.light-mode .card-action-badge.badge-static {
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.3px;
-  color: rgba(255, 215, 0, 0.9);
-  background: rgba(255, 215, 0, 0.1);
-  border: 1px solid rgba(255, 215, 0, 0.3);
-  box-shadow: 0 0 8px rgba(255, 215, 0, 0.3), 0 0 20px rgba(255, 215, 0, 0.1);
+  color: rgba(255, 185, 0, 0.9);
+  background: rgba(255, 185, 0, 0.1);
+  border: 1px solid rgba(255, 185, 0, 0.3);
+  box-shadow: 0 0 8px rgba(255, 185, 0, 0.3), 0 0 20px rgba(255, 185, 0, 0.1);
   white-space: nowrap;
   text-decoration: none;
   cursor: pointer;
@@ -1436,9 +1436,9 @@ html.light-mode .card-action-badge.badge-static {
 }
 
 .modal-card .modal-subtitle .modal-play-badge:hover {
-  background: rgba(255, 215, 0, 0.25);
+  background: rgba(255, 185, 0, 0.25);
   color: #fff;
-  border-color: rgba(255, 215, 0, 0.6);
+  border-color: rgba(255, 185, 0, 0.6);
   transform: scale(1.05);
 }
 
@@ -1458,8 +1458,8 @@ html.light-mode .card-action-badge.badge-static {
   margin: 20px 0;
   padding: 24px 28px 20px 28px;
   border: none;
-  border-left: 3px solid rgba(255, 215, 0, 0.4);
-  background: linear-gradient(135deg, rgba(255, 215, 0, 0.06) 0%, rgba(255, 255, 255, 0.02) 100%);
+  border-left: 3px solid rgba(255, 185, 0, 0.4);
+  background: linear-gradient(135deg, rgba(255, 185, 0, 0.06) 0%, rgba(255, 255, 255, 0.02) 100%);
   border-radius: 0 12px 12px 0;
   font-style: italic;
   color: rgba(255, 255, 255, 0.85);
@@ -1476,7 +1476,7 @@ html.light-mode .card-action-badge.badge-static {
   line-height: 1;
   font-style: normal;
   font-weight: 700;
-  color: rgba(255, 215, 0, 0.25);
+  color: rgba(255, 185, 0, 0.25);
   pointer-events: none;
 }
 
@@ -1494,14 +1494,14 @@ html.light-mode .card-action-badge.badge-static {
   font-style: normal;
   font-size: 12px;
   font-weight: 600;
-  color: rgba(255, 215, 0, 0.65);
+  color: rgba(255, 185, 0, 0.65);
   letter-spacing: 0.5px;
   text-transform: uppercase;
 }
 
 .modal-card .modal-body blockquote cite::before {
   content: '\2014\00a0';
-  color: rgba(255, 215, 0, 0.35);
+  color: rgba(255, 185, 0, 0.35);
 }
 
 .modal-card .modal-body blockquote + blockquote {
@@ -1543,8 +1543,8 @@ html.light-mode .card-action-badge.badge-static {
   margin: 20px 0;
   padding: 16px 16px 12px 16px;
   border: none;
-  border-left: 3px solid rgba(130, 200, 255, 0.35);
-  background: linear-gradient(135deg, rgba(130, 200, 255, 0.06) 0%, rgba(255, 255, 255, 0.02) 100%);
+  border-left: 3px solid rgba(0, 164, 239, 0.35);
+  background: linear-gradient(135deg, rgba(0, 164, 239, 0.06) 0%, rgba(255, 255, 255, 0.02) 100%);
   border-radius: 0 12px 12px 0;
 }
 
@@ -1561,7 +1561,7 @@ html.light-mode .card-action-badge.badge-static {
   font-style: normal;
   font-size: 11px;
   font-weight: 600;
-  color: rgba(130, 200, 255, 0.6);
+  color: rgba(0, 164, 239, 0.6);
   letter-spacing: 0.4px;
   text-transform: uppercase;
   line-height: 1.4;
@@ -1569,11 +1569,11 @@ html.light-mode .card-action-badge.badge-static {
 
 .modal-card .modal-body .modal-figure figcaption::before {
   content: '\2014\00a0';
-  color: rgba(130, 200, 255, 0.3);
+  color: rgba(0, 164, 239, 0.3);
 }
 
 .modal-card .modal-body a {
-  color: rgba(130, 200, 255, 0.9);
+  color: rgba(0, 164, 239, 0.9);
   text-decoration: underline;
   text-underline-offset: 2px;
 }
@@ -1623,7 +1623,7 @@ html.light-mode .card-action-badge.badge-static {
 }
 
 .modal-sticky-link {
-  color: rgba(130, 200, 255, 0.9);
+  color: rgba(0, 164, 239, 0.9);
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.3px;
@@ -1633,7 +1633,7 @@ html.light-mode .card-action-badge.badge-static {
   gap: 6px;
   padding: 4px 12px;
   border-radius: 14px;
-  background: rgba(30, 30, 40, 0.75);
+  background: rgba(30, 30, 30, 0.75);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.18);
@@ -1643,7 +1643,7 @@ html.light-mode .card-action-badge.badge-static {
 }
 
 .modal-sticky-link:hover {
-  background: rgba(50, 50, 65, 0.85);
+  background: rgba(50, 50, 50, 0.85);
   border-color: rgba(255, 255, 255, 0.3);
 }
 
@@ -1654,8 +1654,8 @@ html.light-mode .card-action-badge.badge-static {
   align-items: center;
   justify-content: center;
   border-radius: 12px;
-  background: rgba(220, 50, 50, 0.85);
-  border: 1px solid rgba(255, 100, 100, 0.4);
+  background: rgba(242, 80, 34, 0.85);
+  border: 1px solid rgba(242, 80, 34, 0.4);
   color: #fff;
   font-size: 22px;
   cursor: pointer;
@@ -1665,9 +1665,9 @@ html.light-mode .card-action-badge.badge-static {
 }
 
 .modal-close:hover {
-  background: rgba(255, 60, 60, 1);
-  box-shadow: 0 0 12px rgba(255, 60, 60, 0.6),
-              0 0 28px rgba(255, 60, 60, 0.3);
+  background: rgba(242, 80, 34, 1);
+  box-shadow: 0 0 12px rgba(242, 80, 34, 0.6),
+              0 0 28px rgba(242, 80, 34, 0.3);
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -1692,23 +1692,23 @@ html.light-mode .card-action-badge.badge-static {
 .bio-modal-card::before {
   top: -20px;
   margin-top: -20px;
-  background: linear-gradient(to bottom, rgba(18,18,24,1) 0%, transparent 100%);
+  background: linear-gradient(to bottom, rgba(18,18,18,1) 0%, transparent 100%);
   margin-bottom: -100px;
 }
 
 .bio-modal-card::after {
   bottom: -20px;
   margin-bottom: -20px;
-  background: linear-gradient(to top, rgba(18,18,24,1) 0%, transparent 100%);
+  background: linear-gradient(to top, rgba(18,18,18,1) 0%, transparent 100%);
   margin-top: -100px;
 }
 
 html.light-mode .bio-modal-card::before {
-  background: linear-gradient(to bottom, rgba(240,240,245,1) 0%, transparent 100%);
+  background: linear-gradient(to bottom, rgba(240,240,240,1) 0%, transparent 100%);
 }
 
 html.light-mode .bio-modal-card::after {
-  background: linear-gradient(to top, rgba(240,240,245,1) 0%, transparent 100%);
+  background: linear-gradient(to top, rgba(240,240,240,1) 0%, transparent 100%);
 }
 
 .bio-modal-card .modal-body h3 {
@@ -1716,7 +1716,7 @@ html.light-mode .bio-modal-card::after {
   font-weight: 700;
   letter-spacing: 0.6px;
   text-transform: uppercase;
-  color: rgba(255, 215, 0, 0.7);
+  color: rgba(255, 185, 0, 0.7);
   margin-top: 28px;
   margin-bottom: 12px;
 }
@@ -1753,7 +1753,7 @@ html.light-mode .bio-modal-card::after {
 }
 
 .bio-stat {
-  --bio-glow: 255, 215, 0;
+  --bio-glow: 255, 185, 0;
   flex: 1 1 0;
   min-width: 0;
   display: flex;
@@ -1782,7 +1782,7 @@ html.light-mode .bio-modal-card::after {
 
 /* ── Bio image viewer (crossfade) ── */
 .bio-img-viewer {
-  --bio-viewer-glow: 255, 215, 0;
+  --bio-viewer-glow: 255, 185, 0;
   position: relative;
   width: 100%;
   border-radius: 14px;
@@ -1845,8 +1845,8 @@ html.light-mode .bio-modal-card::after {
   position: relative;
   margin: 16px 0;
   padding: 16px 20px;
-  border-left: 3px solid rgba(130, 200, 255, 0.3);
-  background: linear-gradient(135deg, rgba(130, 200, 255, 0.04) 0%, rgba(255, 255, 255, 0.01) 100%);
+  border-left: 3px solid rgba(0, 164, 239, 0.3);
+  background: linear-gradient(135deg, rgba(0, 164, 239, 0.04) 0%, rgba(255, 255, 255, 0.01) 100%);
   border-radius: 0 12px 12px 0;
 }
 
@@ -1857,7 +1857,7 @@ html.light-mode .bio-modal-card::after {
 .bio-symbol-block h4 {
   margin: 0 0 8px 0;
   font-size: 14px;
-  color: rgba(130, 200, 255, 0.85);
+  color: rgba(0, 164, 239, 0.85);
 }
 
 .bio-symbol-block p {
@@ -1871,8 +1871,8 @@ html.light-mode .bio-modal-card::after {
   position: relative;
   margin: 16px 0;
   padding: 16px 20px;
-  border-left: 3px solid rgba(130, 200, 255, 0.3);
-  background: linear-gradient(135deg, rgba(130, 200, 255, 0.04) 0%, rgba(255, 255, 255, 0.01) 100%);
+  border-left: 3px solid rgba(0, 164, 239, 0.3);
+  background: linear-gradient(135deg, rgba(0, 164, 239, 0.04) 0%, rgba(255, 255, 255, 0.01) 100%);
   border-radius: 0 12px 12px 0;
 }
 
@@ -1884,7 +1884,7 @@ html.light-mode .bio-modal-card::after {
   display: block;
   margin-bottom: 8px;
   font-size: 14px;
-  color: rgba(130, 200, 255, 0.85);
+  color: rgba(0, 164, 239, 0.85);
 }
 
 .bio-principle-block p {
@@ -1929,8 +1929,8 @@ html.light-mode .bio-modal-card::after {
 }
 
 @keyframes bio-tour-pulse {
-  0%, 100% { box-shadow: 0 0 12px rgba(255, 215, 0, 0.25), 0 0 24px rgba(255, 215, 0, 0.08); }
-  50%      { box-shadow: 0 0 20px rgba(255, 215, 0, 0.45), 0 0 40px rgba(255, 215, 0, 0.15); }
+  0%, 100% { box-shadow: 0 0 12px rgba(255, 185, 0, 0.25), 0 0 24px rgba(255, 185, 0, 0.08); }
+  50%      { box-shadow: 0 0 20px rgba(255, 185, 0, 0.45), 0 0 40px rgba(255, 185, 0, 0.15); }
 }
 
 .bio-tour-glow {
@@ -1944,7 +1944,7 @@ html.light-mode .bio-modal-card::after {
   font-weight: 700;
   letter-spacing: 1.2px;
   text-transform: uppercase;
-  color: rgba(255, 215, 0, 0.5);
+  color: rgba(255, 185, 0, 0.5);
   margin-top: 28px !important;
   margin-bottom: 0 !important;
   padding-top: 8px;
@@ -1956,7 +1956,7 @@ html.light-mode .bio-modal-card::after {
 }
 
 #bio-quilt-img:hover {
-  box-shadow: 0 0 20px rgba(255, 215, 0, 0.4), 0 0 40px rgba(255, 215, 0, 0.15);
+  box-shadow: 0 0 20px rgba(255, 185, 0, 0.4), 0 0 40px rgba(255, 185, 0, 0.15);
   transform: scale(1.01);
 }
 
@@ -2057,7 +2057,7 @@ html.light-mode .bio-modal-card::after {
 }
 
 .game-modal-card .modal-sticky-title {
-  color: rgba(255, 215, 0, 0.9);
+  color: rgba(255, 185, 0, 0.9);
 }
 
 .game-embed-wrap {
@@ -2092,7 +2092,7 @@ html.light-mode .bio-modal-card::after {
 }
 
 .link-modal-card .modal-sticky-title {
-  color: rgba(100, 200, 255, 0.9);
+  color: rgba(0, 164, 239, 0.9);
 }
 
 .link-embed-wrap {
@@ -2255,7 +2255,7 @@ html.light-mode .bio-modal-card::after {
 }
 
 .marp-bom a {
-  color: rgba(130, 200, 255, 0.9);
+  color: rgba(0, 164, 239, 0.9);
   text-decoration: none;
 }
 
@@ -2270,7 +2270,7 @@ html.light-mode .bio-modal-card::after {
   align-items: flex-start;
   margin: 0 -32px 24px;
   padding: 16px 32px 20px;
-  background: rgba(15, 15, 25, 0.95);
+  background: rgba(15, 15, 15, 0.95);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
@@ -2341,7 +2341,7 @@ html.light-mode .bio-modal-card::after {
 .deck-section-count {
   font-size: 13px;
   font-weight: 600;
-  color: rgba(255, 215, 0, 0.9);
+  color: rgba(255, 185, 0, 0.9);
   margin-left: 4px;
 }
 
@@ -2504,10 +2504,10 @@ html.light-mode .bio-modal-card::after {
 
 /* Card-name links in body text */
 .deck-body a[data-card-link] {
-  color: rgba(130, 200, 255, 0.9);
+  color: rgba(0, 164, 239, 0.9);
   cursor: pointer;
   text-decoration: none;
-  border-bottom: 1px dotted rgba(130, 200, 255, 0.4);
+  border-bottom: 1px dotted rgba(0, 164, 239, 0.4);
   transition: color 0.2s, border-color 0.2s;
 }
 
@@ -2518,8 +2518,8 @@ html.light-mode .bio-modal-card::after {
 
 /* Highlight pulse when a card is anchored */
 @keyframes card-anchor-pulse {
-  0%   { box-shadow: 0 0 0 0 rgba(130, 200, 255, 0.7); }
-  40%  { box-shadow: 0 0 20px 8px rgba(130, 200, 255, 0.5); }
+  0%   { box-shadow: 0 0 0 0 rgba(0, 164, 239, 0.7); }
+  40%  { box-shadow: 0 0 20px 8px rgba(0, 164, 239, 0.5); }
   100% { box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5); }
 }
 
@@ -2624,16 +2624,16 @@ html.light-mode .bio-modal-card::after {
   font-size: 14px;
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.12);
-  color: rgba(130, 200, 255, 0.8);
+  color: rgba(0, 164, 239, 0.8);
   transition: all 0.3s ease;
 }
 
 .footer-detail-item:hover .footer-detail-icon {
-  background: rgba(130, 200, 255, 0.15);
-  border-color: rgba(130, 200, 255, 0.4);
+  background: rgba(0, 164, 239, 0.15);
+  border-color: rgba(0, 164, 239, 0.4);
   color: #fff;
-  box-shadow: 0 0 8px rgba(130, 200, 255, 0.3),
-              0 0 20px rgba(130, 200, 255, 0.1);
+  box-shadow: 0 0 8px rgba(0, 164, 239, 0.3),
+              0 0 20px rgba(0, 164, 239, 0.1);
 }
 
 .footer-detail-desc {
@@ -2650,7 +2650,7 @@ html.light-mode .bio-modal-card::after {
   border-radius: 4px;
   background: rgba(255, 255, 255, 0.07);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  color: rgba(180, 220, 255, 0.85);
+  color: rgba(0, 164, 239, 0.85);
   transition: all 0.3s ease;
 }
 
@@ -2672,11 +2672,11 @@ html.light-mode .bio-modal-card::after {
 }
 
 .footer-detail-desc a:hover code {
-  background: rgba(130, 200, 255, 0.15);
-  border-color: rgba(130, 200, 255, 0.4);
+  background: rgba(0, 164, 239, 0.15);
+  border-color: rgba(0, 164, 239, 0.4);
   color: #fff;
-  box-shadow: 0 0 8px rgba(130, 200, 255, 0.25),
-              0 0 20px rgba(130, 200, 255, 0.1);
+  box-shadow: 0 0 8px rgba(0, 164, 239, 0.25),
+              0 0 20px rgba(0, 164, 239, 0.1);
 }
 
 .footer-repo-actions {
@@ -2720,7 +2720,7 @@ html.light-mode .bio-modal-card::after {
 }
 
 .glass-footer a {
-  color: rgba(130, 200, 255, 0.6);
+  color: rgba(0, 164, 239, 0.6);
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -2846,13 +2846,13 @@ html.light-mode .bio-modal-card::after {
    LIGHT MODE
    ═══════════════════════════════════════════════════════════════ */
 html.light-mode body {
-  color: #1a1a2e;
-  background: #e8ecf1;
+  color: #1a1a1a;
+  background: #ebebeb;
 }
 
 html.light-mode ::selection {
   background: rgba(0, 120, 212, 0.25);
-  color: #1a1a2e;
+  color: #1a1a1a;
 }
 
 /* ── Nav & Radio bar ──────────────────────────────────────── */
@@ -2867,7 +2867,7 @@ html.light-mode .glass-nav a:not(.nav-brand) {
 
 html.light-mode .glass-nav a:not(.nav-brand):hover,
 html.light-mode .glass-nav a:not(.nav-brand).active {
-  color: #1a1a2e;
+  color: #1a1a1a;
   background: rgba(0, 0, 0, 0.08);
 }
 
@@ -2927,7 +2927,7 @@ html.light-mode .radio-btn {
 
 html.light-mode .radio-btn:hover {
   background: rgba(0, 0, 0, 0.08);
-  color: #1a1a2e;
+  color: #1a1a1a;
 }
 
 html.light-mode .radio-btn-play {
@@ -2939,14 +2939,14 @@ html.light-mode .radio-btn-play {
 html.light-mode .radio-btn-play:hover {
   background: rgba(0, 0, 0, 0.12);
   border-color: rgba(0, 0, 0, 0.3);
-  color: #1a1a2e;
+  color: #1a1a1a;
 }
 
 html.light-mode .radio-player.playing .radio-btn-play {
-  background: rgba(0, 100, 200, 0.12);
-  border-color: rgba(0, 100, 200, 0.35);
-  color: rgba(0, 100, 200, 0.9);
-  box-shadow: 0 0 15px rgba(0, 100, 200, 0.15);
+  background: rgba(0, 120, 212, 0.12);
+  border-color: rgba(0, 120, 212, 0.35);
+  color: rgba(0, 120, 212, 0.9);
+  box-shadow: 0 0 15px rgba(0, 120, 212, 0.15);
 }
 
 html.light-mode .radio-vol-btn {
@@ -2986,7 +2986,7 @@ html.light-mode .glass-tile:hover {
 }
 
 html.light-mode .key-figure-value {
-  color: #1a1a2e;
+  color: #1a1a1a;
 }
 
 html.light-mode .key-figure-label {
@@ -3036,16 +3036,16 @@ html.light-mode .footer-detail-item strong {
 }
 
 html.light-mode .footer-detail-icon {
-  background: rgba(0, 100, 200, 0.08);
-  border-color: rgba(0, 100, 200, 0.18);
-  color: rgba(0, 100, 200, 0.8);
+  background: rgba(0, 120, 212, 0.08);
+  border-color: rgba(0, 120, 212, 0.18);
+  color: rgba(0, 120, 212, 0.8);
 }
 
 html.light-mode .footer-detail-item:hover .footer-detail-icon {
-  background: rgba(0, 100, 200, 0.15);
-  border-color: rgba(0, 100, 200, 0.4);
+  background: rgba(0, 120, 212, 0.15);
+  border-color: rgba(0, 120, 212, 0.4);
   color: #0064c8;
-  box-shadow: 0 0 8px rgba(0, 100, 200, 0.2);
+  box-shadow: 0 0 8px rgba(0, 120, 212, 0.2);
 }
 
 html.light-mode .footer-detail-desc {
@@ -3055,12 +3055,12 @@ html.light-mode .footer-detail-desc {
 html.light-mode .footer-detail-desc code {
   background: rgba(0, 0, 0, 0.05);
   border-color: rgba(0, 0, 0, 0.08);
-  color: rgba(0, 80, 160, 0.85);
+  color: rgba(0, 120, 212, 0.85);
 }
 
 html.light-mode .footer-detail-desc a:hover code {
-  background: rgba(0, 100, 200, 0.1);
-  border-color: rgba(0, 100, 200, 0.3);
+  background: rgba(0, 120, 212, 0.1);
+  border-color: rgba(0, 120, 212, 0.3);
   color: #0050a0;
 }
 
@@ -3081,7 +3081,7 @@ html.light-mode .footer-repo-btn {
 }
 
 html.light-mode .footer-repo-btn:hover {
-  color: #1a1a2e;
+  color: #1a1a1a;
   background: rgba(0, 0, 0, 0.10);
   border-color: rgba(0, 0, 0, 0.25);
 }
@@ -3091,12 +3091,12 @@ html.light-mode .glass-footer {
 }
 
 html.light-mode .glass-footer a {
-  color: rgba(130, 200, 255, 0.6);
+  color: rgba(0, 164, 239, 0.6);
 }
 
 /* ── Text & heading colors ────────────────────────────────── */
 html.light-mode .hero-name {
-  background: linear-gradient(135deg, #1a1a2e 0%, rgba(0, 0, 0, 0.6) 100%);
+  background: linear-gradient(135deg, #1a1a1a 0%, rgba(0, 0, 0, 0.6) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -3107,11 +3107,11 @@ html.light-mode .hero-tagline {
 }
 
 html.light-mode .hero-tagline strong a {
-  color: rgba(0, 100, 200, 0.9);
+  color: rgba(0, 120, 212, 0.9);
 }
 
 html.light-mode .hero-tagline strong a:hover {
-  color: #1a1a2e;
+  color: #1a1a1a;
 }
 
 html.light-mode .hero-bio {
@@ -3119,7 +3119,7 @@ html.light-mode .hero-bio {
 }
 
 html.light-mode .hero-bio strong a {
-  color: rgba(0, 100, 200, 0.8);
+  color: rgba(0, 120, 212, 0.8);
 }
 
 html.light-mode hr {
@@ -3135,7 +3135,7 @@ html.light-mode .hero-links a {
 html.light-mode .hero-links a:hover {
   background: rgba(0, 0, 0, 0.10);
   border-color: rgba(0, 0, 0, 0.25);
-  color: #1a1a2e;
+  color: #1a1a1a;
 }
 
 html.light-mode .hero-portrait {
@@ -3157,7 +3157,7 @@ html.light-mode .hero-portrait-penguin {
 }
 
 html.light-mode .section-heading {
-  color: #1a1a2e;
+  color: #1a1a1a;
 }
 
 html.light-mode .section-desc {
@@ -3165,7 +3165,7 @@ html.light-mode .section-desc {
 }
 
 html.light-mode .section-desc a {
-  color: rgba(0, 100, 200, 0.85);
+  color: rgba(0, 120, 212, 0.85);
 }
 
 html.light-mode .section-blurb {
@@ -3173,7 +3173,7 @@ html.light-mode .section-blurb {
 }
 
 html.light-mode .section-blurb a {
-  color: rgba(0, 100, 200, 0.85);
+  color: rgba(0, 120, 212, 0.85);
 }
 
 html.light-mode .scroll-hint {
@@ -3203,23 +3203,23 @@ html.light-mode .section-badge {
 }
 
 html.light-mode .section-badge:hover {
-  color: #1a1a2e;
+  color: #1a1a1a;
   background: rgba(0, 0, 0, 0.08);
   border-color: rgba(0, 0, 0, 0.25);
 }
 
 html.light-mode .section-badge.section-badge-glow {
-  color: rgba(140, 95, 0, 1);
-  background: rgba(255, 235, 180, 0.8);
-  border-color: rgba(160, 110, 0, 0.4);
-  box-shadow: 0 0 8px rgba(180, 130, 0, 0.25), 0 0 16px rgba(180, 130, 0, 0.1);
+  color: rgba(255, 185, 0, 1);
+  background: rgba(255, 185, 0, 0.8);
+  border-color: rgba(255, 185, 0, 0.4);
+  box-shadow: 0 0 8px rgba(255, 185, 0, 0.25), 0 0 16px rgba(255, 185, 0, 0.1);
   animation: win-pulse-light 2s ease-in-out infinite;
 }
 
 html.light-mode .section-badge.section-badge-glow:hover {
-  color: rgba(120, 80, 0, 1);
-  background: rgba(255, 235, 180, 0.95);
-  border-color: rgba(160, 110, 0, 0.55);
+  color: rgba(255, 185, 0, 1);
+  background: rgba(255, 185, 0, 0.95);
+  border-color: rgba(255, 185, 0, 0.55);
 }
 
 html.light-mode .section-intro-img {
@@ -3229,7 +3229,7 @@ html.light-mode .section-intro-img {
 
 /* ── Entry cards ──────────────────────────────────────────── */
 html.light-mode .entry-card .entry-name {
-  color: #1a1a2e;
+  color: #1a1a1a;
 }
 
 html.light-mode .entry-card .entry-title {
@@ -3247,13 +3247,13 @@ html.light-mode .entry-card .entry-motto {
 }
 
 html.light-mode .entry-card .entry-github {
-  color: rgba(0, 100, 200, 0.7);
-  background: rgba(0, 100, 200, 0.06);
-  border-color: rgba(0, 100, 200, 0.15);
+  color: rgba(0, 120, 212, 0.7);
+  background: rgba(0, 120, 212, 0.06);
+  border-color: rgba(0, 120, 212, 0.15);
 }
 
 html.light-mode .entry-card .entry-github:hover {
-  background: rgba(0, 100, 200, 0.12);
+  background: rgba(0, 120, 212, 0.12);
   color: #0050a0;
 }
 
@@ -3279,7 +3279,7 @@ html.light-mode .modal-overlay {
 }
 
 html.light-mode .modal-card .modal-title {
-  color: #1a1a2e;
+  color: #1a1a1a;
 }
 
 html.light-mode .modal-card .modal-body {
@@ -3287,12 +3287,12 @@ html.light-mode .modal-card .modal-body {
 }
 
 html.light-mode .modal-card .modal-body a {
-  color: rgba(0, 100, 200, 0.85);
+  color: rgba(0, 120, 212, 0.85);
 }
 
 html.light-mode .modal-card .modal-subtitle .modal-badge {
   color: rgba(0, 0, 0, 0.7);
-  background: rgba(240, 240, 245, 0.75);
+  background: rgba(240, 240, 240, 0.75);
   border-color: rgba(0, 0, 0, 0.12);
 }
 
@@ -3302,31 +3302,31 @@ html.light-mode .modal-sticky-bar {
 /* ── Win / Play badges (card + modal) ─────────────────────── */
 html.light-mode .entry-card .entry-win,
 html.light-mode .modal-card .modal-subtitle .modal-win-badge {
-  color: rgba(140, 95, 0, 1);
-  background: rgba(255, 235, 180, 0.8);
-  border-color: rgba(160, 110, 0, 0.4);
-  box-shadow: 0 0 8px rgba(180, 130, 0, 0.25), 0 0 16px rgba(180, 130, 0, 0.1);
+  color: rgba(255, 185, 0, 1);
+  background: rgba(255, 185, 0, 0.8);
+  border-color: rgba(255, 185, 0, 0.4);
+  box-shadow: 0 0 8px rgba(255, 185, 0, 0.25), 0 0 16px rgba(255, 185, 0, 0.1);
 }
 
 html.light-mode .entry-card .entry-play,
 html.light-mode .modal-card .modal-subtitle .modal-play-badge {
-  color: rgba(160, 110, 0, 0.95);
-  background: rgba(180, 130, 0, 0.12);
-  border-color: rgba(160, 110, 0, 0.35);
-  box-shadow: 0 0 8px rgba(180, 130, 0, 0.25), 0 0 16px rgba(180, 130, 0, 0.1);
+  color: rgba(255, 185, 0, 0.95);
+  background: rgba(255, 185, 0, 0.12);
+  border-color: rgba(255, 185, 0, 0.35);
+  box-shadow: 0 0 8px rgba(255, 185, 0, 0.25), 0 0 16px rgba(255, 185, 0, 0.1);
 }
 
 html.light-mode .entry-card .entry-play:hover,
 html.light-mode .modal-card .modal-subtitle .modal-play-badge:hover {
-  background: rgba(180, 130, 0, 0.22);
-  color: rgba(120, 80, 0, 1);
-  border-color: rgba(160, 110, 0, 0.55);
+  background: rgba(255, 185, 0, 0.22);
+  color: rgba(255, 185, 0, 1);
+  border-color: rgba(255, 185, 0, 0.55);
 }
 
 html.light-mode .entry-card .entry-title-highlight {
-  color: rgba(160, 110, 0, 0.95);
-  background: rgba(180, 130, 0, 0.12);
-  border-color: rgba(160, 110, 0, 0.35);
+  color: rgba(255, 185, 0, 0.95);
+  background: rgba(255, 185, 0, 0.12);
+  border-color: rgba(255, 185, 0, 0.35);
 }
 
 /* ── Win / Play badge glow (light mode) ───────────────────── */
@@ -3350,27 +3350,27 @@ html.light-mode .card-action-badge.badge-dive {
 }
 
 @keyframes win-pulse-light {
-  0%, 100% { box-shadow: 0 0 8px rgba(180, 130, 0, 0.25), 0 0 16px rgba(180, 130, 0, 0.1); }
-  50%      { box-shadow: 0 0 14px rgba(180, 130, 0, 0.45), 0 0 24px rgba(180, 130, 0, 0.2); }
+  0%, 100% { box-shadow: 0 0 8px rgba(255, 185, 0, 0.25), 0 0 16px rgba(255, 185, 0, 0.1); }
+  50%      { box-shadow: 0 0 14px rgba(255, 185, 0, 0.45), 0 0 24px rgba(255, 185, 0, 0.2); }
 }
 
 @keyframes badgePulse-light {
-  0%, 100% { box-shadow: 0 0 6px rgba(160, 110, 0, 0.15), inset 0 0 4px rgba(160, 110, 0, 0.05); }
-  50%      { box-shadow: 0 0 14px rgba(160, 110, 0, 0.35), inset 0 0 6px rgba(160, 110, 0, 0.1); }
+  0%, 100% { box-shadow: 0 0 6px rgba(255, 185, 0, 0.15), inset 0 0 4px rgba(255, 185, 0, 0.05); }
+  50%      { box-shadow: 0 0 14px rgba(255, 185, 0, 0.35), inset 0 0 6px rgba(255, 185, 0, 0.1); }
 }
 
 @keyframes badgePulseDive-light {
-  0%, 100% { box-shadow: 0 0 6px rgba(0, 100, 180, 0.15), inset 0 0 4px rgba(0, 100, 180, 0.05); }
-  50%      { box-shadow: 0 0 14px rgba(0, 100, 180, 0.35), inset 0 0 6px rgba(0, 100, 180, 0.1); }
+  0%, 100% { box-shadow: 0 0 6px rgba(0, 120, 212, 0.15), inset 0 0 4px rgba(0, 120, 212, 0.05); }
+  50%      { box-shadow: 0 0 14px rgba(0, 120, 212, 0.35), inset 0 0 6px rgba(0, 120, 212, 0.1); }
 }
 
 /* ── Deck modal ───────────────────────────────────────────── */
 html.light-mode .deck-hero {
-  background: rgba(245, 245, 250, 0.95);
+  background: rgba(245, 245, 245, 0.95);
   border-bottom-color: rgba(0, 0, 0, 0.06);
 }
 
-html.light-mode .deck-hero-name { color: #1a1a2e; }
+html.light-mode .deck-hero-name { color: #1a1a1a; }
 html.light-mode .deck-hero-motto { color: rgba(0, 0, 0, 0.45); }
 html.light-mode .deck-hero-bracket { color: rgba(0, 0, 0, 0.45); }
 
@@ -3386,12 +3386,12 @@ html.light-mode .deck-carousel-btn {
 
 html.light-mode .deck-carousel-btn:hover {
   background: rgba(0, 0, 0, 0.10);
-  color: #1a1a2e;
+  color: #1a1a1a;
 }
 
 html.light-mode .deck-body a[data-card-link] {
-  color: rgba(0, 100, 200, 0.85);
-  border-bottom-color: rgba(0, 100, 200, 0.3);
+  color: rgba(0, 120, 212, 0.85);
+  border-bottom-color: rgba(0, 120, 212, 0.3);
 }
 
 /* ── MARP BOM ─────────────────────────────────────────────── */
@@ -3416,35 +3416,35 @@ html.light-mode .marp-bom tbody tr:hover {
   background: rgba(0, 0, 0, 0.03);
 }
 
-html.light-mode .marp-bom a { color: rgba(0, 100, 200, 0.85); }
+html.light-mode .marp-bom a { color: rgba(0, 120, 212, 0.85); }
 
 /* ── Modal sticky-bar light overrides ─────────────────────── */
 html.light-mode .modal-sticky-title {
-  color: #1a1a2e;
+  color: #1a1a1a;
 }
 
 html.light-mode .game-modal-card .modal-sticky-title {
-  color: rgba(180, 130, 0, 0.95);
+  color: rgba(255, 185, 0, 0.95);
 }
 
 html.light-mode .link-modal-card .modal-sticky-title {
-  color: rgba(0, 120, 180, 0.95);
+  color: rgba(0, 120, 212, 0.95);
 }
 
 html.light-mode .modal-sticky-link {
-  color: rgba(0, 100, 200, 0.85);
-  background: rgba(240, 240, 245, 0.75);
+  color: rgba(0, 120, 212, 0.85);
+  background: rgba(240, 240, 240, 0.75);
   border-color: rgba(0, 0, 0, 0.12);
 }
 
 html.light-mode .modal-sticky-link:hover {
-  background: rgba(225, 225, 235, 0.85);
+  background: rgba(225, 225, 225, 0.85);
   border-color: rgba(0, 0, 0, 0.25);
 }
 
 /* ── Biography modal light overrides ──────────────────────── */
 html.light-mode .bio-modal-card .modal-body h3 {
-  color: rgba(140, 95, 0, 0.85);
+  color: rgba(255, 185, 0, 0.85);
 }
 
 html.light-mode .bio-modal-card .modal-body h4 {
@@ -3486,12 +3486,12 @@ html.light-mode .bio-section-lead {
 }
 
 html.light-mode .bio-symbol-block {
-  border-left-color: rgba(0, 100, 200, 0.3);
-  background: linear-gradient(135deg, rgba(0, 100, 200, 0.05) 0%, rgba(0, 0, 0, 0.01) 100%);
+  border-left-color: rgba(0, 120, 212, 0.3);
+  background: linear-gradient(135deg, rgba(0, 120, 212, 0.05) 0%, rgba(0, 0, 0, 0.01) 100%);
 }
 
 html.light-mode .bio-symbol-block h4 {
-  color: rgba(0, 100, 200, 0.85);
+  color: rgba(0, 120, 212, 0.85);
 }
 
 html.light-mode .bio-symbol-block p,
@@ -3501,12 +3501,12 @@ html.light-mode .bio-principle-block .step {
 }
 
 html.light-mode .bio-principle-block {
-  border-left-color: rgba(0, 100, 200, 0.3);
-  background: linear-gradient(135deg, rgba(0, 100, 200, 0.05) 0%, rgba(0, 0, 0, 0.01) 100%);
+  border-left-color: rgba(0, 120, 212, 0.3);
+  background: linear-gradient(135deg, rgba(0, 120, 212, 0.05) 0%, rgba(0, 0, 0, 0.01) 100%);
 }
 
 html.light-mode .bio-principle-block > strong {
-  color: rgba(0, 100, 200, 0.85);
+  color: rgba(0, 120, 212, 0.85);
 }
 
 html.light-mode .bio-principle-block p {
@@ -3514,7 +3514,7 @@ html.light-mode .bio-principle-block p {
 }
 
 html.light-mode .bio-colophon {
-  color: rgba(140, 95, 0, 0.55);
+  color: rgba(255, 185, 0, 0.55);
 }
 
 html.light-mode .bio-tour-glow {
@@ -3522,8 +3522,8 @@ html.light-mode .bio-tour-glow {
 }
 
 @keyframes bio-tour-pulse-light {
-  0%, 100% { box-shadow: 0 0 12px rgba(180, 130, 0, 0.2), 0 0 24px rgba(180, 130, 0, 0.06); }
-  50%      { box-shadow: 0 0 20px rgba(180, 130, 0, 0.35), 0 0 40px rgba(180, 130, 0, 0.12); }
+  0%, 100% { box-shadow: 0 0 12px rgba(255, 185, 0, 0.2), 0 0 24px rgba(255, 185, 0, 0.06); }
+  50%      { box-shadow: 0 0 20px rgba(255, 185, 0, 0.35), 0 0 40px rgba(255, 185, 0, 0.12); }
 }
 
 html.light-mode .tl-ruler-year {
@@ -3563,7 +3563,7 @@ html.light-mode .tl-sliver.tl-whisper-glow {
 }
 
 html.light-mode .tl-sliver-name {
-  color: #1a1a2e;
+  color: #1a1a1a;
 }
 
 html.light-mode .tl-whisper-layer.tl-whisper-show,
@@ -3595,10 +3595,10 @@ html.light-mode .tl-sliver-meta {
 }
 
 html.light-mode .tl-win {
-  color: rgba(140, 95, 0, 1);
-  background: rgba(255, 235, 180, 0.8);
-  border-color: rgba(160, 110, 0, 0.4);
-  box-shadow: 0 0 4px rgba(180, 130, 0, 0.15);
+  color: rgba(255, 185, 0, 1);
+  background: rgba(255, 185, 0, 0.8);
+  border-color: rgba(255, 185, 0, 0.4);
+  box-shadow: 0 0 4px rgba(255, 185, 0, 0.15);
 }
 
 /* ── Scrollbar ────────────────────────────────────────────── */
@@ -3871,7 +3871,7 @@ html.light-mode .outline-pill {
   font-family: inherit;
   letter-spacing: 0.3px;
   color: rgba(255, 255, 255, 0.6);
-  background: rgba(30, 30, 40, 0.75);
+  background: rgba(30, 30, 30, 0.75);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.18);
@@ -3883,7 +3883,7 @@ html.light-mode .outline-pill {
 
 .viz-filter:hover {
   color: #fff;
-  background: rgba(50, 50, 65, 0.85);
+  background: rgba(50, 50, 50, 0.85);
   border-color: rgba(var(--tc), 0.45);
   box-shadow: 0 0 12px rgba(var(--tc), 0.25),
               0 0 30px rgba(var(--tc), 0.10);
@@ -3909,13 +3909,13 @@ html.light-mode .outline-pill {
 /* ── Light mode — filter pills ────────────────────────────── */
 html.light-mode .viz-filter {
   color: rgba(0, 0, 0, 0.5);
-  background: rgba(240, 240, 245, 0.75);
+  background: rgba(240, 240, 240, 0.75);
   border-color: rgba(0, 0, 0, 0.12);
 }
 
 html.light-mode .viz-filter:hover {
-  color: #1a1a2e;
-  background: rgba(225, 225, 235, 0.85);
+  color: #1a1a1a;
+  background: rgba(225, 225, 225, 0.85);
   border-color: rgba(var(--tc), 0.35);
   box-shadow: 0 0 10px rgba(var(--tc), 0.15),
               0 0 25px rgba(var(--tc), 0.06);
@@ -3952,13 +3952,13 @@ html.light-mode .viz-filter.active:hover {
 
 /* Inactive filter: black dot (dark mode) */
 .viz-filter:not(.active) .viz-dot {
-  background: rgba(20, 20, 25, 0.9) !important;
+  background: rgba(20, 20, 20, 0.9) !important;
   border-color: rgba(255, 255, 255, 0.15);
 }
 
 /* Inactive filter: white dot (light mode) */
 html.light-mode .viz-filter:not(.active) .viz-dot {
-  background: rgba(240, 240, 245, 0.9) !important;
+  background: rgba(240, 240, 240, 0.9) !important;
   border-color: rgba(0, 0, 0, 0.12);
 }
 
@@ -4008,18 +4008,18 @@ html.light-mode .mtg-filter.viz-filter-glow {
   z-index: 3;
   border-radius: inherit;
   background:
-    linear-gradient(to bottom, rgba(18,18,24,0.8) 0%, transparent 100px),
-    linear-gradient(to top,    rgba(18,18,24,0.8) 0%, transparent 100px),
-    linear-gradient(to right,  rgba(18,18,24,0.8) 0%, transparent 100px),
-    linear-gradient(to left,   rgba(18,18,24,0.8) 0%, transparent 100px);
+    linear-gradient(to bottom, rgba(18,18,18,0.8) 0%, transparent 100px),
+    linear-gradient(to top,    rgba(18,18,18,0.8) 0%, transparent 100px),
+    linear-gradient(to right,  rgba(18,18,18,0.8) 0%, transparent 100px),
+    linear-gradient(to left,   rgba(18,18,18,0.8) 0%, transparent 100px);
 }
 
 html.light-mode .viz-viewport::after {
   background:
-    linear-gradient(to bottom, rgba(240,240,245,0.8) 0%, transparent 100px),
-    linear-gradient(to top,    rgba(240,240,245,0.8) 0%, transparent 100px),
-    linear-gradient(to right,  rgba(240,240,245,0.8) 0%, transparent 100px),
-    linear-gradient(to left,   rgba(240,240,245,0.8) 0%, transparent 100px);
+    linear-gradient(to bottom, rgba(240,240,240,0.8) 0%, transparent 100px),
+    linear-gradient(to top,    rgba(240,240,240,0.8) 0%, transparent 100px),
+    linear-gradient(to right,  rgba(240,240,240,0.8) 0%, transparent 100px),
+    linear-gradient(to left,   rgba(240,240,240,0.8) 0%, transparent 100px);
 }
 
 /* ── World (transform container — mermaid & KG) ───────────── */
@@ -4217,7 +4217,7 @@ html.light-mode .viz-layout-toggle:hover {
 }
 
 .mm-edge-label-group.mm-highlight rect {
-  fill: rgba(15, 15, 20, 0.95) !important;
+  fill: rgba(15, 15, 15, 0.95) !important;
   stroke: rgba(255, 255, 255, 0.35) !important;
 }
 
@@ -4292,7 +4292,7 @@ html.light-mode .viz-layout-toggle:hover {
 }
 
 .mm-edge-label-group.mm-explore-glow rect {
-  fill: rgba(15, 15, 20, 0.95) !important;
+  fill: rgba(15, 15, 15, 0.95) !important;
   stroke: rgba(255, 255, 255, 0.35) !important;
 }
 
@@ -4414,7 +4414,7 @@ html.light-mode .viz-layout-toggle:hover {
   box-sizing: border-box;
   border-radius: 10px;
   border: 1px solid rgba(255, 255, 255, 0.2);
-  background: rgba(15, 15, 20, 0.75);
+  background: rgba(15, 15, 15, 0.75);
   backdrop-filter: blur(12px) saturate(1.2);
   -webkit-backdrop-filter: blur(12px) saturate(1.2);
   padding: 6px 12px 6px 10px;
@@ -4554,7 +4554,7 @@ html.light-mode .mm-world.mm-hovering .mm-subgraph.mm-highlight {
 }
 
 html.light-mode .mm-node {
-  background: rgba(245, 245, 250, 0.85);
+  background: rgba(245, 245, 245, 0.85);
   border-color: rgba(0, 0, 0, 0.12);
 }
 
@@ -4667,22 +4667,22 @@ html.light-mode .mm-edge-label-group.mm-explore-glow text {
 
 .timeline-modal-card::before {
   top: 0;
-  background: linear-gradient(to bottom, rgba(18,18,24,1) 0%, transparent 100%);
+  background: linear-gradient(to bottom, rgba(18,18,18,1) 0%, transparent 100%);
   margin-bottom: -100px;
 }
 
 .timeline-modal-card::after {
   bottom: 0;
-  background: linear-gradient(to top, rgba(18,18,24,1) 0%, transparent 100%);
+  background: linear-gradient(to top, rgba(18,18,18,1) 0%, transparent 100%);
   margin-top: -100px;
 }
 
 html.light-mode .timeline-modal-card::before {
-  background: linear-gradient(to bottom, rgba(240,240,245,1) 0%, transparent 100%);
+  background: linear-gradient(to bottom, rgba(240,240,240,1) 0%, transparent 100%);
 }
 
 html.light-mode .timeline-modal-card::after {
-  background: linear-gradient(to top, rgba(240,240,245,1) 0%, transparent 100%);
+  background: linear-gradient(to top, rgba(240,240,240,1) 0%, transparent 100%);
 }
 
 .timeline-modal-card .modal-sticky-bar {
@@ -4995,10 +4995,10 @@ html.light-mode .viz-filter.filter-pulse {
   padding: 0;
   border-radius: 50%;
   font-size: 8px;
-  color: rgba(255, 215, 0, 0.95);
-  background: rgba(255, 215, 0, 0.1);
-  border: 1px solid rgba(255, 215, 0, 0.3);
-  box-shadow: 0 0 4px rgba(255, 215, 0, 0.25);
+  color: rgba(255, 185, 0, 0.95);
+  background: rgba(255, 185, 0, 0.1);
+  border: 1px solid rgba(255, 185, 0, 0.3);
+  box-shadow: 0 0 4px rgba(255, 185, 0, 0.25);
   animation: win-pulse 2s ease-in-out infinite;
   flex-shrink: 0;
   margin-left: auto;
@@ -5346,7 +5346,7 @@ html.light-mode .kg-node-center {
 }
 
 html.light-mode .kg-node-name {
-  color: #1a1a2e;
+  color: #1a1a1a;
 }
 
 html.light-mode .kg-name-whisper {
@@ -5507,68 +5507,68 @@ html.light-mode .map-project-node {
 
 /* ── "See MARP" / "See ARCH" badges on the Mermaid tile ──── */
 .card-action-badge.badge-mermaid {
-  background: rgba(0, 180, 160, 0.18);
-  border: 1px solid rgba(0, 200, 180, 0.5);
-  box-shadow: 0 0 6px rgba(0, 200, 180, 0.3), inset 0 0 4px rgba(0, 200, 180, 0.08);
+  background: rgba(127, 186, 0, 0.18);
+  border: 1px solid rgba(127, 186, 0, 0.5);
+  box-shadow: 0 0 6px rgba(127, 186, 0, 0.3), inset 0 0 4px rgba(127, 186, 0, 0.08);
   animation: badgePulseMermaid 2.5s ease-in-out infinite;
   cursor: pointer;
   margin-left: 4px;
 }
 
 @keyframes badgePulseMermaid {
-  0%, 100% { box-shadow: 0 0 6px rgba(0, 200, 180, 0.3), inset 0 0 4px rgba(0, 200, 180, 0.08); }
-  50%      { box-shadow: 0 0 14px rgba(0, 200, 180, 0.55), inset 0 0 6px rgba(0, 200, 180, 0.15); }
+  0%, 100% { box-shadow: 0 0 6px rgba(127, 186, 0, 0.3), inset 0 0 4px rgba(127, 186, 0, 0.08); }
+  50%      { box-shadow: 0 0 14px rgba(127, 186, 0, 0.55), inset 0 0 6px rgba(127, 186, 0, 0.15); }
 }
 
 html.light-mode .card-action-badge.badge-mermaid {
-  color: rgba(0, 100, 90, 0.9);
-  background: rgba(0, 130, 110, 0.1);
-  border-color: rgba(0, 130, 110, 0.4);
-  box-shadow: 0 0 6px rgba(0, 130, 110, 0.15), inset 0 0 4px rgba(0, 130, 110, 0.05);
+  color: rgba(127, 186, 0, 0.9);
+  background: rgba(127, 186, 0, 0.1);
+  border-color: rgba(127, 186, 0, 0.4);
+  box-shadow: 0 0 6px rgba(127, 186, 0, 0.15), inset 0 0 4px rgba(127, 186, 0, 0.05);
 }
 
 /* ── "See TENTIMES" badge on the Diagrams tile ────────────── */
 .card-action-badge.badge-tentimes {
-  background: rgba(120, 80, 200, 0.18);
-  border: 1px solid rgba(140, 100, 220, 0.5);
-  box-shadow: 0 0 6px rgba(140, 100, 220, 0.3), inset 0 0 4px rgba(140, 100, 220, 0.08);
+  background: rgba(0, 164, 239, 0.18);
+  border: 1px solid rgba(0, 164, 239, 0.5);
+  box-shadow: 0 0 6px rgba(0, 164, 239, 0.3), inset 0 0 4px rgba(0, 164, 239, 0.08);
   animation: badgePulseTentimes 2.5s ease-in-out infinite;
   cursor: pointer;
   margin-left: 4px;
 }
 
 @keyframes badgePulseTentimes {
-  0%, 100% { box-shadow: 0 0 6px rgba(140, 100, 220, 0.3), inset 0 0 4px rgba(140, 100, 220, 0.08); }
-  50%      { box-shadow: 0 0 14px rgba(140, 100, 220, 0.55), inset 0 0 6px rgba(140, 100, 220, 0.15); }
+  0%, 100% { box-shadow: 0 0 6px rgba(0, 164, 239, 0.3), inset 0 0 4px rgba(0, 164, 239, 0.08); }
+  50%      { box-shadow: 0 0 14px rgba(0, 164, 239, 0.55), inset 0 0 6px rgba(0, 164, 239, 0.15); }
 }
 
 html.light-mode .card-action-badge.badge-tentimes {
-  color: rgba(80, 40, 160, 0.9);
-  background: rgba(100, 60, 180, 0.1);
-  border-color: rgba(100, 60, 180, 0.4);
-  box-shadow: 0 0 6px rgba(100, 60, 180, 0.15), inset 0 0 4px rgba(100, 60, 180, 0.05);
+  color: rgba(0, 120, 212, 0.9);
+  background: rgba(0, 120, 212, 0.1);
+  border-color: rgba(0, 120, 212, 0.4);
+  box-shadow: 0 0 6px rgba(0, 120, 212, 0.15), inset 0 0 4px rgba(0, 120, 212, 0.05);
 }
 
 /* ── "See MTG" badge on the Skilltree tile ─────────────────── */
 .card-action-badge.badge-mtg {
-  background: rgba(180, 120, 40, 0.18);
-  border: 1px solid rgba(220, 170, 60, 0.5);
-  box-shadow: 0 0 6px rgba(220, 170, 60, 0.3), inset 0 0 4px rgba(220, 170, 60, 0.08);
+  background: rgba(255, 185, 0, 0.18);
+  border: 1px solid rgba(255, 185, 0, 0.5);
+  box-shadow: 0 0 6px rgba(255, 185, 0, 0.3), inset 0 0 4px rgba(255, 185, 0, 0.08);
   animation: badgePulseMtg 2.5s ease-in-out infinite;
   cursor: pointer;
   margin-left: 4px;
 }
 
 @keyframes badgePulseMtg {
-  0%, 100% { box-shadow: 0 0 6px rgba(220, 170, 60, 0.3), inset 0 0 4px rgba(220, 170, 60, 0.08); }
-  50%      { box-shadow: 0 0 14px rgba(220, 170, 60, 0.55), inset 0 0 6px rgba(220, 170, 60, 0.15); }
+  0%, 100% { box-shadow: 0 0 6px rgba(255, 185, 0, 0.3), inset 0 0 4px rgba(255, 185, 0, 0.08); }
+  50%      { box-shadow: 0 0 14px rgba(255, 185, 0, 0.55), inset 0 0 6px rgba(255, 185, 0, 0.15); }
 }
 
 html.light-mode .card-action-badge.badge-mtg {
-  color: rgba(140, 90, 0, 0.9);
-  background: rgba(160, 120, 20, 0.1);
-  border-color: rgba(160, 120, 20, 0.4);
-  box-shadow: 0 0 6px rgba(160, 120, 20, 0.15), inset 0 0 4px rgba(160, 120, 20, 0.05);
+  color: rgba(255, 185, 0, 0.9);
+  background: rgba(255, 185, 0, 0.1);
+  border-color: rgba(255, 185, 0, 0.4);
+  box-shadow: 0 0 6px rgba(255, 185, 0, 0.15), inset 0 0 4px rgba(255, 185, 0, 0.05);
 }
 
 /* ── MTG modal card ────────────────────────────────────────── */
@@ -5719,7 +5719,7 @@ html.light-mode .mtg-filter-sep {
 
 /* Light mode */
 html.light-mode .mtg-card-view-card {
-  background: rgba(250, 250, 252, 0.95);
+  background: rgba(250, 250, 250, 0.95);
   border-color: rgba(0, 0, 0, 0.1);
 }
 html.light-mode .mtg-badge {
@@ -5867,12 +5867,12 @@ html.light-mode .mtg-badge {
 /* Clickable link toast */
 .dev-toast-link .dev-toast-msg {
   text-decoration: underline;
-  text-decoration-color: rgba(79, 195, 247, 0.5);
+  text-decoration-color: rgba(0, 164, 239, 0.5);
   text-underline-offset: 3px;
 }
 .dev-toast-link:hover {
-  border-color: rgba(79, 195, 247, 0.6);
-  background: rgba(79, 195, 247, 0.08);
+  border-color: rgba(0, 164, 239, 0.6);
+  background: rgba(0, 164, 239, 0.08);
 }
 
 /* Log level colors */
@@ -5892,19 +5892,19 @@ html.light-mode .mtg-badge {
   color: rgba(255, 185, 0, 0.9);
 }
 .dev-toast-warn .dev-toast-msg {
-  color: rgba(255, 210, 100, 0.85);
+  color: rgba(255, 185, 0, 0.85);
 }
 
 .dev-toast-error {
   border-color: rgba(242, 80, 34, 0.45);
-  background: rgba(30, 8, 5, 0.45);
+  background: rgba(20, 20, 20, 0.45);
   animation: toast-error-glow 2.4s ease-in-out infinite;
 }
 .dev-toast-error .dev-toast-prefix {
   color: rgba(242, 80, 34, 0.95);
 }
 .dev-toast-error .dev-toast-msg {
-  color: rgba(255, 140, 120, 0.9);
+  color: rgba(242, 80, 34, 0.9);
 }
 .dev-toast-source {
   display: block;
@@ -5912,14 +5912,14 @@ html.light-mode .mtg-badge {
   margin-left: 1.2em;
   font-family: "Cascadia Code", "Fira Code", "Consolas", monospace;
   font-size: 0.82em;
-  color: rgba(180, 180, 200, 0.7);
+  color: rgba(180, 180, 180, 0.7);
   background: rgba(255, 255, 255, 0.06);
   padding: 1px 6px;
   border-radius: 3px;
   white-space: nowrap;
 }
 .dev-toast-error .dev-toast-source {
-  color: rgba(255, 160, 140, 0.8);
+  color: rgba(242, 80, 34, 0.8);
   background: rgba(242, 80, 34, 0.1);
 }
 
@@ -6022,47 +6022,47 @@ html.light-mode .mtg-badge {
   white-space: nowrap;
 }
 .dev-toast-frame-fn {
-  color: rgba(180, 180, 200, 0.85);
+  color: rgba(180, 180, 180, 0.85);
   flex-shrink: 1;
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 .dev-toast-frame-at {
-  color: rgba(140, 140, 160, 0.5);
+  color: rgba(140, 140, 140, 0.5);
   flex-shrink: 0;
 }
 .dev-toast-frame-file {
-  color: rgba(130, 170, 255, 0.85);
+  color: rgba(0, 164, 239, 0.85);
   margin-left: auto;
   flex-shrink: 0;
   text-decoration: underline;
-  text-decoration-color: rgba(130, 170, 255, 0.3);
+  text-decoration-color: rgba(0, 164, 239, 0.3);
 }
 .dev-toast-error .dev-toast-stack {
-  background: rgba(40, 5, 0, 0.35);
+  background: rgba(30, 30, 30, 0.35);
   border-color: rgba(242, 80, 34, 0.12);
 }
 .dev-toast-error .dev-toast-frame-fn {
-  color: rgba(255, 160, 140, 0.85);
+  color: rgba(242, 80, 34, 0.85);
 }
 .dev-toast-error .dev-toast-frame-at {
-  color: rgba(255, 120, 100, 0.4);
+  color: rgba(242, 80, 34, 0.4);
 }
 .dev-toast-error .dev-toast-frame-file {
-  color: rgba(255, 180, 160, 0.85);
-  text-decoration-color: rgba(255, 160, 140, 0.3);
+  color: rgba(242, 80, 34, 0.85);
+  text-decoration-color: rgba(242, 80, 34, 0.3);
 }
 .dev-toast-warn .dev-toast-stack {
-  background: rgba(40, 30, 0, 0.3);
+  background: rgba(35, 35, 35, 0.3);
   border-color: rgba(255, 185, 0, 0.12);
 }
 .dev-toast-warn .dev-toast-frame-fn {
-  color: rgba(255, 210, 130, 0.85);
+  color: rgba(255, 185, 0, 0.85);
 }
 .dev-toast-warn .dev-toast-frame-file {
-  color: rgba(255, 220, 150, 0.85);
-  text-decoration-color: rgba(255, 200, 100, 0.3);
+  color: rgba(255, 185, 0, 0.85);
+  text-decoration-color: rgba(255, 185, 0, 0.3);
 }
 
 /* Light mode */
@@ -6074,71 +6074,71 @@ html.light-mode #dev-toast .dev-toast-line {
               0 0 40px rgba(0, 0, 0, 0.02);
 }
 html.light-mode .dev-toast-log .dev-toast-prefix {
-  color: rgba(90, 140, 0, 0.85);
+  color: rgba(127, 186, 0, 0.85);
 }
 html.light-mode .dev-toast-warn {
-  border-color: rgba(180, 130, 0, 0.2);
+  border-color: rgba(255, 185, 0, 0.2);
 }
 html.light-mode .dev-toast-warn .dev-toast-prefix {
-  color: rgba(180, 120, 0, 0.9);
+  color: rgba(255, 185, 0, 0.9);
 }
 html.light-mode .dev-toast-warn .dev-toast-msg {
-  color: rgba(120, 80, 0, 0.85);
+  color: rgba(255, 185, 0, 0.85);
 }
 html.light-mode .dev-toast-error {
-  background: rgba(255, 245, 243, 0.5);
-  border-color: rgba(200, 50, 20, 0.3);
-  box-shadow: 0 0 15px rgba(200, 50, 20, 0.06),
-              0 0 40px rgba(200, 50, 20, 0.03);
+  background: rgba(250, 250, 250, 0.5);
+  border-color: rgba(242, 80, 34, 0.3);
+  box-shadow: 0 0 15px rgba(242, 80, 34, 0.06),
+              0 0 40px rgba(242, 80, 34, 0.03);
 }
 html.light-mode .dev-toast-error .dev-toast-prefix {
-  color: rgba(200, 50, 20, 0.9);
+  color: rgba(242, 80, 34, 0.9);
 }
 html.light-mode .dev-toast-error .dev-toast-msg {
-  color: rgba(160, 40, 20, 0.85);
+  color: rgba(242, 80, 34, 0.85);
 }
 html.light-mode .dev-toast-details summary {
-  color: rgba(80, 80, 100, 0.7);
+  color: rgba(80, 80, 80, 0.7);
 }
 html.light-mode .dev-toast-countdown {
   stroke: rgba(0, 0, 0, 0.2);
 }
 html.light-mode .dev-toast-error .dev-toast-countdown {
-  stroke: rgba(200, 50, 20, 0.45);
+  stroke: rgba(242, 80, 34, 0.45);
 }
 html.light-mode .dev-toast-warn .dev-toast-countdown {
-  stroke: rgba(180, 130, 0, 0.45);
+  stroke: rgba(255, 185, 0, 0.45);
 }
 html.light-mode .dev-toast-stack {
   background: rgba(0, 0, 0, 0.05);
 }
 html.light-mode .dev-toast-frame-fn {
-  color: rgba(40, 40, 60, 0.85);
+  color: rgba(40, 40, 40, 0.85);
 }
 html.light-mode .dev-toast-frame-at {
-  color: rgba(100, 100, 120, 0.5);
+  color: rgba(100, 100, 100, 0.5);
 }
 html.light-mode .dev-toast-frame-file {
-  color: rgba(30, 100, 200, 0.85);
-  text-decoration-color: rgba(30, 100, 200, 0.3);
+  color: rgba(0, 120, 212, 0.85);
+  text-decoration-color: rgba(0, 120, 212, 0.3);
 }
 html.light-mode .dev-toast-error .dev-toast-stack {
-  background: rgba(200, 50, 20, 0.06);
+  background: rgba(242, 80, 34, 0.06);
 }
 html.light-mode .dev-toast-error .dev-toast-frame-fn {
-  color: rgba(140, 30, 15, 0.85);
+  color: rgba(242, 80, 34, 0.85);
 }
 html.light-mode .dev-toast-error .dev-toast-frame-file {
-  color: rgba(180, 40, 20, 0.85);
+  color: rgba(242, 80, 34, 0.85);
 }
 html.light-mode .dev-toast-warn .dev-toast-stack {
-  background: rgba(180, 130, 0, 0.06);
+  background: rgba(255, 185, 0, 0.06);
 }
 html.light-mode .dev-toast-warn .dev-toast-frame-fn {
-  color: rgba(100, 70, 0, 0.85);
+  color: rgba(255, 185, 0, 0.85);
 }
 html.light-mode .dev-toast-warn .dev-toast-frame-file {
-  color: rgba(120, 80, 0, 0.85);
+  color: rgba(255, 185, 0, 0.85);
 }
 
 /* Hide on mobile to avoid clutter */

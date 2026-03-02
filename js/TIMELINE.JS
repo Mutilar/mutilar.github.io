@@ -119,80 +119,9 @@
     repackSlivers();
   }
 
-  // ── Date parsing ───────────────────────────────────────────
-  const monthMap = {
-    jan:0,january:0,feb:1,february:1,mar:2,march:2,
-    apr:3,april:3,may:4,jun:5,june:5,jul:6,july:6,
-    aug:7,august:7,sep:8,september:8,oct:9,october:9,
-    nov:10,november:10,dec:11,december:11,
-    spring:2,summer:5,fall:8,winter:11
-  };
-
-  // Season spans: keyword → { start month, end month }
-  const seasonSpan = {
-    spring: { sm: 2, em: 4 },   // Mar – May
-    summer: { sm: 5, em: 7 },   // Jun – Aug
-    fall:   { sm: 8, em: 10 },  // Sep – Nov
-    winter: { sm: 11, em: 1 }   // Dec – Feb (crosses year boundary)
-  };
-
-  function parseSingleDate(str, fallbackYear) {
-    if (!str) return null;
-    const s = str.trim();
-    if (/^present$/i.test(s)) return { year: 2026, month: 1 };
-    let m;
-    if ((m = s.match(/^'(\d{2})$/)))            return { year: +m[1]+2000, month: 0 };
-    if ((m = s.match(/^(\d{4})$/)))              return { year: +m[1], month: 6 };
-    if ((m = s.match(/^(\w+)\s+(\d{4})$/))) {
-      const key = m[1].toLowerCase();
-      const mo = monthMap[key];
-      if (mo !== undefined) {
-        const result = { year: +m[2], month: mo };
-        if (seasonSpan[key]) result.season = key;
-        return result;
-      }
-    }
-    if ((m = s.match(/(\d{4})/)))                return { year: +m[1], month: 6 };
-    if ((m = s.match(/'(\d{2})/)))               return { year: +m[1]+2000, month: 0 };
-    return fallbackYear ? { year: fallbackYear, month: 6 } : null;
-  }
-
-  function parseDateRange(dateStr) {
-    if (!dateStr || !dateStr.trim()) return null;
-    const cleaned = dateStr.trim();
-    const parts = cleaned.split(/\s*[-–]\s*/);
-    const sd = parseSingleDate(parts[0]);
-    if (!sd) return null;
-    let ed = parts.length > 1 ? parseSingleDate(parts.slice(1).join("-"), sd.year) : null;
-    // If the end date is a season, resolve to the season's last month
-    if (ed && ed.season && seasonSpan[ed.season]) {
-      const span = seasonSpan[ed.season];
-      const endYear = span.em < span.sm ? ed.year + 1 : ed.year;
-      ed = { year: endYear, month: span.em };
-    }
-    // If no explicit end and the start is a season, expand to 3 months
-    if (!ed && sd.season && seasonSpan[sd.season]) {
-      const span = seasonSpan[sd.season];
-      // Handle year-crossing (winter: Dec–Feb)
-      const endYear = span.em < span.sm ? sd.year + 1 : sd.year;
-      ed = { year: endYear, month: span.em };
-    }
-    if (!ed) ed = { ...sd };
-    if (ed.year < sd.year || (ed.year === sd.year && ed.month < sd.month)) ed = { ...sd };
-    return { sy: sd.year, sm: sd.month, ey: ed.year, em: ed.month, display: cleaned };
-  }
-
-  /** Parse a DATE field that may contain comma-separated disjoint ranges.
-   *  e.g. "Summer 2015, Summer 2016" → two separate range objects. */
-  function parseDateRanges(dateStr) {
-    if (!dateStr || !dateStr.trim()) return [];
-    return dateStr.split(/\s*,\s*/)
-      .map(seg => parseDateRange(seg))
-      .filter(Boolean);
-  }
-
-  /** Convert {year,month} to an absolute month index (0 = Jan of year 0) */
-  function absMonth(y, m) { return y * 12 + m; }
+  // ── Date parsing (delegated to VIZ.JS) ─────────────────────
+  var parseDateRanges = VIZ_parseDateRanges;
+  var absMonth        = VIZ_absMonth;
 
   // ── Build ──────────────────────────────────────────────────
   function buildTimeline() {

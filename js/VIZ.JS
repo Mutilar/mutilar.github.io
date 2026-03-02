@@ -2,8 +2,17 @@
 //  VIZ.JS — Shared visualization utilities
 //
 //  Extracts common pan/zoom, filter-toggle, and theme-config
-//  logic used by MERMAID.JS, SKILLTREE.JS, and TIMELINE.JS.
+//  logic used by MERMAID.JS, SKILLTREE.JS, TIMELINE.JS, and MAP.JS.
 //  Each consumer calls the factory functions with its own options.
+//
+//  Shared date parsing:
+//    VIZ_MONTH_MAP, VIZ_SEASON_SPAN,
+//    VIZ_parseSingleAbs()       → absolute month number
+//    VIZ_parseSingleDate()      → { year, month, season? }
+//    VIZ_parseDateStart/End()   → absolute month (earliest/latest)
+//    VIZ_parseDateRange()       → { sy, sm, ey, em, display }
+//    VIZ_parseDateRanges()      → array of range objects
+//    VIZ_absMonth()             → year*12 + month
 // ═══════════════════════════════════════════════════════════════
 
 // ── Thematic config (single source of truth) ─────────────────
@@ -54,6 +63,138 @@ const VIZ_TIMELINE = {           // timeline whispers, name/title overrides
   nameOverrides: {},
   titleOverrides: {},
 };
+
+// ═══════════════════════════════════════════════════════════════
+//  SHARED DATE PARSING
+//  Consumed by SKILLTREE.JS and TIMELINE.JS.
+// ═══════════════════════════════════════════════════════════════
+
+const VIZ_MONTH_MAP = {
+  jan:0,january:0,feb:1,february:1,mar:2,march:2,
+  apr:3,april:3,may:4,jun:5,june:5,jul:6,july:6,
+  aug:7,august:7,sep:8,september:8,oct:9,october:9,
+  nov:10,november:10,dec:11,december:11,
+  spring:2,summer:5,fall:8,winter:11
+};
+
+const VIZ_SEASON_SPAN = {
+  spring: { sm: 2, em: 4 },   // Mar-May
+  summer: { sm: 5, em: 7 },   // Jun-Aug
+  fall:   { sm: 8, em: 10 },  // Sep-Nov
+  winter: { sm: 11, em: 1 }   // Dec-Feb (crosses year boundary)
+};
+
+/** Convert {year,month} to an absolute month index (0 = Jan of year 0). */
+function VIZ_absMonth(y, m) { return y * 12 + m; }
+
+/**
+ * Parse a single date token into an absolute month number.
+ * Used by SKILLTREE.JS for timeline-position sorting.
+ *   "Present" → 2026*12+1, "'22" → 2022*12, "2019" → 2019*12+6,
+ *   "March 2020" → 2020*12+2, etc.
+ * Returns null on failure.
+ */
+function VIZ_parseSingleAbs(str) {
+  if (!str) return null;
+  var s = str.trim();
+  if (!s) return null;
+  if (/^present$/i.test(s)) return 2026 * 12 + 1;
+  var m;
+  if ((m = s.match(/^'(\d{2})$/)))            return (+m[1]+2000)*12;
+  if ((m = s.match(/^(\d{4})$/)))              return +m[1]*12 + 6;
+  if ((m = s.match(/^(\w+)\s+(\d{4})$/))) {
+    var mo = VIZ_MONTH_MAP[m[1].toLowerCase()];
+    if (mo !== undefined) return +m[2]*12 + mo;
+  }
+  if ((m = s.match(/(\d{4})/)))                return +m[1]*12 + 6;
+  if ((m = s.match(/'(\d{2})/)))               return (+m[1]+2000)*12;
+  return null;
+}
+
+/**
+ * Parse a single date token into { year, month, season? }.
+ * Used by TIMELINE.JS for structured range building.
+ * @param {string} str         Date token, e.g. "Summer 2016"
+ * @param {number} fallbackYear  Year to assume if only a keyword is found
+ */
+function VIZ_parseSingleDate(str, fallbackYear) {
+  if (!str) return null;
+  var s = str.trim();
+  if (/^present$/i.test(s)) return { year: 2026, month: 1 };
+  var m;
+  if ((m = s.match(/^'(\d{2})$/)))            return { year: +m[1]+2000, month: 0 };
+  if ((m = s.match(/^(\d{4})$/)))              return { year: +m[1], month: 6 };
+  if ((m = s.match(/^(\w+)\s+(\d{4})$/))) {
+    var key = m[1].toLowerCase();
+    var mo = VIZ_MONTH_MAP[key];
+    if (mo !== undefined) {
+      var result = { year: +m[2], month: mo };
+      if (VIZ_SEASON_SPAN[key]) result.season = key;
+      return result;
+    }
+  }
+  if ((m = s.match(/(\d{4})/)))                return { year: +m[1], month: 6 };
+  if ((m = s.match(/'(\d{2})/)))               return { year: +m[1]+2000, month: 0 };
+  return fallbackYear ? { year: fallbackYear, month: 6 } : null;
+}
+
+/** Earliest absolute month across comma-separated date ranges. */
+function VIZ_parseDateStart(dateStr) {
+  if (!dateStr || !dateStr.trim()) return null;
+  var segments = dateStr.trim().split(/\s*,\s*/);
+  var earliest = Infinity;
+  segments.forEach(function (seg) {
+    var rangeParts = seg.split(/\s*[-\u2013]\s*/);
+    var start = VIZ_parseSingleAbs(rangeParts[0]);
+    if (start !== null && start < earliest) earliest = start;
+  });
+  return earliest === Infinity ? null : earliest;
+}
+
+/** Latest absolute month across comma-separated date ranges. */
+function VIZ_parseDateEnd(dateStr) {
+  if (!dateStr || !dateStr.trim()) return null;
+  var segments = dateStr.trim().split(/\s*,\s*/);
+  var latest = -Infinity;
+  segments.forEach(function (seg) {
+    var rangeParts = seg.split(/\s*[-\u2013]\s*/);
+    var end = VIZ_parseSingleAbs(rangeParts[rangeParts.length - 1]);
+    if (end !== null && end > latest) latest = end;
+  });
+  return latest === -Infinity ? null : latest;
+}
+
+/** Parse "X - Y" into { sy, sm, ey, em, display }. */
+function VIZ_parseDateRange(dateStr) {
+  if (!dateStr || !dateStr.trim()) return null;
+  var cleaned = dateStr.trim();
+  var parts = cleaned.split(/\s*[-\u2013]\s*/);
+  var sd = VIZ_parseSingleDate(parts[0]);
+  if (!sd) return null;
+  var ed = parts.length > 1 ? VIZ_parseSingleDate(parts.slice(1).join("-"), sd.year) : null;
+  if (ed && ed.season && VIZ_SEASON_SPAN[ed.season]) {
+    var span = VIZ_SEASON_SPAN[ed.season];
+    var endYear = span.em < span.sm ? ed.year + 1 : ed.year;
+    ed = { year: endYear, month: span.em };
+  }
+  if (!ed && sd.season && VIZ_SEASON_SPAN[sd.season]) {
+    var span2 = VIZ_SEASON_SPAN[sd.season];
+    var endYear2 = span2.em < span2.sm ? sd.year + 1 : sd.year;
+    ed = { year: endYear2, month: span2.em };
+  }
+  if (!ed) ed = { year: sd.year, month: sd.month };
+  if (ed.year < sd.year || (ed.year === sd.year && ed.month < sd.month))
+    ed = { year: sd.year, month: sd.month };
+  return { sy: sd.year, sm: sd.month, ey: ed.year, em: ed.month, display: cleaned };
+}
+
+/** Parse comma-separated disjoint ranges into array of range objects. */
+function VIZ_parseDateRanges(dateStr) {
+  if (!dateStr || !dateStr.trim()) return [];
+  return dateStr.split(/\s*,\s*/)
+    .map(function (seg) { return VIZ_parseDateRange(seg); })
+    .filter(Boolean);
+}
 
 // ═══════════════════════════════════════════════════════════════
 //  PAN & ZOOM — Shared factory for pointer/wheel/pinch interaction

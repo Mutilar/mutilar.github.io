@@ -146,6 +146,7 @@
   const TECH_R        = 28;   // tech node radius
   const PROJECT_R     = 18;   // project node radius
   const SIM_ITERS     = 400;  // force simulation iterations
+  const SIM_CHUNK     = 50;   // iterations per rAF frame (avoids jank)
   const SIM_ALPHA     = 0.3;  // initial simulation temperature
   const LINK_DISTANCE = 180;  // ideal spring length
   const REPULSION     = 3000; // charge repulsion strength
@@ -510,19 +511,30 @@
       return { source: source, target: target, el: path };
     }).filter(Boolean);
 
-    // ── Run force simulation ─────────────────────────────
-    _runSimulation();
+    // ── Run force simulation (chunked across frames) ──────
+    _runSimulation().then(function () {
+      // ── Position nodes at final positions ──────────────
+      _nodes.forEach(n => {
+        n.targetX = n.x;
+        n.targetY = n.y;
+        n.el.style.left = n.x + "px";
+        n.el.style.top  = n.y + "px";
+      });
 
-    // ── Position nodes at final positions ────────────────
-    _nodes.forEach(n => {
-      n.targetX = n.x;
-      n.targetY = n.y;
-      n.el.style.left = n.x + "px";
-      n.el.style.top  = n.y + "px";
+      // ── Draw edges ─────────────────────────────────────
+      _updateEdgePositions();
+
+      // ── Center camera ──────────────────────────────────
+      var vp = mapModal.querySelector(".viz-viewport");
+      if (vp) {
+        requestAnimationFrame(() => {
+          _fitCamera(false);
+        });
+      }
+
+      // ── Entrance animation ─────────────────────────────
+      _animateEntrance();
     });
-
-    // ── Draw edges ───────────────────────────────────────
-    _updateEdgePositions();
 
     // ── Wire up pan/zoom ─────────────────────────────────
     _initPanZoom();
@@ -540,17 +552,6 @@
       onStatic:  function () { /* keep positions as-is */ },
     });
 
-    // ── Center camera ────────────────────────────────────
-    var vp = mapModal.querySelector(".viz-viewport");
-    if (vp) {
-      requestAnimationFrame(() => {
-        _fitCamera(false);
-      });
-    }
-
-    // ── Entrance animation ───────────────────────────────
-    _animateEntrance();
-
     // ── Tour engine ──────────────────────────────────────
     _initTour();
 
@@ -558,92 +559,107 @@
   }
 
   /* ═════════════════════════════════════════════════════════
-     FORCE SIMULATION — Simple velocity Verlet
+     FORCE SIMULATION — Chunked velocity Verlet
+     Spreads O(n²) iterations across rAF frames to avoid jank.
+     Returns a Promise that resolves when the sim is complete.
      ═════════════════════════════════════════════════════════ */
   function _runSimulation() {
-    var alpha = SIM_ALPHA;
-    var decay = 1 - Math.pow(0.001, 1 / SIM_ITERS);
+    return new Promise(function (resolve) {
+      var alpha = SIM_ALPHA;
+      var decay = 1 - Math.pow(0.001, 1 / SIM_ITERS);
+      var iter  = 0;
 
-    for (var iter = 0; iter < SIM_ITERS; iter++) {
-      // ── Repulsion (all pairs) ──────────────────────────
-      for (var i = 0; i < _nodes.length; i++) {
-        for (var j = i + 1; j < _nodes.length; j++) {
-          var a = _nodes[i], b = _nodes[j];
-          var dx = b.x - a.x, dy = b.y - a.y;
-          var d2 = dx * dx + dy * dy || 1;
-          var d = Math.sqrt(d2);
-          var force = (REPULSION * alpha) / d2;
-          var fx = (dx / d) * force, fy = (dy / d) * force;
-          a.vx -= fx; a.vy -= fy;
-          b.vx += fx; b.vy += fy;
+      function _step() {
+        var end = Math.min(iter + SIM_CHUNK, SIM_ITERS);
+
+        for (; iter < end; iter++) {
+          // ── Repulsion (all pairs) ──────────────────────
+          for (var i = 0; i < _nodes.length; i++) {
+            for (var j = i + 1; j < _nodes.length; j++) {
+              var a = _nodes[i], b = _nodes[j];
+              var dx = b.x - a.x, dy = b.y - a.y;
+              var d2 = dx * dx + dy * dy || 1;
+              var d = Math.sqrt(d2);
+              var force = (REPULSION * alpha) / d2;
+              var fx = (dx / d) * force, fy = (dy / d) * force;
+              a.vx -= fx; a.vy -= fy;
+              b.vx += fx; b.vy += fy;
+            }
+          }
+
+          // ── Link spring force ──────────────────────────
+          _links.forEach(function (link) {
+            var s = link.source, t = link.target;
+            var dx = t.x - s.x, dy = t.y - s.y;
+            var d = Math.sqrt(dx * dx + dy * dy) || 1;
+            var force = (d - LINK_DISTANCE) * 0.05 * alpha;
+            var fx = (dx / d) * force, fy = (dy / d) * force;
+            s.vx += fx; s.vy += fy;
+            t.vx -= fx; t.vy -= fy;
+          });
+
+          // ── Category clustering ────────────────────────
+          var catCentroids = {};
+          _techNodes.forEach(function (n) {
+            if (n._hidden) return;
+            var c = n.cat;
+            if (!catCentroids[c]) catCentroids[c] = { sx: 0, sy: 0, count: 0 };
+            catCentroids[c].sx += n.x;
+            catCentroids[c].sy += n.y;
+            catCentroids[c].count++;
+          });
+          var CLUSTER_STRENGTH = 0.15;
+          _techNodes.forEach(function (n) {
+            if (n._hidden) return;
+            var cc = catCentroids[n.cat];
+            if (!cc || cc.count < 2) return;
+            var cx = cc.sx / cc.count;
+            var cy = cc.sy / cc.count;
+            n.vx += (cx - n.x) * CLUSTER_STRENGTH * alpha;
+            n.vy += (cy - n.y) * CLUSTER_STRENGTH * alpha;
+          });
+
+          // ── Radial bias ────────────────────────────────
+          _nodes.forEach(function (n) {
+            var d = Math.sqrt(n.x * n.x + n.y * n.y) || 1;
+            if (n.type === "tech") {
+              n.vx -= n.x * CENTER_FORCE * 3 * alpha;
+              n.vy -= n.y * CENTER_FORCE * 3 * alpha;
+            } else {
+              var targetR = LINK_DISTANCE * 1.6;
+              var radialForce = (d - targetR) * 0.003 * alpha;
+              n.vx -= (n.x / d) * radialForce;
+              n.vy -= (n.y / d) * radialForce;
+              n.vx -= n.x * CENTER_FORCE * 0.4 * alpha;
+              n.vy -= n.y * CENTER_FORCE * 0.4 * alpha;
+            }
+          });
+
+          // ── Integrate ──────────────────────────────────
+          _nodes.forEach(function (n) {
+            n.vx *= 0.6;
+            n.vy *= 0.6;
+            n.x += n.vx;
+            n.y += n.vy;
+          });
+
+          alpha *= (1 - decay);
+        }
+
+        if (iter < SIM_ITERS) {
+          requestAnimationFrame(_step);
+        } else {
+          _resolveCollisions();
+          resolve();
         }
       }
 
-      // ── Link spring force ──────────────────────────────
-      _links.forEach(link => {
-        var s = link.source, t = link.target;
-        var dx = t.x - s.x, dy = t.y - s.y;
-        var d = Math.sqrt(dx * dx + dy * dy) || 1;
-        var force = (d - LINK_DISTANCE) * 0.05 * alpha;
-        var fx = (dx / d) * force, fy = (dy / d) * force;
-        s.vx += fx; s.vy += fy;
-        t.vx -= fx; t.vy -= fy;
-      });
+      requestAnimationFrame(_step);
+    });
+  }
 
-      // ── Category clustering: pull same-category techs together ──
-      var catCentroids = {};  // cat → { sx, sy, count }
-      _techNodes.forEach(n => {
-        if (n._hidden) return;
-        var c = n.cat;
-        if (!catCentroids[c]) catCentroids[c] = { sx: 0, sy: 0, count: 0 };
-        catCentroids[c].sx += n.x;
-        catCentroids[c].sy += n.y;
-        catCentroids[c].count++;
-      });
-      var CLUSTER_STRENGTH = 0.15;
-      _techNodes.forEach(n => {
-        if (n._hidden) return;
-        var cc = catCentroids[n.cat];
-        if (!cc || cc.count < 2) return;
-        var cx = cc.sx / cc.count;
-        var cy = cc.sy / cc.count;
-        n.vx += (cx - n.x) * CLUSTER_STRENGTH * alpha;
-        n.vy += (cy - n.y) * CLUSTER_STRENGTH * alpha;
-      });
-
-      // ── Radial bias: techs pulled to center, projects pushed out ──
-      _nodes.forEach(n => {
-        var d = Math.sqrt(n.x * n.x + n.y * n.y) || 1;
-        if (n.type === "tech") {
-          // Strong center pull for tech nodes
-          n.vx -= n.x * CENTER_FORCE * 3 * alpha;
-          n.vy -= n.y * CENTER_FORCE * 3 * alpha;
-        } else {
-          // Mild center pull + outward nudge to keep projects on periphery
-          var targetR = LINK_DISTANCE * 1.6;
-          var radialForce = (d - targetR) * 0.003 * alpha;
-          n.vx -= (n.x / d) * radialForce;
-          n.vy -= (n.y / d) * radialForce;
-          // Light center gravity so they don't fly away
-          n.vx -= n.x * CENTER_FORCE * 0.4 * alpha;
-          n.vy -= n.y * CENTER_FORCE * 0.4 * alpha;
-        }
-      });
-
-      // ── Integrate ──────────────────────────────────────
-      _nodes.forEach(n => {
-        n.vx *= 0.6;  // velocity damping
-        n.vy *= 0.6;
-        n.x += n.vx;
-        n.y += n.vy;
-      });
-
-      alpha *= (1 - decay);
-    }
-
-    // ── Hard collision resolution (skilltree approach) ──
-    // After forces settle, iteratively push overlapping circles apart
-    // using their actual radii — guarantees no visual overlap.
+  /** Hard collision resolution (post-sim). */
+  function _resolveCollisions() {
     var COLLISION_PADDING = 4;
     var COLLISION_ITERS   = 80;
 
@@ -700,21 +716,21 @@
       n.vx = 0; n.vy = 0;
     });
 
-    _runSimulation();
+    _runSimulation().then(function () {
+      // Animate nodes to new positions
+      _nodes.forEach(n => {
+        if (n._hidden) return;
+        n.targetX = n.x;
+        n.targetY = n.y;
+        n.el.style.transition = "left 0.6s ease, top 0.6s ease";
+        n.el.style.left = n.x + "px";
+        n.el.style.top  = n.y + "px";
+        setTimeout(() => { n.el.style.transition = ""; }, 650);
+      });
 
-    // Animate nodes to new positions
-    _nodes.forEach(n => {
-      if (n._hidden) return;
-      n.targetX = n.x;
-      n.targetY = n.y;
-      n.el.style.transition = "left 0.6s ease, top 0.6s ease";
-      n.el.style.left = n.x + "px";
-      n.el.style.top  = n.y + "px";
-      setTimeout(() => { n.el.style.transition = ""; }, 650);
+      _updateEdgePositions();
+      setTimeout(() => _fitCamera(true), 50);
     });
-
-    _updateEdgePositions();
-    setTimeout(() => _fitCamera(true), 50);
   }
 
   /* ─── Edge position update ──────────────────────────────── */

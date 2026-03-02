@@ -6,9 +6,9 @@ Hello, **Opus 4.6**. I'm **Brian** (1998).
 
 # About Me
 
-- **Senior SWE** at Microsoft Applied Sciences (E+D), under Stevie Bathiche. 
-- Previously, **Azure ML**. 
-- **UC Merced CSE**, Magna Cum Laude. 
+- **Senior SWE** @ MSFT Applied Sciences (Stevie Bathiche). 
+- Previously @ **Azure ML**. 
+- **UC Merced CSE** (Magna Cum Laude). 
 - **Passionate** about A.I., U.X., data viz, gamification, graph theory.
 
 ## Rhetoric

@@ -633,55 +633,9 @@ function createSkillTree(cfg) {
 
   function getTheme(item) { return themeMap[item.ID] || "software"; }
 
-  /* ── Date parsing (simplified from TIMELINE.JS) ───────────── */
-  const monthLookup = {
-    jan:0,january:0,feb:1,february:1,mar:2,march:2,
-    apr:3,april:3,may:4,jun:5,june:5,jul:6,july:6,
-    aug:7,august:7,sep:8,september:8,oct:9,october:9,
-    nov:10,november:10,dec:11,december:11,
-    spring:2,summer:5,fall:8,winter:11
-  };
-
-  function _parseSingle(str) {
-    if (!str) return null;
-    const s = str.trim();
-    if (!s) return null;
-    if (/^present$/i.test(s)) return 2026 * 12 + 1;
-    let m;
-    if ((m = s.match(/^'(\d{2})$/)))            return (+m[1]+2000)*12;
-    if ((m = s.match(/^(\d{4})$/)))              return +m[1]*12 + 6;
-    if ((m = s.match(/^(\w+)\s+(\d{4})$/))) {
-      const mo = monthLookup[m[1].toLowerCase()];
-      if (mo !== undefined) return +m[2]*12 + mo;
-    }
-    if ((m = s.match(/(\d{4})/)))                return +m[1]*12 + 6;
-    if ((m = s.match(/'(\d{2})/)))               return (+m[1]+2000)*12;
-    return null;
-  }
-
-  function parseDateStart(dateStr) {
-    if (!dateStr || !dateStr.trim()) return null;
-    const segments = dateStr.trim().split(/\s*,\s*/);
-    let earliest = Infinity;
-    segments.forEach(seg => {
-      const rangeParts = seg.split(/\s*[-–]\s*/);
-      const start = _parseSingle(rangeParts[0]);
-      if (start !== null && start < earliest) earliest = start;
-    });
-    return earliest === Infinity ? null : earliest;
-  }
-
-  function parseDateEnd(dateStr) {
-    if (!dateStr || !dateStr.trim()) return null;
-    const segments = dateStr.trim().split(/\s*,\s*/);
-    let latest = -Infinity;
-    segments.forEach(seg => {
-      const rangeParts = seg.split(/\s*[-–]\s*/);
-      const end = _parseSingle(rangeParts[rangeParts.length - 1]);
-      if (end !== null && end > latest) latest = end;
-    });
-    return latest === -Infinity ? null : latest;
-  }
+  /* ── Date parsing (delegated to VIZ.JS) ───────────────────── */
+  var parseDateStart = VIZ_parseDateStart;
+  var parseDateEnd   = VIZ_parseDateEnd;
 
   /* ── State ────────────────────────────────────────────────── */
   let graphBuilt = false;
@@ -1786,10 +1740,10 @@ function createSkillTree(cfg) {
 
   /* ── Mana-color config (emoji-keyed) ─────────────────── */
   const MTG_COLORS = {
-    "⚪": { rgb: "240,220,160", icon: "☀️" },
-    "⚫": { rgb: "130,110,170", icon: "💀" },
-    "🔴": { rgb: "210,80,60",   icon: "🔥" },
-    "💎": { rgb: "160,160,170", icon: "◆"  },
+    "⚪": { rgb: "255,185,0",   icon: "☀️" },
+    "⚫": { rgb: "130,130,130", icon: "💀" },
+    "🔴": { rgb: "242,80,34",   icon: "🔥" },
+    "💎": { rgb: "160,160,160", icon: "◆"  },
   };
   const ALL_COLORS = Object.keys(MTG_COLORS);
 
@@ -1799,8 +1753,8 @@ function createSkillTree(cfg) {
     "⚡": "⚡", "🔮": "🔮", "⛈️":  "⛈️",
   };
   const TYPE_COLORS = {
-    "🧛": "100,180,100", "✨": "160,160,180", "🌩️": "180,130,220",
-    "⚡": "80,160,220",  "🔮": "200,100,100", "⛈️":  "140,120,90",
+    "🧛": "127,186,0",   "✨": "160,160,160", "🌩️": "0,164,239",
+    "⚡": "0,120,212",   "🔮": "242,80,34",   "⛈️":  "255,185,0",
   };
   const ALL_TYPES = Object.keys(TYPE_COLORS);
 
@@ -1812,15 +1766,15 @@ function createSkillTree(cfg) {
       angle: angle,
       x: Math.cos(angle),
       y: Math.sin(angle),
-      color: TYPE_COLORS[type] || "160,160,170",
+      color: TYPE_COLORS[type] || "160,160,160",
       icon:  TYPE_ICONS[type]  || "?",
     };
   });
 
   /* ── Deck config (commander hubs at center) ─────────────── */
   const DECK_CFG = {
-    "the-nobles": { label: "The Nobles", icon: "👑", angle: -Math.PI / 2, color: "240,200,80"  },
-    "the-demons": { label: "The Demons", icon: "😈", angle:  Math.PI / 2, color: "180,60,60"   },
+    "the-nobles": { label: "The Nobles", icon: "👑", angle: -Math.PI / 2, color: "255,185,0"   },
+    "the-demons": { label: "The Demons", icon: "😈", angle:  Math.PI / 2, color: "242,80,34"   },
   };
   const ALL_DECKS = Object.keys(DECK_CFG);
 
@@ -1922,7 +1876,7 @@ function createSkillTree(cfg) {
 
     // Type badge (color-coded to match skill tree)
     var t   = card.types || "🧛";
-    var rgb = TYPE_COLORS[t] || "160,160,170";
+    var rgb = TYPE_COLORS[t] || "160,160,160";
     badges += '<span class="mtg-badge" style="--bc:' + rgb + '">' + t + '</span>';
 
     // Mana color badges (color-coded to match skill tree)
@@ -1936,22 +1890,22 @@ function createSkillTree(cfg) {
     // Salt tier badge
     var salt = card.salt || 0;
     var saltIcon, saltTitle, saltRGB;
-    if (salt < 0.15)      { saltIcon = "🧊"; saltTitle = "Zero salt";  saltRGB = "120,180,220"; }
-    else if (salt < 0.40) { saltIcon = "🌿"; saltTitle = "Mild";       saltRGB = "100,180,100"; }
-    else if (salt < 0.80) { saltIcon = "🌶️"; saltTitle = "Spicy";      saltRGB = "220,140,40";  }
-    else if (salt < 1.20) { saltIcon = "🔥"; saltTitle = "Hot";        saltRGB = "220,80,40";   }
-    else                  { saltIcon = "☠️"; saltTitle = "Toxic";      saltRGB = "180,50,180";  }
+    if (salt < 0.15)      { saltIcon = "🧊"; saltTitle = "Zero salt";  saltRGB = "0,164,239";   }
+    else if (salt < 0.40) { saltIcon = "🌿"; saltTitle = "Mild";       saltRGB = "127,186,0";   }
+    else if (salt < 0.80) { saltIcon = "🌶️"; saltTitle = "Spicy";      saltRGB = "255,185,0";   }
+    else if (salt < 1.20) { saltIcon = "🔥"; saltTitle = "Hot";        saltRGB = "242,80,34";   }
+    else                  { saltIcon = "☠️"; saltTitle = "Toxic";      saltRGB = "242,80,34";   }
     badges += '<span class="mtg-badge" style="--bc:' + saltRGB + '" title="Salt ' + salt.toFixed(2) + ' — ' + saltTitle + '">' + saltIcon + '</span>';
 
     // Price tier badge
     var price = card.price || 0;
     var priceIcon, priceTitle, priceRGB;
-    if (price < 1)        { priceIcon = "🪙"; priceTitle = "Penny";   priceRGB = "140,120,80";  }
-    else if (price < 5)   { priceIcon = "💵"; priceTitle = "Budget";  priceRGB = "80,160,80";   }
-    else if (price < 15)  { priceIcon = "💰"; priceTitle = "Mid";     priceRGB = "200,170,50";  }
-    else if (price < 50)  { priceIcon = "💎"; priceTitle = "Premium"; priceRGB = "80,160,220";  }
-    else if (price < 100) { priceIcon = "👑"; priceTitle = "Baller";  priceRGB = "220,180,50";  }
-    else                  { priceIcon = "🏦"; priceTitle = "Vault";   priceRGB = "180,140,220"; }
+    if (price < 1)        { priceIcon = "🪙"; priceTitle = "Penny";   priceRGB = "160,160,160"; }
+    else if (price < 5)   { priceIcon = "💵"; priceTitle = "Budget";  priceRGB = "127,186,0";   }
+    else if (price < 15)  { priceIcon = "💰"; priceTitle = "Mid";     priceRGB = "255,185,0";   }
+    else if (price < 50)  { priceIcon = "💎"; priceTitle = "Premium"; priceRGB = "0,164,239";   }
+    else if (price < 100) { priceIcon = "👑"; priceTitle = "Baller";  priceRGB = "255,185,0";   }
+    else                  { priceIcon = "🏦"; priceTitle = "Vault";   priceRGB = "0,120,212";   }
     badges += '<span class="mtg-badge" style="--bc:' + priceRGB + '" title="$' + price.toFixed(2) + ' — ' + priceTitle + '">' + priceIcon + '</span>';
 
     cardBadges.innerHTML = badges;

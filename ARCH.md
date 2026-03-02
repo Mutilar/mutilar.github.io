@@ -66,8 +66,6 @@ graph TD
                 CONSOLEJS["🔎 CONSOLE.js"]
                 SCROLLJS["📜 SCROLL.js"]
                 DATAJS["📊 DATA.js"]
-                MODALSJS["🪟 MODAL.js"]
-                VIZJS["📈 VIZ.js"]
                 RADIOJS["🎵 RADIO.js"]
             end
             subgraph VIZ["🗺️ VIZ"]
@@ -76,11 +74,13 @@ graph TD
                 SKILLTREEJS["🧭 SKILLTREE.js"]
                 MERMAIDVIEWJS["🧜 MERMAID.js"]
                 TIMELINEJS["🕰️ TIMELINE.js"]
+                MAPJS["🌌 MAP.js"]
             end
             subgraph UI["🌌 U.I."]
                 direction LR
                 THEMEJS["🌓 THEME.js"]
                 PARALLAXJS["🫧 PARALLAX.js"]
+                MODALSJS["🪟 MODAL.js"]
                 pdfJS["📕 PDF.js"]
             end
         end
@@ -129,8 +129,10 @@ graph TD
     VIZJS -.->|"pan/zoom"| MERMAIDVIEWJS
     VIZJS -.->|"pan/zoom"| SKILLTREEJS
     VIZJS -.->|"pan/zoom"| TIMELINEJS
+    VIZJS -.->|"pan/zoom"| MAPJS
     VIZJS -.->|"VIZ_THEMES"| SKILLTREEJS
     VIZJS -.->|"VIZ_THEMES"| TIMELINEJS
+    VIZJS -.->|"VIZ_THEMES"| MAPJS
 
     %% ── 6. SCRIPTS → DATA & ASSETS ─────────────────────────
 
@@ -153,6 +155,7 @@ graph TD
 
     MERMAIDVIEWJS -.->|"diagram()"| MAP
     SKILLTREEJS -.->|"graph()"| MAP
+    MAPJS -.->|"constellation()"| MAP
     TIMELINEJS -.->|"timeline()"| MAP
     pdfJS -.->|"getDocument()"| VIEW
     MODALSJS -.->|"open()"| EMB
@@ -167,7 +170,7 @@ graph TD
     class CONSOLEJS,SCROLLJS,DATAJS engine
     class VIZJS,MODALSJS,RADIOJS engine
     class pdfJS,PARALLAXJS,THEMEJS aes
-    class MERMAIDVIEWJS,SKILLTREEJS,TIMELINEJS aes
+    class MERMAIDVIEWJS,SKILLTREEJS,TIMELINEJS,MAPJS aes
     class PORTFOLIOJSON,CARDSCSV data
     class ARCHMD data
     class PNGS data
