@@ -292,6 +292,7 @@
 
     // ── Whisper HUD overlay ──────────────────────────────────
     const modalCard = timelineModal.querySelector(".timeline-modal-card");
+    if (typeof boostTouchScroll === "function") boostTouchScroll(modalCard);
     let whisperHUD = document.getElementById("tl-whisper-hud");
     if (!whisperHUD) {
       whisperHUD = document.createElement("div");

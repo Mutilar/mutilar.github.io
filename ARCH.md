@@ -13,8 +13,10 @@ graph TD
             L3["🎨 STYLE"]:::style
             L4["📦 DATA"]:::data
             L5["🔩 ENGINE"]:::engine
-            L6["🌌 U.I."]:::aes
-            L7["🧠 U.X."]:::ux
+            L6["🗺️ VIZ"]:::aes
+            L7["🌌 U.I."]:::aes
+            L8["🧠 U.X."]:::ux
+            L9["👆 H.C.I."]:::hci
         end
     end
 
@@ -41,7 +43,6 @@ graph TD
             LICENSETXT["📜 LICENSE.txt"]
             INDEXHTML["📄 INDEX.html"]
             STYLESCSS["🎨 STYLE.css"]
-            FRAGMENTS["🧩 html/ 16 *.html"]
         end
         subgraph ASSETS["📂 MEDIA"]
             direction TB
@@ -49,14 +50,15 @@ graph TD
                 direction LR
                 PORTFOLIOJSON["📋 PORTFOLIO.json"]
                 CARDSCSV["🃏 CARDS.csv"]
-                RESUME["📄 3 *.PDF"]
                 ARCHMD["🧜‍♀️ *.MD"]
+                RESUME["📄 3 *.PDF"]
             end
             subgraph MEDIAFILES["🎞️ MEDIA"]
                 direction LR
                 PNGS["📸 350 *.png, *.gif"]
                 GIFS["🎞️ 6 *.gif"]
                 GAMEBUILDS["🎮 6 *.unityweb"]
+                FRAGMENTS["🧩 16 *.html"]
                 AUDIOFILES["🎵 5 *.mp3"]
             end
         end
@@ -67,17 +69,17 @@ graph TD
                 CONSOLEJS["🔎 CONSOLE.js"]
                 SCROLLJS["📜 SCROLL.js"]
                 DATAJS["📊 DATA.js"]
+                VIZJS["📈 VIZ.js"]
                 RADIOJS["🎵 RADIO.js"]
             end
-            subgraph VIZ["🗺️ VIZ"]
+            subgraph ENGINEVIZ["🗺️ VIZ"]
                 direction LR
-                VIZJS["📈 VIZ.js"]
                 SKILLTREEJS["🧭 SKILLTREE.js"]
                 MERMAIDVIEWJS["🧜 MERMAID.js"]
                 TIMELINEJS["🕰️ TIMELINE.js"]
                 MAPJS["🌌 MAP.js"]
             end
-            subgraph UI["🌌 U.I."]
+            subgraph ENGINEUI["🌌 U.I."]
                 direction LR
                 THEMEJS["🌓 THEME.js"]
                 PARALLAXJS["🫧 PARALLAX.js"]
@@ -88,15 +90,21 @@ graph TD
     end
     
 
-    subgraph UX["🧠 U.X."]
-        direction LR
-        HINT["👆 HINT"]
-        TILES["💎 TILES"]
-        VIEW["🧭 VIEW"]
-        EMB["🕹️ EMB"]
-        LINK["🔗 LINK"]
-        MAP["📋 MAP"]
-        RADIO["🎵 RADIO"]
+    subgraph UI["🧠 U.I."]
+        subgraph UX["🧠 U.X."]
+            direction LR
+            TILES["💎 TILES"]
+            VIEW["🧭 VIEW"]
+            LINK["🔗 LINK"]
+            RADIO["🎵 RADIO"]
+        end
+
+        subgraph HCI["👆 H.C.I."]
+            direction LR
+            HINT["👆 HINT"]
+            MAP["📋 MAP"]
+            EMB["🕹️ EMB"]
+        end
     end
     
 
@@ -148,10 +156,12 @@ graph TD
     %% ── 7. SCRIPTS → VIEW (render pipeline) ────────────────
 
     PARALLAXJS -->|"render()"| UX
+    PARALLAXJS -->|"render()"| HCI
     SCROLLJS -->|"hint()"| HINT
     CONSOLEJS -->|"warn()"| HINT
     DATAJS -->|"card()"| TILES
     THEMEJS -->|"toggle()"| UX
+    THEMEJS -->|"toggle()"| HCI
     RADIOJS -.->|"analyser()"| RADIO
 
     %% ── 8. SCRIPTS → MODALS ────────────────────────────────
@@ -167,7 +177,8 @@ graph TD
 
     %% ── NODE CLASSES ────────────────────────────────────────
 
-    class GITHUB,INDEXHTML,READMEMD,LICENSETXT,FRAGMENTS hosting
+    class GITHUB,INDEXHTML,READMEMD,LICENSETXT hosting
+    class FRAGMENTS data
     class PDFJS,CNAME,CNAMEFILE config
     class STYLESCSS,FONTAWESOME style
     class CONSOLEJS,SCROLLJS,DATAJS engine
@@ -178,8 +189,8 @@ graph TD
     class ARCHMD data
     class PNGS data
     class RESUME,GIFS,GAMEBUILDS,AUDIOFILES data
-    class TILES,RADIO,VIEW ux
-    class MAP,HINT,EMB,LINK ux
+    class TILES,RADIO,VIEW,LINK ux
+    class MAP,HINT,EMB hci
 
     %% ── CLASS DEFINITIONS ───────────────────────────────────
 
@@ -190,6 +201,7 @@ graph TD
     classDef engine fill:#c8e6a0,stroke:#7fba00,color:#2d4a00,stroke-width:1.5px
     classDef aes fill:#a0e6d6,stroke:#00a884,color:#003d2e,stroke-width:1.5px
     classDef ux fill:#fff3c4,stroke:#ffb900,color:#4a3200,stroke-width:2px
+    classDef hci fill:#f5d0e0,stroke:#e3008c,color:#4a0028,stroke-width:2px
 
     %% ── SUBGRAPH STYLES ────────────────────────────────────
 
@@ -205,9 +217,12 @@ graph TD
 
     style SCRIPTS fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
     style ENGINE fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
-    style UI fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
+    style ENGINEVIZ fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
+    style ENGINEUI fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
 
+    style UI fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
     style UX fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
+    style HCI fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
 
     style LEGEND fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333
     style LEGENDROW fill:#f5f5dc,stroke:#999,stroke-width:1px,color:#333

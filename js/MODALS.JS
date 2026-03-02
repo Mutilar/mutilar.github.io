@@ -300,8 +300,13 @@ function closeQuiltModal() { _quiltModal.close(); }
 
 // ── Overscroll bounce ────────────────────────────────────────
 var _bioTourScrolling = false;   // set by bio tour to suppress bounce
+var _bioLastTouch = 0;           // timestamp of last touchstart
+(function () {
+  document.addEventListener("touchstart", function () { _bioLastTouch = Date.now(); }, { passive: true });
+})();
 (function () {
   var card = quiltModal.querySelector(".modal-card");
+  if (typeof boostTouchScroll === "function") boostTouchScroll(card);
   var bouncing = false;
   card.addEventListener("scroll", function () {
     if (bouncing || _bioTourScrolling) return;
@@ -391,6 +396,18 @@ var _bioTourScrolling = false;   // set by bio tour to suppress bounce
     tiles.forEach(function (tile) {
       tile.addEventListener("mouseenter", function () { activate(tile); });
       tile.addEventListener("focus", function () { activate(tile); });
+
+      // Touch: tapping a stat tile only previews (image + quote crossfade).
+      // Navigation happens exclusively via the image viewer above.
+      // isTrusted check: programmatic .click() from the viewer passes through.
+      if (tile.dataset.action) {
+        tile.addEventListener("click", function (e) {
+          if (!e.isTrusted) return;                      // programmatic click from viewer; let it navigate
+          if (Date.now() - _bioLastTouch > 800) return;  // mouse click; let delegation handle it
+          e.stopPropagation();                            // swallow so delegation doesn't navigate
+          activate(tile);
+        }, true);                                         // capture phase, before delegation
+      }
     });
 
     // Make image viewer clickable — triggers the active tile's action

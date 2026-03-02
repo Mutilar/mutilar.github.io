@@ -975,3 +975,48 @@ function initVizKeyboardNav(cfg) {
     if (nearest >= 0) _focusNode(vis, nearest);
   });
 }
+
+// ═══════════════════════════════════════════════════════════════
+//  BOOST TOUCH SCROLL — 2× vertical scroll speed on mobile
+//
+//  Native touch scrolling on narrow viewports feels sluggish
+//  for tall modal content. This helper doubles the scroll delta
+//  by tracking touchmove Y and applying the extra distance.
+//
+//  Usage:  boostTouchScroll(scrollContainer, multiplier?)
+//          Returns a teardown function.
+//
+//  Only activates when viewport width ≤ 768px (mobile).
+// ═══════════════════════════════════════════════════════════════
+function boostTouchScroll(el, multiplier) {
+  var MULT = (multiplier || 2) - 1;  // extra portion (1× extra = 2× total)
+  var MOBILE_MAX = 768;
+  var lastY = null;
+
+  function onTouchStart(e) {
+    if (window.innerWidth > MOBILE_MAX) { lastY = null; return; }
+    if (e.touches.length === 1) lastY = e.touches[0].clientY;
+  }
+
+  function onTouchMove(e) {
+    if (lastY === null || e.touches.length !== 1) return;
+    var curY = e.touches[0].clientY;
+    var dy = lastY - curY;           // positive = scrolling down
+    lastY = curY;
+    el.scrollTop += dy * MULT;       // add extra delta
+  }
+
+  function onTouchEnd() { lastY = null; }
+
+  el.addEventListener("touchstart", onTouchStart, { passive: true });
+  el.addEventListener("touchmove", onTouchMove, { passive: true });
+  el.addEventListener("touchend", onTouchEnd, { passive: true });
+  el.addEventListener("touchcancel", onTouchEnd, { passive: true });
+
+  return function teardown() {
+    el.removeEventListener("touchstart", onTouchStart);
+    el.removeEventListener("touchmove", onTouchMove);
+    el.removeEventListener("touchend", onTouchEnd);
+    el.removeEventListener("touchcancel", onTouchEnd);
+  };
+}
