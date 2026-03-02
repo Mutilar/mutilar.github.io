@@ -32,14 +32,17 @@
     "repo": "https://github.com/Mutilar/mutilar.github.io"
   },
 
-  "accents": {
-    "blue":    "0, 164, 239",
-    "yellow":  "255, 185, 0",
-    "red":     "242, 80, 34",
-    "green":   "127, 186, 0"
-  },
+  "accents": [
+    "0, 164, 239",
+    "255, 185, 0",
+    "242, 80, 34",
+    "127, 186, 0"
+  ],
 
   "hero": {
+    "scrollHintLabel": "About Me",
+    "scrollHintTarget": "#about",
+    "scrollHintArrow": "👋🏻",
     "cycle": [
       ["🌎", "0,164,239"],
       ["🌍", "0,164,239"],
@@ -89,5 +92,57 @@
   "connect": {
     "heading": "👀 Interested?",
     "subtitle": "Let's build something."
-  }
+  },
+
+  "vizTiles": [
+    {
+      "emoji": "🧭",
+      "label": "Skill Tree",
+      "ariaLabel": "Open Graph of Knowledge",
+      "action": "scroll-open",
+      "open": "knowledgeModal",
+      "img": "png/graph.png",
+      "imgAlt": "Graph of Knowledge",
+      "togglers": [
+        { "label": "PORT", "dot": "🔵", "active": true, "src": "png/graph.png", "badge": "badge-dive" },
+        { "label": "MTG",  "dot": "⚫", "src": "png/graph-mtg.png", "badge": "badge-mtg", "click": "event.stopPropagation(); window.openMtgTreeModal && window.openMtgTreeModal();" }
+      ]
+    },
+    {
+      "emoji": "🕰️",
+      "label": "Road Map",
+      "ariaLabel": "See more in Timeline",
+      "action": "scroll-open",
+      "open": "timelineModal",
+      "img": "png/timeline.png",
+      "imgAlt": "Timeline",
+      "togglers": [
+        { "label": "MORE", "dot": "🔵", "active": true, "src": "png/timeline.png", "badge": "badge-dive" }
+      ]
+    },
+    {
+      "emoji": "🛠️",
+      "label": "Tool Kit",
+      "ariaLabel": "Open Constellation Map",
+      "onclick": "window.openMapModal && window.openMapModal()",
+      "img": "png/constellation.png",
+      "imgAlt": "Constellation Map",
+      "togglers": [
+        { "label": "TECH", "dot": "🔵", "active": true, "src": "png/constellation.png", "badge": "badge-dive" }
+      ]
+    },
+    {
+      "emoji": "🧜",
+      "label": "Diagrams",
+      "ariaLabel": "See more about Architecture",
+      "onclick": "openArchModal()",
+      "img": "png/marp.png",
+      "imgAlt": "Architecture",
+      "togglers": [
+        { "label": "MARP",     "dot": "🔵", "active": true, "src": "png/marp.png",     "badge": "badge-dive",    "click": "event.stopPropagation(); window.openMarpModal && window.openMarpModal();" },
+        { "label": "ARCH",     "dot": "⚫",                  "src": "png/arch.png",     "badge": "badge-mermaid", "click": "event.stopPropagation(); window.openArchModal && window.openArchModal();" },
+        { "label": "TENTIMES", "dot": "⚫",                  "src": "png/tentimes.png", "badge": "badge-tentimes", "click": "event.stopPropagation(); window.openTentimesModal && window.openTentimesModal();" }
+      ]
+    }
+  ]
 }

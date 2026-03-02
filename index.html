@@ -196,31 +196,7 @@
             <div class="step-summary">I'm constantly learning new things, especially in <strong><a href="#" onclick="event.preventDefault(); openLinkModal('https://en.wikipedia.org/wiki/Graph_theory', 'Graph Theory');">Graph Theory</a></strong> & <strong><a href="#" onclick="event.preventDefault(); openLinkModal('https://en.wikipedia.org/wiki/Gamification', 'Gamification');">Gamification</a></strong>!</div>
           </div>
       </div>
-      <div class="card-grid card-grid-wide" style="margin-bottom:32px;">
-        <div class="glass-tile video-card reveal" style="cursor:pointer;" role="button" tabindex="0" aria-label="Open Graph of Knowledge" data-action="scroll-open" data-open="knowledgeModal">
-          <div class="video-label">🧭 Skill Tree<span class="card-action-badge badge-dive badge-toggler active" style="margin-left:auto;" data-src="png/graph.png" data-click="" role="button" tabindex="0"><span class="toggler-dot">🔵</span> PORT</span><span class="card-action-badge badge-mtg badge-toggler" data-src="png/graph-mtg.png" data-click="event.stopPropagation(); window.openMtgTreeModal && window.openMtgTreeModal();" role="button" tabindex="0" aria-label="Open MTG Skill Tree"><span class="toggler-dot">⚫</span> MTG</span></div>
-          <div class="video-wrap">
-            <img src="png/graph.png" alt="Graph of Knowledge" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity 0.4s ease;" loading="lazy">
-          </div>
-        </div>    
-        <div class="glass-tile video-card reveal" style="cursor:pointer;" role="button" tabindex="0" aria-label="See more in Timeline" data-action="scroll-open" data-open="timelineModal">
-          <div class="video-label">🕰️ Road Map<span class="card-action-badge badge-dive badge-toggler active" data-src="png/timeline.png" data-click="" role="button" tabindex="0"><span class="toggler-dot">🔵</span> MORE</span></div>
-          <div class="video-wrap">
-            <img src="png/timeline.png" alt="Timeline" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity 0.4s ease;" loading="lazy">
-          </div>
-        </div> 
-        <div class="glass-tile video-card reveal" style="cursor:pointer;" role="button" tabindex="0" aria-label="Open Constellation Map" onclick="window.openMapModal && window.openMapModal()">
-          <div class="video-label">🛠️ Tool Kit<span class="card-action-badge badge-dive badge-toggler active" data-src="png/constellation.png" data-click="" role="button" tabindex="0"><span class="toggler-dot">🔵</span> TECH</span></div>
-          <div class="video-wrap">
-            <img src="png/constellation.png" alt="Constellation Map" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity 0.4s ease;" loading="lazy">
-          </div>
-        </div>
-        <div class="glass-tile video-card reveal" style="cursor:pointer;" role="button" tabindex="0" aria-label="See more about Architecture" onclick="openArchModal()">
-          <div class="video-label">🧜 Diagrams<span class="card-action-badge badge-dive badge-toggler active" style="margin-left:auto;" data-src="png/marp.png" data-click="event.stopPropagation(); window.openMarpModal && window.openMarpModal();" role="button" tabindex="0" aria-label="Open MARP Diagram"><span class="toggler-dot">🔵</span> MARP</span><span class="card-action-badge badge-mermaid badge-toggler" data-src="png/arch.png" data-click="event.stopPropagation(); window.openArchModal && window.openArchModal();" role="button" tabindex="0" aria-label="Open Architecture Diagram"><span class="toggler-dot">⚫</span> ARCH</span><span class="card-action-badge badge-tentimes badge-toggler" data-src="png/tentimes.png" data-click="event.stopPropagation(); window.openTentimesModal && window.openTentimesModal();" role="button" tabindex="0" aria-label="Open TenTimes Diagram"><span class="toggler-dot">⚫</span> TENTIMES</span></div>
-          <div class="video-wrap">
-            <img src="png/marp.png" alt="Architecture" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity 0.4s ease;" loading="lazy">
-          </div>
-        </div>   
+      <div class="card-grid card-grid-wide" id="viz-cards" style="margin-bottom:32px;">
       </div>
       <!-- <div class="key-figures-grid">
         <a class="glass-tile key-figure reveal" href="#work" onclick="event.preventDefault(); navigateToModal('work','microsoft')">

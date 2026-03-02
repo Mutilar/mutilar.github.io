@@ -5,13 +5,21 @@
 @layer reset, layout, components, utilities, theme, responsive, a11y, viz, overlay;
 
 /* ── Accent palette ───────────────────────────────────────────
-   Four MSFT brand colors as RGB triplets for rgba() compositing.
-   Fork? Change these four lines; every accent recolors.          */
+   Four accent colors as RGB triplets for rgba() compositing.
+   Positional: --accent-1 through --accent-4. Legacy named aliases
+   kept for backward compat. BOOT.JS overrides from SETTINGS.json.
+   Fork? Change accents in SETTINGS.json; everything recolors.    */
 :root {
-  --accent-blue:   0, 164, 239;
-  --accent-yellow: 255, 185, 0;
-  --accent-red:    242, 80, 34;
-  --accent-green:  127, 186, 0;
+  --accent-1: 0, 164, 239;
+  --accent-2: 255, 185, 0;
+  --accent-3: 242, 80, 34;
+  --accent-4: 127, 186, 0;
+
+  /* Legacy aliases — consumed by 280 existing rules */
+  --accent-blue:   var(--accent-1);
+  --accent-yellow: var(--accent-2);
+  --accent-red:    var(--accent-3);
+  --accent-green:  var(--accent-4);
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -2733,6 +2741,182 @@ html.light-mode .bio-modal-card::after {
 .glass-footer a {
   color: rgba(var(--accent-blue), 0.6);
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   LANDING PAGE — shared components for any site using this engine
+   as a landing page (bootfile.dev, or any fork's landing).
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Logo dot (pulses through 4 accents) ─────────────────────── */
+.logo-dot {
+  display: inline-block;
+  /* dot-pulse keyframes injected by BOOT.JS from SETTINGS.json accents */
+}
+
+/* ── Emoji portrait (no <img>, glyph in a circle) ────────────── */
+.emoji-portrait {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 140px;
+  color: rgba(255, 255, 255, 0.85);
+  text-shadow: 0 0 30px rgba(var(--accent-1), 0.5),
+               0 0 60px rgba(var(--accent-1), 0.2);
+  background: rgba(0, 0, 0, 0.3);
+}
+
+html.light-mode .emoji-portrait {
+  color: rgba(0, 0, 0, 0.75);
+  background: rgba(255, 255, 255, 0.2);
+  text-shadow: 0 0 30px rgba(var(--accent-1), 0.3);
+}
+
+/* ── Landing body text ────────────────────────────────────────── */
+.landing-body {
+  font-size: clamp(1rem, 2.2vw, 1.2rem);
+  line-height: 1.7;
+  max-width: 720px;
+  margin: 0 auto 1.2rem;
+  opacity: 0.9;
+}
+
+.landing-emphasis {
+  font-size: clamp(1.2rem, 2.8vw, 1.5rem);
+  font-weight: 600;
+  text-align: center;
+  opacity: 1;
+  margin-top: 1.5rem;
+}
+
+/* ── Insight callout ──────────────────────────────────────────── */
+.landing-insight {
+  max-width: 680px;
+  margin: 2rem auto 0;
+  padding: 1.2rem 1.5rem;
+  text-align: center;
+  font-size: clamp(0.95rem, 2vw, 1.1rem);
+  line-height: 1.7;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+html.light-mode .landing-insight {
+  border-color: rgba(0, 0, 0, 0.08);
+  background: rgba(0, 0, 0, 0.02);
+}
+
+/* ── Acts grid ────────────────────────────────────────────────── */
+.landing-acts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 2rem;
+  padding: 2.5rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.landing-act { text-align: center; }
+.landing-act h3 { font-size: 1.25rem; margin-bottom: 0.75rem; }
+.landing-act p { font-size: 0.95rem; line-height: 1.6; opacity: 0.85; }
+
+.landing-act code {
+  background: rgba(255, 255, 255, 0.08);
+  padding: 0.15em 0.4em;
+  border-radius: 4px;
+  font-size: 0.88em;
+}
+html.light-mode .landing-act code { background: rgba(0, 0, 0, 0.06); }
+
+.act-number {
+  width: 56px; height: 56px;
+  margin: 0 auto 1rem;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.5rem; font-weight: 700;
+  background: rgba(var(--tc), 0.15);
+  border: 1px solid rgba(var(--tc), 0.3);
+  color: rgb(var(--tc));
+  box-shadow: 0 0 20px rgba(var(--tc), 0.15);
+}
+
+.act-result {
+  margin-top: 0.75rem;
+  font-weight: 600;
+  opacity: 1 !important;
+  color: rgb(var(--accent-1));
+}
+.landing-act:nth-child(2) .act-result { color: rgb(var(--accent-2)); }
+.landing-act:nth-child(3) .act-result { color: rgb(var(--accent-4)); }
+
+/* ── Features grid ────────────────────────────────────────────── */
+.landing-features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  max-width: 800px;
+  margin: 1.5rem auto 0;
+  padding: 1.2rem 0 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+html.light-mode .landing-features { border-top-color: rgba(0, 0, 0, 0.08); }
+
+.feature-item {
+  display: flex; align-items: center; gap: 0.75rem;
+  font-size: 0.95rem; opacity: 0.9;
+}
+.feature-item i { color: rgb(var(--accent-1)); width: 1.25rem; text-align: center; }
+
+/* ── CTA buttons ──────────────────────────────────────────────── */
+.landing-cta-row {
+  display: flex; gap: 1rem; justify-content: center;
+  flex-wrap: wrap; margin-top: 2rem;
+}
+
+.landing-cta {
+  display: inline-flex; align-items: center; gap: 0.6rem;
+  padding: 0.85rem 2rem; border-radius: 12px;
+  font-size: 1.05rem; font-weight: 600;
+  background: rgba(var(--accent-1), 0.2);
+  border: 1px solid rgba(var(--accent-1), 0.4);
+  color: rgb(var(--accent-1));
+  transition: background 0.25s, box-shadow 0.25s,
+              transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  cursor: pointer;
+}
+.landing-cta:hover {
+  background: rgba(var(--accent-1), 0.3);
+  box-shadow: 0 0 24px rgba(var(--accent-1), 0.3);
+  transform: translateY(-2px);
+}
+
+.landing-cta-secondary {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.85);
+}
+html.light-mode .landing-cta-secondary {
+  background: rgba(0, 0, 0, 0.04);
+  border-color: rgba(0, 0, 0, 0.15);
+  color: rgba(0, 0, 0, 0.7);
+}
+.landing-cta-secondary:hover {
+  background: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.15);
+}
+
+/* ── Landing link ─────────────────────────────────────────────── */
+.landing-link { color: rgb(var(--accent-1)); transition: text-shadow 0.2s; }
+.landing-link:hover { text-shadow: 0 0 12px rgba(var(--accent-1), 0.5); }
+
+/* ── Landing footer ───────────────────────────────────────────── */
+.landing-footer { padding: 2rem 0; }
+.landing-footer-text { text-align: center; font-size: 0.9rem; opacity: 0.6; }
+
+/* ── Hide radio player when not applicable ────────────────────── */
+.radio-hidden .radio-player,
+.radio-hidden .radio-brand-slot { display: none !important; }
+
 } /* end @layer components */
 
 /* ═══════════════════════════════════════════════════════════════
