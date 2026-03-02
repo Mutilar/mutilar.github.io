@@ -245,11 +245,12 @@ quiltModalClose.addEventListener("click", closeQuiltModal);
 quiltModal.addEventListener("click", e => { if (e.target === quiltModal) closeQuiltModal(); });
 
 // ── Overscroll bounce ────────────────────────────────────────
+var _bioTourScrolling = false;   // set by bio tour to suppress bounce
 (function () {
   var card = quiltModal.querySelector(".modal-card");
   var bouncing = false;
   card.addEventListener("scroll", function () {
-    if (bouncing) return;
+    if (bouncing || _bioTourScrolling) return;
     var st = card.scrollTop;
     var maxScroll = card.scrollHeight - card.clientHeight;
     if (st <= 0 || st >= maxScroll) {
@@ -463,15 +464,73 @@ quiltModal.addEventListener("click", e => { if (e.target === quiltModal) closeQu
     });
   }
 
+  // ── Tile activation + tour label engine ──
+  var _cachedStops = null;
+
+  // Resolve which stop + tile is active at current scroll position
+  function resolveScrollStop(stops) {
+    var maxS = card.scrollHeight - card.clientHeight;
+    var scrollMid = card.scrollTop + card.clientHeight * 0.4 + 100;
+    for (var i = stops.length - 1; i >= 0; i--) {
+      if (stops[i].el.offsetTop <= scrollMid) {
+        // Activate tiles progressively within this section's scroll range
+        var stop = stops[i];
+        if (stop.tiles.length > 1) {
+          var sectionTop = stop.el.offsetTop;
+          var sectionBot = (i + 1 < stops.length) ? stops[i + 1].el.offsetTop : maxS + card.clientHeight;
+          var sectionRange = sectionBot - sectionTop;
+          if (sectionRange > 0) {
+            var localProgress = (scrollMid - sectionTop) / sectionRange;
+            localProgress = Math.max(0, Math.min(1, localProgress));
+            var tileIdx = Math.min(Math.floor(localProgress * stop.tiles.length), stop.tiles.length - 1);
+            var activeTile = stop.tiles[tileIdx];
+            if (activeTile && !activeTile.classList.contains("bio-stat-active")) {
+              activeTile.dispatchEvent(new MouseEvent("mouseenter", { bubbles: true }));
+            }
+          }
+        }
+        return i;
+      }
+    }
+    return -1;
+  }
+
+  // Tour-mode: update hint label + activate tiles
+  function syncScrollState(stops, lastStopIdxRef) {
+    var i = resolveScrollStop(stops);
+    if (i >= 0 && i !== lastStopIdxRef.v) {
+      lastStopIdxRef.v = i;
+      var label = stops[i].label;
+      var m = label.match(/^(\p{Emoji_Presentation}|\p{Emoji}\uFE0F?)\s*/u);
+      var emoji = m ? m[1] : '🐧';
+      var text = m ? label.slice(m[0].length) : label;
+      _cf.fade(hint, '<strong>' + text + '</strong><span class="scroll-arrow">' + emoji + '</span>');
+    }
+  }
+
+  // ── Passive scroll: activate tiles only (label stays "Traverse") ──
+  card.addEventListener("scroll", function () {
+    if (_scrolling) return;
+    if (!_cachedStops) _cachedStops = getStops();
+    resolveScrollStop(_cachedStops);
+  }, { passive: true });
+
+  // Invalidate cached stops when modal opens (DOM may have changed)
+  quiltModal.addEventListener("transitionend", function () {
+    if (quiltModal.classList.contains("open")) {
+      _cachedStops = null;
+    }
+  });
+
   var _tourCleanup = null;
   function stopScroll() {
     if (_raf) { cancelAnimationFrame(_raf); _raf = null; }
     if (!_scrolling) return;
     _scrolling = false;
+    _bioTourScrolling = false;
     if (_tourCleanup) { _tourCleanup(); _tourCleanup = null; }
     hint.classList.remove("exploring");
     _cf.fade(hint, HINT_DEFAULT);
-    hint.style.opacity = 1;
     hint.style.pointerEvents = '';
   }
 
@@ -484,13 +543,17 @@ quiltModal.addEventListener("click", e => { if (e.target === quiltModal) closeQu
     }
 
     _scrolling = true;
+    _bioTourScrolling = true;
     hint.classList.add("exploring");
 
-    var SPEED = 80;  // px/s constant
+    var SPEED_MAX = 75;  // px/s cruising speed
+    var RAMP_DUR = 0.5;  // seconds to lerp from 0 → SPEED_MAX
+    var elapsed = 0;
     var lastT = null;
+    var scrollPos = card.scrollTop; // float accumulator: avoids integer rounding stutter
     var interrupted = false;
     var stops = getStops();
-    var lastStopIdx = -1;
+    var tourStopRef = { v: -1 };
 
     function onUser() { interrupted = true; }
     function hintSwallow(e) { e.stopPropagation(); }
@@ -501,47 +564,18 @@ quiltModal.addEventListener("click", e => { if (e.target === quiltModal) closeQu
 
     function step(ts) {
       if (interrupted) { cleanup(); return; }
-      if (!lastT) lastT = ts;
+      if (!lastT) { lastT = ts; _raf = requestAnimationFrame(step); return; } // skip first frame (dt=0)
       var dt = (ts - lastT) / 1000;
       lastT = ts;
+      elapsed += dt;
 
+      var speed = elapsed >= RAMP_DUR ? SPEED_MAX : SPEED_MAX * (elapsed / RAMP_DUR);
       var maxS = card.scrollHeight - card.clientHeight;
 
-      card.scrollTop += SPEED * dt;
+      scrollPos += speed * dt;
+      card.scrollTop = scrollPos;
 
-      // Crossfade hint label when we pass a tour stop
-      var scrollMid = card.scrollTop + card.clientHeight * 0.4 + 50;
-      for (var i = stops.length - 1; i >= 0; i--) {
-        if (stops[i].el.offsetTop <= scrollMid) {
-          if (i !== lastStopIdx) {
-            lastStopIdx = i;
-            var label = stops[i].label;
-            var m = label.match(/^(\p{Emoji_Presentation}|\p{Emoji}\uFE0F?)\s*/u);
-            var emoji = m ? m[1] : '🐧';
-            var text = m ? label.slice(m[0].length) : label;
-            _cf.fade(hint, '<strong>' + text + '</strong><span class="scroll-arrow">' + emoji + '</span>');
-          }
-
-          // Activate tiles progressively within this section's scroll range
-          var stop = stops[i];
-          if (stop.tiles.length > 1) {
-            var sectionTop = stop.el.offsetTop;
-            var sectionBot = (i + 1 < stops.length) ? stops[i + 1].el.offsetTop : maxS + card.clientHeight;
-            var sectionRange = sectionBot - sectionTop;
-            if (sectionRange > 0) {
-              var localProgress = (scrollMid - sectionTop) / sectionRange;
-              localProgress = Math.max(0, Math.min(1, localProgress));
-              var tileIdx = Math.min(Math.floor(localProgress * stop.tiles.length), stop.tiles.length - 1);
-              var activeTile = stop.tiles[tileIdx];
-              if (activeTile && !activeTile.classList.contains("bio-stat-active")) {
-                activeTile.dispatchEvent(new MouseEvent("mouseenter", { bubbles: true }));
-              }
-            }
-          }
-
-          break;
-        }
-      }
+      syncScrollState(stops, tourStopRef);
 
       if (card.scrollTop >= maxS - 1) { cleanup(); return; }
       _raf = requestAnimationFrame(step);
@@ -556,6 +590,7 @@ quiltModal.addEventListener("click", e => { if (e.target === quiltModal) closeQu
 
     function cleanup() {
       stopScroll();
+      _cachedStops = stops;
     }
 
     _raf = requestAnimationFrame(step);

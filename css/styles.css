@@ -37,7 +37,7 @@ a {
   left: 16px;
   z-index: 100000;
   padding: 8px 16px;
-  background: #0078d4;
+  background: #00A4EF;
   color: #fff;
   border-radius: 0 0 6px 6px;
   font-size: 14px;
@@ -1670,6 +1670,40 @@ html.light-mode .card-action-badge.badge-static {
    ═══════════════════════════════════════════════════════════════ */
 .bio-modal-card {
   max-width: 680px;
+}
+
+.bio-modal-card::before,
+.bio-modal-card::after {
+  content: "";
+  display: block;
+  position: sticky;
+  height: 100px;
+  margin-left: -40px;
+  margin-right: -40px;
+  pointer-events: none;
+  z-index: 4;
+}
+
+.bio-modal-card::before {
+  top: -20px;
+  margin-top: -20px;
+  background: linear-gradient(to bottom, rgba(18,18,24,1) 0%, transparent 100%);
+  margin-bottom: -100px;
+}
+
+.bio-modal-card::after {
+  bottom: -20px;
+  margin-bottom: -20px;
+  background: linear-gradient(to top, rgba(18,18,24,1) 0%, transparent 100%);
+  margin-top: -100px;
+}
+
+html.light-mode .bio-modal-card::before {
+  background: linear-gradient(to bottom, rgba(240,240,245,1) 0%, transparent 100%);
+}
+
+html.light-mode .bio-modal-card::after {
+  background: linear-gradient(to top, rgba(240,240,245,1) 0%, transparent 100%);
 }
 
 .bio-modal-card .modal-body h3 {

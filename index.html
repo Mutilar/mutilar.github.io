@@ -49,7 +49,7 @@
   <div style="background:#181a20;color:#fff;padding:48px 24px;text-align:center;font-family:system-ui,sans-serif;">
     <h1>Brian Hungerman — Software Engineer</h1>
     <p>This portfolio requires JavaScript to display interactive content.</p>
-    <p><a href="https://www.linkedin.com/in/brian-hungerman/" style="color:#4fc3f7;">LinkedIn</a> · <a href="https://github.com/Mutilar" style="color:#4fc3f7;">GitHub</a> · <a href="mailto:brianhungerman@gmail.com" style="color:#4fc3f7;">Email</a></p>
+    <p><a href="https://www.linkedin.com/in/brian-hungerman/" style="color:#4fc3f7;">LinkedIn</a> · <a href="https://github.com/Mutilar" style="color:#4fc3f7;">GitHub</a> · <a href="mailto:brianhungerman@gmail.com?subject=👋🏻%20Hey%20🐧%20Brian!" style="color:#4fc3f7;">Email</a></p>
   </div>
 </noscript>
 
@@ -164,7 +164,7 @@
           <a target="_blank" href="https://www.linkedin.com/in/brian-hungerman/" title="LinkedIn"><i class="fa fa-linkedin"></i></a>
           <a target="_blank" href="https://github.com/Mutilar" title="GitHub"><i class="fa fa-github"></i></a>
           <a target="_blank" href="https://twitter.com/BrianHungerman" title="Twitter"><i class="fa fa-twitter"></i></a>
-          <a target="_blank" href="mailto:brianhungerman@gmail.com" title="Email"><i class="fa fa-envelope"></i></a>
+          <a target="_blank" href="mailto:brianhungerman@gmail.com?subject=👋🏻%20Hey%20🐧%20Brian!" title="Email"><i class="fa fa-envelope"></i></a>
           <a target="_blank" href="https://codefied.substack.com/" title="Blog"><i class="fa fa-bookmark"></i></a>
           <a target="_blank" href="https://open.spotify.com/user/12143746238" title="Spotify"><i class="fa fa-spotify"></i></a>
         </div>
@@ -198,27 +198,27 @@
       </div>
       <div class="card-grid card-grid-wide" style="margin-bottom:32px;">
         <div class="glass-tile video-card reveal" style="cursor:pointer;" role="button" tabindex="0" aria-label="Open Graph of Knowledge" data-action="scroll-open" data-open="knowledgeModal">
-          <div class="video-label">🧭 SKILLTREE<span class="card-action-badge badge-dive" style="margin-left:auto;">🔍 PORT</span><span class="card-action-badge badge-mtg" onclick="event.stopPropagation(); window.openMtgTreeModal && window.openMtgTreeModal();" role="button" tabindex="0" aria-label="Open MTG Skill Tree">🃏 MTG</span></div>
+          <div class="video-label">🧭 SKILLTREE<span class="card-action-badge badge-dive badge-toggler active" style="margin-left:auto;" data-src="png/graph.png" data-click="" role="button" tabindex="0"><span class="toggler-dot">🔵</span> PORT</span><span class="card-action-badge badge-mtg badge-toggler" data-src="png/graph-mtg.png" data-click="event.stopPropagation(); window.openMtgTreeModal && window.openMtgTreeModal();" role="button" tabindex="0" aria-label="Open MTG Skill Tree"><span class="toggler-dot">⚫</span> MTG</span></div>
           <div class="video-wrap">
-            <img src="png/graph.png" alt="Graph of Knowledge" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" loading="lazy">
+            <img src="png/graph.png" alt="Graph of Knowledge" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity 0.4s ease;" loading="lazy">
           </div>
         </div>
         <div class="glass-tile video-card reveal" style="cursor:pointer;" role="button" tabindex="0" aria-label="See more in Timeline" data-action="scroll-open" data-open="timelineModal">
-          <div class="video-label">🕰️ ROADMAP<span class="card-action-badge badge-dive">🔍 MORE</span></div>
+          <div class="video-label">🕰️ ROADMAP<span class="card-action-badge badge-dive badge-toggler active" data-src="png/timeline.png" data-click="" role="button" tabindex="0"><span class="toggler-dot">🔵</span> MORE</span></div>
           <div class="video-wrap">
-            <img src="png/timeline.png" alt="Timeline" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" loading="lazy">
+            <img src="png/timeline.png" alt="Timeline" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity 0.4s ease;" loading="lazy">
           </div>
         </div>
         <div class="glass-tile video-card reveal" style="cursor:pointer;" role="button" tabindex="0" aria-label="See more about Architecture" onclick="openArchModal()">
-          <div class="video-label">🧜 DIAGRAMS<span class="card-action-badge badge-dive" style="margin-left:auto;" onclick="event.stopPropagation(); window.openMarpModal && window.openMarpModal();" role="button" tabindex="0" aria-label="Open MARP Diagram">🤖 MARP</span><span class="card-action-badge badge-mermaid" onclick="event.stopPropagation(); window.openArchModal && window.openArchModal();" role="button" tabindex="0" aria-label="Open Architecture Diagram">🧜 ARCH</span><span class="card-action-badge badge-tentimes" onclick="event.stopPropagation(); window.openTentimesModal && window.openTentimesModal();" role="button" tabindex="0" aria-label="Open TenTimes Diagram">🚂 TENTIMES</span></div>
+          <div class="video-label">🧜 DIAGRAMS<span class="card-action-badge badge-dive badge-toggler active" style="margin-left:auto;" data-src="png/marp.png" data-click="event.stopPropagation(); window.openMarpModal && window.openMarpModal();" role="button" tabindex="0" aria-label="Open MARP Diagram"><span class="toggler-dot">🔵</span> MARP</span><span class="card-action-badge badge-mermaid badge-toggler" data-src="png/arch.png" data-click="event.stopPropagation(); window.openArchModal && window.openArchModal();" role="button" tabindex="0" aria-label="Open Architecture Diagram"><span class="toggler-dot">⚫</span> ARCH</span><span class="card-action-badge badge-tentimes badge-toggler" data-src="png/tentimes.png" data-click="event.stopPropagation(); window.openTentimesModal && window.openTentimesModal();" role="button" tabindex="0" aria-label="Open TenTimes Diagram"><span class="toggler-dot">⚫</span> TENTIMES</span></div>
           <div class="video-wrap">
-            <img src="png/arch.png" alt="Architecture" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" loading="lazy">
+            <img src="png/marp.png" alt="Architecture" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity 0.4s ease;" loading="lazy">
           </div>
         </div>        
         <div class="glass-tile video-card reveal" style="cursor:pointer;" role="button" tabindex="0" aria-label="Open Constellation Map" onclick="window.openMapModal && window.openMapModal()">
-          <div class="video-label">🌌 SKILLS<span class="card-action-badge badge-dive">🔍 TECH</span></div>
+          <div class="video-label">🌌 SKILLS<span class="card-action-badge badge-dive badge-toggler active" data-src="png/constellation.png" data-click="" role="button" tabindex="0"><span class="toggler-dot">🔵</span> TECH</span></div>
           <div class="video-wrap">
-            <img src="png/constellation.png" alt="Constellation Map" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" loading="lazy">
+            <img src="png/constellation.png" alt="Constellation Map" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity 0.4s ease;" loading="lazy">
           </div>
         </div>
       </div>
@@ -625,7 +625,7 @@
         <a target="_blank" href="https://www.linkedin.com/in/brian-hungerman/" title="LinkedIn"><i class="fa fa-linkedin"></i></a>
         <a target="_blank" href="https://github.com/Mutilar" title="GitHub"><i class="fa fa-github"></i></a>
         <a target="_blank" href="https://twitter.com/BrianHungerman" title="Twitter"><i class="fa fa-twitter"></i></a>
-        <a target="_blank" href="mailto:brianhungerman@gmail.com" title="Email"><i class="fa fa-envelope"></i></a>
+        <a target="_blank" href="mailto:brianhungerman@gmail.com?subject=👋🏻%20Hey%20🐧%20Brian!" title="Email"><i class="fa fa-envelope"></i></a>
         <a target="_blank" href="https://codefied.substack.com/" title="Blog"><i class="fa fa-bookmark"></i></a>
         <a target="_blank" href="https://open.spotify.com/user/12143746238" title="Spotify"><i class="fa fa-spotify"></i></a>
       </div>
@@ -954,26 +954,30 @@
     <div class="modal-body">
 
       <!-- ── Hero's Journey ── -->
-      <h3 data-bio-tour="">Brian's Journey</h3>
+      <h3 data-bio-tour="📯 Herald">📯 Herald</h3>
 
       <hr>
       <!-- I: The Call -->
-      <div class="bio-symbol-block" data-bio-tour="📯 Herald">
+      <div class="bio-symbol-block">
         <div class="step step-left">Penguins hatch from their eggs into desolate tundras...</div>
         <div class="step step-right">...but they're the only lands they know.</div>
       </div>
       <div class="bio-img-viewer">
-        <img class="bio-img-layer bio-img-active" src="png/amax-thumbnail.png" alt="AMAX ESD station" />
+        <img class="bio-img-layer bio-img-active" src="png/quilting.png" alt="Quilting a penguin quilt" />
         <img class="bio-img-layer" src="png/redtie-learning.png" alt="FRC 1458 robot" />
-        <img class="bio-img-layer" src="png/quilting.png" alt="Quilting a penguin quilt" />
+        <img class="bio-img-layer" src="png/amax-thumbnail.png" alt="AMAX ESD station" />
       </div>
       <div class="bio-stat-row">
-        <div class="bio-stat bio-stat-link bio-stat-active" tabindex="0" data-bio-img="0" data-bio-color="127,186,0" data-action="navigate" data-navigate-dataset="projects" data-navigate-id="amaxesd"><span class="bio-stat-value">⚡ AMAX</span><span class="bio-stat-label">first contract</span></div>
-        <div class="bio-stat bio-stat-link" tabindex="0" data-bio-img="1" data-bio-color="242,80,34" data-action="navigate" data-navigate-dataset="work" data-navigate-id="redtierobotics"><span class="bio-stat-value">🤖 FRC 1458</span><span class="bio-stat-label">first robot</span></div>
-        <div class="bio-stat bio-stat-link" tabindex="2" data-bio-img="2" data-bio-color="255,185,0"><span class="bio-stat-value">🧵 QUILT</span><span class="bio-stat-label">first artifact</span></div>
+        <div class="bio-stat bio-stat-link bio-stat-active" tabindex="0" data-bio-img="0" data-bio-color="255,185,0"><span class="bio-stat-value">🧵 QUILT</span><span class="bio-stat-label">first artifact</span></div>
+        <div class="bio-stat bio-stat-link" tabindex="0" data-bio-img="1" data-bio-color="242,80,34" data-action="navigate" data-navigate-dataset="work" data-navigate-id="redtierobotics"><span class="bio-stat-value">🤖 FRC</span><span class="bio-stat-label">first robot</span></div>
+        <div class="bio-stat bio-stat-link" tabindex="0" data-bio-img="2" data-bio-color="127,186,0" data-action="navigate" data-navigate-dataset="projects" data-navigate-id="amaxesd"><span class="bio-stat-value">⚡ AMAX</span><span class="bio-stat-label">first contract</span></div>
       </div>
       <div class="bio-quote-viewer">
         <blockquote class="bio-quote-layer bio-quote-active">
+          <p>Every child is an artist. The problem is how to remain an artist once we grow up.</p>
+          <cite>Pablo Picasso</cite>
+        </blockquote>
+        <blockquote class="bio-quote-layer">
           <p>The secret of getting ahead is getting started.</p>
           <cite>Mark Twain</cite>
         </blockquote>
@@ -981,16 +985,14 @@
           <p>Start where you are. Use what you have. Do what you can.</p>
           <cite>Arthur Ashe</cite>
         </blockquote>
-        <blockquote class="bio-quote-layer">
-          <p>Every child is an artist. The problem is how to remain an artist once we grow up.</p>
-          <cite>Pablo Picasso</cite>
-        </blockquote>
       </div>
 
       <hr>
 
       <!-- II: The Mentor -->
-      <div class="bio-symbol-block" data-bio-tour="🧭 Mentor">
+      <h3 data-bio-tour="🧭 Mentor">🧭 Mentor</h3>
+      <hr>
+      <div class="bio-symbol-block">
         <div class="step step-left">Penguins huddle together, keeping winter's chill at bay...</div>
         <div class="step step-center">...survival instincts keep one penguin alive...</div>
         <div class="step step-right">...radiant heat means the whole colony thrives.</div>
@@ -1022,13 +1024,15 @@
 
       <hr>
       <!-- III: The Threshold -->
-      <div class="bio-symbol-block" data-bio-tour="🎓 Learn">
+      <h3 data-bio-tour="🎓 Learn">🎓 Learn</h3>
+      <hr>
+      <div class="bio-symbol-block">
         <div class="step step-left">Penguins venture into open oceans...</div>
         <div class="step step-right">...uncharted territories ripe with plunder.</div>
       </div>
       <div class="bio-img-viewer">
         <img class="bio-img-layer bio-img-active" src="png/merced.png" alt="UC Merced" />
-        <img class="bio-img-layer" src="png/game-banner-lan.png" alt="HackMerced" />
+        <img class="bio-img-layer" src="png/game-banner-lan-res.png" alt="HackMerced" />
         <img class="bio-img-layer" src="png/graduation-frame.png" alt="Graduation" />
       </div>
       <div class="bio-stat-row">
@@ -1038,7 +1042,7 @@
       </div>
       <div class="bio-quote-viewer">
         <blockquote class="bio-quote-layer bio-quote-active">
-          <p>Non scholae, sed vitae discimus.</p>
+          <p>Non scholae, sed vitae discimus. (We learn not for school, but for life.)</p>
           <cite>Lūcius Annaeus Seneca</cite>
         </blockquote>
         <blockquote class="bio-quote-layer">
@@ -1054,14 +1058,16 @@
       
       <hr>
       <!-- IV: The Abyss -->
-      <div class="bio-symbol-block" data-bio-tour="🕯️ Study">
-        <div class="step step-left">Penguins dive 1,800 feet into pitch-black water on a single breath...</div>
-        <div class="step step-right">...to surface with a full gizzard.</div>
+      <h3 data-bio-tour="🕯️ Study">🕯️ Study</h3>
+      <hr>
+      <div class="bio-symbol-block">
+        <div class="step step-left">Penguins dive 1,800 feet into pitch-black depths on a single breath...</div>
+        <div class="step step-right">...only surfacing with a full gizzard.</div>
       </div>
       <div class="bio-img-viewer">
-        <img class="bio-img-layer bio-img-active" src="png/home-iot.png" alt="Home IoT" />
-        <img class="bio-img-layer" src="png/motleymoves.png" alt="Blindsight" />
-        <img class="bio-img-layer" src="png/bn-2.png" alt="SRIRACHA" />
+        <img class="bio-img-layer bio-img-active" src="png/bn-2.png" alt="Home IoT" />
+        <img class="bio-img-layer" src="png/home-iot.png" alt="Blindsight" />
+        <img class="bio-img-layer" src="png/motleymoves.png" alt="SRIRACHA" />
       </div>
       <div class="bio-stat-row">
         <div class="bio-stat bio-stat-link bio-stat-active" tabindex="0" data-bio-img="0" data-bio-color="0,164,239" data-action="navigate" data-navigate-dataset="hackathons" data-navigate-id="blindsight"><span class="bio-stat-value">🎨 U.I.</span><span class="bio-stat-label">"How it looks"</span></div>
@@ -1085,7 +1091,9 @@
 
       <hr>
       <!-- V: The Transformation -->
-      <div class="bio-symbol-block" data-bio-tour="🎯 Apply">
+      <h3 data-bio-tour="🎯 Apply">🎯 Apply</h3>
+      <hr>
+      <div class="bio-symbol-block">
         <div class="step step-left">Wings adapted into flippers...</div>
         <div class="step step-center">...they never stopped being birds...</div>
         <div class="step step-right">...they just learned to thrive anew.</div>
@@ -1117,9 +1125,12 @@
 
       <hr>
       <!-- VI: The Return -->
-      <div class="bio-symbol-block" data-bio-tour="🕊️ Sharing">
-        <div class="step step-left">Penguins eventually return to their colony...</div>
-        <div class="step step-right">...bearing all they fished from the depths.</div>
+      <h3 data-bio-tour="🕊️ Sharing">🕊️ Sharing</h3>
+
+      <hr>
+      <div class="bio-symbol-block">
+        <div class="step step-left">Penguins dutifully return to their colony...</div>
+        <div class="step step-right">...bringing sustenance from the abyss.</div>
       </div>
 
       <div class="bio-img-viewer">
@@ -1150,8 +1161,9 @@
       <hr>
 
       <!-- ── Design Philosophy ── -->
-      <h3 data-bio-tour="🧠 Doctrine">Design Philosophy</h3>
+      <h3 data-bio-tour="🧠 Philosophy">🧠 Philosophy</h3>
 
+      <hr>
       <div class="bio-principle-block">
         <div class="step step-left">Breadth satisfies at a glance...</div>
         <div class="step step-center">...depths reward the curious...</div>
@@ -1186,11 +1198,12 @@
       <hr>
 
       <!-- ── Engineering Philosophy ── -->
-      <h3 data-bio-tour="🤖 Doctrine">Engineering Philosophy</h3>
+      <h3 data-bio-tour="⚙️ Philosophy">⚙️ Philosophy</h3>
 
+      <hr>
       <div class="bio-principle-block">
-        <div class="step step-left">From first principles...</div>
-        <div class="step step-center">...every element playing its part...</div>
+        <div class="step step-left">From first-principles...</div>
+        <div class="step step-center">...until everything harmonizes...</div>
         <div class="step step-right">...efficiency is ruthlessly pursued.</div>
       </div>
 
@@ -1220,17 +1233,35 @@
         </blockquote>
       </div>
       <hr>
-
-
-      <!-- Copyright -->
-      <footer class="glass-footer">
-        <p><strong><a href="#" onclick="event.preventDefault(); openLinkModal('https://time.is/', 'Time.is');" style="text-decoration:none;">📅 <span id="footer-year"></span></a></strong><br><strong><a href="#" onclick="event.preventDefault(); openQuiltModal();" style="text-decoration:none;cursor:pointer;">🐧 Brian Hungerman</a></strong><br><strong><a href="#" onclick="event.preventDefault(); openLinkModal('https://brianhungerman.com', 'brianhungerman.com');"><i class="fa fa-globe"></i> brianhungerman.com</a></strong></p>
-      </footer>
-      <div class="scroll-hint bio-explore-hint" id="bioExploreHint" style="cursor:pointer;"><strong>Traverse</strong><span class="scroll-arrow">🔭</span></div>
+      
+      <h3 data-bio-tour="👀 Interested?">👀 Interested?</h3>
+      <hr>
+      <p class="connect-subtitle" style="font-size:15px; margin-bottom:24px;">
+      <div class="bio-principle-block">
+        <div class="step step-left">I welcome opportunities to connect...</div>
+        <div class="step step-center">...learn from others...</div>
+        <div class="step step-right">...and share my expertise!</div>
+      </div>
+      <div class="bio-stat-row">
+        <a class="bio-stat bio-stat-link" tabindex="0" href="#" onclick="event.preventDefault(); openLinkModal('https://www.linkedin.com/in/brian-hungerman/', 'LinkedIn');" data-bio-color="0,119,181"><span class="bio-stat-value"><i class="fa fa-linkedin"></i></span><span class="bio-stat-label"></span></a>
+        <a class="bio-stat bio-stat-link" tabindex="0" href="#" onclick="event.preventDefault(); openLinkModal('https://github.com/Mutilar', 'GitHub');" data-bio-color="127,186,0"><span class="bio-stat-value"><i class="fa fa-github"></i></span><span class="bio-stat-label"></span></a>
+        <a class="bio-stat bio-stat-link" tabindex="0" href="#" onclick="event.preventDefault(); openLinkModal('https://twitter.com/BrianHungerman', 'Twitter');" data-bio-color="0,164,239"><span class="bio-stat-value"><i class="fa fa-twitter"></i></span><span class="bio-stat-label"></span></a>
+      </div>
+      <div class="bio-stat-row">
+        <a class="bio-stat bio-stat-link" tabindex="0" href="mailto:brianhungerman@gmail.com?subject=👋🏻%20Hey%20🐧%20Brian!" data-bio-color="242,80,34"><span class="bio-stat-value"><i class="fa fa-envelope"></i></span><span class="bio-stat-label">Email</span></a>
+        <a class="bio-stat bio-stat-link" tabindex="0" href="#" onclick="event.preventDefault(); openLinkModal('https://codefied.substack.com/', 'Blog');" data-bio-color="255,185,0"><span class="bio-stat-value"><i class="fa fa-bookmark"></i></span><span class="bio-stat-label"></span></a>
+        <a class="bio-stat bio-stat-link" tabindex="0" href="#" onclick="event.preventDefault(); openLinkModal('https://open.spotify.com/user/12143746238', 'Spotify');" data-bio-color="30,215,96"><span class="bio-stat-value"><i class="fa fa-spotify"></i></span><span class="bio-stat-label"></span></a>
+      </div>
 
       <hr>
-      <!-- ── Colophon ── -->
-      <p class="bio-colophon">Plebeian Penguin</p>
+      <!-- Copyright -->
+      <footer class="glass-footer">
+        <p><strong><a href="#" onclick="event.preventDefault(); openQuiltModal();" style="text-decoration:none;cursor:pointer;">🐧 Brian Hungerman</a></strong><br><strong><a href="#" onclick="event.preventDefault(); openLinkModal('https://brianhungerman.com', 'brianhungerman.com');">https://brianhungerman.com</a></strong></p>
+      </footer> 
+      <hr>
+      <div class="scroll-hint bio-explore-hint" id="bioExploreHint" style="cursor:pointer;"><strong>Traverse</strong><span class="scroll-arrow">🔭</span></div>
+
+     
     </div>
   </div>
 </div>
