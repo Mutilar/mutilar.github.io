@@ -289,317 +289,6 @@ document.addEventListener("keydown", function(e) {
 // Arch / Marp / Tentimes modals — registered by MERMAID.JS via registerModal()
 
 // ═══════════════════════════════════════════════════════════════
-// QUILTING MODAL (Easter Egg)
-// ═══════════════════════════════════════════════════════════════
-var _stopBioTour = null;
-var _quiltModal = registerModal("quilt-modal", {
-  onOpen:  function () { if (typeof _dismissBioToast === "function") _dismissBioToast(); },
-  onClose: function () { if (_stopBioTour) _stopBioTour(); }
-});
-var quiltModal = document.getElementById("quilt-modal");
-
-function openQuiltModal()  { _quiltModal.open(); }
-function closeQuiltModal() { _quiltModal.close(); }
-
-// ── Overscroll bounce ────────────────────────────────────────
-var _bioTourScrolling = false;   // set by bio tour to suppress bounce
-var _bioLastTouch = 0;           // timestamp of last touchstart
-(function () {
-  document.addEventListener("touchstart", function () { _bioLastTouch = Date.now(); }, { passive: true });
-})();
-(function () {
-  var card = quiltModal.querySelector(".modal-card");
-  if (typeof boostTouchScroll === "function") boostTouchScroll(card);
-  var bouncing = false;
-  card.addEventListener("scroll", function () {
-    if (bouncing || _bioTourScrolling) return;
-    var st = card.scrollTop;
-    var maxScroll = card.scrollHeight - card.clientHeight;
-    if (st <= 0 || st >= maxScroll) {
-      bouncing = true;
-      var dir = st <= 0 ? 1 : -1;
-      card.style.transition = "transform 0.15s ease-out";
-      card.style.transform = "translateY(" + (dir * 12) + "px)";
-      setTimeout(function () {
-        card.style.transition = "transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)";
-        card.style.transform = "";
-        setTimeout(function () {
-          card.style.transition = "";
-          bouncing = false;
-        }, 300);
-      }, 150);
-    }
-  }, { passive: true });
-})();
-
-// ── Bio image + quote viewer crossfade ───────────────────────
-(function () {
-  // For each bio-stat-row that has tiles with data-bio-img,
-  // find the sibling bio-img-viewer and bio-quote-viewer above it
-  // and wire up hover crossfade for both.
-  var rows = quiltModal.querySelectorAll(".bio-stat-row");
-  rows.forEach(function (row) {
-    var tiles = row.querySelectorAll("[data-bio-img]");
-    if (!tiles.length) return;
-
-    // Walk backwards for img-viewer, forwards for quote-viewer
-    var viewer = null, quoteViewer = null;
-    var sib = row.previousElementSibling;
-    while (sib) {
-      if (!viewer && sib.classList.contains("bio-img-viewer")) { viewer = sib; break; }
-      sib = sib.previousElementSibling;
-    }
-    sib = row.nextElementSibling;
-    while (sib) {
-      if (sib.classList.contains("bio-quote-viewer")) { quoteViewer = sib; break; }
-      if (sib.classList.contains("bio-symbol-block") || sib.classList.contains("bio-principle-block") || sib.tagName === "H3" || sib.tagName === "HR") break;
-      sib = sib.nextElementSibling;
-    }
-
-    var layers = viewer ? viewer.querySelectorAll(".bio-img-layer") : [];
-    var quotes = quoteViewer ? quoteViewer.querySelectorAll(".bio-quote-layer") : [];
-
-    // Apply per-tile --bio-glow from data-bio-color
-    tiles.forEach(function (tile) {
-      var c = tile.dataset.bioColor;
-      if (c) tile.style.setProperty("--bio-glow", c);
-    });
-
-    // Set initial viewer glow from the first active tile
-    var firstActive = row.querySelector(".bio-stat-active");
-    if (firstActive && firstActive.dataset.bioColor && viewer) {
-      viewer.style.setProperty("--bio-viewer-glow", firstActive.dataset.bioColor);
-    }
-
-    function activate(tile) {
-      var idx = parseInt(tile.dataset.bioImg, 10);
-      if (isNaN(idx)) return;
-
-      // Remove active from all tiles in this row
-      tiles.forEach(function (t) { t.classList.remove("bio-stat-active"); });
-      tile.classList.add("bio-stat-active");
-
-      // Crossfade images
-      if (layers.length) {
-        layers.forEach(function (l) { l.classList.remove("bio-img-active"); });
-        if (layers[idx]) layers[idx].classList.add("bio-img-active");
-      }
-
-      // Crossfade quotes
-      if (quotes.length) {
-        quotes.forEach(function (q) { q.classList.remove("bio-quote-active"); });
-        if (quotes[idx]) quotes[idx].classList.add("bio-quote-active");
-      }
-
-      // Push glow color to viewer
-      var c = tile.dataset.bioColor;
-      if (c && viewer) viewer.style.setProperty("--bio-viewer-glow", c);
-    }
-
-    tiles.forEach(function (tile) {
-      tile.addEventListener("mouseenter", function () { activate(tile); });
-      tile.addEventListener("focus", function () { activate(tile); });
-
-      // Touch: tapping a stat tile only previews (image + quote crossfade).
-      // Navigation happens exclusively via the image viewer above.
-      // isTrusted check: programmatic .click() from the viewer passes through.
-      if (tile.dataset.action) {
-        tile.addEventListener("click", function (e) {
-          if (!e.isTrusted) return;                      // programmatic click from viewer; let it navigate
-          if (Date.now() - _bioLastTouch > 800) return;  // mouse click; let delegation handle it
-          e.stopPropagation();                            // swallow so delegation doesn't navigate
-          activate(tile);
-        }, true);                                         // capture phase, before delegation
-      }
-    });
-
-    // Make image viewer clickable — triggers the active tile's action
-    if (viewer) {
-      viewer.style.cursor = "pointer";
-      viewer.addEventListener("click", function () {
-        var active = row.querySelector(".bio-stat-active[data-action]");
-        if (active) active.click();
-      });
-    }
-  });
-})();
-
-// ── Hero penguin cycle MOVED to BOOT.JS ──
-
-// ── Bio Tour ─────────────────────────────────────────────────
-(function () {
-  var hint = document.getElementById("bioExploreHint");
-  var card = quiltModal.querySelector(".modal-card");
-  if (!hint || !card) return;
-
-  var HINT_DEFAULT = '<strong>Traverse</strong><span class="scroll-arrow">🔭</span>';
-  var _cf = createCrossfader();
-  var _raf = null;
-  var _scrolling = false;
-
-  // Tour stops for crossfading the hint label as we scroll past them
-  function getStops() {
-    return Array.from(card.querySelectorAll("[data-bio-tour]")).map(function (el) {
-      // Find the bio-stat-row associated with this tour stop's section
-      var tiles = [];
-      var sib = el.nextElementSibling;
-      while (sib) {
-        if (sib.classList.contains("bio-stat-row")) {
-          tiles = Array.from(sib.querySelectorAll("[data-bio-img]"));
-          break;
-        }
-        // Stop if we hit the next section
-        if (sib.hasAttribute("data-bio-tour") || sib.tagName === "H3") break;
-        sib = sib.nextElementSibling;
-      }
-      return { el: el, label: el.getAttribute("data-bio-tour"), tiles: tiles };
-    });
-  }
-
-  // ── Tile activation + tour label engine ──
-  var _cachedStops = null;
-
-  // Resolve which stop + tile is active at current scroll position
-  function resolveScrollStop(stops) {
-    var maxS = card.scrollHeight - card.clientHeight;
-    var scrollMid = card.scrollTop + card.clientHeight * 0.4 + 100;
-    for (var i = stops.length - 1; i >= 0; i--) {
-      if (stops[i].el.offsetTop <= scrollMid) {
-        // Activate tiles progressively within this section's scroll range
-        var stop = stops[i];
-        if (stop.tiles.length > 1) {
-          var sectionTop = stop.el.offsetTop;
-          var sectionBot = (i + 1 < stops.length) ? stops[i + 1].el.offsetTop : maxS + card.clientHeight;
-          var sectionRange = sectionBot - sectionTop;
-          if (sectionRange > 0) {
-            var localProgress = (scrollMid - sectionTop) / sectionRange;
-            localProgress = Math.max(0, Math.min(1, localProgress));
-            var tileIdx = Math.min(Math.floor(localProgress * stop.tiles.length), stop.tiles.length - 1);
-            var activeTile = stop.tiles[tileIdx];
-            if (activeTile && !activeTile.classList.contains("bio-stat-active")) {
-              activeTile.dispatchEvent(new MouseEvent("mouseenter", { bubbles: true }));
-            }
-          }
-        }
-        return i;
-      }
-    }
-    return -1;
-  }
-
-  // Tour-mode: update hint label + activate tiles
-  function syncScrollState(stops, lastStopIdxRef) {
-    var i = resolveScrollStop(stops);
-    if (i >= 0 && i !== lastStopIdxRef.v) {
-      lastStopIdxRef.v = i;
-      var label = stops[i].label;
-      var m = label.match(/^(\p{Emoji_Presentation}|\p{Emoji}\uFE0F?)\s*/u);
-      var emoji = m ? m[1] : '🐧';
-      var text = m ? label.slice(m[0].length) : label;
-      _cf.fade(hint, '<strong>' + text + '</strong><span class="scroll-arrow">' + emoji + '</span>');
-    }
-  }
-
-  // ── Passive scroll: activate tiles only (label stays "Traverse") ──
-  card.addEventListener("scroll", function () {
-    if (_scrolling) return;
-    if (!_cachedStops) _cachedStops = getStops();
-    resolveScrollStop(_cachedStops);
-  }, { passive: true });
-
-  // Invalidate cached stops when modal opens (DOM may have changed)
-  quiltModal.addEventListener("transitionend", function () {
-    if (quiltModal.classList.contains("open")) {
-      _cachedStops = null;
-    }
-  });
-
-  var _tourCleanup = null;
-  function stopScroll() {
-    if (_raf) { cancelAnimationFrame(_raf); _raf = null; }
-    if (!_scrolling) return;
-    _scrolling = false;
-    _bioTourScrolling = false;
-    if (_tourCleanup) { _tourCleanup(); _tourCleanup = null; }
-    hint.classList.remove("exploring");
-    _cf.fade(hint, HINT_DEFAULT);
-    hint.style.pointerEvents = '';
-  }
-
-  function startScroll() {
-    var maxS = card.scrollHeight - card.clientHeight;
-    if (card.scrollTop >= maxS - 1) {
-      card.scrollTo({ top: 0, behavior: "smooth" });
-      _cf.fade(hint, HINT_DEFAULT);
-      return;
-    }
-
-    _scrolling = true;
-    _bioTourScrolling = true;
-    hint.classList.add("exploring");
-
-    var SPEED_MAX = 75;  // px/s cruising speed
-    var RAMP_DUR = 0.5;  // seconds to lerp from 0 → SPEED_MAX
-    var elapsed = 0;
-    var lastT = null;
-    var scrollPos = card.scrollTop; // float accumulator: avoids integer rounding stutter
-    var interrupted = false;
-    var stops = getStops();
-    var tourStopRef = { v: -1 };
-
-    function onUser() { interrupted = true; }
-    function hintSwallow(e) { e.stopPropagation(); }
-    hint.addEventListener("pointerdown", hintSwallow);
-    card.addEventListener("wheel", onUser, { once: true, passive: true });
-    card.addEventListener("touchstart", onUser, { once: true, passive: true });
-    card.addEventListener("pointerdown", onUser, { once: true });
-
-    function step(ts) {
-      if (interrupted) { cleanup(); return; }
-      if (!lastT) { lastT = ts; _raf = requestAnimationFrame(step); return; } // skip first frame (dt=0)
-      var dt = (ts - lastT) / 1000;
-      lastT = ts;
-      elapsed += dt;
-
-      var speed = elapsed >= RAMP_DUR ? SPEED_MAX : SPEED_MAX * (elapsed / RAMP_DUR);
-      var maxS = card.scrollHeight - card.clientHeight;
-
-      scrollPos += speed * dt;
-      card.scrollTop = scrollPos;
-
-      syncScrollState(stops, tourStopRef);
-
-      if (card.scrollTop >= maxS - 1) { cleanup(); return; }
-      _raf = requestAnimationFrame(step);
-    }
-
-    _tourCleanup = function () {
-      hint.removeEventListener("pointerdown", hintSwallow);
-      card.removeEventListener("wheel", onUser);
-      card.removeEventListener("touchstart", onUser);
-      card.removeEventListener("pointerdown", onUser);
-    };
-
-    function cleanup() {
-      stopScroll();
-      _cachedStops = stops;
-    }
-
-    _raf = requestAnimationFrame(step);
-  }
-
-  hint.addEventListener("click", function (e) {
-    e.preventDefault();
-    if (_scrolling) { stopScroll(); return; }
-    startScroll();
-  });
-
-  _stopBioTour = stopScroll;
-})();
-
-// Marp + Tentimes modals — registered by MERMAID.JS via registerModal()
-
-// ═══════════════════════════════════════════════════════════════
 //  BITNAUGHTS GALLERY MODALS
 // ═══════════════════════════════════════════════════════════════
 var _bnModal       = registerModal("bitnaughts-modal");
@@ -1198,3 +887,294 @@ function closeGameModal() { _gameModal.close(); }
 })();
 
 } // end if (modal) — portfolio-specific wiring
+
+// ═══════════════════════════════════════════════════════════════
+//  QUILTING / BIO MODAL
+//  Runs on ANY page that has a #quilt-modal element.
+//  Extracted from the portfolio guard so bootfile.dev can reuse it.
+// ═══════════════════════════════════════════════════════════════
+var quiltModal = document.getElementById("quilt-modal");
+if (quiltModal) {
+
+var _stopBioTour = null;
+var _quiltModal = registerModal("quilt-modal", {
+  onOpen:  function () { if (typeof _dismissBioToast === "function") _dismissBioToast(); },
+  onClose: function () { if (_stopBioTour) _stopBioTour(); }
+});
+
+function openQuiltModal()  { _quiltModal.open(); }
+function closeQuiltModal() { _quiltModal.close(); }
+window.openQuiltModal  = openQuiltModal;
+window.closeQuiltModal = closeQuiltModal;
+
+// ── Overscroll bounce ────────────────────────────────────────
+var _bioTourScrolling = false;
+var _bioLastTouch = 0;
+(function () {
+  document.addEventListener("touchstart", function () { _bioLastTouch = Date.now(); }, { passive: true });
+})();
+(function () {
+  var card = quiltModal.querySelector(".modal-card");
+  if (!card) return;
+  if (typeof boostTouchScroll === "function") boostTouchScroll(card);
+  var bouncing = false;
+  card.addEventListener("scroll", function () {
+    if (bouncing || _bioTourScrolling) return;
+    var st = card.scrollTop;
+    var maxScroll = card.scrollHeight - card.clientHeight;
+    if (st <= 0 || st >= maxScroll) {
+      bouncing = true;
+      var dir = st <= 0 ? 1 : -1;
+      card.style.transition = "transform 0.15s ease-out";
+      card.style.transform = "translateY(" + (dir * 12) + "px)";
+      setTimeout(function () {
+        card.style.transition = "transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)";
+        card.style.transform = "";
+        setTimeout(function () {
+          card.style.transition = "";
+          bouncing = false;
+        }, 300);
+      }, 150);
+    }
+  }, { passive: true });
+})();
+
+// ── Bio image + quote viewer crossfade ───────────────────────
+(function () {
+  var rows = quiltModal.querySelectorAll(".bio-stat-row");
+  rows.forEach(function (row) {
+    var tiles = row.querySelectorAll("[data-bio-img]");
+    if (!tiles.length) return;
+
+    var viewer = null, quoteViewer = null;
+    var sib = row.previousElementSibling;
+    while (sib) {
+      if (!viewer && sib.classList.contains("bio-img-viewer")) { viewer = sib; break; }
+      sib = sib.previousElementSibling;
+    }
+    sib = row.nextElementSibling;
+    while (sib) {
+      if (sib.classList.contains("bio-quote-viewer")) { quoteViewer = sib; break; }
+      if (sib.classList.contains("bio-symbol-block") || sib.classList.contains("bio-principle-block") || sib.tagName === "H3" || sib.tagName === "HR") break;
+      sib = sib.nextElementSibling;
+    }
+
+    var layers = viewer ? viewer.querySelectorAll(".bio-img-layer") : [];
+    var quotes = quoteViewer ? quoteViewer.querySelectorAll(".bio-quote-layer") : [];
+
+    tiles.forEach(function (tile) {
+      var c = tile.dataset.bioColor;
+      if (c) tile.style.setProperty("--bio-glow", c);
+    });
+
+    var firstActive = row.querySelector(".bio-stat-active");
+    if (firstActive && firstActive.dataset.bioColor && viewer) {
+      viewer.style.setProperty("--bio-viewer-glow", firstActive.dataset.bioColor);
+    }
+
+    function activate(tile) {
+      var idx = parseInt(tile.dataset.bioImg, 10);
+      if (isNaN(idx)) return;
+      tiles.forEach(function (t) { t.classList.remove("bio-stat-active"); });
+      tile.classList.add("bio-stat-active");
+      if (layers.length) {
+        layers.forEach(function (l) { l.classList.remove("bio-img-active"); });
+        if (layers[idx]) layers[idx].classList.add("bio-img-active");
+      }
+      if (quotes.length) {
+        quotes.forEach(function (q) { q.classList.remove("bio-quote-active"); });
+        if (quotes[idx]) quotes[idx].classList.add("bio-quote-active");
+      }
+      var c = tile.dataset.bioColor;
+      if (c && viewer) viewer.style.setProperty("--bio-viewer-glow", c);
+    }
+
+    tiles.forEach(function (tile) {
+      tile.addEventListener("mouseenter", function () { activate(tile); });
+      tile.addEventListener("focus", function () { activate(tile); });
+      if (tile.dataset.action) {
+        tile.addEventListener("click", function (e) {
+          if (!e.isTrusted) return;
+          if (Date.now() - _bioLastTouch > 800) return;
+          e.stopPropagation();
+          activate(tile);
+        }, true);
+      }
+    });
+
+    if (viewer) {
+      viewer.style.cursor = "pointer";
+      viewer.addEventListener("click", function () {
+        var active = row.querySelector(".bio-stat-active[data-action]");
+        if (active) active.click();
+      });
+    }
+  });
+})();
+
+// ── Bio Tour ─────────────────────────────────────────────────
+(function () {
+  var hint = document.getElementById("bioExploreHint");
+  var card = quiltModal.querySelector(".modal-card");
+  if (!hint || !card) return;
+
+  var HINT_DEFAULT = '<strong>Traverse</strong><span class="scroll-arrow">🔭</span>';
+  var _cf = typeof createCrossfader === "function" ? createCrossfader() : null;
+  var _raf = null;
+  var _scrolling = false;
+
+  function getStops() {
+    return Array.from(card.querySelectorAll("[data-bio-tour]")).map(function (el) {
+      var tiles = [];
+      var sib = el.nextElementSibling;
+      while (sib) {
+        if (sib.classList.contains("bio-stat-row")) {
+          tiles = Array.from(sib.querySelectorAll("[data-bio-img]"));
+          break;
+        }
+        if (sib.hasAttribute("data-bio-tour") || sib.tagName === "H3") break;
+        sib = sib.nextElementSibling;
+      }
+      return { el: el, label: el.getAttribute("data-bio-tour"), tiles: tiles };
+    });
+  }
+
+  var _cachedStops = null;
+
+  function resolveScrollStop(stops) {
+    var maxS = card.scrollHeight - card.clientHeight;
+    var scrollMid = card.scrollTop + card.clientHeight * 0.4 + 100;
+    for (var i = stops.length - 1; i >= 0; i--) {
+      if (stops[i].el.offsetTop <= scrollMid) {
+        var stop = stops[i];
+        if (stop.tiles.length > 1) {
+          var sectionTop = stop.el.offsetTop;
+          var sectionBot = (i + 1 < stops.length) ? stops[i + 1].el.offsetTop : maxS + card.clientHeight;
+          var sectionRange = sectionBot - sectionTop;
+          if (sectionRange > 0) {
+            var localProgress = (scrollMid - sectionTop) / sectionRange;
+            localProgress = Math.max(0, Math.min(1, localProgress));
+            var tileIdx = Math.min(Math.floor(localProgress * stop.tiles.length), stop.tiles.length - 1);
+            var activeTile = stop.tiles[tileIdx];
+            if (activeTile && !activeTile.classList.contains("bio-stat-active")) {
+              activeTile.dispatchEvent(new MouseEvent("mouseenter", { bubbles: true }));
+            }
+          }
+        }
+        return i;
+      }
+    }
+    return -1;
+  }
+
+  function syncScrollState(stops, lastStopIdxRef) {
+    var i = resolveScrollStop(stops);
+    if (i >= 0 && i !== lastStopIdxRef.v) {
+      lastStopIdxRef.v = i;
+      var label = stops[i].label;
+      var m = label.match(/^(\p{Emoji_Presentation}|\p{Emoji}\uFE0F?)\s*/u);
+      var emoji = m ? m[1] : '🐧';
+      var text = m ? label.slice(m[0].length) : label;
+      if (_cf) _cf.fade(hint, '<strong>' + text + '</strong><span class="scroll-arrow">' + emoji + '</span>');
+      else hint.innerHTML = '<strong>' + text + '</strong><span class="scroll-arrow">' + emoji + '</span>';
+    }
+  }
+
+  card.addEventListener("scroll", function () {
+    if (_scrolling) return;
+    if (!_cachedStops) _cachedStops = getStops();
+    resolveScrollStop(_cachedStops);
+  }, { passive: true });
+
+  quiltModal.addEventListener("transitionend", function () {
+    if (quiltModal.classList.contains("open")) {
+      _cachedStops = null;
+    }
+  });
+
+  var _tourCleanup = null;
+  function stopScroll() {
+    if (_raf) { cancelAnimationFrame(_raf); _raf = null; }
+    if (!_scrolling) return;
+    _scrolling = false;
+    _bioTourScrolling = false;
+    if (_tourCleanup) { _tourCleanup(); _tourCleanup = null; }
+    hint.classList.remove("exploring");
+    if (_cf) _cf.fade(hint, HINT_DEFAULT);
+    else hint.innerHTML = HINT_DEFAULT;
+    hint.style.pointerEvents = '';
+  }
+
+  function startScroll() {
+    var maxS = card.scrollHeight - card.clientHeight;
+    if (card.scrollTop >= maxS - 1) {
+      card.scrollTo({ top: 0, behavior: "smooth" });
+      if (_cf) _cf.fade(hint, HINT_DEFAULT);
+      else hint.innerHTML = HINT_DEFAULT;
+      return;
+    }
+
+    _scrolling = true;
+    _bioTourScrolling = true;
+    hint.classList.add("exploring");
+
+    var SPEED_MAX = 75;
+    var RAMP_DUR = 0.5;
+    var elapsed = 0;
+    var lastT = null;
+    var scrollPos = card.scrollTop;
+    var interrupted = false;
+    var stops = getStops();
+    var tourStopRef = { v: -1 };
+
+    function onUser() { interrupted = true; }
+    function hintSwallow(e) { e.stopPropagation(); }
+    hint.addEventListener("pointerdown", hintSwallow);
+    card.addEventListener("wheel", onUser, { once: true, passive: true });
+    card.addEventListener("touchstart", onUser, { once: true, passive: true });
+    card.addEventListener("pointerdown", onUser, { once: true });
+
+    function step(ts) {
+      if (interrupted) { cleanup(); return; }
+      if (!lastT) { lastT = ts; _raf = requestAnimationFrame(step); return; }
+      var dt = (ts - lastT) / 1000;
+      lastT = ts;
+      elapsed += dt;
+
+      var speed = elapsed >= RAMP_DUR ? SPEED_MAX : SPEED_MAX * (elapsed / RAMP_DUR);
+      var maxS = card.scrollHeight - card.clientHeight;
+
+      scrollPos += speed * dt;
+      card.scrollTop = scrollPos;
+
+      syncScrollState(stops, tourStopRef);
+
+      if (card.scrollTop >= maxS - 1) { cleanup(); return; }
+      _raf = requestAnimationFrame(step);
+    }
+
+    _tourCleanup = function () {
+      hint.removeEventListener("pointerdown", hintSwallow);
+      card.removeEventListener("wheel", onUser);
+      card.removeEventListener("touchstart", onUser);
+      card.removeEventListener("pointerdown", onUser);
+    };
+
+    function cleanup() {
+      stopScroll();
+      _cachedStops = stops;
+    }
+
+    _raf = requestAnimationFrame(step);
+  }
+
+  hint.addEventListener("click", function (e) {
+    e.preventDefault();
+    if (_scrolling) { stopScroll(); return; }
+    startScroll();
+  });
+
+  _stopBioTour = stopScroll;
+})();
+
+} // end if (quiltModal) — bio modal wiring

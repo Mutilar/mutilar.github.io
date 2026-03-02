@@ -2,6 +2,9 @@
 //  RADIO PLAYER — Ambient music with Web Audio API equalizer
 // ═══════════════════════════════════════════════════════════════
 (() => {
+  const player    = document.getElementById("radioPlayer");
+  if (!player) return;
+
   const playlist = [
     { src: "mp3/corporate.mp3", title: "Corporate" },
     { src: "mp3/electric.mp3", title: "Electric" },
@@ -23,7 +26,6 @@
   audio.volume = 0.3;
   audio.preload = "auto";
 
-  const player    = document.getElementById("radioPlayer");
   const titleEl   = document.getElementById("radioTitle");
   const playBtn   = document.getElementById("radioPlayPause");
   const playIcon  = document.getElementById("radioPlayIcon");

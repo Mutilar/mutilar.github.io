@@ -8,6 +8,7 @@
 (() => {
   const timelineModal = document.getElementById("timeline-modal");
   const timelineModalClose = document.getElementById("timelineModalClose");
+  if (!timelineModal || !timelineModalClose) return;
 
   const MONTH_H   = 48;   // px per month
   const MIN_SPAN  = 1;    // minimum 1-month height for point events
