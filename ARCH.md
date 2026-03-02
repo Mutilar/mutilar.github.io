@@ -49,6 +49,7 @@ graph TD
             subgraph DOCS["📎 DOCS"]
                 direction LR
                 PORTFOLIOJSON["📋 PORTFOLIO.json"]
+                SETTINGSJSON["⚙️ SETTINGS.json"]
                 CARDSCSV["🃏 CARDS.csv"]
                 ARCHMD["🧜‍♀️ *.MD"]
                 RESUME["📄 3 *.PDF"]
@@ -145,6 +146,7 @@ graph TD
     %% ── 6. SCRIPTS → DATA & ASSETS ─────────────────────────
 
     DATAJS -->|"fetch()"| PORTFOLIOJSON
+    MODALSJS -->|"fetch()"| SETTINGSJSON
     MODALSJS -->|"fetchCSV()"| CARDSCSV
     pdfJS -.->|"fetch()"| RESUME
     RADIOJS -.->|"fetch()"| AUDIOFILES
@@ -181,7 +183,7 @@ graph TD
     class CONSOLEJS,SCROLLJS,DATAJS,RADIOJS engine
     class VIZJS,pdfJS,PARALLAXJS,THEMEJS,MODALSJS ui
     class MERMAIDVIEWJS,SKILLTREEJS,TIMELINEJS,MAPJS aes
-    class PORTFOLIOJSON,CARDSCSV data
+    class PORTFOLIOJSON,SETTINGSJSON,CARDSCSV data
     class ARCHMD data
     class PNGS data
     class RESUME,GIFS,GAMEBUILDS,AUDIOFILES data
