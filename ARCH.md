@@ -67,6 +67,7 @@ graph TD
             direction TB
             subgraph ENGINE["🔩 ENGINE"]
                 direction LR
+                BOOTJS["⏻ BOOT.js"]
                 CONSOLEJS["🔎 CONSOLE.js"]
                 SCROLLJS["📜 SCROLL.js"]
                 DATAJS["📊 DATA.js"]
@@ -146,7 +147,7 @@ graph TD
     %% ── 6. SCRIPTS → DATA & ASSETS ─────────────────────────
 
     DATAJS -->|"fetch()"| PORTFOLIOJSON
-    MODALSJS -->|"fetch()"| SETTINGSJSON
+    BOOTJS -->|"fetch()"| SETTINGSJSON
     MODALSJS -->|"fetchCSV()"| CARDSCSV
     pdfJS -.->|"fetch()"| RESUME
     RADIOJS -.->|"fetch()"| AUDIOFILES
@@ -156,6 +157,8 @@ graph TD
 
     PARALLAXJS -->|"render()"| UX
     PARALLAXJS -->|"render()"| HCI
+    BOOTJS -->|"hydrate()"| UX
+    BOOTJS -->|"hydrate()"| HCI
     SCROLLJS -->|"hint()"| HINT
     CONSOLEJS -->|"warn()"| HINT
     DATAJS -->|"card()"| TILES
@@ -180,7 +183,7 @@ graph TD
     class FRAGMENTS data
     class PDFJS,CNAME,CNAMEFILE config
     class STYLESCSS,FONTAWESOME style
-    class CONSOLEJS,SCROLLJS,DATAJS,RADIOJS engine
+    class BOOTJS,CONSOLEJS,SCROLLJS,DATAJS,RADIOJS engine
     class VIZJS,pdfJS,PARALLAXJS,THEMEJS,MODALSJS ui
     class MERMAIDVIEWJS,SKILLTREEJS,TIMELINEJS,MAPJS aes
     class PORTFOLIOJSON,SETTINGSJSON,CARDSCSV data

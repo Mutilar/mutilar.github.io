@@ -1155,8 +1155,33 @@
      ═════════════════════════════════════════════════════════════ */
 
   function createDiagram(cfg) {
-    const modal = document.getElementById(cfg.modalId);
-    if (!modal) return;
+    let modal = document.getElementById(cfg.modalId);
+
+    // Auto-create modal overlay + inner DOM if not present
+    if (!modal) {
+      modal = document.createElement("div");
+      modal.className = "modal-overlay";
+      modal.id = cfg.modalId;
+      modal.setAttribute("role", "dialog");
+      modal.setAttribute("aria-label", (cfg.ariaLabel || "Diagram"));
+      modal.innerHTML =
+        '<div class="glass-tile modal-card viz-modal-card mm-modal-card" style="position:relative;">' +
+          '<div class="modal-sticky-bar">' +
+            '<div class="viz-filter-group tl-glow" role="toolbar" aria-label="Diagram filters">' +
+              '<div class="viz-filter-row">' +
+                '<span class="mm-filter-pills" id="' + cfg.filterId + '"></span>' +
+                '<button class="modal-close" aria-label="Close modal">&times;</button>' +
+              '</div>' +
+            '</div>' +
+          '</div>' +
+          '<div class="viz-viewport" style="cursor:grab;" role="application" aria-roledescription="Interactive flowchart">' +
+            '<div class="viz-world mm-world">' +
+              '<svg class="mm-edges" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 6000 6000" aria-hidden="true"></svg>' +
+            '</div>' +
+          '</div>' +
+        '</div>';
+      document.body.appendChild(modal);
+    }
 
     const state = { built: false, x: 0, y: 0, scale: 1, world: null, _update: null };
     let _svgLayer = null, _dims = null;
@@ -1618,6 +1643,9 @@
     window[cfg.closeGlobal] = close;
   }
 
+  // Expose factory for external consumers (e.g. bootfile.dev landing page)
+  window.createMermaidDiagram = createDiagram;
+
   /* ═════════════════════════════════════════════════════════════
      8. INSTANCES
      ═════════════════════════════════════════════════════════════ */
@@ -1625,9 +1653,8 @@
   // ── Site Architecture ──────────────────────────────────────
   createDiagram({
     modalId:     "arch-modal",
-    closeId:     "archModalClose",
     filterId:    "arch-filters",
-    mdFile:      "ARCh.md",
+    mdFile:      "ARCH.md",
     openGlobal:  "openArchModal",
     closeGlobal: "closeArchModal",
   });
@@ -1635,7 +1662,6 @@
   // ── MARP Wiring Diagram ────────────────────────────────────
   createDiagram({
     modalId:     "marp-modal",
-    closeId:     "marpModalClose",
     filterId:    "marp-filters",
     mdFile:      "MARP.md",
     openGlobal:  "openMarpModal",
@@ -1645,7 +1671,6 @@
   // ── TenTimes Architecture ──────────────────────────────────
   createDiagram({
     modalId:     "tentimes-modal",
-    closeId:     "tentimesModalClose",
     filterId:    "tentimes-filters",
     mdFile:      "TENTIMES.md",
     openGlobal:  "openTentimesModal",

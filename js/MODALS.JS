@@ -141,8 +141,11 @@ document.addEventListener("keydown", function (e) {
 
 // ═══════════════════════════════════════════════════════════════
 //  MODAL SYSTEM  (modalState provided by DATA.JS)
+//  Guard: skip all portfolio-specific wiring when the main
+//  "modal" element isn't present (e.g. on bootfile.dev landing).
 // ═══════════════════════════════════════════════════════════════
 const modal = document.getElementById("modal");
+if (modal) {   // ← landing page has no "modal" element; skip portfolio wiring
 const modalClose = document.getElementById("modalClose");
 
 // Track the currently-glowing tile so we can fade it out later
@@ -421,95 +424,7 @@ var _bioLastTouch = 0;           // timestamp of last touchstart
   });
 })();
 
-// ── Hero penguin background cycle (config-driven via SETTINGS.json) ──
-(function () {
-  var link = document.querySelector(".hero-portrait-link");
-  if (!link) return;
-
-  fetch("SETTINGS.json")
-    .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
-    .then(function (settings) {
-      var hero = settings && settings.hero;
-      if (!hero || !Array.isArray(hero.cycle) || hero.cycle.length < 2) return;
-
-      var a       = document.getElementById("heroPenguinBgA");
-      var b       = document.getElementById("heroPenguinBgB");
-      var penguin = link.querySelector(".hero-penguin-emoji");
-      var circle  = link.querySelector(".hero-portrait-penguin");
-      if (!a || !b || !penguin) return;
-
-      // Apply configured foreground emoji
-      var ident = settings.identity;
-      if (ident && ident.emoji) penguin.textContent = ident.emoji;
-
-      // Build glowMap + emojis from config
-      var glowMap = {};
-      var emojis  = [];
-      for (var i = 0; i < hero.cycle.length; i++) {
-        emojis.push(hero.cycle[i][0]);
-        glowMap[hero.cycle[i][0]] = hero.cycle[i][1];
-      }
-
-      var HIDING_EMOJI = emojis[emojis.length - 1];
-      var idx   = 0;
-      var front = a;
-      var back  = b;
-      var timer = null;
-
-      function step() {
-        idx = (idx + 1) % emojis.length;
-        back.textContent = emojis[idx];
-        back.style.opacity = "0.35";
-        front.style.opacity = "0";
-        var tmp = front;
-        front = back;
-        back = tmp;
-
-        if (circle && glowMap[emojis[idx]]) {
-          circle.style.setProperty("--glow", glowMap[emojis[idx]]);
-        }
-
-        if (emojis[idx] === HIDING_EMOJI) {
-          penguin.style.transition = "opacity 0.8s ease";
-          penguin.style.opacity = "0";
-        } else if (penguin.style.opacity === "0") {
-          penguin.style.transition = "opacity 0.8s ease";
-          penguin.style.opacity = "1";
-        }
-      }
-
-      function start() {
-        if (timer) return;
-        idx = 0;
-        front = a; back = b;
-        a.textContent = emojis[0];
-        a.style.opacity = "0.35";
-        b.style.opacity = "0";
-        penguin.style.opacity = "";
-        penguin.style.transition = "";
-        if (circle) circle.style.setProperty("--glow", glowMap[emojis[0]]);
-        timer = setInterval(step, 1000);
-      }
-
-      function stop() {
-        if (timer) { clearInterval(timer); timer = null; }
-        a.style.opacity = "0";
-        b.style.opacity = "0";
-        penguin.style.opacity = "";
-        penguin.style.transition = "";
-      }
-
-      link.addEventListener("mouseenter", start);
-      link.addEventListener("mouseleave", stop);
-
-      // Also respond to programmatic .hover class toggle
-      new MutationObserver(function () {
-        if (link.classList.contains("hover")) start();
-        else if (!link.matches(":hover")) stop();
-      }).observe(link, { attributes: true, attributeFilter: ["class"] });
-    })
-    .catch(function (err) { console.warn("[MODALS] SETTINGS.json:", err); });
-})();
+// ── Hero penguin cycle MOVED to BOOT.JS ──
 
 // ── Bio Tour ─────────────────────────────────────────────────
 (function () {
@@ -1281,3 +1196,5 @@ function closeGameModal() { _gameModal.close(); }
     state.counterEl.textContent = (state.index + 1) + " / " + state.cards.length;
   }
 })();
+
+} // end if (modal) — portfolio-specific wiring
