@@ -1,0 +1,31 @@
+<div class="glass-tile modal-card viz-modal-card map-modal-card" style="position:relative;">
+  <div class="modal-sticky-bar">
+    <div class="viz-filter-group tl-glow" role="toolbar" aria-label="Map filters">
+      <div class="viz-filter-row">
+        <button class="viz-layout-toggle" id="mapLayoutToggle" style="--tc:0,120,212" title="Static: nodes keep positions when filtering.  Dynamic: graph reflows to fit visible nodes." aria-label="Toggle static or dynamic layout">📌</button>
+        <!-- Domain filters (same axis as timeline/skilltree) -->
+        <button class="viz-filter active" data-filter-group="domain" data-filter="all" style="--tc:255,255,255;--tc-light:30,30,30" aria-pressed="true" aria-label="Show all domains"><span class="all-indicator">⬜</span></button>
+        <button class="viz-filter" data-filter-group="domain" data-filter="education" style="--tc:255,185,0" aria-pressed="false" aria-label="Filter: Education"><span class="viz-dot" style="background:rgba(255,185,0,0.9);"></span> 🎓</button>
+        <button class="viz-filter" data-filter-group="domain" data-filter="research" style="--tc:255,185,0" aria-pressed="false" aria-label="Filter: Research"><span class="viz-dot" style="background:rgba(255,185,0,0.9);"></span> 🔬</button>
+        <button class="viz-filter" data-filter-group="domain" data-filter="software" style="--tc:0,120,212" aria-pressed="false" aria-label="Filter: Software"><span class="viz-dot" style="background:rgba(0,120,212,0.9);"></span> 💻</button>
+        <button class="viz-filter" data-filter-group="domain" data-filter="robotics" style="--tc:242,80,34" aria-pressed="false" aria-label="Filter: Robotics"><span class="viz-dot" style="background:rgba(242,80,34,0.9);"></span> 🤖</button>
+        <button class="viz-filter" data-filter-group="domain" data-filter="games" style="--tc:127,186,0" aria-pressed="false" aria-label="Filter: Games"><span class="viz-dot" style="background:rgba(127,186,0,0.9);"></span> 🎮</button>
+        <span class="map-filter-divider" aria-hidden="true">│</span>
+        <!-- Tech category filters (reuses viz-filter styling) -->
+        <button class="viz-filter active" data-filter-group="tech" data-filter="all" style="--tc:255,255,255" aria-pressed="true" aria-label="Show all tech categories"><span class="all-indicator">⬜</span></button>
+        <button class="viz-filter" data-filter-group="tech" data-filter="lang" style="--tc:0,120,212" title="Languages" aria-pressed="false" aria-label="Filter: Languages"><span class="viz-dot" style="background:rgba(0,120,212,0.9);"></span> 📝</button>
+        <button class="viz-filter" data-filter-group="tech" data-filter="tool" style="--tc:127,186,0" title="Tools" aria-pressed="false" aria-label="Filter: Tools"><span class="viz-dot" style="background:rgba(127,186,0,0.9);"></span> 🔧</button>
+        <button class="viz-filter" data-filter-group="tech" data-filter="framework" style="--tc:255,185,0" title="Frameworks" aria-pressed="false" aria-label="Filter: Frameworks"><span class="viz-dot" style="background:rgba(255,185,0,0.9);"></span> 🧩</button>
+        <button class="viz-filter" data-filter-group="tech" data-filter="platform" style="--tc:242,80,34" title="Platforms" aria-pressed="false" aria-label="Filter: Platforms"><span class="viz-dot" style="background:rgba(242,80,34,0.9);"></span> ☁️</button>
+        <button class="modal-close" id="mapModalClose" aria-label="Close modal">&times;</button>
+      </div>
+    </div>
+  </div>
+  <div class="viz-viewport" style="cursor:grab;" role="application" aria-roledescription="Interactive constellation map" aria-label="Force-directed graph of technologies and projects. Use arrow keys to navigate between nodes, Enter to open details.">
+    <div class="sr-only" id="map-live" aria-live="polite" aria-atomic="true"></div>
+    <div class="sr-only">Constellation map: force-directed network of technologies and projects. Tech nodes are connected to the projects that use them. Use arrow keys to move between nodes; Enter opens project details or solo-filters a tech category.</div>
+    <div class="viz-world">
+      <svg class="map-edges" xmlns="http://www.w3.org/2000/svg" viewBox="-2000 -2000 4000 4000" aria-hidden="true"></svg>
+    </div>
+  </div>
+</div>

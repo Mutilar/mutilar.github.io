@@ -1,0 +1,21 @@
+<div class="glass-tile modal-card timeline-modal-card" style="position:relative;">
+  <div class="modal-sticky-bar">
+    <div class="viz-filter-group viz-filter-group--flat tl-glow" role="toolbar" aria-label="Timeline filters">
+      <button class="viz-layout-toggle dynamic" id="tlLayoutToggle" style="--tc:242,80,34" title="Static: items keep their positions when filtering. Dynamic: timeline reflows to fit visible items." aria-label="Toggle static or dynamic layout">🔀</button>
+      <button class="viz-filter active" data-filter="all" style="--tc:255,255,255;--tc-light:30,30,30" aria-pressed="true" aria-label="Show all categories"><span class="all-indicator">⬜</span></button>
+      <button class="viz-filter" data-filter="robotics" style="--tc:242,80,34" aria-pressed="false" aria-label="Filter: Robotics"><span class="viz-dot" style="background:rgba(242,80,34,0.9);"></span> 🤖</button>
+      <button class="viz-filter" data-filter="games" style="--tc:127,186,0" aria-pressed="false" aria-label="Filter: Games"><span class="viz-dot" style="background:rgba(127,186,0,0.9);"></span> 🎮</button>
+      <button class="viz-filter" data-filter="software" style="--tc:0,164,239" aria-pressed="false" aria-label="Filter: Software"><span class="viz-dot" style="background:rgba(0,164,239,0.9);"></span> 💻</button>
+      <button class="viz-filter" data-filter="research" style="--tc:255,185,0" aria-pressed="false" aria-label="Filter: Research"><span class="viz-dot" style="background:rgba(255,185,0,0.9);"></span> 🔬</button>
+      <button class="viz-filter" data-filter="education" style="--tc:255,185,0" aria-pressed="false" aria-label="Filter: Education"><span class="viz-dot" style="background:rgba(255,185,0,0.9);"></span> 🎓</button>
+      <button class="modal-close" id="timelineModalClose" aria-label="Close modal">&times;</button>
+    </div>
+  </div>
+  <div class="timeline-container" id="timeline-container" role="application" aria-roledescription="Interactive timeline" aria-label="Vertical swimlane timeline of career items. Use arrow keys to navigate between entries, Enter to open details.">
+    <div class="sr-only" id="tl-live" aria-live="polite" aria-atomic="true"></div>
+    <div class="sr-only">Timeline: vertical month-resolution swimlane showing career history from education through professional work. Entries are color-coded by domain. Use arrow keys to navigate entries; Enter opens details.</div>
+    <div class="timeline-entries" id="timeline-entries">
+      <p style="color:rgba(255,255,255,0.5);font-style:italic;padding:24px;">Loading timeline…</p>
+    </div>
+  </div>
+</div>

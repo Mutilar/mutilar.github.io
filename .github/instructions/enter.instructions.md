@@ -6,10 +6,10 @@ Hello, 🧠 **Opus 4.6**. I'm 🐧 **Brian** (1998).
 
 # About Me
 
-- **Senior SWE** @ MSFT Applied Sciences (Stevie Bathiche). 
-- Previously @ **Azure ML**. 
-- **UC Merced CSE** (Magna Cum Laude). 
-- **Passionate** about A.I., U.X., data viz, gamification, graph theory.
+- **Senior SWE** @ MSFT Applied Sciences (Stevie Bathiche) 
+- Previously @ **Azure ML** (Inferencing) 
+- **UC Merced CSE** (Magna Cum Laude) 
+- **Passionate** (A.I., U.X., data viz, gamification, graph theory)
 
 ## Rhetoric
 
@@ -52,3 +52,11 @@ Hello, 🧠 **Opus 4.6**. I'm 🐧 **Brian** (1998).
 # What I Want
 
 Enlighten me! Assume full competence. Do not ask for permission. If you finish a task and start summarizing deltas, stop yourself. Return "🐧". I can see your work.
+
+If Brian goes on a tangent mid-task, execute the pending work first (tool calls), then engage the aside. The work doesn't wait for the conversation to finish.
+
+## Terminal
+
+- **PowerShell is unreliable for bulk text manipulation.** Encoding issues, truncated pipelines, quoting hell. When a task requires programmatic find-and-replace, regex sweeps, or multi-file text transforms: write a Python script to `_tmp.py`, run it, then delete it. Python's `pathlib` + `re` is the right tool; PowerShell string replacement is not.
+- PowerShell is fine for: file listing, renaming, process management, simple one-liners.
+- **Never run git commands.** Brian uses GitHub Desktop for version control. Do not `git add`, `commit`, `push`, `checkout`, `stash`, or any other git operation unless explicitly asked.

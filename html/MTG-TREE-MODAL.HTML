@@ -1,0 +1,35 @@
+<div class="glass-tile modal-card viz-modal-card mtg-modal-card" style="position:relative;">
+  <div class="modal-sticky-bar">
+    <div class="viz-filter-group tl-glow">
+      <div class="viz-filter-row">
+        <button class="viz-layout-toggle" id="mtgLayoutToggle" style="--tc:0,120,212" title="Static: nodes keep their positions when filtering. Dynamic: nodes reflow into new positions.">📌</button>
+        <!-- Type filters -->
+        <button class="mtg-filter active" data-type="all" style="--tc:255,255,255;--tc-light:30,30,30"><span class="all-indicator">⬜</span></button>
+        <button class="mtg-filter active" data-type="🧛" style="--tc:127,186,0"><span class="viz-dot" style="background:rgba(127,186,0,0.9);"></span> 🧛</button>
+        <button class="mtg-filter active" data-type="✨" style="--tc:160,160,160"><span class="viz-dot" style="background:rgba(160,160,160,0.9);"></span> ✨</button>
+        <button class="mtg-filter active" data-type="🌩️" style="--tc:0,164,239"><span class="viz-dot" style="background:rgba(0,164,239,0.9);"></span> 🌩️</button>
+        <button class="mtg-filter active" data-type="⚡" style="--tc:0,120,212"><span class="viz-dot" style="background:rgba(0,120,212,0.9);"></span> ⚡</button>
+        <button class="mtg-filter active" data-type="🔮" style="--tc:242,80,34"><span class="viz-dot" style="background:rgba(242,80,34,0.9);"></span> 🔮</button>
+        <button class="mtg-filter active" data-type="⛈️" style="--tc:255,185,0"><span class="viz-dot" style="background:rgba(255,185,0,0.9);"></span> ⛈️</button>
+        <span class="mtg-filter-sep">│</span>
+        <!-- Deck filters -->
+        <button class="mtg-filter active" data-deck="all" style="--tc:255,255,255;--tc-light:30,30,30"><span class="all-indicator">⬜</span> 🃏</button>
+        <button class="mtg-filter active" data-deck="the-nobles" style="--tc:255,185,0"><span class="viz-dot" style="background:rgba(255,185,0,0.9);"></span> 👑</button>
+        <button class="mtg-filter active" data-deck="the-demons" style="--tc:242,80,34"><span class="viz-dot" style="background:rgba(242,80,34,0.9);"></span> 😈</button>
+        <span class="mtg-filter-sep">│</span>
+        <!-- Mana color filters -->
+        <button class="mtg-filter active" data-color="all" style="--tc:255,255,255;--tc-light:30,30,30"><span class="all-indicator">⬜</span> 🎨</button>
+        <button class="mtg-filter active" data-color="⚪" style="--tc:255,185,0"><span class="viz-dot" style="background:rgba(255,185,0,0.9);"></span> ☀️</button>
+        <button class="mtg-filter active" data-color="⚫" style="--tc:130,130,130"><span class="viz-dot" style="background:rgba(130,130,130,0.9);"></span> 💀</button>
+        <button class="mtg-filter active" data-color="🔴" style="--tc:242,80,34"><span class="viz-dot" style="background:rgba(242,80,34,0.9);"></span> 🔥</button>
+        <button class="mtg-filter active" data-color="💎" style="--tc:160,160,160"><span class="viz-dot" style="background:rgba(160,160,160,0.9);"></span> ◆</button>
+        <button class="modal-close" id="mtgTreeModalClose" aria-label="Close modal">&times;</button>
+      </div>
+    </div>
+  </div>
+  <div class="viz-viewport" style="cursor:grab;">
+    <div class="viz-world">
+      <svg class="mtg-edges" xmlns="http://www.w3.org/2000/svg" viewBox="-2000 -2000 4000 4000"></svg>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,22 @@
+<div class="glass-tile modal-card deck-modal-card" style="position:relative;">
+  <div class="modal-sticky-bar">
+    <div class="modal-sticky-group tl-glow">
+      <h2 class="modal-sticky-title" id="deck-sticky-title"></h2>
+      <a class="modal-sticky-link" id="deck-hero-link" href="#" target="_blank"><i class="fa fa-clone"></i> Archidekt</a>
+      <button class="modal-close" id="deckModalClose" aria-label="Close modal">&times;</button>
+    </div>
+  </div>
+
+  <!-- Commander hero -->
+  <div class="deck-hero">
+    <img class="deck-hero-img" id="deck-hero-img" src="" alt="" />
+    <div class="deck-hero-info">
+      <h2 class="deck-hero-name" id="deck-hero-name"></h2>
+      <p class="deck-hero-motto" id="deck-hero-motto" style="display:none"></p>
+      <div class="modal-body deck-body" id="deck-body"></div>
+    </div>
+  </div>
+
+  <!-- Per-type card sections (populated by JS) -->
+  <div id="deck-sections"></div>
+</div>

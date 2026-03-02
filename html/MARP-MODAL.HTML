@@ -1,0 +1,21 @@
+<div class="glass-tile modal-card viz-modal-card mm-modal-card marp-modal-card" style="position:relative;">
+  <div class="modal-sticky-bar">
+    <div class="viz-filter-group tl-glow" role="toolbar" aria-label="Diagram filters">
+      <div class="viz-filter-row">
+        <span class="mm-filter-pills" id="marp-filters"></span>
+        <button class="modal-close" id="marpModalClose" aria-label="Close modal">&times;</button>
+      </div>
+    </div>
+  </div>
+  <!-- Interactive wiring diagram — rendered by mermaid.js -->
+  <div class="viz-viewport" style="flex:1 1 auto;min-height:340px;" role="application" aria-roledescription="Interactive wiring diagram" aria-label="MARP wiring diagram. Use arrow keys to navigate between nodes, Enter to highlight connections.">
+    <div class="sr-only" id="marp-live" aria-live="polite" aria-atomic="true"></div>
+    <div class="sr-only">MARP wiring diagram: interactive flowchart showing component connections. Use arrow keys to navigate nodes.</div>
+    <div class="viz-world mm-world">
+      <svg class="mm-edges" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 6000 6000" aria-hidden="true"></svg>
+    </div>
+  </div>
+
+  <!-- BOM (Bill of Materials) — populated from archive/csv/marp-bom.json -->
+  <div class="marp-bom" id="marp-bom"></div>
+</div>

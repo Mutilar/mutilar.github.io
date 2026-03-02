@@ -388,6 +388,9 @@
           '<span class="kg-name-layer map-face-alt">' + label + '</span>' +
         '</div>';
       el.title = label + " (" + info.count + " project" + (info.count !== 1 ? "s" : "") + ")";
+      el.setAttribute("tabindex", "0");
+      el.setAttribute("role", "img");
+      el.setAttribute("aria-label", label + ", " + info.count + " project" + (info.count !== 1 ? "s" : "") + ", " + catInfo.label);
 
       _graphWorld.appendChild(el);
 
@@ -448,6 +451,9 @@
           '<span class="kg-name-layer map-face-alt">' + shortName + '</span>' +
         '</div>';
       el.title = (item.NAME || item.ID).replace(/<[^>]+>/g, "");
+      el.setAttribute("tabindex", "0");
+      el.setAttribute("role", "img");
+      el.setAttribute("aria-label", (item.NAME || item.ID).replace(/<[^>]+>/g, ""));
 
       _graphWorld.appendChild(el);
 
@@ -538,6 +544,37 @@
 
     // ── Wire up hover interactions ───────────────────────
     _initHover();
+
+    // ── Keyboard navigation (a11y) ───────────────────────
+    initVizKeyboardNav({
+      modal: mapModal,
+      getNodes: function () { return _nodes; },
+      onFocus: function (n) {
+        _hoveredNode = n;
+        _graphWorld.classList.add("kg-hovering");
+        _edgeSVG.classList.add("kg-hovering");
+        n.el.classList.add("kg-highlight");
+        _links.forEach(function (link) {
+          var peer = null;
+          if (link.source === n) peer = link.target;
+          else if (link.target === n) peer = link.source;
+          if (peer && !peer._hidden) {
+            link.el.classList.add("kg-highlight");
+            peer.el.classList.add("kg-highlight");
+          }
+        });
+        _updateGlow();
+      },
+      onActivate: function (n) {
+        if (n.type === "project" && n.item) {
+          var sec = _findSection(n.itemID);
+          if (sec) openModal(sec, n.itemID);
+        } else if (n.type === "tech" && _techFilterSys) {
+          _techFilterSys.setOnly(n.cat);
+        }
+      },
+      liveRegionId: "map-live",
+    });
 
     // ── Wire up layout toggle (static ↔ dynamic) ────────
     _layoutToggle = createLayoutToggle({

@@ -311,3 +311,5 @@ Light mode is a 600+ line parallel implementation via `html.light-mode` class (u
 [LinkedIn](https://www.linkedin.com/in/brian-hungerman/) · [GitHub](https://github.com/Mutilar) · [Email](mailto:brianhungerman@gmail.com) · [Blog](https://codefied.substack.com/) · [Spotify](https://open.spotify.com/user/12143746238)
 
 **Brian Hungerman · 2026**
+
+13,400 LOC portfolio site built in 14 days with Opus 4.6 (fast mode).

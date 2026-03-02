@@ -451,6 +451,20 @@
     _initDragScroll(modalCard);
 
     timelineBuilt = true;
+
+    // ── Keyboard navigation (a11y) ───────────────────────────
+    initVizKeyboardNav({
+      modal: timelineModal,
+      getNodes: function () {
+        return _allSlivers.filter(function (s) {
+          return !s.el.classList.contains("tl-hidden");
+        }).map(function (s) {
+          return { el: s.el, targetX: 0, targetY: s.startOff, _hidden: false };
+        });
+      },
+      onActivate: function (n) { n.el.click(); },
+      liveRegionId: "tl-live",
+    });
   }
 
   /** Click-and-drag scroll for the timeline modal card.
@@ -723,6 +737,10 @@
     const winHtml = item.WIN && item.WIN.trim()
       ? `<span class="tl-win" title="${item.WIN}"><i class="fa fa-trophy"></i></span>` : "";
     const titleStr = titleOverride || item.TITLE || item.MOTTO || "";
+
+    el.setAttribute("tabindex", "0");
+    el.setAttribute("role", "listitem");
+    el.setAttribute("aria-label", cleanName + (titleStr ? ", " + titleStr : "") + ", " + r.display);
 
     el.innerHTML =
       `<div class="tl-sliver-accent" style="background:linear-gradient(180deg, rgba(${cfg.color},0.12) 0%, transparent 40%);"></div>` +

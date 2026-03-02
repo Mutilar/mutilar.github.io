@@ -1,6 +1,23 @@
+﻿/* ── Cascade layer order ──────────────────────────────────────
+   Zero-build partition: every rule lives inside a named layer so
+   the cascade is explicit and DevTools can filter by layer name.
+   Unlayered styles (e.g. inline) still win over any layer.       */
+@layer reset, layout, components, utilities, theme, responsive, a11y, viz, overlay;
+
+/* ── Accent palette ───────────────────────────────────────────
+   Four MSFT brand colors as RGB triplets for rgba() compositing.
+   Fork? Change these four lines; every accent recolors.          */
+:root {
+  --accent-blue:   0, 164, 239;
+  --accent-yellow: 255, 185, 0;
+  --accent-red:    242, 80, 34;
+  --accent-green:  127, 186, 0;
+}
+
 /* ═══════════════════════════════════════════════════════════════
    RESET & FOUNDATION
    ═══════════════════════════════════════════════════════════════ */
+@layer reset {
 *,
 *::before,
 *::after {
@@ -37,7 +54,7 @@ a {
   left: 16px;
   z-index: 100000;
   padding: 8px 16px;
-  background: #00A4EF;
+  background: rgb(var(--accent-blue));
   color: #fff;
   border-radius: 0 0 6px 6px;
   font-size: 14px;
@@ -60,13 +77,15 @@ hr {
 }
 
 ::selection {
-  background: rgba(0, 164, 239, 0.35);
+  background: rgba(var(--accent-blue), 0.35);
   color: #fff;
 }
+} /* end @layer reset */
 
 /* ═══════════════════════════════════════════════════════════════
    PARALLAX BACKGROUND — SINGLE FIXED CANVAS LAYER
    ═══════════════════════════════════════════════════════════════ */
+@layer layout {
 #parallax-bg {
   position: fixed;
   inset: 0;
@@ -433,19 +452,19 @@ a.scroll-hint:hover strong {
 }
 
 .radio-player.playing .radio-btn-play {
-  background: rgba(0, 164, 239, 0.15);
-  border-color: rgba(0, 164, 239, 0.4);
-  color: rgba(0, 164, 239, 0.95);
-  box-shadow: 0 0 15px rgba(0, 164, 239, 0.25),
-              0 0 40px rgba(0, 164, 239, 0.12),
-              0 0 80px rgba(0, 164, 239, 0.06);
+  background: rgba(var(--accent-blue), 0.15);
+  border-color: rgba(var(--accent-blue), 0.4);
+  color: rgba(var(--accent-blue), 0.95);
+  box-shadow: 0 0 15px rgba(var(--accent-blue), 0.25),
+              0 0 40px rgba(var(--accent-blue), 0.12),
+              0 0 80px rgba(var(--accent-blue), 0.06);
 }
 
 .radio-player.playing .radio-btn-play:hover {
-  background: rgba(0, 164, 239, 0.25);
-  box-shadow: 0 0 20px rgba(0, 164, 239, 0.4),
-              0 0 50px rgba(0, 164, 239, 0.2),
-              0 0 100px rgba(0, 164, 239, 0.1);
+  background: rgba(var(--accent-blue), 0.25);
+  box-shadow: 0 0 20px rgba(var(--accent-blue), 0.4),
+              0 0 50px rgba(var(--accent-blue), 0.2),
+              0 0 100px rgba(var(--accent-blue), 0.1);
 }
 
 /* Volume */
@@ -525,10 +544,12 @@ a.scroll-hint:hover strong {
   border: 1px solid rgba(255, 255, 255, 0.3);
   cursor: pointer;
 }
+} /* end @layer layout */
 
 /* ═══════════════════════════════════════════════════════════════
    GLASS TILE — THE CORE DESIGN TOKEN
    ═══════════════════════════════════════════════════════════════ */
+@layer components {
 .glass-tile {
   background: rgba(0, 0, 0, 0.33);
   border: 1px solid rgba(255, 255, 255, 0.33);
@@ -554,18 +575,18 @@ a.scroll-hint:hover strong {
 
 /* ── Tile glow (applied when navigateToModal targets a tile) ── */
 @keyframes tile-glow-pulse {
-  0%, 100% { box-shadow: 0 0 12px 2px rgba(255,255,255,0.25), 0 0 32px 4px rgba(0,164,239,0.18); }
-  50%      { box-shadow: 0 0 20px 6px rgba(255,255,255,0.40), 0 0 48px 10px rgba(0,164,239,0.30); }
+  0%, 100% { box-shadow: 0 0 12px 2px rgba(255,255,255,0.25), 0 0 32px 4px rgba(var(--accent-blue),0.18); }
+  50%      { box-shadow: 0 0 20px 6px rgba(255,255,255,0.40), 0 0 48px 10px rgba(var(--accent-blue),0.30); }
 }
 .tile-glow {
   animation: tile-glow-pulse 1.2s ease-in-out infinite;
-  border-color: rgba(0,164,239,0.5) !important;
+  border-color: rgba(var(--accent-blue),0.5) !important;
   z-index: 2;
   position: relative;
 }
 @keyframes tile-glow-fadeout {
-  0%   { box-shadow: 0 0 20px 6px rgba(255,255,255,0.40), 0 0 48px 10px rgba(0,164,239,0.30);
-         border-color: rgba(0,164,239,0.5); }
+  0%   { box-shadow: 0 0 20px 6px rgba(255,255,255,0.40), 0 0 48px 10px rgba(var(--accent-blue),0.30);
+         border-color: rgba(var(--accent-blue),0.5); }
   100% { box-shadow: 0 0 0 0 transparent, 0 0 0 0 transparent;
          border-color: rgba(255,255,255,0.12); }
 }
@@ -615,7 +636,7 @@ a.scroll-hint:hover strong {
 }
 
 .section-desc a {
-  color: rgba(0, 164, 239, 0.9);
+  color: rgba(var(--accent-blue), 0.9);
   text-decoration: underline;
   text-underline-offset: 2px;
 }
@@ -639,7 +660,7 @@ a.scroll-hint:hover strong {
 }
 
 .section-blurb a {
-  color: rgba(0, 164, 239, 0.9);
+  color: rgba(var(--accent-blue), 0.9);
   text-decoration: underline;
   text-underline-offset: 2px;
 }
@@ -689,17 +710,17 @@ a.scroll-hint:hover strong {
 }
 
 .section-badge-glow {
-  color: rgba(255, 185, 0, 0.9);
-  background: rgba(255, 185, 0, 0.1);
-  border-color: rgba(255, 185, 0, 0.3);
-  box-shadow: 0 0 8px rgba(255, 185, 0, 0.3), 0 0 20px rgba(255, 185, 0, 0.1);
+  color: rgba(var(--accent-yellow), 0.9);
+  background: rgba(var(--accent-yellow), 0.1);
+  border-color: rgba(var(--accent-yellow), 0.3);
+  box-shadow: 0 0 8px rgba(var(--accent-yellow), 0.3), 0 0 20px rgba(var(--accent-yellow), 0.1);
   animation: win-pulse 2s ease-in-out infinite;
 }
 
 .section-badge-glow:hover {
   color: #fff;
-  background: rgba(255, 185, 0, 0.25);
-  border-color: rgba(255, 185, 0, 0.6);
+  background: rgba(var(--accent-yellow), 0.25);
+  border-color: rgba(var(--accent-yellow), 0.6);
 }
 
 /* Responsive badge text: long on desktop, short on mobile */
@@ -835,7 +856,7 @@ a.scroll-hint:hover strong {
 
 /* Penguin overlay */
 .hero-portrait-penguin {
-  --glow: 0, 164, 239;
+  --glow: var(--accent-blue);
   position: absolute;
   inset: 0;
   display: flex;
@@ -935,7 +956,7 @@ html.light-mode .hero-name .hero-surname {
 }
 
 .hero-tagline strong a {
-  color: rgba(0, 164, 239, 0.95);
+  color: rgba(var(--accent-blue), 0.95);
   transition: color 0.3s;
 }
 
@@ -951,7 +972,7 @@ html.light-mode .hero-name .hero-surname {
 }
 
 .hero-bio strong a {
-  color: rgba(0, 164, 239, 0.85);
+  color: rgba(var(--accent-blue), 0.85);
 }
 
 .hero-links {
@@ -1085,16 +1106,16 @@ html.light-mode .hero-name .hero-surname {
   gap: 5px;
   margin-top: 10px;
   font-size: 12px;
-  color: rgba(0, 164, 239, 0.7);
+  color: rgba(var(--accent-blue), 0.7);
   padding: 4px 10px;
   border-radius: 8px;
-  background: rgba(0, 164, 239, 0.08);
-  border: 1px solid rgba(0, 164, 239, 0.15);
+  background: rgba(var(--accent-blue), 0.08);
+  border: 1px solid rgba(var(--accent-blue), 0.15);
   transition: all 0.3s;
 }
 
 .entry-card .entry-github:hover {
-  background: rgba(0, 164, 239, 0.15);
+  background: rgba(var(--accent-blue), 0.15);
   color: #fff;
 }
 
@@ -1105,12 +1126,12 @@ html.light-mode .hero-name .hero-surname {
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.3px;
-  color: rgba(255, 185, 0, 0.9);
+  color: rgba(var(--accent-yellow), 0.9);
   padding: 4px 10px;
   border-radius: 10px;
-  background: rgba(255, 185, 0, 0.1);
-  border: 1px solid rgba(255, 185, 0, 0.3);
-  box-shadow: 0 0 8px rgba(255, 185, 0, 0.3), 0 0 20px rgba(255, 185, 0, 0.1);
+  background: rgba(var(--accent-yellow), 0.1);
+  border: 1px solid rgba(var(--accent-yellow), 0.3);
+  box-shadow: 0 0 8px rgba(var(--accent-yellow), 0.3), 0 0 20px rgba(var(--accent-yellow), 0.1);
   white-space: nowrap;
   animation: win-pulse 2s ease-in-out infinite;
 }
@@ -1122,12 +1143,12 @@ html.light-mode .hero-name .hero-surname {
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.3px;
-  color: rgba(255, 185, 0, 0.9);
+  color: rgba(var(--accent-yellow), 0.9);
   padding: 5px 12px;
   border-radius: 10px;
-  background: rgba(255, 185, 0, 0.1);
-  border: 1px solid rgba(255, 185, 0, 0.3);
-  box-shadow: 0 0 8px rgba(255, 185, 0, 0.3), 0 0 20px rgba(255, 185, 0, 0.1);
+  background: rgba(var(--accent-yellow), 0.1);
+  border: 1px solid rgba(var(--accent-yellow), 0.3);
+  box-shadow: 0 0 8px rgba(var(--accent-yellow), 0.3), 0 0 20px rgba(var(--accent-yellow), 0.1);
   white-space: nowrap;
   text-decoration: none;
   cursor: pointer;
@@ -1136,33 +1157,33 @@ html.light-mode .hero-name .hero-surname {
 }
 
 .entry-card .entry-play:hover {
-  background: rgba(255, 185, 0, 0.25);
+  background: rgba(var(--accent-yellow), 0.25);
   color: #fff;
-  border-color: rgba(255, 185, 0, 0.6);
+  border-color: rgba(var(--accent-yellow), 0.6);
   transform: scale(1.05);
 }
 
 @keyframes play-pulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(127, 186, 0, 0.3); }
-  50% { box-shadow: 0 0 8px 2px rgba(127, 186, 0, 0.15); }
+  0%, 100% { box-shadow: 0 0 0 0 rgba(var(--accent-green), 0.3); }
+  50% { box-shadow: 0 0 8px 2px rgba(var(--accent-green), 0.15); }
 }
 
 @keyframes win-pulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(255, 185, 0, 0.3); }
-  50% { box-shadow: 0 0 8px 2px rgba(255, 185, 0, 0.15); }
+  0%, 100% { box-shadow: 0 0 0 0 rgba(var(--accent-yellow), 0.3); }
+  50% { box-shadow: 0 0 8px 2px rgba(var(--accent-yellow), 0.15); }
 }
 
 .entry-card .entry-title-highlight {
-  color: rgba(255, 185, 0, 0.9);
-  background: rgba(255, 185, 0, 0.1);
-  border: 1px solid rgba(255, 185, 0, 0.3);
+  color: rgba(var(--accent-yellow), 0.9);
+  background: rgba(var(--accent-yellow), 0.1);
+  border: 1px solid rgba(var(--accent-yellow), 0.3);
   font-weight: 700;
   animation: win-pulse 2s ease-in-out infinite;
 }
 
 @keyframes title-pulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(255, 185, 0, 0.3); }
-  50% { box-shadow: 0 0 8px 2px rgba(255, 185, 0, 0.15); }
+  0%, 100% { box-shadow: 0 0 0 0 rgba(var(--accent-yellow), 0.3); }
+  50% { box-shadow: 0 0 8px 2px rgba(var(--accent-yellow), 0.15); }
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -1232,9 +1253,9 @@ html.light-mode .hero-name .hero-surname {
   flex-shrink: 0;
   order: 10;
   color: #fff;
-  background: rgba(255, 185, 0, 0.18);
-  border: 1px solid rgba(255, 185, 0, 0.45);
-  box-shadow: 0 0 6px rgba(255, 185, 0, 0.25), inset 0 0 4px rgba(255, 185, 0, 0.08);
+  background: rgba(var(--accent-yellow), 0.18);
+  border: 1px solid rgba(var(--accent-yellow), 0.45);
+  box-shadow: 0 0 6px rgba(var(--accent-yellow), 0.25), inset 0 0 4px rgba(var(--accent-yellow), 0.08);
   animation: badgePulse 2.5s ease-in-out infinite;
 }
 
@@ -1246,27 +1267,27 @@ html.light-mode .hero-name .hero-surname {
 }
 
 .card-action-badge.badge-dive {
-  background: rgba(0, 164, 239, 0.15);
-  border: 1px solid rgba(0, 164, 239, 0.45);
-  box-shadow: 0 0 6px rgba(0, 164, 239, 0.3), inset 0 0 4px rgba(0, 164, 239, 0.08);
+  background: rgba(var(--accent-blue), 0.15);
+  border: 1px solid rgba(var(--accent-blue), 0.45);
+  box-shadow: 0 0 6px rgba(var(--accent-blue), 0.3), inset 0 0 4px rgba(var(--accent-blue), 0.08);
   animation: badgePulseDive 2.5s ease-in-out infinite;
 }
 
 @keyframes badgePulse {
-  0%, 100% { box-shadow: 0 0 6px rgba(255, 185, 0, 0.25), inset 0 0 4px rgba(255, 185, 0, 0.08); }
-  50%      { box-shadow: 0 0 14px rgba(255, 185, 0, 0.5), inset 0 0 6px rgba(255, 185, 0, 0.15); }
+  0%, 100% { box-shadow: 0 0 6px rgba(var(--accent-yellow), 0.25), inset 0 0 4px rgba(var(--accent-yellow), 0.08); }
+  50%      { box-shadow: 0 0 14px rgba(var(--accent-yellow), 0.5), inset 0 0 6px rgba(var(--accent-yellow), 0.15); }
 }
 
 @keyframes badgePulseDive {
-  0%, 100% { box-shadow: 0 0 6px rgba(0, 164, 239, 0.3), inset 0 0 4px rgba(0, 164, 239, 0.08); }
-  50%      { box-shadow: 0 0 14px rgba(0, 164, 239, 0.55), inset 0 0 6px rgba(0, 164, 239, 0.15); }
+  0%, 100% { box-shadow: 0 0 6px rgba(var(--accent-blue), 0.3), inset 0 0 4px rgba(var(--accent-blue), 0.08); }
+  50%      { box-shadow: 0 0 14px rgba(var(--accent-blue), 0.55), inset 0 0 6px rgba(var(--accent-blue), 0.15); }
 }
 
 html.light-mode .card-action-badge {
-  color: rgba(255, 185, 0, 0.95);
-  background: rgba(255, 185, 0, 0.12);
-  border-color: rgba(255, 185, 0, 0.35);
-  box-shadow: 0 0 6px rgba(255, 185, 0, 0.15), inset 0 0 4px rgba(255, 185, 0, 0.05);
+  color: rgba(var(--accent-yellow), 0.95);
+  background: rgba(var(--accent-yellow), 0.12);
+  border-color: rgba(var(--accent-yellow), 0.35);
+  box-shadow: 0 0 6px rgba(var(--accent-yellow), 0.15), inset 0 0 4px rgba(var(--accent-yellow), 0.05);
 }
 
 html.light-mode .card-action-badge.badge-dive {
@@ -1395,12 +1416,12 @@ html.light-mode .card-action-badge.badge-static {
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.3px;
-  color: rgba(255, 185, 0, 0.95);
+  color: rgba(var(--accent-yellow), 0.95);
   background: rgba(35, 35, 35, 0.8);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 185, 0, 0.4);
-  box-shadow: 0 0 8px rgba(255, 185, 0, 0.3), 0 0 20px rgba(255, 185, 0, 0.1);
+  border: 1px solid rgba(var(--accent-yellow), 0.4);
+  box-shadow: 0 0 8px rgba(var(--accent-yellow), 0.3), 0 0 20px rgba(var(--accent-yellow), 0.1);
   white-space: nowrap;
   animation: win-pulse 2s ease-in-out infinite;
 }
@@ -1414,10 +1435,10 @@ html.light-mode .card-action-badge.badge-static {
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.3px;
-  color: rgba(255, 185, 0, 0.9);
-  background: rgba(255, 185, 0, 0.1);
-  border: 1px solid rgba(255, 185, 0, 0.3);
-  box-shadow: 0 0 8px rgba(255, 185, 0, 0.3), 0 0 20px rgba(255, 185, 0, 0.1);
+  color: rgba(var(--accent-yellow), 0.9);
+  background: rgba(var(--accent-yellow), 0.1);
+  border: 1px solid rgba(var(--accent-yellow), 0.3);
+  box-shadow: 0 0 8px rgba(var(--accent-yellow), 0.3), 0 0 20px rgba(var(--accent-yellow), 0.1);
   white-space: nowrap;
   text-decoration: none;
   cursor: pointer;
@@ -1426,9 +1447,9 @@ html.light-mode .card-action-badge.badge-static {
 }
 
 .modal-card .modal-subtitle .modal-play-badge:hover {
-  background: rgba(255, 185, 0, 0.25);
+  background: rgba(var(--accent-yellow), 0.25);
   color: #fff;
-  border-color: rgba(255, 185, 0, 0.6);
+  border-color: rgba(var(--accent-yellow), 0.6);
   transform: scale(1.05);
 }
 
@@ -1448,8 +1469,8 @@ html.light-mode .card-action-badge.badge-static {
   margin: 20px 0;
   padding: 24px 28px 20px 28px;
   border: none;
-  border-left: 3px solid rgba(255, 185, 0, 0.4);
-  background: linear-gradient(135deg, rgba(255, 185, 0, 0.06) 0%, rgba(255, 255, 255, 0.02) 100%);
+  border-left: 3px solid rgba(var(--accent-yellow), 0.4);
+  background: linear-gradient(135deg, rgba(var(--accent-yellow), 0.06) 0%, rgba(255, 255, 255, 0.02) 100%);
   border-radius: 0 12px 12px 0;
   font-style: italic;
   color: rgba(255, 255, 255, 0.85);
@@ -1466,7 +1487,7 @@ html.light-mode .card-action-badge.badge-static {
   line-height: 1;
   font-style: normal;
   font-weight: 700;
-  color: rgba(255, 185, 0, 0.25);
+  color: rgba(var(--accent-yellow), 0.25);
   pointer-events: none;
 }
 
@@ -1484,14 +1505,14 @@ html.light-mode .card-action-badge.badge-static {
   font-style: normal;
   font-size: 12px;
   font-weight: 600;
-  color: rgba(255, 185, 0, 0.65);
+  color: rgba(var(--accent-yellow), 0.65);
   letter-spacing: 0.5px;
   text-transform: uppercase;
 }
 
 .modal-card .modal-body blockquote cite::before {
   content: '\2014\00a0';
-  color: rgba(255, 185, 0, 0.35);
+  color: rgba(var(--accent-yellow), 0.35);
 }
 
 .modal-card .modal-body blockquote + blockquote {
@@ -1533,8 +1554,8 @@ html.light-mode .card-action-badge.badge-static {
   margin: 20px 0;
   padding: 16px 16px 12px 16px;
   border: none;
-  border-left: 3px solid rgba(0, 164, 239, 0.35);
-  background: linear-gradient(135deg, rgba(0, 164, 239, 0.06) 0%, rgba(255, 255, 255, 0.02) 100%);
+  border-left: 3px solid rgba(var(--accent-blue), 0.35);
+  background: linear-gradient(135deg, rgba(var(--accent-blue), 0.06) 0%, rgba(255, 255, 255, 0.02) 100%);
   border-radius: 0 12px 12px 0;
 }
 
@@ -1551,7 +1572,7 @@ html.light-mode .card-action-badge.badge-static {
   font-style: normal;
   font-size: 11px;
   font-weight: 600;
-  color: rgba(0, 164, 239, 0.6);
+  color: rgba(var(--accent-blue), 0.6);
   letter-spacing: 0.4px;
   text-transform: uppercase;
   line-height: 1.4;
@@ -1559,11 +1580,11 @@ html.light-mode .card-action-badge.badge-static {
 
 .modal-card .modal-body .modal-figure figcaption::before {
   content: '\2014\00a0';
-  color: rgba(0, 164, 239, 0.3);
+  color: rgba(var(--accent-blue), 0.3);
 }
 
 .modal-card .modal-body a {
-  color: rgba(0, 164, 239, 0.9);
+  color: rgba(var(--accent-blue), 0.9);
   text-decoration: underline;
   text-underline-offset: 2px;
 }
@@ -1613,7 +1634,7 @@ html.light-mode .card-action-badge.badge-static {
 }
 
 .modal-sticky-link {
-  color: rgba(0, 164, 239, 0.9);
+  color: rgba(var(--accent-blue), 0.9);
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.3px;
@@ -1644,8 +1665,8 @@ html.light-mode .card-action-badge.badge-static {
   align-items: center;
   justify-content: center;
   border-radius: 12px;
-  background: rgba(242, 80, 34, 0.85);
-  border: 1px solid rgba(242, 80, 34, 0.4);
+  background: rgba(var(--accent-red), 0.85);
+  border: 1px solid rgba(var(--accent-red), 0.4);
   color: #fff;
   font-size: 22px;
   cursor: pointer;
@@ -1655,9 +1676,9 @@ html.light-mode .card-action-badge.badge-static {
 }
 
 .modal-close:hover {
-  background: rgba(242, 80, 34, 1);
-  box-shadow: 0 0 12px rgba(242, 80, 34, 0.6),
-              0 0 28px rgba(242, 80, 34, 0.3);
+  background: rgba(var(--accent-red), 1);
+  box-shadow: 0 0 12px rgba(var(--accent-red), 0.6),
+              0 0 28px rgba(var(--accent-red), 0.3);
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -1706,7 +1727,7 @@ html.light-mode .bio-modal-card::after {
   font-weight: 700;
   letter-spacing: 0.6px;
   text-transform: uppercase;
-  color: rgba(255, 185, 0, 0.7);
+  color: rgba(var(--accent-yellow), 0.7);
   margin-top: 28px;
   margin-bottom: 12px;
 }
@@ -1743,7 +1764,7 @@ html.light-mode .bio-modal-card::after {
 }
 
 .bio-stat {
-  --bio-glow: 255, 185, 0;
+  --bio-glow: var(--accent-yellow);
   flex: 1 1 0;
   min-width: 0;
   display: flex;
@@ -1772,7 +1793,7 @@ html.light-mode .bio-modal-card::after {
 
 /* ── Bio image viewer (crossfade) ── */
 .bio-img-viewer {
-  --bio-viewer-glow: 255, 185, 0;
+  --bio-viewer-glow: var(--accent-yellow);
   position: relative;
   width: 100%;
   border-radius: 14px;
@@ -1835,8 +1856,8 @@ html.light-mode .bio-modal-card::after {
   position: relative;
   margin: 16px 0;
   padding: 16px 20px;
-  border-left: 3px solid rgba(0, 164, 239, 0.3);
-  background: linear-gradient(135deg, rgba(0, 164, 239, 0.04) 0%, rgba(255, 255, 255, 0.01) 100%);
+  border-left: 3px solid rgba(var(--accent-blue), 0.3);
+  background: linear-gradient(135deg, rgba(var(--accent-blue), 0.04) 0%, rgba(255, 255, 255, 0.01) 100%);
   border-radius: 0 12px 12px 0;
 }
 
@@ -1847,7 +1868,7 @@ html.light-mode .bio-modal-card::after {
 .bio-symbol-block h4 {
   margin: 0 0 8px 0;
   font-size: 14px;
-  color: rgba(0, 164, 239, 0.85);
+  color: rgba(var(--accent-blue), 0.85);
 }
 
 .bio-symbol-block p {
@@ -1861,8 +1882,8 @@ html.light-mode .bio-modal-card::after {
   position: relative;
   margin: 16px 0;
   padding: 16px 20px;
-  border-left: 3px solid rgba(0, 164, 239, 0.3);
-  background: linear-gradient(135deg, rgba(0, 164, 239, 0.04) 0%, rgba(255, 255, 255, 0.01) 100%);
+  border-left: 3px solid rgba(var(--accent-blue), 0.3);
+  background: linear-gradient(135deg, rgba(var(--accent-blue), 0.04) 0%, rgba(255, 255, 255, 0.01) 100%);
   border-radius: 0 12px 12px 0;
 }
 
@@ -1874,7 +1895,7 @@ html.light-mode .bio-modal-card::after {
   display: block;
   margin-bottom: 8px;
   font-size: 14px;
-  color: rgba(0, 164, 239, 0.85);
+  color: rgba(var(--accent-blue), 0.85);
 }
 
 .bio-principle-block p {
@@ -1919,8 +1940,8 @@ html.light-mode .bio-modal-card::after {
 }
 
 @keyframes bio-tour-pulse {
-  0%, 100% { box-shadow: 0 0 12px rgba(255, 185, 0, 0.25), 0 0 24px rgba(255, 185, 0, 0.08); }
-  50%      { box-shadow: 0 0 20px rgba(255, 185, 0, 0.45), 0 0 40px rgba(255, 185, 0, 0.15); }
+  0%, 100% { box-shadow: 0 0 12px rgba(var(--accent-yellow), 0.25), 0 0 24px rgba(var(--accent-yellow), 0.08); }
+  50%      { box-shadow: 0 0 20px rgba(var(--accent-yellow), 0.45), 0 0 40px rgba(var(--accent-yellow), 0.15); }
 }
 
 .bio-tour-glow {
@@ -1934,7 +1955,7 @@ html.light-mode .bio-modal-card::after {
   font-weight: 700;
   letter-spacing: 1.2px;
   text-transform: uppercase;
-  color: rgba(255, 185, 0, 0.5);
+  color: rgba(var(--accent-yellow), 0.5);
   margin-top: 28px !important;
   margin-bottom: 0 !important;
   padding-top: 8px;
@@ -1946,7 +1967,7 @@ html.light-mode .bio-modal-card::after {
 }
 
 #bio-quilt-img:hover {
-  box-shadow: 0 0 20px rgba(255, 185, 0, 0.4), 0 0 40px rgba(255, 185, 0, 0.15);
+  box-shadow: 0 0 20px rgba(var(--accent-yellow), 0.4), 0 0 40px rgba(var(--accent-yellow), 0.15);
   transform: scale(1.01);
 }
 
@@ -2047,7 +2068,7 @@ html.light-mode .bio-modal-card::after {
 }
 
 .game-modal-card .modal-sticky-title {
-  color: rgba(255, 185, 0, 0.9);
+  color: rgba(var(--accent-yellow), 0.9);
 }
 
 .game-embed-wrap {
@@ -2082,7 +2103,7 @@ html.light-mode .bio-modal-card::after {
 }
 
 .link-modal-card .modal-sticky-title {
-  color: rgba(0, 164, 239, 0.9);
+  color: rgba(var(--accent-blue), 0.9);
 }
 
 .link-embed-wrap {
@@ -2245,7 +2266,7 @@ html.light-mode .bio-modal-card::after {
 }
 
 .marp-bom a {
-  color: rgba(0, 164, 239, 0.9);
+  color: rgba(var(--accent-blue), 0.9);
   text-decoration: none;
 }
 
@@ -2331,7 +2352,7 @@ html.light-mode .bio-modal-card::after {
 .deck-section-count {
   font-size: 13px;
   font-weight: 600;
-  color: rgba(255, 185, 0, 0.9);
+  color: rgba(var(--accent-yellow), 0.9);
   margin-left: 4px;
 }
 
@@ -2494,10 +2515,10 @@ html.light-mode .bio-modal-card::after {
 
 /* Card-name links in body text */
 .deck-body a[data-card-link] {
-  color: rgba(0, 164, 239, 0.9);
+  color: rgba(var(--accent-blue), 0.9);
   cursor: pointer;
   text-decoration: none;
-  border-bottom: 1px dotted rgba(0, 164, 239, 0.4);
+  border-bottom: 1px dotted rgba(var(--accent-blue), 0.4);
   transition: color 0.2s, border-color 0.2s;
 }
 
@@ -2508,8 +2529,8 @@ html.light-mode .bio-modal-card::after {
 
 /* Highlight pulse when a card is anchored */
 @keyframes card-anchor-pulse {
-  0%   { box-shadow: 0 0 0 0 rgba(0, 164, 239, 0.7); }
-  40%  { box-shadow: 0 0 20px 8px rgba(0, 164, 239, 0.5); }
+  0%   { box-shadow: 0 0 0 0 rgba(var(--accent-blue), 0.7); }
+  40%  { box-shadow: 0 0 20px 8px rgba(var(--accent-blue), 0.5); }
   100% { box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5); }
 }
 
@@ -2614,16 +2635,16 @@ html.light-mode .bio-modal-card::after {
   font-size: 14px;
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.12);
-  color: rgba(0, 164, 239, 0.8);
+  color: rgba(var(--accent-blue), 0.8);
   transition: all 0.3s ease;
 }
 
 .footer-detail-item:hover .footer-detail-icon {
-  background: rgba(0, 164, 239, 0.15);
-  border-color: rgba(0, 164, 239, 0.4);
+  background: rgba(var(--accent-blue), 0.15);
+  border-color: rgba(var(--accent-blue), 0.4);
   color: #fff;
-  box-shadow: 0 0 8px rgba(0, 164, 239, 0.3),
-              0 0 20px rgba(0, 164, 239, 0.1);
+  box-shadow: 0 0 8px rgba(var(--accent-blue), 0.3),
+              0 0 20px rgba(var(--accent-blue), 0.1);
 }
 
 .footer-detail-desc {
@@ -2640,7 +2661,7 @@ html.light-mode .bio-modal-card::after {
   border-radius: 4px;
   background: rgba(255, 255, 255, 0.07);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  color: rgba(0, 164, 239, 0.85);
+  color: rgba(var(--accent-blue), 0.85);
   transition: all 0.3s ease;
 }
 
@@ -2662,11 +2683,11 @@ html.light-mode .bio-modal-card::after {
 }
 
 .footer-detail-desc a:hover code {
-  background: rgba(0, 164, 239, 0.15);
-  border-color: rgba(0, 164, 239, 0.4);
+  background: rgba(var(--accent-blue), 0.15);
+  border-color: rgba(var(--accent-blue), 0.4);
   color: #fff;
-  box-shadow: 0 0 8px rgba(0, 164, 239, 0.25),
-              0 0 20px rgba(0, 164, 239, 0.1);
+  box-shadow: 0 0 8px rgba(var(--accent-blue), 0.25),
+              0 0 20px rgba(var(--accent-blue), 0.1);
 }
 
 .footer-repo-actions {
@@ -2710,12 +2731,14 @@ html.light-mode .bio-modal-card::after {
 }
 
 .glass-footer a {
-  color: rgba(0, 164, 239, 0.6);
+  color: rgba(var(--accent-blue), 0.6);
 }
+} /* end @layer components */
 
 /* ═══════════════════════════════════════════════════════════════
    SCROLL REVEAL
    ═══════════════════════════════════════════════════════════════ */
+@layer utilities {
 .reveal {
   opacity: 0;
   transform: translateY(30px);
@@ -2831,10 +2854,12 @@ html.light-mode .bio-modal-card::after {
   opacity: 0;
   pointer-events: none;
 }
+} /* end @layer utilities */
 
 /* ═══════════════════════════════════════════════════════════════
    LIGHT MODE
    ═══════════════════════════════════════════════════════════════ */
+@layer theme {
 html.light-mode body {
   color: #1a1a1a;
   background: #ebebeb;
@@ -3081,7 +3106,7 @@ html.light-mode .glass-footer {
 }
 
 html.light-mode .glass-footer a {
-  color: rgba(0, 164, 239, 0.6);
+  color: rgba(var(--accent-blue), 0.6);
 }
 
 /* ── Text & heading colors ────────────────────────────────── */
@@ -3199,17 +3224,17 @@ html.light-mode .section-badge:hover {
 }
 
 html.light-mode .section-badge.section-badge-glow {
-  color: rgba(255, 185, 0, 1);
-  background: rgba(255, 185, 0, 0.8);
-  border-color: rgba(255, 185, 0, 0.4);
-  box-shadow: 0 0 8px rgba(255, 185, 0, 0.25), 0 0 16px rgba(255, 185, 0, 0.1);
+  color: rgba(var(--accent-yellow), 1);
+  background: rgba(var(--accent-yellow), 0.8);
+  border-color: rgba(var(--accent-yellow), 0.4);
+  box-shadow: 0 0 8px rgba(var(--accent-yellow), 0.25), 0 0 16px rgba(var(--accent-yellow), 0.1);
   animation: win-pulse-light 2s ease-in-out infinite;
 }
 
 html.light-mode .section-badge.section-badge-glow:hover {
-  color: rgba(255, 185, 0, 1);
-  background: rgba(255, 185, 0, 0.95);
-  border-color: rgba(255, 185, 0, 0.55);
+  color: rgba(var(--accent-yellow), 1);
+  background: rgba(var(--accent-yellow), 0.95);
+  border-color: rgba(var(--accent-yellow), 0.55);
 }
 
 html.light-mode .section-intro-img {
@@ -3292,31 +3317,31 @@ html.light-mode .modal-sticky-bar {
 /* ── Win / Play badges (card + modal) ─────────────────────── */
 html.light-mode .entry-card .entry-win,
 html.light-mode .modal-card .modal-subtitle .modal-win-badge {
-  color: rgba(255, 185, 0, 1);
-  background: rgba(255, 185, 0, 0.8);
-  border-color: rgba(255, 185, 0, 0.4);
-  box-shadow: 0 0 8px rgba(255, 185, 0, 0.25), 0 0 16px rgba(255, 185, 0, 0.1);
+  color: rgba(var(--accent-yellow), 1);
+  background: rgba(var(--accent-yellow), 0.8);
+  border-color: rgba(var(--accent-yellow), 0.4);
+  box-shadow: 0 0 8px rgba(var(--accent-yellow), 0.25), 0 0 16px rgba(var(--accent-yellow), 0.1);
 }
 
 html.light-mode .entry-card .entry-play,
 html.light-mode .modal-card .modal-subtitle .modal-play-badge {
-  color: rgba(255, 185, 0, 0.95);
-  background: rgba(255, 185, 0, 0.12);
-  border-color: rgba(255, 185, 0, 0.35);
-  box-shadow: 0 0 8px rgba(255, 185, 0, 0.25), 0 0 16px rgba(255, 185, 0, 0.1);
+  color: rgba(var(--accent-yellow), 0.95);
+  background: rgba(var(--accent-yellow), 0.12);
+  border-color: rgba(var(--accent-yellow), 0.35);
+  box-shadow: 0 0 8px rgba(var(--accent-yellow), 0.25), 0 0 16px rgba(var(--accent-yellow), 0.1);
 }
 
 html.light-mode .entry-card .entry-play:hover,
 html.light-mode .modal-card .modal-subtitle .modal-play-badge:hover {
-  background: rgba(255, 185, 0, 0.22);
-  color: rgba(255, 185, 0, 1);
-  border-color: rgba(255, 185, 0, 0.55);
+  background: rgba(var(--accent-yellow), 0.22);
+  color: rgba(var(--accent-yellow), 1);
+  border-color: rgba(var(--accent-yellow), 0.55);
 }
 
 html.light-mode .entry-card .entry-title-highlight {
-  color: rgba(255, 185, 0, 0.95);
-  background: rgba(255, 185, 0, 0.12);
-  border-color: rgba(255, 185, 0, 0.35);
+  color: rgba(var(--accent-yellow), 0.95);
+  background: rgba(var(--accent-yellow), 0.12);
+  border-color: rgba(var(--accent-yellow), 0.35);
 }
 
 /* ── Win / Play badge glow (light mode) ───────────────────── */
@@ -3340,13 +3365,13 @@ html.light-mode .card-action-badge.badge-dive {
 }
 
 @keyframes win-pulse-light {
-  0%, 100% { box-shadow: 0 0 8px rgba(255, 185, 0, 0.25), 0 0 16px rgba(255, 185, 0, 0.1); }
-  50%      { box-shadow: 0 0 14px rgba(255, 185, 0, 0.45), 0 0 24px rgba(255, 185, 0, 0.2); }
+  0%, 100% { box-shadow: 0 0 8px rgba(var(--accent-yellow), 0.25), 0 0 16px rgba(var(--accent-yellow), 0.1); }
+  50%      { box-shadow: 0 0 14px rgba(var(--accent-yellow), 0.45), 0 0 24px rgba(var(--accent-yellow), 0.2); }
 }
 
 @keyframes badgePulse-light {
-  0%, 100% { box-shadow: 0 0 6px rgba(255, 185, 0, 0.15), inset 0 0 4px rgba(255, 185, 0, 0.05); }
-  50%      { box-shadow: 0 0 14px rgba(255, 185, 0, 0.35), inset 0 0 6px rgba(255, 185, 0, 0.1); }
+  0%, 100% { box-shadow: 0 0 6px rgba(var(--accent-yellow), 0.15), inset 0 0 4px rgba(var(--accent-yellow), 0.05); }
+  50%      { box-shadow: 0 0 14px rgba(var(--accent-yellow), 0.35), inset 0 0 6px rgba(var(--accent-yellow), 0.1); }
 }
 
 @keyframes badgePulseDive-light {
@@ -3414,7 +3439,7 @@ html.light-mode .modal-sticky-title {
 }
 
 html.light-mode .game-modal-card .modal-sticky-title {
-  color: rgba(255, 185, 0, 0.95);
+  color: rgba(var(--accent-yellow), 0.95);
 }
 
 html.light-mode .link-modal-card .modal-sticky-title {
@@ -3434,7 +3459,7 @@ html.light-mode .modal-sticky-link:hover {
 
 /* ── Biography modal light overrides ──────────────────────── */
 html.light-mode .bio-modal-card .modal-body h3 {
-  color: rgba(255, 185, 0, 0.85);
+  color: rgba(var(--accent-yellow), 0.85);
 }
 
 html.light-mode .bio-modal-card .modal-body h4 {
@@ -3504,7 +3529,7 @@ html.light-mode .bio-principle-block p {
 }
 
 html.light-mode .bio-colophon {
-  color: rgba(255, 185, 0, 0.55);
+  color: rgba(var(--accent-yellow), 0.55);
 }
 
 html.light-mode .bio-tour-glow {
@@ -3512,8 +3537,8 @@ html.light-mode .bio-tour-glow {
 }
 
 @keyframes bio-tour-pulse-light {
-  0%, 100% { box-shadow: 0 0 12px rgba(255, 185, 0, 0.2), 0 0 24px rgba(255, 185, 0, 0.06); }
-  50%      { box-shadow: 0 0 20px rgba(255, 185, 0, 0.35), 0 0 40px rgba(255, 185, 0, 0.12); }
+  0%, 100% { box-shadow: 0 0 12px rgba(var(--accent-yellow), 0.2), 0 0 24px rgba(var(--accent-yellow), 0.06); }
+  50%      { box-shadow: 0 0 20px rgba(var(--accent-yellow), 0.35), 0 0 40px rgba(var(--accent-yellow), 0.12); }
 }
 
 html.light-mode .tl-ruler-year {
@@ -3585,10 +3610,10 @@ html.light-mode .tl-sliver-meta {
 }
 
 html.light-mode .tl-win {
-  color: rgba(255, 185, 0, 1);
-  background: rgba(255, 185, 0, 0.8);
-  border-color: rgba(255, 185, 0, 0.4);
-  box-shadow: 0 0 4px rgba(255, 185, 0, 0.15);
+  color: rgba(var(--accent-yellow), 1);
+  background: rgba(var(--accent-yellow), 0.8);
+  border-color: rgba(var(--accent-yellow), 0.4);
+  box-shadow: 0 0 4px rgba(var(--accent-yellow), 0.15);
 }
 
 /* ── Scrollbar ────────────────────────────────────────────── */
@@ -3613,10 +3638,12 @@ html.light-mode .outline-pill {
     border-top-color: rgba(0, 0, 0, 0.08);
   }
 }
+} /* end @layer theme */
 
 /* ═══════════════════════════════════════════════════════════════
    RESPONSIVE
    ═══════════════════════════════════════════════════════════════ */
+@layer responsive {
 @media (max-width: 900px) {
   .radio-song { max-width: 100px; }
   .radio-vol-slider { width: 40px; }
@@ -3761,10 +3788,12 @@ html.light-mode .outline-pill {
   .footer-detail-item { gap: 10px; }
   .footer-repo-btn { padding: 7px 14px; font-size: 12px; }
 }
+} /* end @layer responsive */
 
 /* ═══════════════════════════════════════════════════════════════
    REDUCED MOTION — respect user's OS-level preference
    ═══════════════════════════════════════════════════════════════ */
+@layer a11y {
 @media (prefers-reduced-motion: reduce) {
   /* Disable smooth scrolling */
   html { scroll-behavior: auto; }
@@ -3800,9 +3829,33 @@ html.light-mode .outline-pill {
   }
 }
 
+/* ── Screen-reader only (visually hidden, accessible to AT) ── */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ── Focus ring for keyboard-navigated viz nodes ───────────── */
+.kg-node:focus-visible,
+.tl-sliver:focus-visible,
+.mm-node:focus-visible {
+  outline: 2px solid rgb(var(--accent-blue));
+  outline-offset: 3px;
+  z-index: 50;
+}
+} /* end @layer a11y */
+
 /* ═══════════════════════════════════════════════════════════════
    SHARED VISUALIZATION CLASSES — Used by Mermaid, KG & Timeline
    ═══════════════════════════════════════════════════════════════ */
+@layer viz {
 
 /* ── Modal card (pan-zoom modals: mermaid & KG) ────────────── */
 .viz-modal-card {
@@ -4985,10 +5038,10 @@ html.light-mode .viz-filter.filter-pulse {
   padding: 0;
   border-radius: 50%;
   font-size: 8px;
-  color: rgba(255, 185, 0, 0.95);
-  background: rgba(255, 185, 0, 0.1);
-  border: 1px solid rgba(255, 185, 0, 0.3);
-  box-shadow: 0 0 4px rgba(255, 185, 0, 0.25);
+  color: rgba(var(--accent-yellow), 0.95);
+  background: rgba(var(--accent-yellow), 0.1);
+  border: 1px solid rgba(var(--accent-yellow), 0.3);
+  box-shadow: 0 0 4px rgba(var(--accent-yellow), 0.25);
   animation: win-pulse 2s ease-in-out infinite;
   flex-shrink: 0;
   margin-left: auto;
@@ -5497,39 +5550,39 @@ html.light-mode .map-project-node {
 
 /* ── "See MARP" / "See ARCH" badges on the Mermaid tile ──── */
 .card-action-badge.badge-mermaid {
-  background: rgba(127, 186, 0, 0.18);
-  border: 1px solid rgba(127, 186, 0, 0.5);
-  box-shadow: 0 0 6px rgba(127, 186, 0, 0.3), inset 0 0 4px rgba(127, 186, 0, 0.08);
+  background: rgba(var(--accent-green), 0.18);
+  border: 1px solid rgba(var(--accent-green), 0.5);
+  box-shadow: 0 0 6px rgba(var(--accent-green), 0.3), inset 0 0 4px rgba(var(--accent-green), 0.08);
   animation: badgePulseMermaid 2.5s ease-in-out infinite;
   cursor: pointer;
   margin-left: 4px;
 }
 
 @keyframes badgePulseMermaid {
-  0%, 100% { box-shadow: 0 0 6px rgba(127, 186, 0, 0.3), inset 0 0 4px rgba(127, 186, 0, 0.08); }
-  50%      { box-shadow: 0 0 14px rgba(127, 186, 0, 0.55), inset 0 0 6px rgba(127, 186, 0, 0.15); }
+  0%, 100% { box-shadow: 0 0 6px rgba(var(--accent-green), 0.3), inset 0 0 4px rgba(var(--accent-green), 0.08); }
+  50%      { box-shadow: 0 0 14px rgba(var(--accent-green), 0.55), inset 0 0 6px rgba(var(--accent-green), 0.15); }
 }
 
 html.light-mode .card-action-badge.badge-mermaid {
-  color: rgba(127, 186, 0, 0.9);
-  background: rgba(127, 186, 0, 0.1);
-  border-color: rgba(127, 186, 0, 0.4);
-  box-shadow: 0 0 6px rgba(127, 186, 0, 0.15), inset 0 0 4px rgba(127, 186, 0, 0.05);
+  color: rgba(var(--accent-green), 0.9);
+  background: rgba(var(--accent-green), 0.1);
+  border-color: rgba(var(--accent-green), 0.4);
+  box-shadow: 0 0 6px rgba(var(--accent-green), 0.15), inset 0 0 4px rgba(var(--accent-green), 0.05);
 }
 
 /* ── "See TENTIMES" badge on the Diagrams tile ────────────── */
 .card-action-badge.badge-tentimes {
-  background: rgba(0, 164, 239, 0.18);
-  border: 1px solid rgba(0, 164, 239, 0.5);
-  box-shadow: 0 0 6px rgba(0, 164, 239, 0.3), inset 0 0 4px rgba(0, 164, 239, 0.08);
+  background: rgba(var(--accent-blue), 0.18);
+  border: 1px solid rgba(var(--accent-blue), 0.5);
+  box-shadow: 0 0 6px rgba(var(--accent-blue), 0.3), inset 0 0 4px rgba(var(--accent-blue), 0.08);
   animation: badgePulseTentimes 2.5s ease-in-out infinite;
   cursor: pointer;
   margin-left: 4px;
 }
 
 @keyframes badgePulseTentimes {
-  0%, 100% { box-shadow: 0 0 6px rgba(0, 164, 239, 0.3), inset 0 0 4px rgba(0, 164, 239, 0.08); }
-  50%      { box-shadow: 0 0 14px rgba(0, 164, 239, 0.55), inset 0 0 6px rgba(0, 164, 239, 0.15); }
+  0%, 100% { box-shadow: 0 0 6px rgba(var(--accent-blue), 0.3), inset 0 0 4px rgba(var(--accent-blue), 0.08); }
+  50%      { box-shadow: 0 0 14px rgba(var(--accent-blue), 0.55), inset 0 0 6px rgba(var(--accent-blue), 0.15); }
 }
 
 html.light-mode .card-action-badge.badge-tentimes {
@@ -5541,24 +5594,24 @@ html.light-mode .card-action-badge.badge-tentimes {
 
 /* ── "See MTG" badge on the Skilltree tile ─────────────────── */
 .card-action-badge.badge-mtg {
-  background: rgba(255, 185, 0, 0.18);
-  border: 1px solid rgba(255, 185, 0, 0.5);
-  box-shadow: 0 0 6px rgba(255, 185, 0, 0.3), inset 0 0 4px rgba(255, 185, 0, 0.08);
+  background: rgba(var(--accent-yellow), 0.18);
+  border: 1px solid rgba(var(--accent-yellow), 0.5);
+  box-shadow: 0 0 6px rgba(var(--accent-yellow), 0.3), inset 0 0 4px rgba(var(--accent-yellow), 0.08);
   animation: badgePulseMtg 2.5s ease-in-out infinite;
   cursor: pointer;
   margin-left: 4px;
 }
 
 @keyframes badgePulseMtg {
-  0%, 100% { box-shadow: 0 0 6px rgba(255, 185, 0, 0.3), inset 0 0 4px rgba(255, 185, 0, 0.08); }
-  50%      { box-shadow: 0 0 14px rgba(255, 185, 0, 0.55), inset 0 0 6px rgba(255, 185, 0, 0.15); }
+  0%, 100% { box-shadow: 0 0 6px rgba(var(--accent-yellow), 0.3), inset 0 0 4px rgba(var(--accent-yellow), 0.08); }
+  50%      { box-shadow: 0 0 14px rgba(var(--accent-yellow), 0.55), inset 0 0 6px rgba(var(--accent-yellow), 0.15); }
 }
 
 html.light-mode .card-action-badge.badge-mtg {
-  color: rgba(255, 185, 0, 0.9);
-  background: rgba(255, 185, 0, 0.1);
-  border-color: rgba(255, 185, 0, 0.4);
-  box-shadow: 0 0 6px rgba(255, 185, 0, 0.15), inset 0 0 4px rgba(255, 185, 0, 0.05);
+  color: rgba(var(--accent-yellow), 0.9);
+  background: rgba(var(--accent-yellow), 0.1);
+  border-color: rgba(var(--accent-yellow), 0.4);
+  box-shadow: 0 0 6px rgba(var(--accent-yellow), 0.15), inset 0 0 4px rgba(var(--accent-yellow), 0.05);
 }
 
 /* ── MTG modal card ────────────────────────────────────────── */
@@ -5738,10 +5791,12 @@ html.light-mode .mtg-badge {
     font-size: 15px;
   }
 }
+} /* end @layer viz */
 
 /* ═══════════════════════════════════════════════════════════════
    DEV-TOAST — Terminal-style console overlay
    ═══════════════════════════════════════════════════════════════ */
+@layer overlay {
 #dev-toast {
   position: fixed;
   bottom: 16px;
@@ -5827,16 +5882,16 @@ html.light-mode .mtg-badge {
 
 /* ── Toast glow pulses (mirrors tile-glow-pulse pattern) ── */
 @keyframes toast-error-glow {
-  0%, 100% { box-shadow: 0 0 12px 2px rgba(242, 80, 34, 0.2),  0 0 32px 4px rgba(242, 80, 34, 0.1); }
-  50%      { box-shadow: 0 0 20px 6px rgba(242, 80, 34, 0.35), 0 0 48px 10px rgba(242, 80, 34, 0.18); }
+  0%, 100% { box-shadow: 0 0 12px 2px rgba(var(--accent-red), 0.2),  0 0 32px 4px rgba(var(--accent-red), 0.1); }
+  50%      { box-shadow: 0 0 20px 6px rgba(var(--accent-red), 0.35), 0 0 48px 10px rgba(var(--accent-red), 0.18); }
 }
 @keyframes toast-warn-glow {
-  0%, 100% { box-shadow: 0 0 12px 2px rgba(255, 185, 0, 0.15), 0 0 32px 4px rgba(255, 185, 0, 0.08); }
-  50%      { box-shadow: 0 0 20px 6px rgba(255, 185, 0, 0.28), 0 0 48px 10px rgba(255, 185, 0, 0.14); }
+  0%, 100% { box-shadow: 0 0 12px 2px rgba(var(--accent-yellow), 0.15), 0 0 32px 4px rgba(var(--accent-yellow), 0.08); }
+  50%      { box-shadow: 0 0 20px 6px rgba(var(--accent-yellow), 0.28), 0 0 48px 10px rgba(var(--accent-yellow), 0.14); }
 }
 @keyframes toast-log-glow {
-  0%, 100% { box-shadow: 0 0 12px 2px rgba(127, 186, 0, 0.12), 0 0 32px 4px rgba(127, 186, 0, 0.06); }
-  50%      { box-shadow: 0 0 20px 6px rgba(127, 186, 0, 0.22), 0 0 48px 10px rgba(127, 186, 0, 0.11); }
+  0%, 100% { box-shadow: 0 0 12px 2px rgba(var(--accent-green), 0.12), 0 0 32px 4px rgba(var(--accent-green), 0.06); }
+  50%      { box-shadow: 0 0 20px 6px rgba(var(--accent-green), 0.22), 0 0 48px 10px rgba(var(--accent-green), 0.11); }
 }
 
 .dev-toast-prefix {
@@ -5857,44 +5912,44 @@ html.light-mode .mtg-badge {
 /* Clickable link toast */
 .dev-toast-link .dev-toast-msg {
   text-decoration: underline;
-  text-decoration-color: rgba(0, 164, 239, 0.5);
+  text-decoration-color: rgba(var(--accent-blue), 0.5);
   text-underline-offset: 3px;
 }
 .dev-toast-link:hover {
-  border-color: rgba(0, 164, 239, 0.6);
-  background: rgba(0, 164, 239, 0.08);
+  border-color: rgba(var(--accent-blue), 0.6);
+  background: rgba(var(--accent-blue), 0.08);
 }
 
 /* Log level colors */
 .dev-toast-log {
-  border-color: rgba(127, 186, 0, 0.35);
+  border-color: rgba(var(--accent-green), 0.35);
   animation: toast-log-glow 2.4s ease-in-out infinite;
 }
 .dev-toast-log .dev-toast-prefix {
-  color: rgba(127, 186, 0, 0.9);
+  color: rgba(var(--accent-green), 0.9);
 }
 
 .dev-toast-warn {
-  border-color: rgba(255, 185, 0, 0.4);
+  border-color: rgba(var(--accent-yellow), 0.4);
   animation: toast-warn-glow 2.4s ease-in-out infinite;
 }
 .dev-toast-warn .dev-toast-prefix {
-  color: rgba(255, 185, 0, 0.9);
+  color: rgba(var(--accent-yellow), 0.9);
 }
 .dev-toast-warn .dev-toast-msg {
-  color: rgba(255, 185, 0, 0.85);
+  color: rgba(var(--accent-yellow), 0.85);
 }
 
 .dev-toast-error {
-  border-color: rgba(242, 80, 34, 0.45);
+  border-color: rgba(var(--accent-red), 0.45);
   background: rgba(20, 20, 20, 0.45);
   animation: toast-error-glow 2.4s ease-in-out infinite;
 }
 .dev-toast-error .dev-toast-prefix {
-  color: rgba(242, 80, 34, 0.95);
+  color: rgba(var(--accent-red), 0.95);
 }
 .dev-toast-error .dev-toast-msg {
-  color: rgba(242, 80, 34, 0.9);
+  color: rgba(var(--accent-red), 0.9);
 }
 .dev-toast-source {
   display: block;
@@ -5909,8 +5964,8 @@ html.light-mode .mtg-badge {
   white-space: nowrap;
 }
 .dev-toast-error .dev-toast-source {
-  color: rgba(242, 80, 34, 0.8);
-  background: rgba(242, 80, 34, 0.1);
+  color: rgba(var(--accent-red), 0.8);
+  background: rgba(var(--accent-red), 0.1);
 }
 
 /* Stack-trace collapsible dropdown */
@@ -5984,13 +6039,13 @@ html.light-mode .mtg-badge {
 
 /* Level-tinted spinner arcs */
 .dev-toast-error .dev-toast-countdown {
-  stroke: rgba(242, 80, 34, 0.6);
+  stroke: rgba(var(--accent-red), 0.6);
 }
 .dev-toast-warn .dev-toast-countdown {
-  stroke: rgba(255, 185, 0, 0.6);
+  stroke: rgba(var(--accent-yellow), 0.6);
 }
 .dev-toast-log .dev-toast-countdown {
-  stroke: rgba(127, 186, 0, 0.5);
+  stroke: rgba(var(--accent-green), 0.5);
 }
 .dev-toast-stack {
   margin: 8px 0 2px 0;
@@ -6023,36 +6078,36 @@ html.light-mode .mtg-badge {
   flex-shrink: 0;
 }
 .dev-toast-frame-file {
-  color: rgba(0, 164, 239, 0.85);
+  color: rgba(var(--accent-blue), 0.85);
   margin-left: auto;
   flex-shrink: 0;
   text-decoration: underline;
-  text-decoration-color: rgba(0, 164, 239, 0.3);
+  text-decoration-color: rgba(var(--accent-blue), 0.3);
 }
 .dev-toast-error .dev-toast-stack {
   background: rgba(30, 30, 30, 0.35);
-  border-color: rgba(242, 80, 34, 0.12);
+  border-color: rgba(var(--accent-red), 0.12);
 }
 .dev-toast-error .dev-toast-frame-fn {
-  color: rgba(242, 80, 34, 0.85);
+  color: rgba(var(--accent-red), 0.85);
 }
 .dev-toast-error .dev-toast-frame-at {
-  color: rgba(242, 80, 34, 0.4);
+  color: rgba(var(--accent-red), 0.4);
 }
 .dev-toast-error .dev-toast-frame-file {
-  color: rgba(242, 80, 34, 0.85);
-  text-decoration-color: rgba(242, 80, 34, 0.3);
+  color: rgba(var(--accent-red), 0.85);
+  text-decoration-color: rgba(var(--accent-red), 0.3);
 }
 .dev-toast-warn .dev-toast-stack {
   background: rgba(35, 35, 35, 0.3);
-  border-color: rgba(255, 185, 0, 0.12);
+  border-color: rgba(var(--accent-yellow), 0.12);
 }
 .dev-toast-warn .dev-toast-frame-fn {
-  color: rgba(255, 185, 0, 0.85);
+  color: rgba(var(--accent-yellow), 0.85);
 }
 .dev-toast-warn .dev-toast-frame-file {
-  color: rgba(255, 185, 0, 0.85);
-  text-decoration-color: rgba(255, 185, 0, 0.3);
+  color: rgba(var(--accent-yellow), 0.85);
+  text-decoration-color: rgba(var(--accent-yellow), 0.3);
 }
 
 /* Light mode */
@@ -6064,28 +6119,28 @@ html.light-mode #dev-toast .dev-toast-line {
               0 0 40px rgba(0, 0, 0, 0.02);
 }
 html.light-mode .dev-toast-log .dev-toast-prefix {
-  color: rgba(127, 186, 0, 0.85);
+  color: rgba(var(--accent-green), 0.85);
 }
 html.light-mode .dev-toast-warn {
-  border-color: rgba(255, 185, 0, 0.2);
+  border-color: rgba(var(--accent-yellow), 0.2);
 }
 html.light-mode .dev-toast-warn .dev-toast-prefix {
-  color: rgba(255, 185, 0, 0.9);
+  color: rgba(var(--accent-yellow), 0.9);
 }
 html.light-mode .dev-toast-warn .dev-toast-msg {
-  color: rgba(255, 185, 0, 0.85);
+  color: rgba(var(--accent-yellow), 0.85);
 }
 html.light-mode .dev-toast-error {
   background: rgba(250, 250, 250, 0.5);
-  border-color: rgba(242, 80, 34, 0.3);
-  box-shadow: 0 0 15px rgba(242, 80, 34, 0.06),
-              0 0 40px rgba(242, 80, 34, 0.03);
+  border-color: rgba(var(--accent-red), 0.3);
+  box-shadow: 0 0 15px rgba(var(--accent-red), 0.06),
+              0 0 40px rgba(var(--accent-red), 0.03);
 }
 html.light-mode .dev-toast-error .dev-toast-prefix {
-  color: rgba(242, 80, 34, 0.9);
+  color: rgba(var(--accent-red), 0.9);
 }
 html.light-mode .dev-toast-error .dev-toast-msg {
-  color: rgba(242, 80, 34, 0.85);
+  color: rgba(var(--accent-red), 0.85);
 }
 html.light-mode .dev-toast-details summary {
   color: rgba(80, 80, 80, 0.7);
@@ -6094,10 +6149,10 @@ html.light-mode .dev-toast-countdown {
   stroke: rgba(0, 0, 0, 0.2);
 }
 html.light-mode .dev-toast-error .dev-toast-countdown {
-  stroke: rgba(242, 80, 34, 0.45);
+  stroke: rgba(var(--accent-red), 0.45);
 }
 html.light-mode .dev-toast-warn .dev-toast-countdown {
-  stroke: rgba(255, 185, 0, 0.45);
+  stroke: rgba(var(--accent-yellow), 0.45);
 }
 html.light-mode .dev-toast-stack {
   background: rgba(0, 0, 0, 0.05);
@@ -6113,25 +6168,26 @@ html.light-mode .dev-toast-frame-file {
   text-decoration-color: rgba(0, 120, 212, 0.3);
 }
 html.light-mode .dev-toast-error .dev-toast-stack {
-  background: rgba(242, 80, 34, 0.06);
+  background: rgba(var(--accent-red), 0.06);
 }
 html.light-mode .dev-toast-error .dev-toast-frame-fn {
-  color: rgba(242, 80, 34, 0.85);
+  color: rgba(var(--accent-red), 0.85);
 }
 html.light-mode .dev-toast-error .dev-toast-frame-file {
-  color: rgba(242, 80, 34, 0.85);
+  color: rgba(var(--accent-red), 0.85);
 }
 html.light-mode .dev-toast-warn .dev-toast-stack {
-  background: rgba(255, 185, 0, 0.06);
+  background: rgba(var(--accent-yellow), 0.06);
 }
 html.light-mode .dev-toast-warn .dev-toast-frame-fn {
-  color: rgba(255, 185, 0, 0.85);
+  color: rgba(var(--accent-yellow), 0.85);
 }
 html.light-mode .dev-toast-warn .dev-toast-frame-file {
-  color: rgba(255, 185, 0, 0.85);
+  color: rgba(var(--accent-yellow), 0.85);
 }
 
 /* Hide on mobile to avoid clutter */
 @media (max-width: 600px) {
   #dev-toast { display: none; }
 }
+} /* end @layer overlay */

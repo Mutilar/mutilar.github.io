@@ -496,6 +496,9 @@
       const tc = colors[cls] || "255,255,255";
       const el = document.createElement("div");
       el.className = "mm-node";
+      el.setAttribute("tabindex", "0");
+      el.setAttribute("role", "img");
+      el.setAttribute("aria-label", (node.label || node.id) + (node.subtitle ? ", " + node.subtitle : "") + (node.description ? ", " + node.description : ""));
       el.dataset.mmId = node.id;
       if (cls) el.dataset.mmClass = cls;
       el.style.setProperty("--tc", tc);
@@ -1406,6 +1409,20 @@
           _dims = buildDiagram(_ast, _colors, state.world, _svgLayer, _legend.legendIds, function() { return _exploring; });
           state._dims = _dims;
           state.built = true;
+
+          // ── Keyboard navigation (a11y) ─────────────────────────
+          var liveId = cfg.modalId.replace("-modal", "-live");
+          initVizKeyboardNav({
+            modal: modal,
+            getNodes: function () {
+              if (!_dims || !_dims.nodeElements) return [];
+              return Object.values(_dims.nodeElements).map(function (ne) {
+                return { el: ne.el, targetX: ne.x, targetY: ne.y, _hidden: ne.el.classList.contains("mm-filtered") };
+              });
+            },
+            onActivate: function (n) { n.el.click(); },
+            liveRegionId: liveId,
+          });
 
           // Build filter pills from legend
           const pillContainer = document.getElementById(cfg.filterId);

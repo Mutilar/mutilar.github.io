@@ -41,6 +41,7 @@ graph TD
             LICENSETXT["📜 LICENSE.txt"]
             INDEXHTML["📄 INDEX.html"]
             STYLESCSS["🎨 STYLE.css"]
+            FRAGMENTS["🧩 html/ 16 *.html"]
         end
         subgraph ASSETS["📂 MEDIA"]
             direction TB
@@ -113,6 +114,8 @@ graph TD
 
     %% ── 3. INDEX → SCRIPTS (deferred script tags) ──────────
 
+    INDEXHTML -->|"FETCH"| FRAGMENTS
+    FRAGMENTS -->|"innerHTML"| MODALSJS
     INDEXHTML -->|"DEFER"| SCRIPTS
 
     %% ── 4. CDN → SCRIPTS (libs consumed by JS) ─────────────
@@ -164,7 +167,7 @@ graph TD
 
     %% ── NODE CLASSES ────────────────────────────────────────
 
-    class GITHUB,INDEXHTML,READMEMD,LICENSETXT hosting
+    class GITHUB,INDEXHTML,READMEMD,LICENSETXT,FRAGMENTS hosting
     class PDFJS,CNAME,CNAMEFILE config
     class STYLESCSS,FONTAWESOME style
     class CONSOLEJS,SCROLLJS,DATAJS engine

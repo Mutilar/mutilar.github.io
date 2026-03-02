@@ -1464,6 +1464,16 @@ function createSkillTree(cfg) {
 
     _initPanZoom();
     _createExploreHint();
+
+    // ── Keyboard navigation (a11y) ──────────────────────────
+    initVizKeyboardNav({
+      modal: graphModal,
+      getNodes: function () { return _nodes; },
+      onFocus: function (n) { _hoveredNode = n; updateProximityGlow(); },
+      onActivate: function (n) { openModal(n.category, n.item.ID); },
+      liveRegionId: "kg-live",
+    });
+
     graphBuilt = true;
   }
 
@@ -1478,6 +1488,9 @@ function createSkillTree(cfg) {
 
     const el = document.createElement("div");
     el.className = "kg-node";
+    el.setAttribute("tabindex", "0");
+    el.setAttribute("role", "img");
+    el.setAttribute("aria-label", (item.NAME || "").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim());
     el.dataset.theme = theme;
     el.dataset.quadrant = quadrant;
     el.style.setProperty("--tc", cfg.color);

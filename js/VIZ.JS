@@ -401,6 +401,7 @@ function createFilterSystem(cfg) {
     var allActive = activeFilters.size === allThemes.length;
     if (allBtn) {
       allBtn.classList.toggle("active", allActive);
+      allBtn.setAttribute("aria-pressed", allActive ? "true" : "false");
       var indicator = allBtn.querySelector(".all-indicator");
       if (indicator) {
         var isLight = document.documentElement.classList.contains("light-mode");
@@ -410,7 +411,9 @@ function createFilterSystem(cfg) {
       }
     }
     themeBtns.forEach(function (b) {
-      b.classList.toggle("active", activeFilters.has(b.dataset.filter));
+      var isActive = activeFilters.has(b.dataset.filter);
+      b.classList.toggle("active", isActive);
+      b.setAttribute("aria-pressed", isActive ? "true" : "false");
     });
   }
 
@@ -840,4 +843,135 @@ function createTourEngine(cfg) {
     isTouring: function () { return _touring; },
     createHint: createHint,
   };
+}
+
+// ═══════════════════════════════════════════════════════════════
+//  VIZ KEYBOARD NAV — Arrow-key navigation within graph modals
+//
+//  Usage:
+//    initVizKeyboardNav({
+//      modal,            // DOM .modal-overlay element
+//      getNodes,         // () => [{ el, targetX, targetY, _hidden }]
+//      onFocus,          // (node, el) => void  — called when a node gains focus
+//      onActivate,       // (node, el) => void  — called on Enter/Space
+//      liveRegionId,     // id of aria-live element to announce node labels
+//    });
+//
+//  Arrow keys move focus to the nearest visible node in the
+//  pressed direction. Tab cycles sequentially. Enter/Space
+//  activates (click). Escape blurs.
+// ═══════════════════════════════════════════════════════════════
+function initVizKeyboardNav(cfg) {
+  var modal        = cfg.modal;
+  var getNodes     = cfg.getNodes;
+  var onFocus      = cfg.onFocus      || function () {};
+  var onActivate   = cfg.onActivate   || function () {};
+  var liveRegionId = cfg.liveRegionId || null;
+  var _focusedIdx  = -1;
+
+  function _visible() {
+    return getNodes().filter(function (n) { return !n._hidden && n.el; });
+  }
+
+  function _announce(node) {
+    if (!liveRegionId) return;
+    var region = document.getElementById(liveRegionId);
+    if (!region) return;
+    var label = node.el.getAttribute("aria-label") || node.el.title || "";
+    region.textContent = label;
+  }
+
+  function _focusNode(vis, idx) {
+    if (idx < 0 || idx >= vis.length) return;
+    _focusedIdx = idx;
+    vis[idx].el.focus({ preventScroll: true });
+    onFocus(vis[idx], vis[idx].el);
+    _announce(vis[idx]);
+  }
+
+  // Directional: find nearest node in the given direction vector
+  function _findNearest(vis, current, dx, dy) {
+    var cx = current.targetX || 0;
+    var cy = current.targetY || 0;
+    var bestIdx = -1;
+    var bestScore = Infinity;
+
+    for (var i = 0; i < vis.length; i++) {
+      if (vis[i] === current) continue;
+      var nx = (vis[i].targetX || 0) - cx;
+      var ny = (vis[i].targetY || 0) - cy;
+      // Dot product with direction vector: must be positive (in the right direction)
+      var dot = nx * dx + ny * dy;
+      if (dot <= 0) continue;
+      var dist = Math.sqrt(nx * nx + ny * ny);
+      // Penalize off-axis movement: smaller dot/dist ratio = more off-axis
+      var alignment = dot / (dist || 1);
+      var score = dist / (alignment * alignment);
+      if (score < bestScore) {
+        bestScore = score;
+        bestIdx = i;
+      }
+    }
+    return bestIdx;
+  }
+
+  modal.addEventListener("keydown", function (e) {
+    var vis = _visible();
+    if (!vis.length) return;
+
+    // Find the currently focused node in the visible list
+    var activeEl = document.activeElement;
+    var curIdx = -1;
+    for (var i = 0; i < vis.length; i++) {
+      if (vis[i].el === activeEl || vis[i].el.contains(activeEl)) {
+        curIdx = i;
+        break;
+      }
+    }
+
+    var key = e.key;
+
+    if (key === "Tab") {
+      e.preventDefault();
+      var dir = e.shiftKey ? -1 : 1;
+      var next = curIdx < 0 ? 0 : (curIdx + dir + vis.length) % vis.length;
+      _focusNode(vis, next);
+      return;
+    }
+
+    if (key === "Escape") {
+      if (curIdx >= 0) {
+        vis[curIdx].el.blur();
+        _focusedIdx = -1;
+        e.stopPropagation(); // don't close modal on first Escape
+      }
+      return;
+    }
+
+    if (key === "Enter" || key === " ") {
+      if (curIdx >= 0) {
+        e.preventDefault();
+        onActivate(vis[curIdx], vis[curIdx].el);
+      }
+      return;
+    }
+
+    // Arrow key navigation
+    var dx = 0, dy = 0;
+    if (key === "ArrowRight") dx = 1;
+    else if (key === "ArrowLeft") dx = -1;
+    else if (key === "ArrowDown") dy = 1;
+    else if (key === "ArrowUp") dy = -1;
+    else return;
+
+    e.preventDefault();
+    if (curIdx < 0) {
+      // No node focused: pick the first one
+      _focusNode(vis, 0);
+      return;
+    }
+
+    var nearest = _findNearest(vis, vis[curIdx], dx, dy);
+    if (nearest >= 0) _focusNode(vis, nearest);
+  });
 }
