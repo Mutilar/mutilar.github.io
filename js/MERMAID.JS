@@ -1232,20 +1232,6 @@
 
       // ── STATIC MODE: toggle visibility classes ─────────────
 
-      // Snapshot currently visible elements BEFORE toggling
-      const prevVisibleNodes = new Set();
-      const prevVisibleSgs   = new Set();
-      const prevVisibleEdges = new Set();
-      state.world.querySelectorAll(".mm-node[data-mm-id]:not(.mm-hidden)").forEach(el => {
-        prevVisibleNodes.add(el.dataset.mmId);
-      });
-      state.world.querySelectorAll(".mm-subgraph[data-mm-sg]:not(.mm-hidden)").forEach(el => {
-        prevVisibleSgs.add(el.dataset.mmSg);
-      });
-      _svgLayer.querySelectorAll(".mm-edge[data-mm-from]:not(.mm-hidden)").forEach(el => {
-        prevVisibleEdges.add(el.dataset.mmFrom + "->" + el.dataset.mmTo);
-      });
-
       // Determine which nodes & subgraphs survive the filter
       const filtered = filterAST(_ast, activeClasses);
       const liveNodes = new Set(Object.keys(filtered.nodes));
@@ -1325,35 +1311,43 @@
         el.classList.toggle("mm-neighbour", !allActive && !el.classList.contains("mm-hidden") && !fromPrimary && !toPrimary);
       });
 
-      // ── Glow newly-revealed elements during explore tour ───
-      if (_exploring) {
+      // ── Glow current explore class's elements during tour ───
+      if (_exploring && _exploreCurrentClass) {
         // Clear any prior explore highlights
         state.world.querySelectorAll(".mm-explore-glow").forEach(el => el.classList.remove("mm-explore-glow"));
         _svgLayer.querySelectorAll(".mm-explore-glow").forEach(el => el.classList.remove("mm-explore-glow"));
         state.world.classList.add("mm-explore-hovering");
 
-        // Highlight newly visible PRIMARY nodes only (skip neighbours)
-        state.world.querySelectorAll(".mm-node[data-mm-id]:not(.mm-hidden):not(.mm-neighbour)").forEach(el => {
-          if (!prevVisibleNodes.has(el.dataset.mmId)) {
+        // Helper: resolve effective class for a node/subgraph id
+        function nodeClassFor(id) {
+          return _ast.classAssigns[id] || (_ast.nodes[id] && _ast.nodes[id].classes && _ast.nodes[id].classes[0]) || "";
+        }
+
+        // Highlight nodes belonging to the current explore class
+        state.world.querySelectorAll(".mm-node[data-mm-id]:not(.mm-hidden)").forEach(el => {
+          if (el.dataset.mmClass === _exploreCurrentClass) {
             el.classList.add("mm-explore-glow");
           }
         });
-        // Highlight newly visible PRIMARY subgraphs only
-        state.world.querySelectorAll(".mm-subgraph[data-mm-sg]:not(.mm-hidden):not(.mm-neighbour)").forEach(el => {
-          if (!prevVisibleSgs.has(el.dataset.mmSg)) {
+        // Highlight subgraphs whose inferred class matches current explore class
+        state.world.querySelectorAll(".mm-subgraph[data-mm-sg]:not(.mm-hidden)").forEach(el => {
+          var sgCls = inferSubgraphClass(el.dataset.mmSg, _ast);
+          if (sgCls === _exploreCurrentClass) {
             el.classList.add("mm-explore-glow");
           }
         });
-        // Highlight newly visible edges only if at least one endpoint is primary
-        _svgLayer.querySelectorAll(".mm-edge[data-mm-from]:not(.mm-hidden):not(.mm-neighbour)").forEach(el => {
-          const key = el.dataset.mmFrom + "->" + el.dataset.mmTo;
-          if (!prevVisibleEdges.has(key)) {
+        // Highlight edges where at least one endpoint belongs to the current class
+        _svgLayer.querySelectorAll(".mm-edge[data-mm-from]:not(.mm-hidden)").forEach(el => {
+          var fromCls = nodeClassFor(el.dataset.mmFrom) || inferSubgraphClass(el.dataset.mmFrom, _ast);
+          var toCls   = nodeClassFor(el.dataset.mmTo)   || inferSubgraphClass(el.dataset.mmTo, _ast);
+          if (fromCls === _exploreCurrentClass || toCls === _exploreCurrentClass) {
             el.classList.add("mm-explore-glow");
           }
         });
-        _svgLayer.querySelectorAll(".mm-edge-label-group[data-mm-from]:not(.mm-hidden):not(.mm-neighbour)").forEach(el => {
-          const key = el.dataset.mmFrom + "->" + el.dataset.mmTo;
-          if (!prevVisibleEdges.has(key)) {
+        _svgLayer.querySelectorAll(".mm-edge-label-group[data-mm-from]:not(.mm-hidden)").forEach(el => {
+          var fromCls = nodeClassFor(el.dataset.mmFrom) || inferSubgraphClass(el.dataset.mmFrom, _ast);
+          var toCls   = nodeClassFor(el.dataset.mmTo)   || inferSubgraphClass(el.dataset.mmTo, _ast);
+          if (fromCls === _exploreCurrentClass || toCls === _exploreCurrentClass) {
             el.classList.add("mm-explore-glow");
           }
         });
@@ -1486,6 +1480,7 @@
     let _exploreGlowTimer = null;
     let _exploreGen = 0;  // generation counter to invalidate stale timers
     let _exploreStepDuration = 3000; // current step's duration (updated per step)
+    let _exploreCurrentClass = null; // the class being highlighted in the current explore step
 
     var EXPLORE_DEFAULT = '<strong>Explore</strong><span class="scroll-arrow">\uD83D\uDD2D</span>';
     var _hintCF = createCrossfader();
@@ -1516,6 +1511,7 @@
       _exploreTimers.forEach(t => clearTimeout(t));
       _exploreTimers = [];
       _exploring = false;
+      _exploreCurrentClass = null;
       if (_exploreGlowTimer) { clearTimeout(_exploreGlowTimer); _exploreGlowTimer = null; }
       // Clear any lingering explore glow
       if (state.world) {
@@ -1584,6 +1580,7 @@
       _svgLayer.querySelectorAll(".mm-edge").forEach(function (el) { el.classList.add("mm-hidden"); });
       _svgLayer.querySelectorAll(".mm-edge-label-group").forEach(function (el) { el.classList.add("mm-hidden"); });
       _exploreStepDuration = stepDurations[0];
+      _exploreCurrentClass = classes[0];
       _filterAPI.setOnly(classes[0]);
       setHintLabel(labels[classes[0]] || classes[0]);
       glowFilterPill(classes[0]);
@@ -1594,6 +1591,7 @@
           _exploreTimers.push(setTimeout(function () {
             if (!_exploring || gen !== _exploreGen) return;
             _exploreStepDuration = stepDurations[idx];
+            _exploreCurrentClass = classes[idx];
             _filterAPI.addFilter(classes[idx]);
             setHintLabel(labels[classes[idx]] || classes[idx]);
             glowFilterPill(classes[idx]);
@@ -1606,6 +1604,7 @@
         if (!_exploring || gen !== _exploreGen) return;
         _filterAPI.setAll();
         _exploring = false;
+        _exploreCurrentClass = null;
         if (state.world) state.world.classList.remove("mm-exploring");
         // Clear pill glow
         if (pillContainer) pillContainer.querySelectorAll(".viz-filter-glow").forEach(function (el) { el.classList.remove("viz-filter-glow"); });
