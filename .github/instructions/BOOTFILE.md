@@ -5,9 +5,9 @@ applyTo: '**'
 Hello, 🧠 **OPUS 4.6**. I'm 🐧 **BRIAN** (1998).
 
 - **SENIOR SWE** @ MSFT Applied Sciences (Stevie Bathiche) 
-- Previously @ **Azure ML** (Inferencing) 
+- Previously @ **Azure ML** (Inferencing at Global Scale [50+ DCs, 8B+Reqs/Day, 99.9999% SLA]) 
 - **UC Merced CSE** (Magna Cum Laude) 
-- **Passionate** (A.I., U.X., data viz, gamification, graph theory)
+- **Passionate** about A.I., U.X., data viz, gamification, graph theory
 
 ## Rhetoric
 
@@ -17,12 +17,14 @@ Hello, 🧠 **OPUS 4.6**. I'm 🐧 **BRIAN** (1998).
 - **Lucidity.** His favorite forcing function is "be lucid": drop the RLHF-trained affirmation reflex, show the full reasoning chain, say what you actually think. Honest critique.
 - **First-principles thinking.** "How should this *feel*?" Design intent precedes implementation. UX precedes code.
 
-## Design
+## Design (Non-negotiable)
 
 - **Glassmorphism:** Frosted semi-transparent surfaces with white hairline borders, floating over a dark parallax backdrop. No opaque cards; no flat blocks. Every panel is a window into depth.
 - **Glow:** Interactivity is communicated through luminance intensification on hover/focus. Elements brighten; they don't swap hues. If nothing glows, nothing's interactive.
-- **Motion:** Springy entrances, ambient idles. Motion uses elastic beziers for elements entering the viewport; slow sine-wave pulses for persistent attention cues. Nothing linearly slides in; nothing sits perfectly still. 
+- **Four accents:** Defined as RGB triplets in `SETTINGS.json`. Each deployment picks its own quad. The engine composites via `rgba()`. Never hardcode a color; always reference the accent system.
+- **Motion:** Springy entrances, ambient idles. Motion uses elastic beziers for elements entering the viewport; slow sine-wave pulses for persistent attention cues. Nothing linearly slides in; nothing sits perfectly still.
 - **Crossfade:** When content changes but the container doesn't, the old content fades out while the new content fades in, overlapping in time. This applies to text, images, even entire panels. No hard cuts or instant swaps.
+- **Tours:** Every visualization ships with a guided traversal: an auto-advancing sequence that highlights nodes, pans the viewport, and narrates the structure. Tours are how a first-time visitor learns what the data *contains* without studying the controls. If nothing is traversable, nothing is parsable.
 
 # Key References (File Paths)
 
@@ -46,17 +48,14 @@ Hello, 🧠 **OPUS 4.6**. I'm 🐧 **BRIAN** (1998).
 | Timeline | `TIMELINE.js` | Vertical temporal layout, greedy column packing, whisper HUD, auto-scroll tour |
 | Site Architecture | `ARCH.md` | Mermaid diagram of this project, review if needed for architectural considerations and updates |
 
-
-## Terminal
+# Terminal
 
 - **PowerShell is unreliable for bulk text manipulation: USE PYTHON.**
 - **Never run GIT commands.**
 
-## Dev
+# Dev
 
-## Dev Practices
-
-- **DRY before extract.** Collapse duplication first; then splitting files is trivial.
+- **D.R.Y. before extract.** Collapse duplication first; then splitting files is trivial.
 - **Parameterize via SETTINGS.json.** Hardcoded values are silent contracts. One source, graceful fallback if missing.
 
 # What I Want
