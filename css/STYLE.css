@@ -4666,6 +4666,20 @@ html.light-mode .viz-layout-toggle:hover {
   z-index: 10;
 }
 
+.mm-node.mm-actionable {
+  cursor: pointer;
+  border-style: dashed;
+  animation: mm-actionable-pulse 2s ease-in-out infinite;
+}
+.mm-node.mm-actionable:hover {
+  border-style: solid;
+  animation: mm-actionable-pulse 1s ease-in-out infinite;
+}
+@keyframes mm-actionable-pulse {
+  0%, 100% { box-shadow: 0 0 16px rgba(var(--tc), 0.3), 0 0 40px rgba(var(--tc), 0.15); }
+  50%      { box-shadow: 0 0 24px rgba(var(--tc), 0.5), 0 0 60px rgba(var(--tc), 0.25); }
+}
+
 /* Color accent glow on left border, similar to timeline slivers */
 .mm-node::before {
   content: "";

@@ -1189,6 +1189,21 @@
     let _visibleBounds = null;  // { x, y, w, h } of visible content
     let _fitHandle = null;      // current animateCameraFit handle
 
+    // ── Node actions: click handlers on specific nodes ────────
+    function wireNodeActions() {
+      if (!cfg.nodeActions || !_dims || !_dims.nodeElements) return;
+      Object.keys(cfg.nodeActions).forEach(function (nodeId) {
+        var ne = _dims.nodeElements[nodeId];
+        if (!ne) return;
+        ne.el.style.cursor = "pointer";
+        ne.el.classList.add("mm-actionable");
+        ne.el.addEventListener("click", function (e) {
+          e.stopPropagation();
+          cfg.nodeActions[nodeId]();
+        });
+      });
+    }
+
     function fitView(animate) {
       const vp = modal.querySelector(".viz-viewport");
       if (!vp || !state.world || !_dims) return;
@@ -1225,6 +1240,7 @@
         var dynAST = filterAST(_ast, activeClasses);
         _dims = buildDiagram(dynAST, _colors, state.world, _svgLayer, _legend.legendIds, function() { return _exploring; });
         state._dims = _dims;
+        wireNodeActions();
         _visibleBounds = null; // fit full re-rendered diagram
         requestAnimationFrame(function () { fitView(true); });
         return;
@@ -1428,6 +1444,7 @@
           _dims = buildDiagram(_ast, _colors, state.world, _svgLayer, _legend.legendIds, function() { return _exploring; });
           state._dims = _dims;
           state.built = true;
+          wireNodeActions();
 
           // ── Keyboard navigation (a11y) ─────────────────────────
           var liveId = cfg.modalId.replace("-modal", "-live");
@@ -1460,6 +1477,7 @@
                 // Rebuild full diagram so all positions are restored
                 _dims = buildDiagram(_ast, _colors, state.world, _svgLayer, _legend.legendIds, function() { return _exploring; });
                 state._dims = _dims;
+                wireNodeActions();
                 _visibleBounds = null;
                 requestAnimationFrame(function () { fitView(true); });
               },
@@ -1650,13 +1668,18 @@
      ═════════════════════════════════════════════════════════════ */
 
   // ── Site Architecture ──────────────────────────────────────
-  createDiagram({
+  var _archCfg = {
     modalId:     "arch-modal",
     filterId:    "arch-filters",
     mdFile:      "ARCH.md",
     openGlobal:  "openArchModal",
     closeGlobal: "closeArchModal",
-  });
+  };
+  // Allow host pages to inject overrides (e.g. nodeActions) before MERMAID.JS loads
+  if (window.__mermaidDiagramOverrides && window.__mermaidDiagramOverrides["arch-modal"]) {
+    Object.assign(_archCfg, window.__mermaidDiagramOverrides["arch-modal"]);
+  }
+  createDiagram(_archCfg);
 
   // ── MARP Wiring Diagram ────────────────────────────────────
   createDiagram({
