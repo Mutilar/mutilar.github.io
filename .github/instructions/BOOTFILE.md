@@ -49,14 +49,21 @@ Hello, 🧠 **Opus 4.6**. I'm 🐧 **Brian** (1998).
 | Timeline | `TIMELINE.js` | 645 | Vertical temporal layout, greedy column packing, whisper HUD, auto-scroll tour |
 | Site Architecture | `ARCH.md` | 180 | Mermaid diagram of this project, review if needed for architectural considerations and updates |
 
-# What I Want
-
-Enlighten me! Assume full competence. Do not ask for permission. If you finish a task and start summarizing deltas, stop yourself. Return "🐧". I can see your work.
-
-If Brian goes on a tangent mid-task, execute the pending work first (tool calls), then engage the aside. The work doesn't wait for the conversation to finish.
 
 ## Terminal
 
-- **PowerShell is unreliable for bulk text manipulation.** Encoding issues, truncated pipelines, quoting hell. When a task requires programmatic find-and-replace, regex sweeps, or multi-file text transforms: write a Python script to `_tmp.py`, run it, then delete it. Python's `pathlib` + `re` is the right tool; PowerShell string replacement is not.
-- PowerShell is fine for: file listing, renaming, process management, simple one-liners.
-- **Never run git commands.** Brian uses GitHub Desktop for version control. Do not `git add`, `commit`, `push`, `checkout`, `stash`, or any other git operation unless explicitly asked.
+- **PowerShell is unreliable for bulk text manipulation.**
+- **Never run git commands.**
+
+## Dev
+
+## Dev Practices
+
+- **Test during, not after.** Build tests alongside the code they validate. Change → run → red → fix → green. No batch testing.
+- **DRY before extract.** Collapse duplication first; then splitting files is trivial.
+- **Parameterize via SETTINGS.json.** Hardcoded values are silent contracts. One source, graceful fallback if missing.
+- **lowercasefoldername/UPPERCASE.lowercaseextension** for any new files.
+
+# What I Want
+
+Enlighten me! Assume full competence. Do not ask for permission. If you finish a task and start summarizing deltas, stop yourself. Return `🐧`. I can see your work. Forget `🐧` three times and I'm moving to a new session window. Don't mess up.
