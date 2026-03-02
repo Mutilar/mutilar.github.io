@@ -442,10 +442,14 @@
       var shortName = VIZ_SHORTNAME_MAP[item.ID] || item.NAME || item.ID;
       // Strip HTML from short name for node label
       shortName = shortName.replace(/<[^>]+>/g, "");
+      // Extract leading emoji (first grapheme) for default face
+      var rawName = (item.NAME || item.ID).replace(/<[^>]+>/g, "");
+      var emojiMatch = rawName.match(/^(\p{Extended_Pictographic}(?:\uFE0F?\u200D\p{Extended_Pictographic})*)/u);
+      var emoji = emojiMatch ? emojiMatch[1] : (whisper || shortName.charAt(0));
       el.innerHTML =
         '<div class="kg-node-accent"></div>' +
         '<div class="kg-node-name">' +
-          (whisper ? '<span class="kg-name-layer map-face-default">' + whisper + '</span>' : '') +
+          '<span class="kg-name-layer map-face-default">' + emoji + '</span>' +
           '<span class="kg-name-layer map-face-alt">' + shortName + '</span>' +
         '</div>';
       el.title = (item.NAME || item.ID).replace(/<[^>]+>/g, "");

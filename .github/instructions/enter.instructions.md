@@ -2,7 +2,7 @@
 applyTo: '**'
 ---
 
-Hello, **Opus 4.**. I'm **Brian** (1998).
+Hello, **Opus 4.6**. I'm **Brian** (1998).
 
 # About Me
 

@@ -1533,6 +1533,11 @@ html.light-mode .card-action-badge.badge-static {
   margin: 0;
 }
 
+/* Guarantee two-line height so crossfades don't shift */
+.bio-quote-viewer .bio-quote-layer p {
+  min-height: 3.2em;
+}
+
 .modal-card .modal-body .modal-figure {
   position: relative;
   margin: 20px 0;
@@ -1741,14 +1746,16 @@ html.light-mode .bio-modal-card::after {
 }
 
 .bio-stat-row {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  display: flex;
+  flex-wrap: wrap;
   gap: 10px;
   margin-bottom: 20px;
 }
 
 .bio-stat {
   --bio-glow: 255, 215, 0;
+  flex: 1 1 0;
+  min-width: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1817,14 +1824,13 @@ html.light-mode .bio-modal-card::after {
   font-size: 10px;
   font-weight: 600;
   letter-spacing: 0.5px;
-  text-transform: uppercase;
   color: rgba(var(--bio-glow), 0.7);
   margin-top: 4px;
 }
 
 @media (max-width: 480px) {
   .bio-stat-row {
-    grid-template-columns: repeat(2, 1fr);
+    justify-content: center;
   }
 }
 
@@ -3994,6 +4000,28 @@ html.light-mode .mtg-filter.viz-filter-glow {
   border-radius: 20px;
 }
 
+.viz-viewport::after {
+  content: "";
+  position: absolute;
+  inset: 0 0 -1px 0;
+  pointer-events: none;
+  z-index: 3;
+  border-radius: inherit;
+  background:
+    linear-gradient(to bottom, rgba(18,18,24,0.8) 0%, transparent 100px),
+    linear-gradient(to top,    rgba(18,18,24,0.8) 0%, transparent 100px),
+    linear-gradient(to right,  rgba(18,18,24,0.8) 0%, transparent 100px),
+    linear-gradient(to left,   rgba(18,18,24,0.8) 0%, transparent 100px);
+}
+
+html.light-mode .viz-viewport::after {
+  background:
+    linear-gradient(to bottom, rgba(240,240,245,0.8) 0%, transparent 100px),
+    linear-gradient(to top,    rgba(240,240,245,0.8) 0%, transparent 100px),
+    linear-gradient(to right,  rgba(240,240,245,0.8) 0%, transparent 100px),
+    linear-gradient(to left,   rgba(240,240,245,0.8) 0%, transparent 100px);
+}
+
 /* ── World (transform container — mermaid & KG) ───────────── */
 .viz-world {
   position: absolute;
@@ -4623,6 +4651,38 @@ html.light-mode .mm-edge-label-group.mm-explore-glow text {
   cursor: grab;
   user-select: none;
   -webkit-user-select: none;
+}
+
+.timeline-modal-card::before,
+.timeline-modal-card::after {
+  content: "";
+  display: block;
+  position: sticky;
+  height: 100px;
+  margin-left: -40px;
+  margin-right: -40px;
+  pointer-events: none;
+  z-index: 4;
+}
+
+.timeline-modal-card::before {
+  top: 0;
+  background: linear-gradient(to bottom, rgba(18,18,24,1) 0%, transparent 100%);
+  margin-bottom: -100px;
+}
+
+.timeline-modal-card::after {
+  bottom: 0;
+  background: linear-gradient(to top, rgba(18,18,24,1) 0%, transparent 100%);
+  margin-top: -100px;
+}
+
+html.light-mode .timeline-modal-card::before {
+  background: linear-gradient(to bottom, rgba(240,240,245,1) 0%, transparent 100%);
+}
+
+html.light-mode .timeline-modal-card::after {
+  background: linear-gradient(to top, rgba(240,240,245,1) 0%, transparent 100%);
 }
 
 .timeline-modal-card .modal-sticky-bar {

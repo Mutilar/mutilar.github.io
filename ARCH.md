@@ -43,16 +43,16 @@ graph TD
             STYLESCSS["🎨 STYLE.css"]
         end
         subgraph ASSETS["📂 MEDIA"]
-            direction LR
+            direction TB
             subgraph DOCS["📎 DOCS"]
-                direction TB
+                direction LR
                 PORTFOLIOJSON["📋 PORTFOLIO.json"]
                 CARDSCSV["🃏 CARDS.csv"]
                 RESUME["📄 3 *.PDF"]
                 ARCHMD["🧜‍♀️ *.MD"]
             end
             subgraph MEDIAFILES["🎞️ MEDIA"]
-                direction TB
+                direction LR
                 PNGS["📸 350 *.png, *.gif"]
                 GIFS["🎞️ 6 *.gif"]
                 GAMEBUILDS["🎮 6 *.unityweb"]
@@ -70,14 +70,18 @@ graph TD
                 VIZJS["📈 VIZ.js"]
                 RADIOJS["🎵 RADIO.js"]
             end
+            subgraph VIZ["🗺️ VIZ"]
+                direction LR
+                VIZJS["📈 VIZ.js"]
+                SKILLTREEJS["🧭 SKILLTREE.js"]
+                MERMAIDVIEWJS["🧜 MERMAID.js"]
+                TIMELINEJS["🕰️ TIMELINE.js"]
+            end
             subgraph UI["🌌 U.I."]
                 direction LR
                 THEMEJS["🌓 THEME.js"]
                 PARALLAXJS["🫧 PARALLAX.js"]
                 pdfJS["📕 PDF.js"]
-                SKILLTREEJS["🧭 SKILLTREE.js"]
-                MERMAIDVIEWJS["🧜 MERMAID.js"]
-                TIMELINEJS["🕰️ TIMELINE.js"]
             end
         end
     end
