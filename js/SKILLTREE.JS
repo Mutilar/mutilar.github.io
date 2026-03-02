@@ -1269,7 +1269,12 @@ function createSkillTree(cfg) {
         _graphWorld.appendChild(el);
 
         const wEmoji = VIZ_WHISPER_MAP[it.item.ID];
-        const wList = wEmoji ? [wEmoji] : [];
+        const rawN = (it.item.NAME || "").replace(/<[^>]+>/g, " ").replace(/[ \t]+/g, " ").trim();
+        const emRe = /^([\p{Emoji_Presentation}\p{Extended_Pictographic}\uFE0F\u200D]+(?:\s*[\p{Emoji_Presentation}\p{Extended_Pictographic}\uFE0F\u200D]+)*)\s*/u;
+        const emM = rawN.match(emRe);
+        const emP = emM ? emM[1] : "";
+        const gName = VIZ_SHORTNAME_MAP[it.item.ID] || (emM ? rawN.slice(emM[0].length) : rawN).replace(/\s+/g, " ").trim() || rawN;
+        const wList = [wEmoji || emP || gName.charAt(0)];
         const nameLayer = el.querySelector(".kg-name-layer:not(.kg-name-whisper)");
         const whisperLayers = Array.from(el.querySelectorAll(".kg-name-whisper"));
 
@@ -1510,7 +1515,9 @@ function createSkillTree(cfg) {
 
     const graphName = VIZ_SHORTNAME_MAP[item.ID] || _graphBreakText(textPart);
     const wEmoji = VIZ_WHISPER_MAP[item.ID];
-    const whispers = wEmoji ? [wEmoji] : [];
+    // Cascade matches MAP.JS: whisper map → leading emoji → first char of shortname
+    const whisperFace = wEmoji || emojiPrefix || graphName.charAt(0);
+    const whispers = [whisperFace];
 
     el.innerHTML =
       `<div class="kg-node-accent" style="background:radial-gradient(circle at 30% 30%, rgba(${cfg.color},0.15) 0%, transparent 70%);"></div>` +

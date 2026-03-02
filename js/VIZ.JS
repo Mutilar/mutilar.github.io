@@ -713,9 +713,8 @@ function createCrossfader() {
 //      updateGlow,        // fn() — proximity glow refresh
 //      glowPills,         // fn() — highlight active filter buttons
 //      clearPillGlow,     // fn() — remove all pill glow
-//      stepDelay,         // ms between steps (default 6000)
-//      settleDelay,       // ms before camera fit (default 700)
-//      nameShowDuration,  // ms to show names before reverting (default 4000)
+//      stepDelay,         // ms between steps (default 2000)
+//      settleDelay,       // ms before camera fit (default 500)
 //    });
 //    // Returns { start, stop, isTouring, createHint }
 // ═══════════════════════════════════════════════════════════════
@@ -733,7 +732,6 @@ function createTourEngine(cfg) {
   var clearPillGlow   = cfg.clearPillGlow  || function () {};
   var STEP_DELAY      = cfg.stepDelay         || 2000;
   var SETTLE_DELAY    = cfg.settleDelay       || 500;
-  var NAME_SHOW_DUR   = cfg.nameShowDuration  || 2000;
 
   var _timers  = [];
   var _gen     = 0;
@@ -787,6 +785,7 @@ function createTourEngine(cfg) {
 
     // Apply first step immediately
     applyStep(steps[0], 0);
+    setShowNames(true);
 
     steps.forEach(function (step, idx) {
       var delay = initialDelay + idx * STEP_DELAY;
@@ -802,13 +801,8 @@ function createTourEngine(cfg) {
         _timers.push(setTimeout(function () {
           if (!_touring || gen !== _gen) return;
           fitCamera();
-        }, SETTLE_DELAY));
-
-        _timers.push(setTimeout(function () {
-          if (!_touring || gen !== _gen) return;
-          setShowNames(false);
           updateGlow();
-        }, NAME_SHOW_DUR));
+        }, SETTLE_DELAY));
 
       }, delay));
     });

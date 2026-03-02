@@ -13,8 +13,8 @@ graph TD
             L3["🎨 STYLE"]:::style
             L4["📦 DATA"]:::data
             L5["🔩 ENGINE"]:::engine
-            L6["🗺️ VIZ"]:::aes
-            L7["🌌 U.I."]:::aes
+            L6["🗺️ RENDER"]:::aes
+            L7["🌌 U.I."]:::ui
             L8["🧠 U.X."]:::ux
             L9["👆 H.C.I."]:::hci
         end
@@ -69,22 +69,22 @@ graph TD
                 CONSOLEJS["🔎 CONSOLE.js"]
                 SCROLLJS["📜 SCROLL.js"]
                 DATAJS["📊 DATA.js"]
-                VIZJS["📈 VIZ.js"]
                 RADIOJS["🎵 RADIO.js"]
-            end
-            subgraph ENGINEVIZ["🗺️ VIZ"]
-                direction LR
-                SKILLTREEJS["🧭 SKILLTREE.js"]
-                MERMAIDVIEWJS["🧜 MERMAID.js"]
-                TIMELINEJS["🕰️ TIMELINE.js"]
-                MAPJS["🌌 MAP.js"]
             end
             subgraph ENGINEUI["🌌 U.I."]
                 direction LR
                 THEMEJS["🌓 THEME.js"]
                 PARALLAXJS["🫧 PARALLAX.js"]
                 MODALSJS["🪟 MODAL.js"]
+                VIZJS["📈 VIZ.js"]
                 pdfJS["📕 PDF.js"]
+            end
+            subgraph ENGINEVIZ["🗺️ RENDER"]
+                direction LR
+                SKILLTREEJS["🧭 SKILLTREE.js"]
+                MERMAIDVIEWJS["🧜 MERMAID.js"]
+                TIMELINEJS["🕰️ TIMELINE.js"]
+                MAPJS["🌌 MAP.js"]
             end
         end
     end
@@ -94,9 +94,9 @@ graph TD
         subgraph UX["🧠 U.X."]
             direction LR
             TILES["💎 TILES"]
-            VIEW["🧭 VIEW"]
             LINK["🔗 LINK"]
             RADIO["🎵 RADIO"]
+            VIEW["🧭 VIEW"]
         end
 
         subgraph HCI["👆 H.C.I."]
@@ -132,18 +132,15 @@ graph TD
 
     %% ── 4b. DATA.JS → shared globals ───────────────────────
 
-    DATAJS -->|"modalState"| MODALSJS
-    DATAJS -->|"VIZ_*_MAP"| VIZJS
+    DATAJS -->|"state"| MODALSJS
+    DATAJS -->|"*"| VIZJS
 
     %% ── 5. VIZ.JS → RENDER (shared utilities + maps) ───────
 
-    VIZJS -.->|"pan/zoom"| MERMAIDVIEWJS
-    VIZJS -.->|"pan/zoom"| SKILLTREEJS
-    VIZJS -.->|"pan/zoom"| TIMELINEJS
-    VIZJS -.->|"pan/zoom"| MAPJS
-    VIZJS -.->|"VIZ_THEMES"| SKILLTREEJS
-    VIZJS -.->|"VIZ_THEMES"| TIMELINEJS
-    VIZJS -.->|"VIZ_THEMES"| MAPJS
+    VIZJS -.->|"traverse()"| MERMAIDVIEWJS
+    VIZJS -.->|"traverse()"| SKILLTREEJS
+    VIZJS -.->|"traverse()"| TIMELINEJS
+    VIZJS -.->|"traverse()"| MAPJS
 
     %% ── 6. SCRIPTS → DATA & ASSETS ─────────────────────────
 
@@ -181,9 +178,8 @@ graph TD
     class FRAGMENTS data
     class PDFJS,CNAME,CNAMEFILE config
     class STYLESCSS,FONTAWESOME style
-    class CONSOLEJS,SCROLLJS,DATAJS engine
-    class VIZJS,MODALSJS,RADIOJS engine
-    class pdfJS,PARALLAXJS,THEMEJS aes
+    class CONSOLEJS,SCROLLJS,DATAJS,RADIOJS engine
+    class VIZJS,pdfJS,PARALLAXJS,THEMEJS,MODALSJS ui
     class MERMAIDVIEWJS,SKILLTREEJS,TIMELINEJS,MAPJS aes
     class PORTFOLIOJSON,CARDSCSV data
     class ARCHMD data
@@ -200,6 +196,7 @@ graph TD
     classDef data fill:#c4d4f5,stroke:#4052b5,color:#1a1a5e,stroke-width:1.5px
     classDef engine fill:#c8e6a0,stroke:#7fba00,color:#2d4a00,stroke-width:1.5px
     classDef aes fill:#a0e6d6,stroke:#00a884,color:#003d2e,stroke-width:1.5px
+    classDef ui fill:#d6c4f5,stroke:#7b61ff,color:#2a1a5e,stroke-width:1.5px
     classDef ux fill:#fff3c4,stroke:#ffb900,color:#4a3200,stroke-width:2px
     classDef hci fill:#f5d0e0,stroke:#e3008c,color:#4a0028,stroke-width:2px
 

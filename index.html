@@ -729,6 +729,13 @@
         </div>
       </div>
 
+      <div class="glass-tile video-card reveal" style="cursor:pointer;margin-bottom:32px;" role="button" tabindex="0" aria-label="Open Bootfile Style Guide" onclick="openBootfileModal()">
+        <div class="video-label">⏻ Bootfile<span class="card-action-badge badge-dive">🔍 Style Guide</span><span class="year-badge">2025</span></div>
+        <div class="video-wrap" style="display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.3);">
+          <span style="font-size:4rem;filter:drop-shadow(0 0 12px rgba(0,164,239,0.5));">⏻</span>
+        </div>
+      </div>
+
       <!-- Copyright -->
       <footer class="glass-footer">
         <p><strong><a href="#" onclick="event.preventDefault(); openLinkModal('https://time.is/', 'Time.is');" style="text-decoration:none;">📅 <span id="footer-year"></span></a></strong><br><strong><a href="#" onclick="event.preventDefault(); openQuiltModal();" style="text-decoration:none;cursor:pointer;">🐧 Brian Hungerman</a></strong><br><strong><a href="#" onclick="event.preventDefault(); openLinkModal('https://brianhungerman.com', 'brianhungerman.com');"><i class="fa fa-globe"></i> brianhungerman.com</a></strong></p>
@@ -757,6 +764,7 @@
 <div class="modal-overlay" id="map-modal" role="dialog" aria-label="Constellation Map"></div>
 <div class="modal-overlay" id="timeline-modal" role="dialog" aria-label="Timeline"></div>
 <div class="modal-overlay" id="marp-modal" role="dialog" aria-label="MARP Wiring Diagram"></div>
+<div class="modal-overlay" id="bootfile-modal" role="dialog" aria-label="bootfile Style Guide"></div>
 
 <!-- ═══════════════════════════════════════════════════════════════
      SCRIPTS — fragments loaded first, then JS in order
@@ -775,7 +783,8 @@
     'modal', 'deck-modal', 'pdf-modal', 'resume-pdf-modal',
     'link-modal', 'game-modal', 'bitnaughts-modal', 'bitnaughts-iphone-modal',
     'arch-modal', 'quilt-modal', 'knowledge-modal', 'mtg-tree-modal',
-    'mtg-card-modal', 'map-modal', 'timeline-modal', 'marp-modal'
+    'mtg-card-modal', 'map-modal', 'timeline-modal', 'marp-modal',
+    'bootfile-modal'
   ];
 
   /* ── JS files in original defer order ── */

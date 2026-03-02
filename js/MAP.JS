@@ -1008,12 +1008,15 @@
       //   tech step  → tech nodes show names, projects keep emojis
       //   domain step → project nodes show names, techs keep emojis
       var tourFocus = false;
+      var tourSuppressProximity = false;
       if (_mapTour && _mapTour.isTouring() && _tourShowNames) {
         if (_tourShowNames === "tech"  && n.type === "tech")    tourFocus = true;
         if (_tourShowNames === "domain" && n.type === "project") tourFocus = true;
+        // Suppress proximity glow on the non-featured type so they keep emojis
+        if (!tourFocus) tourSuppressProximity = true;
       }
 
-      var focused = (inCenter || hovered || tourFocus) && !n._hidden;
+      var focused = (tourFocus || (!tourSuppressProximity && (inCenter || hovered))) && !n._hidden;
       n.el.classList.toggle("kg-in-focus", focused);
     });
   }

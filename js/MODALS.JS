@@ -791,6 +791,224 @@ function openGameModal(url, title, nativeW, nativeH) {
 function closeGameModal() { _gameModal.close(); }
 
 // ═══════════════════════════════════════════════════════════════
+//  BOOTFILE STYLE GUIDE MODAL
+// ═══════════════════════════════════════════════════════════════
+(() => {
+  var _stopBootfileTour = null;
+  var _bootfileModal = registerModal("bootfile-modal", {
+    onClose: function () { if (_stopBootfileTour) _stopBootfileTour(); }
+  });
+  var bootfileModal = document.getElementById("bootfile-modal");
+
+  window.openBootfileModal  = _bootfileModal.open;
+  window.closeBootfileModal = _bootfileModal.close;
+
+  // ── Touch scroll boost ──
+  var card = bootfileModal.querySelector(".modal-card");
+  if (card && typeof boostTouchScroll === "function") boostTouchScroll(card);
+
+  // ── Bio image + quote viewer crossfade (same pattern as quilt) ──
+  var rows = bootfileModal.querySelectorAll(".bio-stat-row");
+  rows.forEach(function (row) {
+    var tiles = row.querySelectorAll("[data-bio-img]");
+    if (!tiles.length) return;
+
+    var viewer = null, quoteViewer = null;
+    var sib = row.previousElementSibling;
+    while (sib) {
+      if (!viewer && sib.classList.contains("bio-img-viewer")) { viewer = sib; break; }
+      sib = sib.previousElementSibling;
+    }
+    sib = row.nextElementSibling;
+    while (sib) {
+      if (sib.classList.contains("bio-quote-viewer")) { quoteViewer = sib; break; }
+      if (sib.classList.contains("bio-symbol-block") || sib.classList.contains("bio-principle-block") || sib.tagName === "H3" || sib.tagName === "HR") break;
+      sib = sib.nextElementSibling;
+    }
+
+    var layers = viewer ? viewer.querySelectorAll(".bio-img-layer") : [];
+    var quotes = quoteViewer ? quoteViewer.querySelectorAll(".bio-quote-layer") : [];
+
+    tiles.forEach(function (tile) {
+      var c = tile.dataset.bioColor;
+      if (c) tile.style.setProperty("--bio-glow", c);
+    });
+
+    var firstActive = row.querySelector(".bio-stat-active");
+    if (firstActive && firstActive.dataset.bioColor && viewer) {
+      viewer.style.setProperty("--bio-viewer-glow", firstActive.dataset.bioColor);
+    }
+
+    function activate(tile) {
+      var idx = parseInt(tile.dataset.bioImg, 10);
+      if (isNaN(idx)) return;
+      tiles.forEach(function (t) { t.classList.remove("bio-stat-active"); });
+      tile.classList.add("bio-stat-active");
+      if (layers.length) {
+        layers.forEach(function (l) { l.classList.remove("bio-img-active"); });
+        if (layers[idx]) layers[idx].classList.add("bio-img-active");
+      }
+      if (quotes.length) {
+        quotes.forEach(function (q) { q.classList.remove("bio-quote-active"); });
+        if (quotes[idx]) quotes[idx].classList.add("bio-quote-active");
+      }
+      var c = tile.dataset.bioColor;
+      if (c && viewer) viewer.style.setProperty("--bio-viewer-glow", c);
+    }
+
+    tiles.forEach(function (tile) {
+      tile.addEventListener("mouseenter", function () { activate(tile); });
+      tile.addEventListener("focus", function () { activate(tile); });
+      if (tile.dataset.action) {
+        tile.addEventListener("click", function (e) {
+          if (!e.isTrusted) return;
+          if (Date.now() - _bioLastTouch > 800) return;
+          e.stopPropagation();
+          activate(tile);
+        }, true);
+      }
+    });
+
+    if (viewer) {
+      viewer.style.cursor = "pointer";
+      viewer.addEventListener("click", function () {
+        var active = row.querySelector(".bio-stat-active[data-action]");
+        if (active) active.click();
+      });
+    }
+  });
+
+  // ── Explore tour ──
+  var hint = document.getElementById("bootfileExploreHint");
+  if (hint && card) {
+    var HINT_DEFAULT = '<strong>Traverse</strong><span class="scroll-arrow">🔭</span>';
+    var _cf = createCrossfader();
+    var _raf = null;
+    var _scrolling = false;
+    var _bootfileTourScrolling = false;
+
+    function getStops() {
+      return Array.from(card.querySelectorAll("[data-bio-tour]")).map(function (el) {
+        var tiles = [];
+        var sib = el.nextElementSibling;
+        while (sib) {
+          if (sib.classList.contains("bio-stat-row")) { tiles = Array.from(sib.querySelectorAll("[data-bio-img]")); break; }
+          if (sib.hasAttribute("data-bio-tour") || sib.tagName === "H3") break;
+          sib = sib.nextElementSibling;
+        }
+        return { el: el, label: el.getAttribute("data-bio-tour"), tiles: tiles };
+      });
+    }
+
+    var _cachedStops = null;
+
+    function resolveScrollStop(stops) {
+      var scrollMid = card.scrollTop + card.clientHeight * 0.4 + 100;
+      for (var i = stops.length - 1; i >= 0; i--) {
+        if (stops[i].el.offsetTop <= scrollMid) {
+          var stop = stops[i];
+          if (stop.tiles.length > 1) {
+            var sectionTop = stop.el.offsetTop;
+            var sectionBot = (i + 1 < stops.length) ? stops[i + 1].el.offsetTop : card.scrollHeight;
+            var sectionRange = sectionBot - sectionTop;
+            if (sectionRange > 0) {
+              var localProgress = Math.max(0, Math.min(1, (scrollMid - sectionTop) / sectionRange));
+              var tileIdx = Math.min(Math.floor(localProgress * stop.tiles.length), stop.tiles.length - 1);
+              var activeTile = stop.tiles[tileIdx];
+              if (activeTile && !activeTile.classList.contains("bio-stat-active")) {
+                activeTile.dispatchEvent(new MouseEvent("mouseenter", { bubbles: true }));
+              }
+            }
+          }
+          return i;
+        }
+      }
+      return -1;
+    }
+
+    function syncScrollState(stops, lastStopIdxRef) {
+      var i = resolveScrollStop(stops);
+      if (i >= 0 && i !== lastStopIdxRef.v) {
+        lastStopIdxRef.v = i;
+        var label = stops[i].label;
+        var m = label.match(/^(\p{Emoji_Presentation}|\p{Emoji}\uFE0F?)\s*/u);
+        var emoji = m ? m[1] : '🐧';
+        var text = m ? label.slice(m[0].length) : label;
+        _cf.fade(hint, '<strong>' + text + '</strong><span class="scroll-arrow">' + emoji + '</span>');
+      }
+    }
+
+    card.addEventListener("scroll", function () {
+      if (_scrolling) return;
+      if (!_cachedStops) _cachedStops = getStops();
+      resolveScrollStop(_cachedStops);
+    }, { passive: true });
+
+    bootfileModal.addEventListener("transitionend", function () {
+      if (bootfileModal.classList.contains("open")) _cachedStops = null;
+    });
+
+    function stopScroll() {
+      if (_raf) { cancelAnimationFrame(_raf); _raf = null; }
+      if (!_scrolling) return;
+      _scrolling = false;
+      _bootfileTourScrolling = false;
+      hint.classList.remove("exploring");
+      _cf.fade(hint, HINT_DEFAULT);
+      hint.style.pointerEvents = '';
+    }
+
+    function startScroll() {
+      var maxS = card.scrollHeight - card.clientHeight;
+      if (card.scrollTop >= maxS - 1) {
+        card.scrollTo({ top: 0, behavior: "smooth" });
+        _cf.fade(hint, HINT_DEFAULT);
+        return;
+      }
+      _scrolling = true;
+      _bootfileTourScrolling = true;
+      hint.classList.add("exploring");
+
+      var SPEED_MAX = 75, RAMP_DUR = 0.5;
+      var elapsed = 0, lastT = null;
+      var scrollPos = card.scrollTop;
+      var interrupted = false;
+      var stops = getStops();
+      var tourStopRef = { v: -1 };
+
+      function onUser() { interrupted = true; }
+      card.addEventListener("wheel", onUser, { once: true, passive: true });
+      card.addEventListener("touchstart", onUser, { once: true, passive: true });
+      card.addEventListener("pointerdown", onUser, { once: true });
+
+      function step(ts) {
+        if (interrupted) { stopScroll(); _cachedStops = stops; return; }
+        if (!lastT) { lastT = ts; _raf = requestAnimationFrame(step); return; }
+        var dt = (ts - lastT) / 1000;
+        lastT = ts;
+        elapsed += dt;
+        var speed = elapsed >= RAMP_DUR ? SPEED_MAX : SPEED_MAX * (elapsed / RAMP_DUR);
+        scrollPos += speed * dt;
+        card.scrollTop = scrollPos;
+        syncScrollState(stops, tourStopRef);
+        if (card.scrollTop >= card.scrollHeight - card.clientHeight - 1) { stopScroll(); _cachedStops = stops; return; }
+        _raf = requestAnimationFrame(step);
+      }
+
+      _raf = requestAnimationFrame(step);
+    }
+
+    hint.addEventListener("click", function (e) {
+      e.preventDefault();
+      if (_scrolling) { stopScroll(); return; }
+      startScroll();
+    });
+
+    _stopBootfileTour = stopScroll;
+  }
+})();
+
+// ═══════════════════════════════════════════════════════════════
 //  MTG DECK MODAL SYSTEM
 // ═══════════════════════════════════════════════════════════════
 (() => {
