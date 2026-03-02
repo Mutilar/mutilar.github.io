@@ -42,11 +42,24 @@
   const ctxGlint = cGlint.getContext("2d");
   const allCanvases = [cOrb, cGlint];
 
-  const parallaxWindows = [...document.querySelectorAll(".parallax-window")].map(el => ({
+  let parallaxWindows = [...document.querySelectorAll(".parallax-window")].map(el => ({
     el,
     attention: parseFloat(el.dataset.attention || "0"),
     colors: parsePalette(el.dataset.colors)
   }));
+
+  /** Rescan DOM for parallax windows (call after dynamic section injection). */
+  function rescanWindows() {
+    parallaxWindows = [...document.querySelectorAll(".parallax-window")].map(el => ({
+      el,
+      attention: parseFloat(el.dataset.attention || "0"),
+      colors: parsePalette(el.dataset.colors)
+    }));
+  }
+  window._rescanParallaxWindows = rescanWindows;
+
+  // Re-scan when settings finish hydrating (sections may have been injected)
+  window.addEventListener("settingsReady", rescanWindows);
 
   function resize() {
     const dpr = window.devicePixelRatio || 1;

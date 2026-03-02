@@ -19,6 +19,13 @@
 
   document.querySelectorAll(".reveal").forEach(el => revealObserver.observe(el));
   window._revealObserver = revealObserver;
+
+  // Re-observe any .reveal elements injected after settings hydrate
+  window.addEventListener("settingsReady", function () {
+    document.querySelectorAll(".reveal:not(.visible)").forEach(function (el) {
+      revealObserver.observe(el);
+    });
+  });
 })();
 
 // ═══════════════════════════════════════════════════════════════
@@ -27,8 +34,7 @@
 //  so the hint is no longer near the viewport bottom.
 // ═══════════════════════════════════════════════════════════════
 (() => {
-  const hints = document.querySelectorAll(".scroll-hint");
-  if (!hints.length) return;
+  let hints = document.querySelectorAll(".scroll-hint");
 
   function updateHints() {
     const vh = window.innerHeight;
@@ -48,6 +54,10 @@
   }
 
   window.addEventListener("scroll", updateHints, { passive: true });
+  window.addEventListener("settingsReady", function () {
+    hints = document.querySelectorAll(".scroll-hint");
+    updateHints();
+  });
   updateHints();
 })();
 
@@ -74,11 +84,17 @@
 //  ACTIVE NAV HIGHLIGHT
 // ═══════════════════════════════════════════════════════════════
 (() => {
-  const navLinks = document.querySelectorAll(".glass-nav a");
-  const sectionIds = Array.from(navLinks).map(a => a.getAttribute("href").substring(1));
-  const sections = sectionIds.map(id => document.getElementById(id)).filter(Boolean);
+  let navLinks = document.querySelectorAll(".glass-nav a");
+  let sectionIds = Array.from(navLinks).map(a => a.getAttribute("href").substring(1));
+  let sections = sectionIds.map(id => document.getElementById(id)).filter(Boolean);
 
   let prevActive = null;
+
+  function rescanSections() {
+    navLinks = document.querySelectorAll(".glass-nav a");
+    sectionIds = Array.from(navLinks).map(a => a.getAttribute("href").substring(1));
+    sections = sectionIds.map(id => document.getElementById(id)).filter(Boolean);
+  }
 
   function updateActive() {
     let current = sectionIds[0];
@@ -106,6 +122,10 @@
   }
 
   window.addEventListener("scroll", updateActive, { passive: true });
+  window.addEventListener("settingsReady", function () {
+    rescanSections();
+    updateActive();
+  });
   updateActive();
 })();
 

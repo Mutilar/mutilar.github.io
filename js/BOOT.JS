@@ -194,14 +194,23 @@
         }
       }
 
-      // ── 13. Viz tiles (shared between both sites) ──────────
+      // ── 13. Viz tiles (mutilar-specific top-level) ────────
       if (s.vizTiles && Array.isArray(s.vizTiles)) {
         var vizContainer = document.getElementById("viz-cards");
         if (vizContainer) _hydrateVizTiles(vizContainer, s.vizTiles);
       }
 
-      // ── 14. Landing page hydration ─────────────────────────
-      if (s.landing) _hydrateLanding(s);
+      // ── 14. Sections (generates band+parallax from array) ──
+      if (s.sections && Array.isArray(s.sections)) _hydrateSections(s);
+
+      // ── 15. CTA (page-level, not per-section) ─────────────
+      if (s.cta) _hydrateCta(s.cta);
+
+      // ── 16. Footer (page-level) ───────────────────────────
+      if (s.footer) _hydrateFooter(s.footer);
+
+      // ── Legacy: landing block (deprecated, backward compat) ─
+      if (s.landing && !s.sections) _hydrateLandingLegacy(s);
 
       // ── Fire event ─────────────────────────────────────────
       window.dispatchEvent(new CustomEvent("settingsReady", { detail: s }));
@@ -260,6 +269,20 @@
     var root = document.documentElement;
     for (var i = 0; i < s.accents.length && i < 4; i++) {
       root.style.setProperty("--accent-" + (i + 1), s.accents[i]);
+    }
+    // Inject data-colors onto parallax windows that declare data-accent-order
+    // instead of hardcoding RGB. Format: "1,3,2,4" = accent indices (1-based).
+    // Keeps explicit data-colors untouched (mutilar's per-window palettes).
+    var windows = document.querySelectorAll(".parallax-window[data-accent-order]");
+    for (var w = 0; w < windows.length; w++) {
+      var el = windows[w];
+      var order = el.getAttribute("data-accent-order").split(",");
+      var colors = [];
+      for (var j = 0; j < order.length; j++) {
+        var idx = parseInt(order[j].trim(), 10) - 1;
+        colors.push(s.accents[idx] || "0,0,0");
+      }
+      el.setAttribute("data-colors", colors.join("; "));
     }
   }
 
@@ -334,106 +357,125 @@
     }).join("");
   }
 
-  // ── Landing page hydration ──────────────────────────────────
-  // Only runs when SETTINGS.json contains a "landing" block.
-  // Populates structural containers in index.html from config.
-  // Layout mirrors mutilar: opaque band header → parallax glass-tile content.
-  function _hydrateLanding(s) {
+  // ── Sections renderer ────────────────────────────────────────
+  // Generates mutilar-identical layout from settings.sections[]:
+  //   opaque band header → parallax window with section-intro
+  //   (optional img + blurb steps) + card-grid viz tiles.
+  // Inserts into #sections container.
+  function _hydrateSections(s) {
+    var container = document.getElementById("sections");
+    if (!container) return;
+
+    var html = "";
+    var accents = s.accents || [];
+
+    s.sections.forEach(function (sec) {
+      // ── Opaque band header ──
+      html += '<div class="opaque-band" id="' + sec.id + '">';
+      html += '<div class="band-content band-header">';
+      html += '<h2 class="section-heading reveal" style="margin-bottom:0;">' + (sec.heading || "") + '</h2>';
+      if (sec.badge) {
+        html += '<a class="section-badge" href="' + (sec.badge.href || "#") + '"' +
+          (sec.badge.href && sec.badge.href !== "#" ? ' target="_blank"' : '') +
+          '><i class="' + (sec.badge.icon || "fa fa-link") + '"></i> ' + (sec.badge.label || "") + '</a>';
+      }
+      html += '</div></div>';
+
+      // ── Parallax window ──
+      var accentOrder = sec.accentOrder || "1,2,3,4";
+      // Resolve accent-order to data-colors
+      var colors = accentOrder.split(",").map(function (n) {
+        var idx = parseInt(n.trim(), 10) - 1;
+        return accents[idx] || "0,0,0";
+      }).join("; ");
+
+      html += '<div class="parallax-window parallax-section-padding"' +
+        ' data-attention="' + (sec.attention != null ? sec.attention : 0) + '"' +
+        ' data-colors="' + colors + '">';
+      html += '<div style="max-width:1100px;margin:0 auto;">';
+
+      // ── Section intro (img + blurb steps) ──
+      if (sec.blurb) {
+        html += '<div class="glass-tile reveal section-intro" style="margin-bottom:32px;">';
+
+        // Optional image
+        if (sec.img) {
+          html += '<img class="section-intro-img" src="' + sec.img + '"' +
+            ' alt="' + (sec.heading || "").replace(/<[^>]*>/g, "") + '" loading="lazy">';
+        }
+
+        html += '<div class="section-blurb">';
+        if (sec.blurb.left)    html += '<div class="step step-left">'   + sec.blurb.left    + '</div>';
+        if (sec.blurb.center)  html += '<div class="step step-center">' + sec.blurb.center  + '</div>';
+        if (sec.blurb.right)   html += '<div class="step step-right">'  + sec.blurb.right   + '</div>';
+        if (sec.blurb.summary) html += '<div class="step-summary">'     + sec.blurb.summary + '</div>';
+        html += '</div></div>';
+      }
+
+      // ── Viz tiles grid ──
+      if (sec.vizTiles && sec.vizTiles.length) {
+        html += '<div class="card-grid card-grid-wide" style="margin-bottom:32px;" id="' + sec.id + '-cards"></div>';
+      }
+
+      html += '</div>'; // close max-width wrapper
+
+      // ── Scroll hint ──
+      if (sec.scrollHint) {
+        html += '<a href="' + (sec.scrollHint.target || "#") + '" class="scroll-hint">';
+        html += '<strong>' + (sec.scrollHint.label || "") + '</strong>';
+        html += '<span class="scroll-arrow">' + (sec.scrollHint.emoji || '<i class="fa fa-chevron-down"></i>') + '</span>';
+        html += '</a>';
+      }
+
+      html += '</div>'; // close parallax-window
+    });
+
+    container.innerHTML = html;
+
+    // Hydrate viz tile grids after DOM insertion
+    s.sections.forEach(function (sec) {
+      if (sec.vizTiles && sec.vizTiles.length) {
+        var grid = document.getElementById(sec.id + "-cards");
+        if (grid) _hydrateVizTiles(grid, sec.vizTiles);
+      }
+    });
+  }
+
+  // ── CTA hydration (page-level) ─────────────────────────────
+  function _hydrateCta(cta) {
+    var ctaTile = document.getElementById("landing-cta-tile");
+    if (!ctaTile) return;
+    var ctaHtml = '<h2 class="section-heading reveal" style="margin-bottom:0.5rem;">' + (cta.heading || "") + "</h2>";
+    ctaHtml += '<p class="landing-body" style="margin-bottom:0;">' + (cta.body || "") + "</p>";
+    if (cta.buttons && cta.buttons.length) {
+      ctaHtml += '<div class="landing-cta-row" style="margin-top:1.5rem;">';
+      cta.buttons.forEach(function (btn) {
+        var cls = "landing-cta" + (btn.style === "secondary" ? " landing-cta-secondary" : "");
+        ctaHtml += '<a href="' + btn.href + '" class="' + cls + '" target="_blank" rel="noopener">';
+        ctaHtml += '<i class="' + btn.icon + '"></i> ' + btn.label + "</a>";
+      });
+      ctaHtml += "</div>";
+    }
+    ctaTile.innerHTML = ctaHtml;
+  }
+
+  // ── Footer hydration (page-level) ──────────────────────────
+  function _hydrateFooter(footer) {
+    var footerText = document.querySelector(".landing-footer-text");
+    if (!footerText) return;
+    var fHtml = footer.text || "";
+    if (footer.author) {
+      fHtml += ' — by <a href="' + (footer.author.url || "#") + '" target="_blank" rel="noopener" class="landing-link">' + footer.author.name + "</a>";
+    }
+    footerText.innerHTML = fHtml;
+  }
+
+  // ── Legacy landing hydration (backward compat) ─────────────
+  // Only runs if settings has "landing" but no "sections".
+  function _hydrateLandingLegacy(s) {
     var L = s.landing;
-
-    // ── Concept band header ──────────────────────────────────
-    if (L.concept) {
-      var conceptHeading = document.getElementById("concept-heading");
-      if (conceptHeading) conceptHeading.textContent = L.concept.heading || "";
-
-      // Concept intro glass-tile (inside parallax window)
-      var conceptIntro = document.getElementById("concept-intro");
-      if (conceptIntro) {
-        conceptIntro.innerHTML =
-          '<div class="section-blurb">' +
-          '<p class="landing-body" style="margin-bottom:1.2rem;">' + (L.concept.body || "") + "</p>" +
-          (L.concept.emphasis ? '<p class="landing-body landing-emphasis">' + L.concept.emphasis + "</p>" : "") +
-          (L.concept.insight ? '<div class="landing-insight"><p>' + L.concept.insight + "</p></div>" : "") +
-          "</div>";
-      }
-    }
-
-    // ── Acts grid (inside parallax window, separate glass-tile) ─
-    if (L.acts && Array.isArray(L.acts)) {
-      var actsGrid = document.getElementById("acts");
-      if (actsGrid) {
-        actsGrid.innerHTML = L.acts.map(function (act, i) {
-          var accentVar = act.accent ? "var(--accent-" + act.accent + ")" : "var(--accent-1)";
-          return '<div class="landing-act">' +
-            '<div class="act-number" style="--tc: ' + accentVar + ';">' + (i + 1) + "</div>" +
-            "<h3>" + (act.title || "") + "</h3>" +
-            "<p>" + (act.body || "") + "</p>" +
-            (act.result ? '<p class="act-result">' + act.result + "</p>" : "") +
-            "</div>";
-        }).join("");
-      }
-    }
-
-    // ── Reference band header ────────────────────────────────
-    if (L.reference) {
-      var refHeading = document.getElementById("reference-heading");
-      if (refHeading) refHeading.textContent = L.reference.heading || "";
-
-      // Reference intro glass-tile
-      var refIntro = document.getElementById("reference-intro");
-      if (refIntro) {
-        var introHtml = '<div class="section-blurb">';
-        introHtml += '<p class="landing-body">' + (L.reference.body || "") + "</p>";
-
-        // Features grid inside the intro card
-        if (L.reference.features && L.reference.features.length) {
-          introHtml += '<div class="landing-features">';
-          L.reference.features.forEach(function (f) {
-            introHtml += '<div class="feature-item"><i class="' + f.icon + '"></i> ' + f.label + "</div>";
-          });
-          introHtml += "</div>";
-        }
-        introHtml += "</div>";
-        refIntro.innerHTML = introHtml;
-      }
-
-      // Reference cards grid — uses shared vizTiles renderer
-      var refCards = document.getElementById("reference-cards");
-      if (refCards && s.vizTiles && s.vizTiles.length) {
-        _hydrateVizTiles(refCards, s.vizTiles);
-      }
-    }
-
-    // ── CTA band ─────────────────────────────────────────────
-    if (L.cta) {
-      var ctaTile = document.getElementById("landing-cta-tile");
-      if (ctaTile) {
-        var ctaHtml = '<h2 class="section-heading reveal" style="margin-bottom:0.5rem;">' + (L.cta.heading || "") + "</h2>";
-        ctaHtml += '<p class="landing-body" style="margin-bottom:0;">' + (L.cta.body || "") + "</p>";
-        if (L.cta.buttons && L.cta.buttons.length) {
-          ctaHtml += '<div class="landing-cta-row" style="margin-top:1.5rem;">';
-          L.cta.buttons.forEach(function (btn) {
-            var cls = "landing-cta" + (btn.style === "secondary" ? " landing-cta-secondary" : "");
-            ctaHtml += '<a href="' + btn.href + '" class="' + cls + '" target="_blank" rel="noopener">';
-            ctaHtml += '<i class="' + btn.icon + '"></i> ' + btn.label + "</a>";
-          });
-          ctaHtml += "</div>";
-        }
-        ctaTile.innerHTML = ctaHtml;
-      }
-    }
-
-    // ── Footer ───────────────────────────────────────────────
-    if (L.footer) {
-      var footerText = document.querySelector(".landing-footer-text");
-      if (footerText) {
-        var fHtml = L.footer.text || "";
-        if (L.footer.author) {
-          fHtml += ' — by <a href="' + (L.footer.author.url || "#") + '" target="_blank" rel="noopener" class="landing-link">' + L.footer.author.name + "</a>";
-        }
-        footerText.innerHTML = fHtml;
-      }
-    }
+    if (L.cta) _hydrateCta(L.cta);
+    if (L.footer) _hydrateFooter(L.footer);
   }
 
   // ── Helper: add social link ────────────────────────────────
