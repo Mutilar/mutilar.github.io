@@ -439,7 +439,8 @@ var _bioLastTouch = 0;           // timestamp of last touchstart
       if (!a || !b || !penguin) return;
 
       // Apply configured foreground emoji
-      if (hero.emoji) penguin.textContent = hero.emoji;
+      var ident = settings.identity;
+      if (ident && ident.emoji) penguin.textContent = ident.emoji;
 
       // Build glowMap + emojis from config
       var glowMap = {};

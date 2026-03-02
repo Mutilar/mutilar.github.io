@@ -1,6 +1,45 @@
 {
-  "hero": {
+  "identity": {
+    "name": "Brian Hungerman",
     "emoji": "🐧",
+    "portrait": "png/brian.png",
+    "tagline": "<strong><a href=\"#\" onclick=\"event.preventDefault(); openLinkModal('https://en.wikipedia.org/wiki/Software_engineering', 'Software Engineering');\">S.W.E.</a></strong> prototyping<br><strong><a href=\"#\" onclick=\"event.preventDefault(); openLinkModal('https://en.wikipedia.org/wiki/Artificial_intelligence', 'Artificial Intelligence');\">A.I.</a></strong> <strong><a href=\"#\" onclick=\"event.preventDefault(); openLinkModal('https://en.wikipedia.org/wiki/User_experience', 'User Experience');\">U.X.</a></strong> w/ <strong><a href=\"#\" onclick=\"event.preventDefault(); openLinkModal('https://www.microsoft.com/applied-sciences', 'Microsoft Applied Sciences');\">A.S.G.</a></strong>",
+    "jobTitle": "Senior Software Engineer",
+    "organization": "Microsoft Applied Sciences"
+  },
+
+  "seo": {
+    "title": "🐧 Brian Hungerman",
+    "description": "Brian Hungerman: Software Engineer working in Graph Theory and Gamification. Portfolio, projects, hackathons, games.",
+    "ogTitle": "Brian Hungerman: Software Engineer",
+    "ogDescription": "Portfolio showcasing work in Graph Theory, Gamification, Robotics & A.I. U.X. at Microsoft Applied Sciences.",
+    "ogImage": "https://mutilar.github.io/png/brian.png",
+    "ogUrl": "https://mutilar.github.io/",
+    "twitterSite": "@BrianHungerman",
+    "favicon": "png/favicon.ico",
+    "favicon32": "png/favicon-32x32.png",
+    "favicon16": "png/favicon-16x16.png",
+    "touchIcon": "png/brian.png"
+  },
+
+  "social": {
+    "linkedin": "https://www.linkedin.com/in/brian-hungerman/",
+    "github": "https://github.com/Mutilar",
+    "twitter": "https://twitter.com/BrianHungerman",
+    "email": "mailto:brianhungerman@gmail.com?subject=👋🏻%20Hey%20🐧%20Brian!",
+    "blog": "https://codefied.substack.com/",
+    "spotify": "https://open.spotify.com/user/12143746238",
+    "repo": "https://github.com/Mutilar/mutilar.github.io"
+  },
+
+  "accents": {
+    "blue":    "0, 164, 239",
+    "yellow":  "255, 185, 0",
+    "red":     "242, 80, 34",
+    "green":   "127, 186, 0"
+  },
+
+  "hero": {
     "cycle": [
       ["🌎", "0,164,239"],
       ["🌍", "0,164,239"],
@@ -13,5 +52,41 @@
       ["🌌", "255,185,0"],
       ["🌠", "255,185,0"]
     ]
+  },
+
+  "console": {
+    "greeting": "🐧 Hello, World 👋🏻"
+  },
+
+  "media": {
+    "portfolioJson": "PORTFOLIO.json",
+    "cardsCsv": "CARDS.csv",
+    "playlist": [
+      { "src": "mp3/corporate.mp3", "title": "Corporate" },
+      { "src": "mp3/electric.mp3",  "title": "Electric" },
+      { "src": "mp3/emotional.mp3", "title": "Emotional" },
+      { "src": "mp3/ethereal.mp3",  "title": "Ethereal" },
+      { "src": "mp3/positive.mp3",  "title": "Positive" }
+    ],
+    "pdfBible": "pdf/bible.pdf",
+    "pdfResume": "pdf/resume.pdf"
+  },
+
+  "nav": [
+    { "href": "#home",       "label": "Home" },
+    { "href": "#about",      "label": "About" },
+    { "href": "#marp",       "label": "MARP" },
+    { "href": "#bitnaughts", "label": "BitNaughts" },
+    { "href": "#mtg",        "label": "MTG" },
+    { "href": "#work",       "label": "Work" },
+    { "href": "#education",  "label": "Education" },
+    { "href": "#projects",   "label": "Projects" },
+    { "href": "#hackathons", "label": "Hacks" },
+    { "href": "#games",      "label": "Games" }
+  ],
+
+  "connect": {
+    "heading": "👀 Interested?",
+    "subtitle": "Let's build something."
   }
 }
