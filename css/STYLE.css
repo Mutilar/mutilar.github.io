@@ -1301,16 +1301,6 @@ html.light-mode .card-action-badge.badge-static {
   overflow-y: auto;
 }
 
-/* Detail modal stacks above timeline modal */
-#modal.open {
-  z-index: 210;
-}
-
-/* Bio modal at same level as viz modals so detail modal can layer on top */
-#quilt-modal.open {
-  z-index: 200;
-}
-
 .modal-overlay.open {
   display: flex;
 }

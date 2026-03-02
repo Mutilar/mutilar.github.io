@@ -43,14 +43,13 @@ function toggleModal(el, open) {
 // ── Focus trap: keep Tab cycling inside the topmost open modal ──
 function _trapFocus(e) {
   if (e.key !== "Tab") return;
-  // Find the topmost open modal overlay
-  const openModals = document.querySelectorAll(".modal-overlay.open");
-  if (openModals.length === 0) return;
-  const topModal = openModals[openModals.length - 1];
-  const focusable = topModal.querySelectorAll('a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])');
+  // Use the open-stack to find the topmost modal (z-index authoritative)
+  if (_openStack.length === 0) return;
+  var topModal = _openStack[_openStack.length - 1].el;
+  var focusable = topModal.querySelectorAll('a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])');
   if (focusable.length === 0) return;
-  const first = focusable[0];
-  const last = focusable[focusable.length - 1];
+  var first = focusable[0];
+  var last = focusable[focusable.length - 1];
   if (e.shiftKey) {
     if (document.activeElement === first) { e.preventDefault(); last.focus(); }
   } else {
@@ -67,7 +66,17 @@ document.addEventListener("keydown", _trapFocus);
 //    → returns { open(...args), close() }
 //    → every registered modal participates in closeTopmostModal()
 // ═════════════════════════════════════════════════════════════════
-const _modalRegistry = [];   // ordered by registration; Escape closes topmost .open
+const _modalRegistry = [];   // all registered entries (for lookup)
+const _openStack     = [];   // currently-open entries, ordered by open-time (last = topmost)
+const _Z_BASE        = 200;  // base z-index for the first modal
+const _Z_STEP        = 10;   // increment per stacked modal
+
+/** Recompute z-index for every open modal based on stack order. */
+function _reindex() {
+  for (var i = 0; i < _openStack.length; i++) {
+    _openStack[i].el.style.zIndex = _Z_BASE + (i + 1) * _Z_STEP;
+  }
+}
 
 /**
  * Register a modal overlay by its DOM id.
@@ -75,26 +84,39 @@ const _modalRegistry = [];   // ordered by registration; Escape closes topmost .
  * @param {object} [opts]
  * @param {function} [opts.onOpen]   — called AFTER toggleModal(el, true); receives forwarded args
  * @param {function} [opts.onClose]  — called BEFORE toggleModal(el, false)
- * @returns {{ open: Function, close: Function }}
+ * @returns {{ open: Function, close: Function, el: Element }}
  */
 function registerModal(id, opts) {
   opts = opts || {};
-  const el = document.getElementById(id);
+  var el = document.getElementById(id);
   if (!el) {
-    // Element not in DOM yet (e.g. tentimes-modal); return inert handles
     var noop = function() {};
-    return { open: noop, close: noop };
+    return { open: noop, close: noop, el: null };
   }
+
+  var entry = { el: el, close: close };
 
   function close() {
     if (!el.classList.contains("open")) return;
     if (opts.onClose) opts.onClose();
     toggleModal(el, false);
+    // Remove from open stack and reindex survivors
+    var idx = _openStack.indexOf(entry);
+    if (idx !== -1) _openStack.splice(idx, 1);
+    el.style.zIndex = "";
+    _reindex();
   }
 
   function open() {
-    // Forward all arguments to onOpen
-    toggleModal(el, true);
+    // If already open, just promote to top of stack
+    var idx = _openStack.indexOf(entry);
+    if (idx !== -1) _openStack.splice(idx, 1);
+    _openStack.push(entry);
+    _reindex();
+
+    if (!el.classList.contains("open")) {
+      toggleModal(el, true);
+    }
     if (opts.onOpen) opts.onOpen.apply(null, arguments);
     var card = el.querySelector(".modal-card");
     if (card) card.scrollTop = 0;
@@ -107,19 +129,14 @@ function registerModal(id, opts) {
   // Backdrop click
   el.addEventListener("click", function (e) { if (e.target === el) close(); });
 
-  _modalRegistry.push({ el: el, close: close });
-  return { open: open, close: close };
+  _modalRegistry.push(entry);
+  return { open: open, close: close, el: el };
 }
 
 // ── Escape key: close the topmost open modal ─────────────────
 document.addEventListener("keydown", function (e) {
-  if (e.key !== "Escape") return;
-  for (var i = _modalRegistry.length - 1; i >= 0; i--) {
-    if (_modalRegistry[i].el.classList.contains("open")) {
-      _modalRegistry[i].close();
-      return;   // only close topmost
-    }
-  }
+  if (e.key !== "Escape" || _openStack.length === 0) return;
+  _openStack[_openStack.length - 1].close();
 });
 
 // ═══════════════════════════════════════════════════════════════
@@ -127,6 +144,41 @@ document.addEventListener("keydown", function (e) {
 // ═══════════════════════════════════════════════════════════════
 const modal = document.getElementById("modal");
 const modalClose = document.getElementById("modalClose");
+
+// Track the currently-glowing tile so we can fade it out later
+let _glowingTile = null;
+
+function _applyGlow(dataset, id) {
+  // Clear any previous glow
+  if (_glowingTile) {
+    _glowingTile.classList.remove('tile-glow', 'tile-glow-fade');
+    _glowingTile = null;
+  }
+  // Find the tile in its native section grid first, fall back to any match
+  const gridId = dataset + '-grid';
+  const grid = document.getElementById(gridId);
+  const tile = grid
+    ? grid.querySelector(`[data-entry-id="${id}"]`)
+    : document.querySelector(`[data-entry-id="${id}"]`);
+  if (tile) {
+    tile.classList.add('tile-glow');
+    _glowingTile = tile;
+  }
+}
+
+function _fadeOutGlow() {
+  if (_glowingTile) {
+    _glowingTile.classList.remove('tile-glow');
+    _glowingTile.classList.add('tile-glow-fade');
+    const el = _glowingTile;
+    _glowingTile = null;
+    setTimeout(() => el.classList.remove('tile-glow-fade'), 500);
+  }
+}
+
+var _dataModal = registerModal("modal", {
+  onClose: _fadeOutGlow
+});
 
 function openModal(dataset, id, imgExt) {
   const data = modalState[dataset];
@@ -166,30 +218,7 @@ function openModal(dataset, id, imgExt) {
   // Glow the source tile
   _applyGlow(dataset, id);
 
-  toggleModal(modal, true);
-  const card = modal.querySelector(".modal-card");
-  if (card) card.scrollTop = 0;
-}
-
-// Track the currently-glowing tile so we can fade it out later
-let _glowingTile = null;
-
-function _applyGlow(dataset, id) {
-  // Clear any previous glow
-  if (_glowingTile) {
-    _glowingTile.classList.remove('tile-glow', 'tile-glow-fade');
-    _glowingTile = null;
-  }
-  // Find the tile in its native section grid first, fall back to any match
-  const gridId = dataset + '-grid';
-  const grid = document.getElementById(gridId);
-  const tile = grid
-    ? grid.querySelector(`[data-entry-id="${id}"]`)
-    : document.querySelector(`[data-entry-id="${id}"]`);
-  if (tile) {
-    tile.classList.add('tile-glow');
-    _glowingTile = tile;
-  }
+  _dataModal.open();
 }
 
 function navigateToModal(dataset, id, imgExt) {
@@ -209,20 +238,6 @@ function navigateToModal(dataset, id, imgExt) {
   // Otherwise open fresh
   openModal(dataset, id, imgExt);
 }
-
-function _fadeOutGlow() {
-  if (_glowingTile) {
-    _glowingTile.classList.remove('tile-glow');
-    _glowingTile.classList.add('tile-glow-fade');
-    const el = _glowingTile;
-    _glowingTile = null;
-    setTimeout(() => el.classList.remove('tile-glow-fade'), 500);
-  }
-}
-
-var _dataModal = registerModal("modal", {
-  onClose: _fadeOutGlow
-});
 
 function closeModal() { _dataModal.close(); }
 

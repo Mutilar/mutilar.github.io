@@ -31,16 +31,23 @@ Hello, 🧠 **Opus 4.6**. I'm 🐧 **Brian** (1998).
 
 | Artifact | Path | Lines | Description |
 |---|---|---|---|
-| Portfolio Data | `PORTFOLIO.json` | 1,014 | Full career data: 8 sections, 63+ items, timeline whispers |
-| Index | `INDEX.html` | 740+ | Zero-framework SPA, parallax windows, key figures grid |
-| Viz Utilities | `VIZ.JS` | 700 | Shared engine code: themes, pan/zoom, filter system, crossfader |
-| Mermaid Engine | `MERMAID.JS` | 1,635 | Custom Mermaid parser + glassmorphic DOM renderer |
-| Skill Tree | `SKILLTREE.JS` | 2,476 | Radial node-graph, collision physics, proximity glow, tours |
-| Timeline | `TIMELINE.JS` | 819 | Vertical temporal layout, greedy column packing, whisper HUD |
-| Site Architecture | `ARCH.md` | 204 | Mermaid diagram of portfolio site stack |
-| MARP Wiring | `MARP.md` | ~200 | Mermaid wiring diagram: power, motors, sensors, compute |
-| MTG Cards | `CARDS.json` | 2,694 | Full card database for MTG skill tree |
-| Dusk Rose Codex | `PDF/BIBLE.tex` | 994 | XeLaTeX source: satirical MTG scripture |
+| Portfolio Data | `PORTFOLIO.json` | 1,013 | Full career data: 8 sections, 63+ items |
+| Index | `INDEX.html` | 1,382 | Zero-framework SPA, parallax windows, key figures grids, 16 modal overlays |
+| Style | `STYLE.css` | 5,368 | Glassmorphic design system: frosted surfaces (rgba(0,0,0,0.33-0.4) + blur(12-24px) + 1px white hairline), four MSFT accents only (🔵#00A4EF 🟡#FFB900 🔴#F25022 🟢#7FBA00) via --tc RGB triplets, glow-not-hue-swap interactivity (3-tier: ambient/hover-bloom/pulse), springy entrances (cubic-bezier(0.34,1.56,0.64,1)), crossfade content swaps, parallax z-stack (canvas -1 → tiles → nav 100 → modals 200+), 20px card / 14-20px pill / 8-12px button radii. Light theme inverting surfaces/borders/text/accents |
+| Data Loader | `DATA.js` | 248 | Fetches PORTFOLIO.json, populates `modalState` dict, renders section grids, fires `portfolioDataReady` event. Also: `fetchCSV()` for MTG deck cards |
+| Modals | `MODALS.js` | 895 | `registerModal(id, {onOpen, onClose})` registry: auto-wires close-btn/backdrop/Escape, `_openStack` for z-index stacking + topmost-close. Data-detail modal, quilt bio (tour/crossfade/overscroll), PDF/link/game iframes, bitnaughts galleries, deck carousel |
+| Scroll | `SCROLL.js` | 122 | IntersectionObserver `.reveal` entrance, scroll-hint fade-out, nav highlight on section intersect |
+| Parallax | `PARALLAX.js` | 277 | Dual-canvas star field (orbs + glints), per-window clip regions, theme-aware color inversion |
+| Theme | `THEME.js` | 79 | Light/dark toggle, localStorage persistence |
+| Radio | `RADIO.js` | 221 | Ambient music player: 5-track playlist, Web Audio API EQ, volume slider, crossfade between tracks |
+| PDF Viewer | `PDF.js` | 125 | Inline PDF renderer: spread-view layout, lazy-loads via `window.__pdfjsLib` |
+| Console | `CONSOLE.js` | 675 | On-page HUD intercepting console.log/warn/error, collapsible stack traces, auto-fade, color-coded levels |
+| Viz Utilities | `VIZ.js` | 770 | Shared engine: theme colors, pan/zoom (mouse+touch+pinch), `createFilterSystem()`, `createCrossfader()`, explore-tour hints |
+| Mermaid Engine | `MERMAID.js` | 1,491 | Custom Mermaid parser + glassmorphic DOM renderer, pan/zoom, filter pills, explore tours. Instances: ARCH, MARP, TENTIMES |
+| Skill Tree | `SKILLTREE.js` | 2,135 | `createSkillTree()` factory: radial node-graph, collision physics, proximity glow, multi-axis filters, tours. Instances: knowledge graph, MTG card tree + card-view modal |
+| Constellation Map | `MAP.js` | 1,002 | Tech adjacency network: domain × tech-category dual-axis filters, force-directed layout, tour system |
+| Timeline | `TIMELINE.js` | 645 | Vertical temporal layout, greedy column packing, whisper HUD, auto-scroll tour |
+| Site Architecture | `ARCH.md` | 180 | Mermaid diagram of this project, review if needed for architectural considerations and updates |
 
 # What I Want
 
