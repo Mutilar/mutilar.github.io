@@ -1157,13 +1157,16 @@
   function createDiagram(cfg) {
     let modal = document.getElementById(cfg.modalId);
 
-    // Auto-create modal overlay + inner DOM if not present
+    // Auto-create modal overlay + inner DOM if not present.
+    // This is the ONLY template — no separate HTML fragment needed.
     if (!modal) {
+      var liveId = cfg.modalId.replace("-modal", "-live");
+      var ariaLabel = cfg.ariaLabel || "Diagram";
       modal = document.createElement("div");
       modal.className = "modal-overlay";
       modal.id = cfg.modalId;
       modal.setAttribute("role", "dialog");
-      modal.setAttribute("aria-label", (cfg.ariaLabel || "Diagram"));
+      modal.setAttribute("aria-label", ariaLabel);
       modal.innerHTML =
         '<div class="glass-tile modal-card viz-modal-card mm-modal-card" style="position:relative;">' +
           '<div class="modal-sticky-bar">' +
@@ -1174,7 +1177,9 @@
               '</div>' +
             '</div>' +
           '</div>' +
-          '<div class="viz-viewport" style="cursor:grab;" role="application" aria-roledescription="Interactive flowchart">' +
+          '<div class="viz-viewport" style="cursor:grab;" role="application" aria-roledescription="Interactive flowchart" aria-label="' + ariaLabel + '. Use arrow keys to navigate between nodes, Enter to highlight connections.">' +
+            '<div class="sr-only" id="' + liveId + '" aria-live="polite" aria-atomic="true"></div>' +
+            '<div class="sr-only">' + ariaLabel + ': interactive flowchart. Use arrow keys to navigate nodes.</div>' +
             '<div class="viz-world mm-world">' +
               '<svg class="mm-edges" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 6000 6000" aria-hidden="true"></svg>' +
             '</div>' +
@@ -1182,6 +1187,10 @@
         '</div>';
       document.body.appendChild(modal);
     }
+
+    // Ensure filterId is wired even on pre-existing DOM
+    var pillsSpan = modal.querySelector(".mm-filter-pills");
+    if (pillsSpan && !pillsSpan.id) pillsSpan.id = cfg.filterId;
 
     const state = { built: false, x: 0, y: 0, scale: 1, world: null, _update: null };
     let _svgLayer = null, _dims = null;
@@ -1664,6 +1673,34 @@
   window.createMermaidDiagram = createDiagram;
 
   /* ═════════════════════════════════════════════════════════════
+     7b. GENERIC SLOTTABLE OPEN — openMermaidModal(mdFile, opts?)
+     Call with any .md file path; lazily creates + caches the instance.
+     No per-diagram globals needed. DRY entry point for ad-hoc diagrams.
+     ═════════════════════════════════════════════════════════════ */
+
+  var _genericCache = {};
+
+  window.openMermaidModal = function (mdFile, opts) {
+    opts = opts || {};
+    if (!_genericCache[mdFile]) {
+      var slug = mdFile.replace(/[^a-zA-Z0-9]/g, "-").replace(/-+/g, "-").replace(/^-|-$/g, "").toLowerCase();
+      var cfg = {
+        modalId:     "mm-" + slug,
+        filterId:    "mm-" + slug + "-filters",
+        mdFile:      mdFile,
+        ariaLabel:   opts.ariaLabel || mdFile.replace(/.*\//, "").replace(/\.md$/i, "") + " diagram",
+        openGlobal:  "_mm_open_" + slug,
+        closeGlobal: "_mm_close_" + slug,
+      };
+      if (opts.nodeActions) cfg.nodeActions = opts.nodeActions;
+      createDiagram(cfg);
+      _genericCache[mdFile] = cfg;
+    }
+    var fn = window[_genericCache[mdFile].openGlobal];
+    if (fn) fn();
+  };
+
+  /* ═════════════════════════════════════════════════════════════
      8. INSTANCES
      ═════════════════════════════════════════════════════════════ */
 
@@ -1688,15 +1725,6 @@
     mdFile:      "MARP.md",
     openGlobal:  "openMarpModal",
     closeGlobal: "closeMarpModal",
-  });
-
-  // ── TenTimes Architecture ──────────────────────────────────
-  createDiagram({
-    modalId:     "tentimes-modal",
-    filterId:    "tentimes-filters",
-    mdFile:      "TENTIMES.md",
-    openGlobal:  "openTentimesModal",
-    closeGlobal: "closeTentimesModal",
   });
 
 })();

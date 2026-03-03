@@ -35,6 +35,12 @@ Wings adapted into flippers; they never stopped being birds, they just learned t
 Penguins dutifully return to their colony; bringing sustenance from the abyss; regurgitating every hard-won catch. 50+ open-source repositories, 3 robots built, 6 games shipped.
 
 ---
+A quilt is many discrete patches — each one cut, shaped, meaningful on its own — stitched into a single coherent surface that's greater than the sum. The metaphor maps cleanly onto what Brian built here:
+
+The portfolio is a quilt: individual cards (projects, skills, games, decks) that only tell the full story once laid out together on a scrollytelling canvas.
+The engine is a quilt: 13 JS modules, each independent enough to be polymorphic across sites, stitched together by SETTINGS.json and BOOT.JS into one system.
+The bio modal is literally named QUILT-MODAL because its narrative is stitched from penguin lifecycle panels — left/center/right triplets — each a patch of allegory that only resolves into a professional identity when you've scrolled through all of them.
+The penguin itself is a quilted object — the hero image is a photo of physically quilting a penguin quilt, grounding the entire digital metaphor in a tangible craft.
 
 ## 🧠 Philosophy
 

@@ -140,8 +140,7 @@
       "imgAlt": "Architecture",
       "togglers": [
         { "label": "MARP",     "dot": "🔵", "active": true, "src": "png/marp.png",     "badge": "badge-dive",    "click": "event.stopPropagation(); window.openMarpModal && window.openMarpModal();" },
-        { "label": "ARCH",     "dot": "⚫",                  "src": "png/arch.png",     "badge": "badge-mermaid", "click": "event.stopPropagation(); window.openArchModal && window.openArchModal();" },
-        { "label": "TENTIMES", "dot": "⚫",                  "src": "png/tentimes.png", "badge": "badge-tentimes", "click": "event.stopPropagation(); window.openTentimesModal && window.openTentimesModal();" }
+        { "label": "ARCH",     "dot": "⚫",                  "src": "png/arch.png",     "badge": "badge-mermaid", "click": "event.stopPropagation(); window.openArchModal && window.openArchModal();" }
       ]
     }
   ]
