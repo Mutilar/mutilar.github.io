@@ -1160,7 +1160,7 @@
     // Auto-create modal overlay + inner DOM if not present.
     // This is the ONLY template — no separate HTML fragment needed.
     if (!modal) {
-      var liveId = cfg.modalId.replace("-modal", "-live");
+      var liveId = cfg.modalId + "-live";
       var ariaLabel = cfg.ariaLabel || "Diagram";
       modal = document.createElement("div");
       modal.className = "modal-overlay";
@@ -1456,7 +1456,7 @@
           wireNodeActions();
 
           // ── Keyboard navigation (a11y) ─────────────────────────
-          var liveId = cfg.modalId.replace("-modal", "-live");
+          var liveId = cfg.modalId + "-live";
           initVizKeyboardNav({
             modal: modal,
             getNodes: function () {
@@ -1669,9 +1669,6 @@
     window[cfg.closeGlobal] = close;
   }
 
-  // Expose factory for external consumers (e.g. bootfile.dev landing page)
-  window.createMermaidDiagram = createDiagram;
-
   /* ═════════════════════════════════════════════════════════════
      7b. GENERIC SLOTTABLE OPEN — openMermaidModal(mdFile, opts?)
      Call with any .md file path; lazily creates + caches the instance.
@@ -1679,6 +1676,13 @@
      ═════════════════════════════════════════════════════════════ */
 
   var _genericCache = {};
+
+  // Expose factory for external consumers (e.g. bootfile.dev landing page)
+  // Auto-registers in _genericCache so openMermaidModal can reuse instances.
+  window.createMermaidDiagram = function (cfg) {
+    createDiagram(cfg);
+    if (cfg.mdFile) _genericCache[cfg.mdFile] = cfg;
+  };
 
   window.openMermaidModal = function (mdFile, opts) {
     opts = opts || {};
@@ -1717,14 +1721,17 @@
     Object.assign(_archCfg, window.__mermaidDiagramOverrides["arch-modal"]);
   }
   createDiagram(_archCfg);
+  _genericCache[_archCfg.mdFile] = _archCfg;
 
   // ── MARP Wiring Diagram ────────────────────────────────────
-  createDiagram({
+  var _marpCfg = {
     modalId:     "marp-modal",
     filterId:    "marp-filters",
     mdFile:      "MARP.md",
     openGlobal:  "openMarpModal",
     closeGlobal: "closeMarpModal",
-  });
+  };
+  createDiagram(_marpCfg);
+  _genericCache[_marpCfg.mdFile] = _marpCfg;
 
 })();
