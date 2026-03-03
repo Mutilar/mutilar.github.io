@@ -248,17 +248,9 @@ function closeModal() { _dataModal.close(); }
 const footerYear = document.getElementById("footer-year");
 if (footerYear) footerYear.textContent = new Date().getFullYear();
 
-// ── Video-card event delegation (replaces inline onclick/onkeydown) ──
-const _modalOpeners = {
-  marpModal: function() { window.openMarpModal(); },
-  pdfModal: function() { openPdfModal(); },
-  bitnaughtsIphoneModal: function() { openBitnaughtsIphoneModal(); },
-  archModal: function() { window.openArchModal(); },
-  timelineModal: function() { window.openTimelineModal && window.openTimelineModal(); },
-  knowledgeModal: function() { window.openKnowledgeModal && window.openKnowledgeModal(); },
-  mtgTreeModal: function() { window.openMtgTreeModal && window.openMtgTreeModal(); },
-};
-
+// ── Video-card event delegation ──
+// Convention: data-open="fooModal" → window.openFooModal()
+// No hardcoded dict — any module can register window.openXxxModal.
 document.addEventListener("click", function(e) {
   const card = e.target.closest("[data-action]");
   if (!card) return;
@@ -269,8 +261,12 @@ document.addEventListener("click", function(e) {
     if (el) el.scrollIntoView({ behavior: "smooth" });
   }
   if (action === "open" || action === "scroll-open") {
-    const opener = _modalOpeners[card.dataset.open];
-    if (opener) opener();
+    var key = card.dataset.open;
+    if (key) {
+      var fnName = "open" + key[0].toUpperCase() + key.slice(1);
+      var fn = window[fnName];
+      if (fn) fn();
+    }
   } else if (action === "scroll-navigate" || action === "navigate") {
     navigateToModal(card.dataset.navigateDataset, card.dataset.navigateId);
   } else if (action === "scroll-modal" || action === "modal") {
@@ -285,7 +281,7 @@ document.addEventListener("keydown", function(e) {
   }
 });
 
-// Arch / Marp modals — registered by MERMAID.JS via registerModal()
+// Mermaid modals — lazily created by openMermaidModal() in MERMAID.JS
 
 // ═══════════════════════════════════════════════════════════════
 //  BITNAUGHTS GALLERY MODALS
@@ -297,6 +293,8 @@ function openBitnaughtsModal()        { _bnModal.open(); }
 function closeBitnaughtsModal()       { _bnModal.close(); }
 function openBitnaughtsIphoneModal()  { _bnIphoneModal.open(); }
 function closeBitnaughtsIphoneModal() { _bnIphoneModal.close(); }
+window.openBitnaughtsModal       = openBitnaughtsModal;
+window.openBitnaughtsIphoneModal = openBitnaughtsIphoneModal;
 
 // Close modal when clicking an in-page anchor link (e.g. #games)
 // but NOT if the link navigates to another modal via navigateToModal
@@ -317,6 +315,7 @@ var _pdfModal = registerModal("pdf-modal", {
 });
 function openPdfModal()  { _pdfModal.open(); }
 function closePdfModal() { _pdfModal.close(); }
+window.openPdfModal = openPdfModal;
 
 var _resumePdfModal = registerModal("resume-pdf-modal", {
   onOpen:  function () { renderPdfInline("pdf/resume.pdf", { viewerId: "resume-pdf-viewer", loadingId: "resume-pdf-loading", singlePage: true }); },

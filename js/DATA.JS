@@ -205,10 +205,10 @@ const _gridConfigs = {
 
 // ── MARP BOM (Bill of Materials) — deferred until modal opens ──
 let _bomLoaded = false;
-const _origOpenMarpModal = window.openMarpModal;
-window.openMarpModal = function() {
-  if (_origOpenMarpModal) _origOpenMarpModal();
-  if (_bomLoaded) return;
+const _origOpenMermaidModal = window.openMermaidModal;
+window.openMermaidModal = function(mdFile, opts) {
+  if (_origOpenMermaidModal) _origOpenMermaidModal(mdFile, opts);
+  if (mdFile !== 'MARP.md' || _bomLoaded) return;
   _bomLoaded = true;
   const container = document.getElementById("marp-bom");
   if (!container) return;

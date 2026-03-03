@@ -1677,17 +1677,23 @@
 
   var _genericCache = {};
 
-  // Expose factory for external consumers (e.g. bootfile.dev landing page)
-  // Auto-registers in _genericCache so openMermaidModal can reuse instances.
-  window.createMermaidDiagram = function (cfg) {
-    createDiagram(cfg);
-    if (cfg.mdFile) _genericCache[cfg.mdFile] = cfg;
-  };
-
+  /**
+   * openMermaidModal(mdFile, opts?) — THE ONLY ENTRY POINT.
+   *
+   * Lazily creates + caches a diagram instance for any .md file.
+   * No per-diagram globals, no hardcoded instances, no connector functions.
+   * Driven entirely by the mdFile path passed from SETTINGS.json onclick.
+   *
+   * Node actions can be registered ahead of time via:
+   *   window.__mermaidNodeActions = { 'ARCH.md': { NODE_ID: fn } };
+   */
   window.openMermaidModal = function (mdFile, opts) {
     opts = opts || {};
     if (!_genericCache[mdFile]) {
       var slug = mdFile.replace(/[^a-zA-Z0-9]/g, "-").replace(/-+/g, "-").replace(/^-|-$/g, "").toLowerCase();
+      var nodeActions = opts.nodeActions
+        || (window.__mermaidNodeActions && window.__mermaidNodeActions[mdFile])
+        || null;
       var cfg = {
         modalId:     "mm-" + slug,
         filterId:    "mm-" + slug + "-filters",
@@ -1696,42 +1702,12 @@
         openGlobal:  "_mm_open_" + slug,
         closeGlobal: "_mm_close_" + slug,
       };
-      if (opts.nodeActions) cfg.nodeActions = opts.nodeActions;
+      if (nodeActions) cfg.nodeActions = nodeActions;
       createDiagram(cfg);
       _genericCache[mdFile] = cfg;
     }
     var fn = window[_genericCache[mdFile].openGlobal];
     if (fn) fn();
   };
-
-  /* ═════════════════════════════════════════════════════════════
-     8. INSTANCES
-     ═════════════════════════════════════════════════════════════ */
-
-  // ── Site Architecture ──────────────────────────────────────
-  var _archCfg = {
-    modalId:     "arch-modal",
-    filterId:    "arch-filters",
-    mdFile:      "ARCH.md",
-    openGlobal:  "openArchModal",
-    closeGlobal: "closeArchModal",
-  };
-  // Allow host pages to inject overrides (e.g. nodeActions) before MERMAID.JS loads
-  if (window.__mermaidDiagramOverrides && window.__mermaidDiagramOverrides["arch-modal"]) {
-    Object.assign(_archCfg, window.__mermaidDiagramOverrides["arch-modal"]);
-  }
-  createDiagram(_archCfg);
-  _genericCache[_archCfg.mdFile] = _archCfg;
-
-  // ── MARP Wiring Diagram ────────────────────────────────────
-  var _marpCfg = {
-    modalId:     "marp-modal",
-    filterId:    "marp-filters",
-    mdFile:      "MARP.md",
-    openGlobal:  "openMarpModal",
-    closeGlobal: "closeMarpModal",
-  };
-  createDiagram(_marpCfg);
-  _genericCache[_marpCfg.mdFile] = _marpCfg;
 
 })();

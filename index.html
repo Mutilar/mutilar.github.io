@@ -274,7 +274,7 @@
             <img src="png/marp.gif" alt="Marp Gamepad Demo" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" loading="lazy">
           </div>
         </div>
-        <div class="glass-tile video-card reveal" style="cursor:pointer;" role="button" tabindex="0" aria-label="Open MARP Diagrams" data-action="open" data-open="marpModal">
+        <div class="glass-tile video-card reveal" style="cursor:pointer;" role="button" tabindex="0" aria-label="Open MARP Diagrams" onclick="window.openMermaidModal && window.openMermaidModal('MARP.md')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click();}">
           <div class="video-label">🧮 MARP Diagrams<span class="card-action-badge badge-dive">🔍 Dive Deeper</span><span class="year-badge">2025</span></div>
           <div class="video-wrap">
             <img src="png/marp-diagram.png" alt="Marp Wiring Diagram" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" loading="lazy">
@@ -637,7 +637,7 @@
       </div>
 
       <div class="card-grid card-grid-wide" style="margin-bottom:32px;">
-        <div class="glass-tile video-card reveal" style="cursor:pointer;" role="button" tabindex="0" aria-label="Open Architecture Diagrams" data-action="open" data-open="archModal">
+        <div class="glass-tile video-card reveal" style="cursor:pointer;" role="button" tabindex="0" aria-label="Open Architecture Diagrams" onclick="window.openMermaidModal && window.openMermaidModal('ARCH.md')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click();}">
           <div class="video-label">🏗️ Architecture<span class="card-action-badge badge-static"><i class="fa fa-cogs"></i> Under the Hood</span></div>
           <div class="footer-detail-list" style="padding:0 14px 14px;">
             <div class="footer-detail-item">
@@ -698,7 +698,7 @@
         </a>
       </div>
       <!-- Architecture & repo tiles -->
-      <div class="glass-tile video-card reveal" style="cursor:pointer;margin-bottom:32px;" role="button" tabindex="0" aria-label="Open Architecture Diagrams" data-action="open" data-open="archModal">
+      <div class="glass-tile video-card reveal" style="cursor:pointer;margin-bottom:32px;" role="button" tabindex="0" aria-label="Open Architecture Diagrams" onclick="window.openMermaidModal && window.openMermaidModal('ARCH.md')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click();}">
         <div class="video-label">🧜‍♀️ Mermaid<span class="card-action-badge badge-dive">🔍 See More!</span><span class="year-badge">2026</span></div>
         <div class="video-wrap">
           <img src="png/mutilar-architecture-preview.png" alt="Mutilar Architecture Preview" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" loading="lazy">

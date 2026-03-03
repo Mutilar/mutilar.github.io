@@ -135,12 +135,12 @@
       "emoji": "🧜",
       "label": "Diagrams",
       "ariaLabel": "See more about Architecture",
-      "onclick": "openArchModal()",
+      "onclick": "window.openMermaidModal && window.openMermaidModal('MARP.md')",
       "img": "png/marp.png",
       "imgAlt": "Architecture",
       "togglers": [
-        { "label": "MARP",     "dot": "🔵", "active": true, "src": "png/marp.png",     "badge": "badge-dive",    "click": "event.stopPropagation(); window.openMarpModal && window.openMarpModal();" },
-        { "label": "ARCH",     "dot": "⚫",                  "src": "png/arch.png",     "badge": "badge-mermaid", "click": "event.stopPropagation(); window.openArchModal && window.openArchModal();" }
+        { "label": "MARP",     "dot": "🔵", "active": true, "src": "png/marp.png",     "badge": "badge-dive",    "click": "event.stopPropagation(); window.openMermaidModal && window.openMermaidModal('MARP.md');" },
+        { "label": "ARCH",     "dot": "⚫",                  "src": "png/arch.png",     "badge": "badge-mermaid", "click": "event.stopPropagation(); window.openMermaidModal && window.openMermaidModal('ARCH.md');" }
       ]
     }
   ]
