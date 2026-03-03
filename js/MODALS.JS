@@ -254,7 +254,6 @@ const _modalOpeners = {
   pdfModal: function() { openPdfModal(); },
   bitnaughtsIphoneModal: function() { openBitnaughtsIphoneModal(); },
   archModal: function() { window.openArchModal(); },
-  tentimesModal: function() { window.openTentimesModal && window.openTentimesModal(); },
   timelineModal: function() { window.openTimelineModal && window.openTimelineModal(); },
   knowledgeModal: function() { window.openKnowledgeModal && window.openKnowledgeModal(); },
   mtgTreeModal: function() { window.openMtgTreeModal && window.openMtgTreeModal(); },
@@ -286,7 +285,7 @@ document.addEventListener("keydown", function(e) {
   }
 });
 
-// Arch / Marp / Tentimes modals — registered by MERMAID.JS via registerModal()
+// Arch / Marp modals — registered by MERMAID.JS via registerModal()
 
 // ═══════════════════════════════════════════════════════════════
 //  BITNAUGHTS GALLERY MODALS
