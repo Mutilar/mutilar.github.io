@@ -1697,12 +1697,36 @@ html.light-mode .card-action-badge.badge-toggler:not(.active) {
   transition: all 0.3s;
   z-index: 20;
   flex-shrink: 0;
+  box-shadow: 0 0 14px rgba(var(--accent-3), 0.6),
+              0 0 36px rgba(var(--accent-3), 0.35),
+              0 0 60px rgba(var(--accent-3), 0.15);
 }
 
-.modal-close:hover {
-  background: rgba(var(--accent-3), 1);
-  box-shadow: 0 0 12px rgba(var(--accent-3), 0.6),
-              0 0 28px rgba(var(--accent-3), 0.3);
+.modal-close:hover,
+.modal-overlay:hover .modal-close {
+  background: #fff;
+  color: rgb(var(--accent-3));
+  box-shadow: 0 0 18px rgba(var(--accent-3), 0.7),
+              0 0 44px rgba(var(--accent-3), 0.4),
+              0 0 72px rgba(var(--accent-3), 0.2);
+}
+
+/* When mouse is over the card content, revert close to default state */
+.modal-overlay .modal-card:hover .modal-close {
+  background: rgba(var(--accent-3), 0.85);
+  color: #fff;
+  box-shadow: 0 0 14px rgba(var(--accent-3), 0.6),
+              0 0 36px rgba(var(--accent-3), 0.35),
+              0 0 60px rgba(var(--accent-3), 0.15);
+}
+
+/* Direct hover on close always wins */
+.modal-overlay .modal-close:hover {
+  background: #fff;
+  color: rgb(var(--accent-3));
+  box-shadow: 0 0 18px rgba(var(--accent-3), 0.7),
+              0 0 44px rgba(var(--accent-3), 0.4),
+              0 0 72px rgba(var(--accent-3), 0.2);
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -2573,7 +2597,7 @@ html.light-mode .bio-modal-card::after {
    ═══════════════════════════════════════════════════════════════ */
 .footer-pane {
   position: relative;
-  min-height: 100vh;
+  min-height: auto;
   display: flex;
   align-items: center;
   justify-content: center;

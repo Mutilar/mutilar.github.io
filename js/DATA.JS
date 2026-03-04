@@ -238,6 +238,9 @@ function _renderHero(heroData) {
   html += '<h1 class="hero-name">' + (identity.name || "") + '</h1>';
   html += '<p class="hero-tagline">' + (identity.tagline || "") + '</p>';
 
+  // Auth slot (populated by AUTH.JS if present)
+  html += '<div class="auth-hero-slot" id="authHeroSlot"></div>';
+
   // Social links (same order used elsewhere)
   html += '<div class="hero-links">';
   var socialDefs = [
@@ -272,9 +275,77 @@ function _renderHero(heroData) {
       window._revealObserver.observe(el);
     });
 
-  // Init hero cycle + rescan parallax
+  // Init hero cycle + tagline cycle + rescan parallax
   _initHeroCycle(s);
+  _initTaglineCycle();
   if (window._rescanParallaxWindows) window._rescanParallaxWindows();
+}
+
+// ── Tagline scramble-decode cycle ────────────────────────────
+var _SCRAMBLE_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*<>░▒▓│┤╡╢╖╕╣║╗╝╜╛┐└┴┬├─┼╞╟╚╔╩╦╠═╬";
+
+function _initTaglineCycle() {
+  var el = document.querySelector(".hero-tagline");
+  if (!el) return;
+
+  var raw = el.innerHTML;
+  var phrases = raw.split(/<br\s*\/?>/i);
+  if (phrases.length <= 1) return;
+
+  // Show first phrase immediately
+  el.textContent = phrases[0];
+  var current = 0;
+  var cycleTimer = null;
+  var animFrame  = null;
+
+  function scheduleNext() {
+    cycleTimer = setTimeout(function () {
+      current = (current + 1) % phrases.length;
+      transitionTo(phrases[current]);
+    }, 2000);
+  }
+
+  function transitionTo(target) {
+    var start   = performance.now();
+    var dur     = 500;
+    var charMs  = dur / (target.length || 1);
+
+    function tick(now) {
+      var age = now - start;
+      if (age >= dur) {
+        el.textContent = target;
+        scheduleNext();
+        return;
+      }
+      var resolved = Math.floor(age / charMs);
+      var result   = target.substring(0, resolved);
+      var stepT    = Math.floor(age / 30);
+      for (var i = resolved; i < target.length; i++) {
+        if (target[i] === " ") { result += " "; }
+        else {
+          var idx = (i + stepT * 13 + target.charCodeAt(i) * 7) % _SCRAMBLE_CHARS.length;
+          result += _SCRAMBLE_CHARS[Math.abs(idx)];
+        }
+      }
+      el.textContent = result;
+      animFrame = requestAnimationFrame(tick);
+    }
+    animFrame = requestAnimationFrame(tick);
+  }
+
+  scheduleNext();
+
+  // Expose stop/restart for AUTH.JS takeover
+  window._stopTaglineCycle = function () {
+    clearTimeout(cycleTimer);  cycleTimer = null;
+    cancelAnimationFrame(animFrame); animFrame = null;
+  };
+  window._restartTaglineCycle = function () {
+    if (cycleTimer || animFrame) return;      // already running
+    current = 0;
+    el.textContent = phrases[0];
+    scheduleNext();
+  };
 }
 
 // ── Hero penguin background cycle ────────────────────────────
@@ -603,34 +674,25 @@ function _renderSections(headerEntries) {
       if (_hi.length) h.headerItems = _hi;
     }
     if (h.headerItems && h.headerItems.length) {
-      // Group consecutive non-grid/non-viz items into card-grid containers
-      var i = 0;
-      while (i < h.headerItems.length) {
-        var item = h.headerItems[i];
+      // Single unified container for all item types
+      var gridCls = "card-grid card-grid-wide";
+      var gridStyle = "margin-bottom:32px;";
+      html += '<div class="' + gridCls + '" style="' + gridStyle + '">';
+      h.headerItems.forEach(function (item) {
         if (item.type === "grid") {
           var gCls = "card-grid" + (item.wide ? " card-grid-wide" : "");
           html += '<div class="' + gCls + '" id="' + (item.id || h.id + "-grid") + '"'
             + (item.style ? ' style="' + item.style + '"' : "") + "></div>";
-          i++;
         } else if (item.type === "viz") {
           var vizId = item.id || (h.id + "-viz");
-          var vizCls = "card-grid" + (item.wide ? " card-grid-wide" : "");
-          html += '<div class="' + vizCls + '" id="' + vizId + '"'
+          html += '<div id="' + vizId + '"'
             + (item.style ? ' style="' + item.style + '"' : "") + "></div>";
           _pendingViz.push({ id: vizId, tiles: item.tiles });
-          i++;
         } else {
-          // Collect consecutive non-grid/non-viz items into one card-grid
-          var batch = [];
-          while (i < h.headerItems.length && h.headerItems[i].type !== "grid" && h.headerItems[i].type !== "viz") {
-            batch.push(h.headerItems[i]);
-            i++;
-          }
-          html += '<div class="card-grid card-grid-wide" style="margin-bottom:32px;">';
-          batch.forEach(function (v) { html += _buildVideoCardHtml(v); });
-          html += "</div>";
+          html += _buildVideoCardHtml(item);
         }
-      }
+      });
+      html += "</div>";
     }
 
     // ── 2f. Copyright footer ──

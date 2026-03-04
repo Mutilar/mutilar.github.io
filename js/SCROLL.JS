@@ -101,21 +101,17 @@
 
   function updateActive() {
     let current = sectionIds[0];
-    const scrollY = window.scrollY + 150;
-    const footerPane = document.getElementById("footer-pane");
-    const inFooter = footerPane && footerPane.offsetTop <= scrollY;
+    const navEl = document.querySelector(".glass-nav");
+    const offset = navEl ? navEl.offsetHeight : 60;
+    const scrollY = window.scrollY + offset;
 
-    if (!inFooter) {
-      sections.forEach(el => {
-        if (el.offsetTop <= scrollY) current = el.id;
-      });
-    } else {
-      current = null;
-    }
+    sections.forEach(el => {
+      if (el.offsetTop <= scrollY) current = el.id;
+    });
 
     navLinks.forEach(a => {
       const href = a.getAttribute("href").substring(1);
-      const isActive = !inFooter && href === current;
+      const isActive = href === current;
       a.classList.toggle("active", isActive);
       if (isActive && current !== prevActive) {
         a.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
