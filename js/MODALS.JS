@@ -307,44 +307,6 @@ window.closeEntry = closeEntry;
 const footerYear = document.getElementById("footer-year");
 if (footerYear) footerYear.textContent = new Date().getFullYear();
 
-// ── Video-card event delegation ──
-// Convention: data-open="key" → openModal(key)
-// Fallback:   data-open="fooModal" → window.openFooModal() (legacy)
-document.addEventListener("click", function(e) {
-  const card = e.target.closest("[data-action]");
-  if (!card) return;
-  const action = card.dataset.action;
-  const scrollTo = card.dataset.scrollTo;
-  if (scrollTo) {
-    const el = document.getElementById(scrollTo);
-    if (el) el.scrollIntoView({ behavior: "smooth" });
-  }
-  if (action === "open" || action === "scroll-open") {
-    var key = card.dataset.open;
-    if (key) {
-      var openArg = card.dataset.openArg || undefined;
-      // Prefer unified openModal(key)
-      var resolved = _resolveModal(key);
-      if (resolved) { resolved.open(); return; }
-      // Legacy fallback: openFooModal(arg)
-      var fnName = "open" + key[0].toUpperCase() + key.slice(1);
-      var fn = window[fnName];
-      if (fn) fn(openArg);
-    }
-  } else if (action === "scroll-navigate" || action === "navigate") {
-    navigateToModal(card.dataset.navigateDataset, card.dataset.navigateId);
-  } else if (action === "scroll-modal" || action === "modal") {
-    openEntry(card.dataset.modalDataset, card.dataset.modalId);
-  }
-});
-
-document.addEventListener("keydown", function(e) {
-  if (e.key === "Enter" || e.key === " ") {
-    const card = e.target.closest("[data-action]");
-    if (card) { e.preventDefault(); card.click(); }
-  }
-});
-
 // Mermaid modals — lazily created by openMermaidModal() in MERMAID.JS
 
 // ═══════════════════════════════════════════════════════════════
@@ -1104,6 +1066,44 @@ function closeGameModal() { _gameModal.close(); }
 })();
 
 } // end if (modal) — portfolio-specific wiring
+
+// ── Video-card event delegation (OUTSIDE if-modal guard) ─────
+// Convention: data-open="key" → openModal(key)
+// Fallback:   data-open="fooModal" → window.openFooModal() (legacy)
+document.addEventListener("click", function(e) {
+  const card = e.target.closest("[data-action]");
+  if (!card) return;
+  const action = card.dataset.action;
+  const scrollTo = card.dataset.scrollTo;
+  if (scrollTo) {
+    const el = document.getElementById(scrollTo);
+    if (el) el.scrollIntoView({ behavior: "smooth" });
+  }
+  if (action === "open" || action === "scroll-open") {
+    var key = card.dataset.open;
+    if (key) {
+      var openArg = card.dataset.openArg || undefined;
+      // Prefer unified openModal(key)
+      var resolved = _resolveModal(key);
+      if (resolved) { resolved.open(); return; }
+      // Legacy fallback: openFooModal(arg)
+      var fnName = "open" + key[0].toUpperCase() + key.slice(1);
+      var fn = window[fnName];
+      if (fn) fn(openArg);
+    }
+  } else if (action === "scroll-navigate" || action === "navigate") {
+    if (window.navigateToModal) window.navigateToModal(card.dataset.navigateDataset, card.dataset.navigateId);
+  } else if (action === "scroll-modal" || action === "modal") {
+    if (window.openEntry) window.openEntry(card.dataset.modalDataset, card.dataset.modalId);
+  }
+});
+
+document.addEventListener("keydown", function(e) {
+  if (e.key === "Enter" || e.key === " ") {
+    const card = e.target.closest("[data-action]");
+    if (card) { e.preventDefault(); card.click(); }
+  }
+});
 
 // ═══════════════════════════════════════════════════════════════
 //  BIOGRAPHY HYDRATOR — builds bio DOM from SETTINGS.json schema
