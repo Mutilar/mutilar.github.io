@@ -89,59 +89,10 @@
      NAVIGATION
      ═══════════════════════════════════════════════════════════════ -->
 <nav class="glass-nav" id="mainNav">
-  <a href="#home" class="nav-brand" id="navBrand"><span class="brand-icon">🐧</span> Brian Hungerman</a>
-  <button class="theme-toggle" id="themeToggle" title="Switch to light mode" aria-label="Switch to light mode" aria-pressed="false"><span class="theme-toggle-icon" id="themeIcon">🌙</span><span class="theme-toggle-label">Dark Mode</span></button>
-  <a href="#home" class="active">Home</a>
-  <a href="#about">About</a>
-  <a href="#marp">MARP</a>
-  <a href="#bitnaughts">BitNaughts</a>
-  <a href="#mtg">MTG</a>
-  <a href="#work">Work</a>
-  <a href="#education">Education</a>
-  <a href="#projects">Projects</a>
-  <a href="#hackathons">Hacks</a>
-  <a href="#games">Games</a>
-
+  <!-- Brand, theme toggle, and nav links injected by
+       BOOT.JS → THEME.JS → DATA.JS (from per-JSON nav entries).
+       Radio player injected by RADIO.JS (from settings.media). -->
 </nav>
-
-<!-- Radio Player (outside nav so position:fixed works on mobile) -->
-<div class="radio-player" id="radioPlayer">
-  <div class="radio-brand-slot">
-    <a href="#home" class="radio-brand" id="radioBrand"><span class="brand-icon">🐧</span> <strong>Brian <span class="brand-surname">Hungerman</span></strong></a>
-    <button class="theme-toggle theme-toggle-radio" id="themeToggleRadio" title="Switch to light mode" aria-label="Switch to light mode" aria-pressed="false"><span class="theme-toggle-icon">🌙</span><span class="theme-toggle-label">Dark Mode</span></button>
-  </div>
-  <div class="radio-group">
-  <div class="radio-eq" id="radioEq">
-    <div class="radio-eq-bar" style="height:2px"></div>
-    <div class="radio-eq-bar" style="height:2px"></div>
-    <div class="radio-eq-bar" style="height:2px"></div>
-    <div class="radio-eq-bar" style="height:2px"></div>
-    <div class="radio-eq-bar" style="height:2px"></div>
-    <div class="radio-eq-bar" style="height:2px"></div>
-    <div class="radio-eq-bar" style="height:2px"></div>
-    <div class="radio-eq-bar" style="height:2px"></div>
-    <div class="radio-eq-bar" style="height:2px"></div>
-    <div class="radio-eq-bar" style="height:2px"></div>
-    <div class="radio-eq-bar" style="height:2px"></div>
-    <div class="radio-eq-bar" style="height:2px"></div>
-    <div class="radio-eq-bar" style="height:2px"></div>
-    <div class="radio-eq-bar" style="height:2px"></div>
-    <div class="radio-eq-bar" style="height:2px"></div>
-  </div>
-  <div class="radio-song">
-    <span class="radio-song-title" id="radioTitle">Radio</span>
-  </div>
-  <div class="radio-controls">
-    <button class="radio-btn" id="radioPrev" title="Previous" aria-label="Previous track"><i class="fa fa-step-backward"></i></button>
-    <button class="radio-btn radio-btn-play" id="radioPlayPause" title="Play" aria-label="Play" aria-pressed="false"><i class="fa fa-play" id="radioPlayIcon"></i></button>
-    <button class="radio-btn" id="radioNext" title="Next" aria-label="Next track"><i class="fa fa-step-forward"></i></button>
-  </div>
-  <div class="radio-volume">
-    <button class="radio-vol-btn" id="radioMute" title="Mute" aria-label="Toggle mute"><i class="fa fa-volume-up" id="radioVolIcon"></i></button>
-    <input type="range" class="radio-vol-slider" id="radioVolume" min="0" max="100" value="30" aria-label="Volume">
-  </div>
-  </div>
-</div>
 
 <!-- ═══════════════════════════════════════════════════════════════
      PAGE CONTENT — alternating windows & opaque bands
@@ -670,7 +621,7 @@
               <span class="footer-detail-icon"><i class="fa fa-sitemap"></i></span>
               <div>
                 <strong>File Structure</strong>
-                <span class="footer-detail-desc"><code>INDEX.html</code> · <code>css/</code> · <code>js/</code> · <code>PORTFOLIO.json</code> · <code>CARDS.csv</code> · <code>png/</code> · <code>games/</code></span>
+                <span class="footer-detail-desc"><code>INDEX.html</code> · <code>css/</code> · <code>js/</code> · <code>PORTFOLIO.json</code> · <code>CARDS.json</code> · <code>png/</code> · <code>games/</code></span>
               </div>
             </div>
             <div class="footer-detail-item">
@@ -740,9 +691,8 @@
 <div class="modal-overlay" id="bootfile-modal" role="dialog" aria-label="bootfile Style Guide"></div>
 
 <!-- ═══════════════════════════════════════════════════════════════
-     SCRIPTS — fragments loaded first, then JS in order
+     SCRIPTS — settings-driven tier loader
      ═══════════════════════════════════════════════════════════════ -->
-<script src="js/CONSOLE.JS"></script>
 <script type="module">
   import * as pdfjsLib from 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.7.76/pdf.min.mjs';
   pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.7.76/pdf.worker.min.mjs';
@@ -751,35 +701,47 @@
 </script>
 <script>
 (function () {
-  /* ── Modal fragment IDs (all shells now built programmatically by JS) ── */
-  const MODAL_IDS = [];
+  /* ── Tier-based script loader ── */
+  function loadScript(src, optional) {
+    return new Promise(function (resolve, reject) {
+      var s = document.createElement('script');
+      s.src = src;
+      s.onload = resolve;
+      s.onerror = function () {
+        if (optional) { console.warn('[loader] optional ' + src + ' not loaded'); resolve(); }
+        else reject(new Error('Failed to load ' + src));
+      };
+      document.body.appendChild(s);
+    });
+  }
 
-  /* ── JS files in original defer order ── */
-  const SCRIPTS = [
-    'js/BOOT.JS', 'js/THEME.JS', 'js/PARALLAX.JS', 'js/SCROLL.JS', 'js/VIZ.JS',
-    'js/DATA.JS', 'js/MODALS.JS', 'js/PDF.JS', 'js/TIMELINE.JS',
-    'js/SKILLTREE.JS', 'js/MERMAID.JS', 'js/MAP.JS', 'js/RADIO.JS'
-  ];
+  function loadScriptTiers(scripts, prefix) {
+    var tiers = {};
+    scripts.forEach(function (s) {
+      (tiers[s.order] = tiers[s.order] || []).push(s);
+    });
+    return Object.keys(tiers).sort(function (a, b) { return a - b; }).reduce(function (chain, tier) {
+      return chain.then(function () {
+        return Promise.all(tiers[tier].map(function (s) {
+          // If src already has a path separator, load directly (scripts_local)
+          var path = s.src.indexOf('/') !== -1 ? s.src : prefix + s.src;
+          return loadScript(path, s.optional);
+        }));
+      });
+    }, Promise.resolve());
+  }
 
-  /* 1. Fetch SETTINGS.json first so VIZ.JS can read domains */
-  fetch('SETTINGS.json?v=' + Date.now())
+  /* 1. Fetch SETTINGS.json, then load scripts by tier */
+  var _settingsMetaPath = (document.querySelector('meta[name="settings-path"]') || {}).content || 'json/SETTINGS.json';
+  fetch(_settingsMetaPath + '?v=' + Date.now())
     .then(function (r) { return r.ok ? r.json() : {}; })
     .catch(function () { return {}; })
     .then(function (settings) {
       window.__SETTINGS = settings;
 
-      /* 2. Load scripts sequentially to preserve execution order */
-      return SCRIPTS.reduce(function (chain, src) {
-        return chain.then(function () {
-          return new Promise(function (resolve, reject) {
-            var s = document.createElement('script');
-            s.src = src;
-            s.onload = resolve;
-            s.onerror = function () { reject(new Error('Failed to load ' + src)); };
-            document.body.appendChild(s);
-          });
-        });
-      }, Promise.resolve());
+      /* 2. Load engine scripts by tier from settings.scripts[] */
+      var scripts = (settings.scripts || []).concat(settings.scripts_local || []);
+      return loadScriptTiers(scripts, 'js/');
     }).catch(function (err) { console.error('[loader]', err); });
 })();
 </script>

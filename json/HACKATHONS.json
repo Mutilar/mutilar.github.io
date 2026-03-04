@@ -1,0 +1,153 @@
+{
+  "index": 8,
+  "nav": {
+    "href": "#hackathons",
+    "label": "Hacks"
+  },
+  "sections": [
+    {
+      "id": "hackathons",
+      "items": [
+        {
+          "ID": "motorskills",
+          "NAME": "🥇 MotorSkills",
+          "TITLE": "SLO Hacks",
+          "MOTTO": "ML-driven Intelligence for Industrial IoT",
+          "DATE": "Feb 2019",
+          "LOCATION": "San Luis Obispo, California",
+          "GITHUB": "https://github.com/plebeiathon/motorskills",
+          "WIN": "Best Use of GCP",
+          "TEXT": "<h3>The Idea</h3><p>Inspired by many a destroyed DC motor. A broken motor on an assembly line costs thousands in downtime and repairs. MotorSkills monitors industrial motors with ML: automated diagnostics, malfunction corrections, and push notifications before failures cascade.</p><h3>How It Works</h3><p>We read amperage and RPM data from motors and feed it into Google AutoML. Time-series sensor readings are converted into miniature images and run through an image classifier to detect anomalies like stalls and load spikes. Results are displayed in a front-end UI and trigger push notifications for critical issues. The back-end runs on Node.JS with serverless function calls and parallel clustering to handle Bluetooth sensor comms alongside AutoML.</p><h3>The Grind</h3><p>We generated our own training data by physically stalling, overloading, and abusing DC motors with custom hardware to learn what good training data actually looks like. Wiring together most of the GCP suite into one hardware app earned us Best Use of GCP.</p>",
+          "domain": "robotics",
+          "source": "projects",
+          "quadrant": "robotics",
+          "shortname": "Motor<br>Skills",
+          "TECH": "💚📶☁️"
+        },
+        {
+          "ID": "gasleek",
+          "NAME": "🏆 GasLeek",
+          "TITLE": "ValleyHacks",
+          "MOTTO": "Applying linear regression to gas prices to help save money at the pump",
+          "DATE": "Jan 2019",
+          "LOCATION": "Modesto, California",
+          "GITHUB": "https://github.com/plebeiathon/gasLEEK",
+          "WIN": "First Place",
+          "TEXT": "<h3>The Idea</h3><p>3.5 million truckers refuel 130+ times a year; even a few cents per gallon adds up to billions. GasLeek forecasts gas price trends with machine learning so drivers can time their fill-ups. The acronym: Gas LinEar rEgression Kode.</p><h3>How It Works</h3><p>An LSTM neural network trained on historical weekly gas price data, converting time-series readings into supervised learning problems with differencing and MinMax scaling. The model outputs persistence forecasts and projected savings, visualized on a React dashboard (Chart.js) with weekly, monthly, and annual price views, a MapBox gas station map, and a volatility-based savings calculator.</p><h3>The Grind</h3><p>The full pipeline runs from raw CSV parsing in Python through a Keras LSTM model to a live React front-end pulling data via Axios; two separate stacks wired into one product. We dealt with TensorFlow setup, DeckGL map layers, and real-time CSV parsing, and took First Place.</p><figure class='modal-figure'><img src='png/gasleek-dashboard.png' alt='GasLeek dashboard'></figure>",
+          "domain": "software",
+          "source": "projects",
+          "shortname": "Gas<br>Leek",
+          "TECH": "📈🧠🗺️⚛️🔶🐍"
+        },
+        {
+          "ID": "chemistry",
+          "NAME": "🧪 ChemisTRY",
+          "TITLE": "CruzHacks",
+          "MOTTO": "AR project-based learning for chemistry",
+          "DATE": "Dec 2018",
+          "LOCATION": "Santa Cruz, California",
+          "GITHUB": "https://github.com/plebeiathon/ChemisTRY",
+          "TEXT": "<h3>The Idea</h3><p>Physical project-based learning kits are expensive and single-use; most schools can't afford them. We built a digital alternative: AR lesson plans covering the same standards-aligned chemistry curriculum at a fraction of the cost. Students interact with Amazon Alexa in a 3D chemistry sandbox to explore exothermic reactions and radioactivity from their classroom.</p><h3>How It Works</h3><p>AR.JS handles the augmented reality layer on a Node.JS back-end wired into a full AWS stack: the AWS SDK, Lambda for serverless compute, DynamoDB for NoSQL storage, and the Alexa Developer Console for voice interaction. Point a classroom webcam at a marker, talk to Alexa, and the 3D chemistry scene loads in-browser.</p><h3>The Grind</h3><p>Most of the time went into maintaining a secure connection between Alexa and a classroom webcam through AWS; getting that many AWS services to talk to each other took longer than building the AR itself. The end result is a working proof of concept that replaces static videos with interactive AR.</p><figure class='modal-figure'><img src='png/chemistry-demo.png' alt='ChemisTRY AR demo'></figure>",
+          "domain": "software",
+          "source": "projects",
+          "shortname": "Chemis<br>TRY",
+          "TECH": "📱💚🗣️🟠🦕"
+        },
+        {
+          "ID": "sriracha",
+          "NAME": "🥉 SRIRACHA",
+          "TITLE": "SDHacks",
+          "MOTTO": "Search & Rescue Informatic Robot Assistant Clearing Hazardous Areas",
+          "DATE": "Fall 2018",
+          "LOCATION": "San Diego, California",
+          "GITHUB": "https://github.com/plebeiathon/sriracha",
+          "WIN": "Third Place",
+          "TEXT": "<h3>The Idea</h3><p>After Indonesia's earthquake, first responders were searching collapsed buildings with no structural information. SRIRACHA (Search and Rescue Informatic Robot Assisting in Charting Hazardous Areas) is an RC tank with an oscillating range-finder that enters first and constructs 3D point clouds of the structure in real time.</p><h3>How It Works</h3><p>An Arduino Mega drives the tank and its sweeping range-finder, streaming sensor data over Bluetooth (HC-06) to a Node.JS server via a custom serial communication protocol. JavaScript parses the incoming data and Pixi.JS renders it into a live 3D point cloud visualization: a map of the building as the robot explores it.</p><h3>The Grind</h3><p>Serial communication was the main problem; we burned through multiple libraries before landing on SerialPort for low-level Bluetooth access and real-time data streaming. We wrote our own communication protocol from scratch, which meant learning networking fundamentals by debugging them. SD Hacks mentors helped with Node.JS file streaming and wireless strategy; we took Third Place.</p><figure class='modal-figure'><img src='png/sriracha-people.png' alt='SRIRACHA team at SDHacks'></figure>",
+          "domain": "robotics",
+          "source": "projects",
+          "quadrant": "robotics",
+          "shortname": "SRIR<br>ACHA",
+          "TECH": "💚🧚🔌📶⚡"
+        },
+        {
+          "ID": "smartank",
+          "NAME": "🥇 SMARTank",
+          "TITLE": "HackFresno",
+          "MOTTO": "An autonomous soil moisture sensing robot, reducing the barrier of entry to IOT farming",
+          "DATE": "Apr 2018",
+          "LOCATION": "Fresno, California",
+          "GITHUB": "https://github.com/plebeiathon/SMARTank",
+          "WIN": "Best Hardware Hack",
+          "TEXT": "<h3>The Idea</h3><p>UC Merced sits in California's agricultural heartland, so we built an IoT farming tool. Mapping soil moisture across a field normally requires thousands of sensors. SMARTank replaces them with one autonomous robot that roves the land and probes as it goes.</p><h3>How It Works</h3><p>A retrofitted RC tank running on Arduino with upgraded control systems. It traverses farmland, probing soil at regular intervals to record moisture levels and build a data map that would otherwise take a grid of fixed sensors to produce.</p><h3>The Grind</h3><p>Power management was the main issue; our components demanded more amperage than our supply could deliver, forcing constant trade-offs between capability and what the hardware could sustain. We got it working and took home Best Hardware Hack.</p>",
+          "domain": "robotics",
+          "source": "projects",
+          "quadrant": "robotics",
+          "shortname": "SMAR<br>TANK",
+          "TECH": "🔌"
+        },
+        {
+          "ID": "blindsight",
+          "NAME": "🥉 BlindSight",
+          "TITLE": "CitrusHack",
+          "MOTTO": "Giving the visually-impaired haptic sight",
+          "DATE": "Mar 2018",
+          "LOCATION": "Riverside, California",
+          "GITHUB": "https://github.com/plebeiathon/blindsight",
+          "WIN": "Third Place",
+          "TEXT": "<h3>The Idea</h3><p>Two teams with the same idea merged to build a wearable haptic system for the visually impaired. An ultrasonic sensor on a stepper motor scans the environment and translates distances into vibrations through an array of haptic modules, all mounted on a top hat.</p><h3>How It Works</h3><p>Built on a Raspberry Pi with 3D-printed parts and a vibration motor array. The ultrasonic sensor sweeps on a stepper motor, mapping distances from the body and converting them into haptic feedback in real time. We traded sensor precision for responsiveness; the system was reactive enough to detect someone stepping into your path.</p><h3>The Grind</h3><p>A Qualcomm board that refused to connect to WiFi, vague wiring bugs that ate hours, and constant trade-offs between precision and speed. We navigated a hallway eyes-closed using nothing but vibrations, which was enough to validate the concept. Third Place.</p><figure class='modal-figure'><img src='png/blindsight-people.png' alt='Blindsight team at CitrusHack'></figure>",
+          "domain": "robotics",
+          "source": "projects",
+          "quadrant": "robotics",
+          "shortname": "Blind<br>Sight",
+          "TECH": "🍓"
+        },
+        {
+          "ID": "seerauber",
+          "NAME": "🥈 SeeRäuber",
+          "TITLE": "SacHacks",
+          "MOTTO": "Polygonal pirates prowling the Pacific",
+          "DATE": "Winter 2018",
+          "LOCATION": "Sacramento, California",
+          "GITHUB": "https://github.com/plebeiathon/seerauber",
+          "WIN": "Second Place",
+          "TEXT": "<h3>The Idea</h3><p>SeeRäuber is a pirate strategy game where you write code to build ships, direct fleets, and govern an empire. A tarot system introduces randomness: each card draw can disrupt your plans, forcing you to adapt your code on the fly. The game sits between programming puzzle and resource management.</p><figure class='modal-figure'><img src='png/seerauber-ship.png' alt='SeeRäuber pirate ship'></figure><h3>How It Works</h3><p>Built in Unity3D with C#. A custom visual programming language uses drag-and-drop code blocks with loops, conditionals, tasks, and variables to control your pirate crew's AI. Each pirate has simulated needs (hunger, thirst, sleep, sailing) and an interpreter evaluates your nested code blocks to generate task queues in real time. A state machine tracks day/night cycles, combat, and sailing conditions, with procedurally generated pirate names and Shakespearean insults.</p><figure class='modal-figure'><img src='png/seerauber-code.png' alt='SeeRäuber visual programming interface'></figure><h3>The Grind</h3><p>We built a code interpreter from scratch in 24 hours: a recursive block evaluator that parses nested conditionals, loops, and boolean expressions to drive pirate AI. The drag-and-drop UI, need system, and state machine all had to connect into one game loop in a single sprint. Second Place at SacHacks with a playable WebGL build.</p>",
+          "domain": "games",
+          "source": "projects",
+          "quadrant": "games",
+          "shortname": "Sea<br>Räuber",
+          "TECH": "🎮🔺🎵"
+        },
+        {
+          "ID": "gist",
+          "NAME": "🥇 GISt",
+          "TITLE": "HackDavis",
+          "MOTTO": "AR to fill in the missing link from farm-to-table",
+          "DATE": "Jan 2018",
+          "LOCATION": "Davis, California",
+          "GITHUB": "https://github.com/plebeiathon/GISt",
+          "WIN": "Best Environment Hack",
+          "TEXT": "<h3>The Idea</h3><p>Most people have no idea where their produce comes from, which means they have no idea about its environmental impact either. GISt is a farm-to-table AR app: point your phone at produce and see where your food was grown, how it got to you, and what that journey cost the planet.</p><figure class='modal-figure'><img src='png/gist_app.png' alt='GISt AR app in action'></figure><h3>How It Works</h3><p>AR powered by Vuforia through Unity3D, with UX prototyped in Axure RP 8 and built in C#. Farm data, GIS layers, and maps are pulled live via the OSIsoft API, MapBox, JavaScript, and JSON, overlaid onto real-world products through the camera feed.</p><figure class='modal-figure'><img src='png/gist_team.png' alt='GISt team at HackDavis'></figure><h3>The Grind</h3><p>Android SDK and Java JDK errors ate most of the early hours on the mobile build. The working prototype had to juggle three separate APIs (AR, mapping, farm data) across different platforms and languages. Best Environment Hack.</p>",
+          "domain": "software",
+          "source": "projects",
+          "shortname": "GISt",
+          "TECH": "🗺️👁️🎮🎵♨️⚡"
+        },
+        {
+          "ID": "digestquest",
+          "NAME": "🥇 DigestQuest",
+          "TITLE": "HackMerced",
+          "MOTTO": "OCR as a FitBit for your stomach",
+          "DATE": "Sep 2017",
+          "LOCATION": "Merced, California",
+          "GITHUB": "https://github.com/plebeiathon/DigestQuest",
+          "WIN": "Best in Design",
+          "TEXT": "<h3>The Idea</h3><p>Snap a photo of a nutrition label and DigestQuest breaks down your diet calorie by calorie. No manual entry: point your phone camera at the label and the app reads it for you.</p><h3>How It Works</h3><p>A web app built around Tesseract's JavaScript OCR API. Raw OCR output is messy, so we wrote a custom heuristic algorithm that applies representativeness matching to map garbled text to actual nutritional values. Parsed results feed into a back-end database and are visualized in a display designed to be readable at a glance.</p><h3>The Grind</h3><p>36 hours of DNS battles and wrangling JQuery and Node.js into talking to Tesseract on a web platform. We walked in barely knowing JavaScript or image processing APIs and left with a working multi-language OCR pipeline and a Best in Design win.</p><figure class='modal-figure'><img src='png/digestquest-people.png' alt='DigestQuest team at HackMerced'></figure>",
+          "domain": "software",
+          "source": "projects",
+          "shortname": "Digest<br>Quest",
+          "TECH": "💲💚🔍⚡"
+        }
+      ]
+    }
+  ]
+}

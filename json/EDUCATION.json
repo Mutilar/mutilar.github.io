@@ -1,0 +1,159 @@
+{
+  "index": 6,
+  "nav": {
+    "href": "#education",
+    "label": "Education"
+  },
+  "sections": [
+    {
+      "id": "education",
+      "items": [
+        {
+          "ID": "cse180",
+          "NAME": "🤖 CSE 180",
+          "TITLE": "Robotics",
+          "MOTTO": "Autonomous systems through statistics",
+          "DATE": "Spring 2019",
+          "GITHUB": "https://github.com/Mutilar/CSE180",
+          "TEXT": "<ul style=\"list-style-type: disc\"><li>Programmed autonomous robot behaviors using C++ and ROS (Robot Operating System) on Linux, integrating sensor input with actuator control in real-time.</li><li>Developed CMake and Makefile build systems to compile and deploy robotics workspaces across multiple hardware configurations.</li><li>Completed homework assignments covering kinematics, sensor fusion, and motion planning for mobile robot platforms.</li><li>Collaborated with a partner to design, implement, and debug robotic control pipelines from perception to action.</li></ul>",
+          "domain": "education",
+          "quadrant": "robotics",
+          "shortname": "CSE<br>180",
+          "TECH": "🏗️🤖🐧🏎️"
+        },
+        {
+          "ID": "cse165",
+          "NAME": "📦 CSE 165",
+          "TITLE": "OOP",
+          "MOTTO": "Abstraction, encapsulation &amp; polymorphism",
+          "DATE": "Fall 2018",
+          "GITHUB": "https://github.com/Mutilar/CSE165",
+          "TEXT": "<ul style=\"list-style-type: disc\"><li>Completed six labs and a final project exploring core OOP concepts — classes, inheritance, polymorphism, templates, and operator overloading — in C and C++.</li><li>Built progressively complex programs emphasizing clean abstractions, encapsulation, and modular design patterns.</li><li>Developed a comprehensive final project demonstrating mastery of object-oriented design principles and software architecture.</li><li>Practiced disciplined version control and code organization across a multi-lab coursework repository.</li></ul>",
+          "domain": "education",
+          "shortname": "CSE<br>165",
+          "TECH": "⚙️🏎️"
+        },
+        {
+          "ID": "cse160",
+          "NAME": "🌐 CSE 160",
+          "TITLE": "Networks",
+          "MOTTO": "Protocols that connect the world",
+          "DATE": "Fall 2018",
+          "GITHUB": "https://github.com/Mutilar/CSE160",
+          "TEXT": "<ul style=\"list-style-type: disc\"><li>Implemented four networking projects covering transport protocols, routing, and distributed communication using nesC, Python, and C.</li><li>Built a TCP connector module handling reliable data transfer, flow control, and congestion management from scratch.</li><li>Completed homework assignments on network architecture, protocol design, and the OSI/TCP-IP model.</li><li>Gained hands-on experience with sensor network programming in nesC alongside traditional socket programming in Python and C.</li></ul>",
+          "domain": "education",
+          "shortname": "CSE<br>160",
+          "TECH": "⚙️📡🐍"
+        },
+        {
+          "ID": "cse120",
+          "NAME": "💻 CSE 120",
+          "TITLE": "Software Engineering",
+          "MOTTO": "From requirements to deployments",
+          "DATE": "Spring 2019",
+          "GITHUB": "https://github.com/Mutilar/CSE120",
+          "TEXT": "<ul style=\"list-style-type: disc\"><li>Collaborated with a team to build <a href=\"#projects\" onclick=\"event.preventDefault(); navigateToModal('projects','motleymoves')\">MotleyMoves</a>, a web application to streamline race creation and participant tracking for a local nonprofit running club.</li><li>Developed a serverless C#/.NET backend on Azure Function Apps with an Azure SQL Database, handling 15+ API endpoints for race management, GPS tracking, and medical records.</li><li>Built a mobile-friendly front-end with Mapbox-powered interactive race course maps, Google Sign-In authentication, and FullCalendar event views.</li><li>Practiced agile software engineering methodologies including requirements gathering, sprint planning, and iterative delivery.</li></ul>",
+          "domain": "education",
+          "shortname": "CSE<br>120",
+          "TECH": "🟦🔷🎵🗄️"
+        },
+        {
+          "ID": "cse111",
+          "NAME": "🗃️ CSE 111",
+          "TITLE": "Databases",
+          "MOTTO": "Formatting &amp; querying structured data",
+          "DATE": "Fall 2018",
+          "GITHUB": "https://github.com/Mutilar/CSE111",
+          "TEXT": "<ul style=\"list-style-type: disc\"><li>Designed and implemented relational database schemas across eight labs and a final project using T-SQL and SQLite.</li><li>Wrote complex SQL queries involving joins, subqueries, aggregations, views, stored procedures, and triggers to solve real-world data modeling problems.</li><li>Built a C# database application integrating programmatic data access with SQL backend logic.</li><li>Studied normalization theory, ER modeling, transaction management, and indexing strategies for database performance optimization.</li></ul>",
+          "domain": "education",
+          "shortname": "CSE<br>111",
+          "TECH": "🪶🎵🗄️"
+        },
+        {
+          "ID": "cse100",
+          "NAME": "📈 CSE 100",
+          "TITLE": "Algorithms",
+          "MOTTO": "The art of solving problems efficiently",
+          "DATE": "Spring 2018",
+          "GITHUB": "https://github.com/Mutilar/CSE100",
+          "TEXT": "<ul style=\"list-style-type: disc\"><li>Implemented 17 algorithm labs in C++ covering sorting (insertion, merge, quick, heap, bucket, radix), searching (linear, binary), and advanced data structures (hash maps, BSTs).</li><li>Built graph algorithms including BFS/DFS traversal and minimum spanning trees (Kruskal's and Prim's).</li><li>Implemented dynamic programming solutions for rod cutting, matrix chain multiplication, and Huffman coding.</li><li>Analyzed time and space complexity of each algorithm, comparing theoretical bounds with empirical benchmarks via shell scripts.</li></ul>",
+          "domain": "education",
+          "shortname": "CSE<br>100",
+          "TECH": "🏎️"
+        },
+        {
+          "ID": "cse031",
+          "NAME": "⚙️ CSE 31",
+          "TITLE": "Computer Organization",
+          "MOTTO": "Understanding the logic beneath the abstraction",
+          "DATE": "Fall 2017",
+          "GITHUB": "https://github.com/Mutilar/CSE031",
+          "TEXT": "<ul style=\"list-style-type: disc\"><li>Programmed in MIPS assembly and C across 10 labs, 8 homework assignments, and 2 projects covering CPU architecture, memory hierarchy, and instruction-level parallelism.</li><li>Implemented low-level routines including arithmetic operations, string manipulation, stack management, and recursive procedures in MIPS assembly.</li><li>Built projects exploring processor datapath design and cache simulation, bridging the gap between hardware and software.</li><li>Studied instruction set architecture, pipelining, virtual memory, and I/O systems to understand how high-level code maps to machine execution.</li></ul>",
+          "domain": "education",
+          "quadrant": "robotics",
+          "shortname": "CSE<br>31",
+          "TECH": "⚙️🔩"
+        },
+        {
+          "ID": "cse030",
+          "NAME": "📚 CSE 30",
+          "TITLE": "Data Structures",
+          "MOTTO": "Building blocks used in every program &amp; script",
+          "DATE": "Spring 2017",
+          "GITHUB": "https://github.com/Mutilar/CSE030",
+          "TEXT": "<ul style=\"list-style-type: disc\"><li>Implemented fundamental data structures in C++ across 13 labs and 2 homework assignments — linked lists, stacks, queues, trees, heaps, and hash tables.</li><li>Built and tested each structure from scratch, emphasizing pointer manipulation, dynamic memory allocation, and algorithmic efficiency.</li><li>Studied the trade-offs between sequential and linked representations, balancing time complexity with memory overhead.</li><li>Developed debugging and testing practices for complex pointer-based data structures in a systems programming environment.</li></ul>",
+          "domain": "education",
+          "shortname": "CSE<br>30",
+          "TECH": "🏎️"
+        },
+        {
+          "ID": "cse015",
+          "NAME": "🔢 CSE 15",
+          "TITLE": "Discrete Mathematics",
+          "MOTTO": "Mathematical foundations of computer science",
+          "DATE": "Fall 2016",
+          "GITHUB": "https://github.com/Mutilar/CSE015",
+          "TEXT": "<ul style=\"list-style-type: disc\"><li>Completed 11 written homework assignments and 4 Python programming assignments covering logic, proofs, set theory, combinatorics, and graph theory.</li><li>Implemented discrete math concepts programmatically in Python — truth tables, set operations, counting algorithms, and graph traversals.</li><li>Studied propositional and predicate logic, proof techniques (direct, contradiction, induction), relations, functions, and recurrence relations.</li><li>Built foundational mathematical reasoning skills essential for algorithm analysis, cryptography, and formal verification.</li></ul>",
+          "domain": "education",
+          "shortname": "CSE<br>15",
+          "TECH": "🐍"
+        },
+        {
+          "ID": "ropgamedesign",
+          "NAME": "🕹️ ROP Game Design",
+          "TITLE": "Game Design",
+          "MOTTO": "Designing interactive worlds from concept to controller",
+          "DATE": "Spring 2016",
+          "TEXT": "<ul style=\"list-style-type: disc\"><li>Designed and developed 2D and 3D games in Unity using C#, iterating through full game development cycles from concept and prototyping to playtesting and polish.</li><li>Created game design documents covering mechanics, level design, player progression, and user experience for original game concepts.</li><li>Implemented core gameplay systems including player controllers, enemy AI, collision detection, scoring, and UI menus.</li><li>Collaborated with peers on team-based projects, managing asset pipelines, version control, and integration of art, audio, and code.</li></ul>",
+          "domain": "education",
+          "quadrant": "games",
+          "shortname": "GAME<br>DESIGN",
+          "TECH": "🎮🎵"
+        },
+        {
+          "ID": "roparchitecture",
+          "NAME": "🏗️ ROP Architecture",
+          "TITLE": "Architecture",
+          "MOTTO": "Designing structures from blueprint to build",
+          "DATE": "Fall 2015",
+          "TEXT": "<ul style=\"list-style-type: disc\"><li>Created architectural drawings and floor plans using AutoCAD and Revit, applying drafting standards and dimensioning conventions.</li><li>Designed residential and commercial building models with attention to structural integrity, spatial flow, and building code compliance.</li><li>Built physical scale models and 3D-printed prototypes to visualize and present architectural concepts.</li><li>Studied architectural history, materials science, and sustainable design principles alongside hands-on CAD/CAM workflows.</li></ul>",
+          "domain": "education",
+          "quadrant": "robotics",
+          "shortname": "ARCHI<br>TECTURE",
+          "TECH": "📏🏛️"
+        },
+        {
+          "ID": "apjava",
+          "NAME": "♨️ AP Java",
+          "TITLE": "AP Computer Science A",
+          "MOTTO": "Object-oriented programming &amp; algorithmic thinking",
+          "DATE": "Spring 2015",
+          "TEXT": "<ul style=\"list-style-type: disc\"><li>Studied object-oriented programming in Java covering classes, inheritance, polymorphism, interfaces, and abstract classes.</li><li>Implemented data structures and algorithms including arrays, ArrayLists, sorting (selection, insertion, merge), searching (linear, binary), and recursion.</li><li>Completed AP-style free-response and multiple-choice practice covering control flow, string manipulation, 2D arrays, and object design.</li><li>Scored on the AP Computer Science A exam, demonstrating proficiency in Java fundamentals and computational thinking.</li></ul>",
+          "domain": "education",
+          "shortname": "AP<br>JAVA",
+          "TECH": "♨️"
+        }
+      ]
+    }
+  ]
+}

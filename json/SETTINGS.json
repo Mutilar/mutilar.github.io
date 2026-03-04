@@ -29,40 +29,130 @@
     "spotify": "https://open.spotify.com/user/12143746238",
     "repo": "https://github.com/Mutilar/mutilar.github.io"
   },
-  "accents": ["0, 164, 239", "255, 185, 0", "242, 80, 34", "127, 186, 0"],
+  "accents": [
+    "0, 164, 239",
+    "255, 185, 0",
+    "242, 80, 34",
+    "127, 186, 0"
+  ],
   "hero": {
     "scrollHintLabel": "About Me",
     "scrollHintTarget": "#about",
     "scrollHintArrow": "👋🏻",
-    "cycle": [["🌎", 0], ["🌍", 0], ["🌏", 0], ["🌐", 3], ["🏙️", 3], ["🌁", 3], ["🌇", 2], ["🌆", 2], ["🌃", 2], ["🌌", 1], ["🌠", 1]]
+    "cycle": [
+      [
+        "🌎",
+        0
+      ],
+      [
+        "🌍",
+        0
+      ],
+      [
+        "🌏",
+        0
+      ],
+      [
+        "🌐",
+        3
+      ],
+      [
+        "🏙️",
+        3
+      ],
+      [
+        "🌁",
+        3
+      ],
+      [
+        "🌇",
+        2
+      ],
+      [
+        "🌆",
+        2
+      ],
+      [
+        "🌃",
+        2
+      ],
+      [
+        "🌌",
+        1
+      ],
+      [
+        "🌠",
+        1
+      ]
+    ]
   },
-  "console": {"greeting": "🐧 Hello, World 👋🏻"},
+  "console": {
+    "greeting": "🐧 Hello, World 👋🏻"
+  },
+  "scripts": [
+    { "src": "CONSOLE.JS",   "order": 0 },
+    { "src": "BOOT.JS",      "order": 1 },
+    { "src": "THEME.JS",     "order": 2 },
+    { "src": "PARALLAX.JS",  "order": 2 },
+    { "src": "SCROLL.JS",    "order": 2 },
+    { "src": "VIZ.JS",       "order": 3 },
+    { "src": "DATA.JS",      "order": 4 },
+    { "src": "MODALS.JS",    "order": 4 },
+    { "src": "PDF.JS",       "order": 4 },
+    { "src": "TIMELINE.JS",  "order": 5 },
+    { "src": "SKILLTREE.JS", "order": 5 },
+    { "src": "MERMAID.JS",   "order": 5 },
+    { "src": "MAP.JS",       "order": 5 },
+    { "src": "RADIO.JS",     "order": 6 }
+  ],
+  "data": {
+    "path": "json/",
+    "sources": [
+      "HOME.json",
+      "ABOUT.json",
+      "MARP.json",
+      "BITNAUGHTS.json",
+      "MTG.json",
+      "WORK.json",
+      "EDUCATION.json",
+      "PROJECTS.json",
+      "HACKATHONS.json",
+      "GAMES.json",
+      "PORTFOLIO.json",
+      "CARDS.json",
+      "QUILT.json"
+    ]
+  },
   "media": {
-    "portfolioJson": "PORTFOLIO.json",
-    "cardsCsv": "CARDS.csv",
     "playlist": [
-      {"src": "mp3/corporate.mp3", "title": "Corporate"},
-      {"src": "mp3/electric.mp3", "title": "Electric"},
-      {"src": "mp3/emotional.mp3", "title": "Emotional"},
-      {"src": "mp3/ethereal.mp3", "title": "Ethereal"},
-      {"src": "mp3/positive.mp3", "title": "Positive"}
+      {
+        "src": "mp3/corporate.mp3",
+        "title": "Corporate"
+      },
+      {
+        "src": "mp3/electric.mp3",
+        "title": "Electric"
+      },
+      {
+        "src": "mp3/emotional.mp3",
+        "title": "Emotional"
+      },
+      {
+        "src": "mp3/ethereal.mp3",
+        "title": "Ethereal"
+      },
+      {
+        "src": "mp3/positive.mp3",
+        "title": "Positive"
+      }
     ],
     "pdfBible": "pdf/bible.pdf",
     "pdfResume": "pdf/resume.pdf"
   },
-  "nav": [
-    {"href": "#home", "label": "Home"},
-    {"href": "#about", "label": "About"},
-    {"href": "#marp", "label": "MARP"},
-    {"href": "#bitnaughts", "label": "BitNaughts"},
-    {"href": "#mtg", "label": "MTG"},
-    {"href": "#work", "label": "Work"},
-    {"href": "#education", "label": "Education"},
-    {"href": "#projects", "label": "Projects"},
-    {"href": "#hackathons", "label": "Hacks"},
-    {"href": "#games", "label": "Games"}
-  ],
-  "connect": {"heading": "👀 Interested?", "subtitle": "Let's build something."},
+  "connect": {
+    "heading": "👀 Interested?",
+    "subtitle": "Let's build something."
+  },
   "vizTiles": [
     {
       "emoji": "🧭",
@@ -72,8 +162,21 @@
       "img": "png/graph.png",
       "imgAlt": "Graph of Knowledge",
       "togglers": [
-        {"label": "PORT", "dot": "🔵", "active": true, "src": "png/graph.png", "accent": 1, "open": "knowledgeModal"},
-        {"label": "MTG", "dot": "⚫", "src": "png/graph-mtg.png", "accent": 2, "open": "mtgTreeModal"}
+        {
+          "label": "PORT",
+          "dot": "🔵",
+          "active": true,
+          "src": "png/graph.png",
+          "accent": 1,
+          "open": "knowledgeModal"
+        },
+        {
+          "label": "MTG",
+          "dot": "⚫",
+          "src": "png/graph-mtg.png",
+          "accent": 2,
+          "open": "mtgTreeModal"
+        }
       ]
     },
     {
@@ -83,7 +186,16 @@
       "action": "open",
       "img": "png/timeline.png",
       "imgAlt": "Timeline",
-      "togglers": [{"label": "MORE", "dot": "🔵", "active": true, "src": "png/timeline.png", "accent": 1, "open": "timelineModal"}]
+      "togglers": [
+        {
+          "label": "MORE",
+          "dot": "🔵",
+          "active": true,
+          "src": "png/timeline.png",
+          "accent": 1,
+          "open": "timelineModal"
+        }
+      ]
     },
     {
       "emoji": "🛠️",
@@ -92,7 +204,16 @@
       "action": "open",
       "img": "png/constellation.png",
       "imgAlt": "Constellation Map",
-      "togglers": [{"label": "TECH", "dot": "🔵", "active": true, "src": "png/constellation.png", "accent": 1, "open": "mapModal"}]
+      "togglers": [
+        {
+          "label": "TECH",
+          "dot": "🔵",
+          "active": true,
+          "src": "png/constellation.png",
+          "accent": 1,
+          "open": "mapModal"
+        }
+      ]
     },
     {
       "emoji": "🧜",
@@ -111,7 +232,14 @@
           "open": "mermaidModal",
           "openArg": "MARP.md"
         },
-        {"label": "ARCH", "dot": "⚫", "src": "png/arch.png", "accent": 4, "open": "mermaidModal", "openArg": "ARCH.md"}
+        {
+          "label": "ARCH",
+          "dot": "⚫",
+          "src": "png/arch.png",
+          "accent": 4,
+          "open": "mermaidModal",
+          "openArg": "ARCH.md"
+        }
       ]
     }
   ],
@@ -121,7 +249,10 @@
       "elementId": "quilt-modal",
       "title": "🐧 Brian Hungerman",
       "url": "https://brianhungerman.com",
-      "explore": {"label": "Traverse", "emoji": "🔭"},
+      "explore": {
+        "label": "Traverse",
+        "emoji": "🔭"
+      },
       "sections": [
         {
           "tour": "📯 Herald",
@@ -147,7 +278,11 @@
               "label": "1st robot",
               "imageSrc": "png/redtie-learning.png",
               "imageAlt": "FRC 1458 robot",
-              "action": {"type": "navigate", "dataset": "work", "id": "redtierobotics"},
+              "action": {
+                "type": "navigate",
+                "dataset": "work",
+                "id": "redtierobotics"
+              },
               "quoteText": "The secret of getting ahead is getting started.",
               "quoteCite": "Mark Twain",
               "accent": 2
@@ -157,7 +292,11 @@
               "label": "1st contract",
               "imageSrc": "png/amax-thumbnail.png",
               "imageAlt": "AMAX ESD station",
-              "action": {"type": "navigate", "dataset": "projects", "id": "amaxesd"},
+              "action": {
+                "type": "navigate",
+                "dataset": "projects",
+                "id": "amaxesd"
+              },
               "quoteText": "Start where you are. Use what you have. Do what you can.",
               "quoteCite": "Arthur Ashe",
               "accent": 3
@@ -179,7 +318,11 @@
               "label": "LEADERSHIP",
               "imageSrc": "png/citris-group.png",
               "imageAlt": "CITRIS",
-              "action": {"type": "navigate", "dataset": "work", "id": "alamorobotics"},
+              "action": {
+                "type": "navigate",
+                "dataset": "work",
+                "id": "alamorobotics"
+              },
               "quoteText": "If I have seen further, it is by standing on the shoulders of giants.",
               "quoteCite": "Isaac Newton",
               "accent": 2
@@ -189,7 +332,11 @@
               "label": "STUDENTS TAUGHT",
               "imageSrc": "png/game-banner.png",
               "imageAlt": "Summer of Game Design",
-              "action": {"type": "navigate", "dataset": "work", "id": "summerofgamedesign"},
+              "action": {
+                "type": "navigate",
+                "dataset": "work",
+                "id": "summerofgamedesign"
+              },
               "quoteText": "不闻不若闻之，闻之不若见之，见之不若知之，知之不若行之。\n(Tell me & I forget. Teach me & I remember. Involve me & I learn.)",
               "quoteCite": "荀子 (Xúnzǐ)",
               "accent": 3
@@ -199,7 +346,11 @@
               "label": "FUNDRAISED",
               "imageSrc": "png/iterate_people.png",
               "imageAlt": "Iterate",
-              "action": {"type": "navigate", "dataset": "work", "id": "summerofgamedesign"},
+              "action": {
+                "type": "navigate",
+                "dataset": "work",
+                "id": "summerofgamedesign"
+              },
               "quoteText": "स्वयं को खोजने का सबसे अच्छा तरीका है कि आप दूसरों की सेवा में खो जाएँ।\n(The best way to find yourself is to lose yourself in the service of others.)",
               "quoteCite": "महात्मा गांधी (Mahatma Gandhi)",
               "accent": 1
@@ -221,7 +372,11 @@
               "label": "COMP SCI & ENG",
               "imageSrc": "png/merced.png",
               "imageAlt": "UC Merced",
-              "action": {"type": "navigate", "dataset": "work", "id": "vicelab"},
+              "action": {
+                "type": "navigate",
+                "dataset": "work",
+                "id": "vicelab"
+              },
               "quoteText": "Non scholae, sed vitae discimus.\n(We learn not for school, but for life.)",
               "quoteCite": "Lūcius Annaeus Seneca",
               "accent": 0
@@ -231,7 +386,11 @@
               "label": "HACKERS HOSTED",
               "imageSrc": "png/game-banner-lan-res.png",
               "imageAlt": "HackMerced",
-              "action": {"type": "navigate", "dataset": "work", "id": "hackmerced"},
+              "action": {
+                "type": "navigate",
+                "dataset": "work",
+                "id": "hackmerced"
+              },
               "quoteText": "Umuntu ngumuntu ngabantu.\n(A person is a person through other people.)",
               "quoteCite": "Zulu Proverb",
               "accent": 3
@@ -241,7 +400,11 @@
               "label": "GPA (MCL)",
               "imageSrc": "png/graduation-frame.png",
               "imageAlt": "Graduation",
-              "action": {"type": "navigate", "dataset": "education", "id": "cse100"},
+              "action": {
+                "type": "navigate",
+                "dataset": "education",
+                "id": "cse100"
+              },
               "quoteText": "The only way to do great work is to love what you do.",
               "quoteCite": "Steve Jobs",
               "accent": 1
@@ -263,7 +426,11 @@
               "label": "\"How it looks\"",
               "imageSrc": "png/bn-2.png",
               "imageAlt": "Home IoT",
-              "action": {"type": "navigate", "dataset": "hackathons", "id": "blindsight"},
+              "action": {
+                "type": "navigate",
+                "dataset": "hackathons",
+                "id": "blindsight"
+              },
               "quoteText": "Good design is as little design as possible.",
               "quoteCite": "Dieter Rams",
               "accent": 0
@@ -273,7 +440,11 @@
               "label": "\"How it feels\"",
               "imageSrc": "png/home-iot.png",
               "imageAlt": "Blindsight",
-              "action": {"type": "navigate", "dataset": "hackathons", "id": "sriracha"},
+              "action": {
+                "type": "navigate",
+                "dataset": "hackathons",
+                "id": "sriracha"
+              },
               "quoteText": "People ignore design that ignores people.",
               "quoteCite": "Frank Chimero",
               "accent": 2
@@ -283,7 +454,11 @@
               "label": "\"How you use it\"",
               "imageSrc": "png/motleymoves.png",
               "imageAlt": "SRIRACHA",
-              "action": {"type": "navigate", "dataset": "hackathons", "id": "motorskills"},
+              "action": {
+                "type": "navigate",
+                "dataset": "hackathons",
+                "id": "motorskills"
+              },
               "quoteText": "Design is not just what it looks like & feels like. Design is how it works.",
               "quoteCite": "Steve Jobs",
               "accent": 3
@@ -305,7 +480,11 @@
               "label": "RELIABILITY",
               "imageSrc": "png/azuremlops-mission.png",
               "imageAlt": "Microsoft",
-              "action": {"type": "navigate", "dataset": "work", "id": "microsoft"},
+              "action": {
+                "type": "navigate",
+                "dataset": "work",
+                "id": "microsoft"
+              },
               "quoteText": "First, solve the problem. Then, write the code.",
               "quoteCite": "John Johnson",
               "accent": 0
@@ -315,7 +494,11 @@
               "label": "GLOBAL SCALE",
               "imageSrc": "png/azuremlops.png",
               "imageAlt": "AzureML Ops",
-              "action": {"type": "navigate", "dataset": "work", "id": "microsoft"},
+              "action": {
+                "type": "navigate",
+                "dataset": "work",
+                "id": "microsoft"
+              },
               "quoteText": "Make it work, make it right, make it fast.",
               "quoteCite": "Kent Beck",
               "accent": 3
@@ -325,7 +508,11 @@
               "label": "LAUNCHED",
               "imageSrc": "png/azuremlops-sequence.png",
               "imageAlt": "AzureML sequence diagram",
-              "action": {"type": "navigate", "dataset": "projects", "id": "azuremlops"},
+              "action": {
+                "type": "navigate",
+                "dataset": "projects",
+                "id": "azuremlops"
+              },
               "quoteText": "Real artists ship.",
               "quoteCite": "Steve Jobs",
               "accent": 1
@@ -347,7 +534,11 @@
               "label": "OPEN SOURCED",
               "imageSrc": "png/digestquest-people.png",
               "imageAlt": "Microsoft E+D",
-              "action": {"type": "navigate", "dataset": "work", "id": "microsoft"},
+              "action": {
+                "type": "navigate",
+                "dataset": "work",
+                "id": "microsoft"
+              },
               "quoteText": "Sharing is good, & with digital technology, sharing is easy!",
               "quoteCite": "Richard Stallman",
               "accent": 0
@@ -357,7 +548,10 @@
               "label": "HARDWARE",
               "imageSrc": "png/marp.png",
               "imageAlt": "Home robot",
-              "action": {"type": "open", "open": "marpModal"},
+              "action": {
+                "type": "open",
+                "open": "marpModal"
+              },
               "quoteText": "The best way to predict the future is to invent it.",
               "quoteCite": "Alan Kay",
               "accent": 2
@@ -367,7 +561,11 @@
               "label": "SOFTWARE",
               "imageSrc": "png/spaceninjas-end.png",
               "imageAlt": "Dusk Rose Codex",
-              "action": {"type": "navigate", "dataset": "work", "id": "microsoft"},
+              "action": {
+                "type": "navigate",
+                "dataset": "work",
+                "id": "microsoft"
+              },
               "quoteText": "The game is not about the game. The game is about the player.",
               "quoteCite": "Raph Koster",
               "accent": 3
@@ -378,14 +576,21 @@
           "tour": "🧠 Philosophy",
           "heading": "🧠 Philosophy",
           "blockClass": "bio-principle-block",
-          "steps": ["Breadth satisfies at a glance...", "...depths reward the curious...", "...traversal reveals the path."],
+          "steps": [
+            "Breadth satisfies at a glance...",
+            "...depths reward the curious...",
+            "...traversal reveals the path."
+          ],
           "tiles": [
             {
               "value": "👁️ Breadth",
               "label": "satisfies you",
               "imageSrc": "png/graph.png",
               "imageAlt": "Knowledge graph",
-              "action": {"type": "open", "open": "knowledgeModal"},
+              "action": {
+                "type": "open",
+                "open": "knowledgeModal"
+              },
               "quoteText": "τὸ ὅλον πρότερον τῶν μερῶν.\n(The whole is greater than the sum of its parts.)",
               "quoteCite": "Ἀριστοτέλης (Aristotle)",
               "accent": 0
@@ -395,7 +600,10 @@
               "label": "rewards you",
               "imageSrc": "png/timeline.png",
               "imageAlt": "Timeline",
-              "action": {"type": "open", "open": "timelineModal"},
+              "action": {
+                "type": "open",
+                "open": "timelineModal"
+              },
               "quoteText": "The details are not the details. They make the design.",
               "quoteCite": "Charles Eames",
               "accent": 1
@@ -405,7 +613,10 @@
               "label": "guides you",
               "imageSrc": "png/arch.png",
               "imageAlt": "Knowledge traversal",
-              "action": {"type": "open", "open": "knowledgeModal"},
+              "action": {
+                "type": "open",
+                "open": "knowledgeModal"
+              },
               "quoteText": "Design is intelligence made visible.",
               "quoteCite": "Alina Wheeler",
               "accent": 3
@@ -416,14 +627,21 @@
           "tour": "⚙️ Philosophy",
           "heading": "⚙️ Philosophy",
           "blockClass": "bio-principle-block",
-          "steps": ["From first-principles...", "...until everything harmonizes...", "...efficiency is ruthlessly pursued."],
+          "steps": [
+            "From first-principles...",
+            "...until everything harmonizes...",
+            "...efficiency is ruthlessly pursued."
+          ],
           "tiles": [
             {
               "value": "📄 1 *.html",
               "label": "Page",
               "imageSrc": "png/mutilar-architecture.png",
               "imageAlt": "Site architecture",
-              "action": {"type": "open", "open": "archModal"},
+              "action": {
+                "type": "open",
+                "open": "archModal"
+              },
               "quoteText": "Less is more.",
               "quoteCite": "Ludwig Mies van der Rohe",
               "accent": 2
@@ -433,7 +651,10 @@
               "label": "Scripts",
               "imageSrc": "png/marp-diagram.png",
               "imageAlt": "Site architecture",
-              "action": {"type": "open", "open": "archModal"},
+              "action": {
+                "type": "open",
+                "open": "archModal"
+              },
               "quoteText": "Form follows function.",
               "quoteCite": "Louis Sullivan",
               "accent": 3
@@ -443,7 +664,10 @@
               "label": "Dependencies",
               "imageSrc": "png/map.png",
               "imageAlt": "Site architecture",
-              "action": {"type": "open", "open": "archModal"},
+              "action": {
+                "type": "open",
+                "open": "archModal"
+              },
               "quoteText": "The best code is no code at all.",
               "quoteCite": "Jeff Atwood",
               "accent": 1
@@ -454,7 +678,11 @@
           "tour": "👀 Interested?",
           "heading": "👀 Interested?",
           "blockClass": "bio-principle-block",
-          "steps": ["I welcome opportunities to connect...", "...learn from others...", "...and share my expertise!"],
+          "steps": [
+            "I welcome opportunities to connect...",
+            "...learn from others...",
+            "...and share my expertise!"
+          ],
           "tiles": [
             {
               "value": "",
@@ -525,13 +753,48 @@
   },
   "visualization": {
     "domains": {
-      "robotics": {"icon": "fa-cogs", "label": "Robotics", "emoji": "🤖", "accent": 2},
-      "games": {"icon": "fa-gamepad", "label": "Games", "emoji": "🎮", "accent": 3},
-      "software": {"icon": "fa-code", "label": "Software", "emoji": "💻", "accent": 0},
-      "research": {"icon": "fa-flask", "label": "Research", "emoji": "🔬", "accent": 1},
-      "education": {"icon": "fa-graduation-cap", "label": "Education", "emoji": "🎓", "accent": 1},
-      "work": {"icon": "fa-briefcase", "label": "Work", "emoji": "💼", "accent": 0},
-      "projects": {"icon": "fa-rocket", "label": "Projects", "emoji": "🚀", "accent": 2}
+      "robotics": {
+        "icon": "fa-cogs",
+        "label": "Robotics",
+        "emoji": "🤖",
+        "accent": 2
+      },
+      "games": {
+        "icon": "fa-gamepad",
+        "label": "Games",
+        "emoji": "🎮",
+        "accent": 3
+      },
+      "software": {
+        "icon": "fa-code",
+        "label": "Software",
+        "emoji": "💻",
+        "accent": 0
+      },
+      "research": {
+        "icon": "fa-flask",
+        "label": "Research",
+        "emoji": "🔬",
+        "accent": 1
+      },
+      "education": {
+        "icon": "fa-graduation-cap",
+        "label": "Education",
+        "emoji": "🎓",
+        "accent": 1
+      },
+      "work": {
+        "icon": "fa-briefcase",
+        "label": "Work",
+        "emoji": "💼",
+        "accent": 0
+      },
+      "projects": {
+        "icon": "fa-rocket",
+        "label": "Projects",
+        "emoji": "🚀",
+        "accent": 2
+      }
     }
   }
 }

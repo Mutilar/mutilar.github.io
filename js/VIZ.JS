@@ -15,6 +15,21 @@
 //    VIZ_absMonth()             → year*12 + month
 // ═══════════════════════════════════════════════════════════════
 
+// ── Accent resolver (shared by all viz consumers) ────────────
+// SETTINGS.json accents array is the single source of truth for
+// the four theme colors.  This function resolves an index → RGB string.
+var VIZ_ACCENTS = (window.__SETTINGS && window.__SETTINGS.accents) || [];
+
+/**
+ * Resolve an accent index to an RGB string (e.g. "0,164,239").
+ * Falls back to medium grey if the index is out of range.
+ * @param {number} idx  Accent index (0-3 typically)
+ * @returns {string}    Comma-separated RGB string, whitespace-stripped
+ */
+function VIZ_resolveAccent(idx) {
+  return (VIZ_ACCENTS[idx] || '').replace(/\s/g, '') || '160,160,160';
+}
+
 // ── Thematic config (loaded from SETTINGS.json → visualization.domains) ──
 // Maps domain key → { color (RGB string), icon (FA class), label, emoji }
 // Populated from __SETTINGS before scripts load (see index.html bootstrap).
@@ -22,14 +37,13 @@
 // Accent indices are resolved here so all downstream consumers get .color strings.
 var VIZ_THEMES = (function () {
   var raw = (window.__SETTINGS && window.__SETTINGS.visualization && window.__SETTINGS.visualization.domains) || {};
-  var accents = (window.__SETTINGS && window.__SETTINGS.accents) || [];
   var out = {};
   Object.keys(raw).forEach(function (k) {
     var d = raw[k];
     var resolved = {};
     for (var p in d) resolved[p] = d[p];
-    if (resolved.accent != null && accents[resolved.accent]) {
-      resolved.color = accents[resolved.accent].replace(/\s/g, '');
+    if (resolved.accent != null) {
+      resolved.color = VIZ_resolveAccent(resolved.accent);
     }
     out[k] = resolved;
   });

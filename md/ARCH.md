@@ -48,8 +48,11 @@ graph TD
             direction TB
             subgraph DOCS["📎 DOCS"]
                 direction LR
-                PORTFOLIOJSON["📋 PORTFOLIO.json"]
+                SECTIONJSONS["📋 {SECTION}.json × 10<br/>(index + nav + items)"]
+                PORTFOLIOJSON["📋 PORTFOLIO.json<br/>(metadata only)"]
+                CARDSJSON["🃏 CARDS.json"]
                 SETTINGSJSON["⚙️ SETTINGS.json"]
+                STARJSON["⭐ *.json"]
                 ARCHMD["🧜‍♀️ *.MD"]
                 RESUME["📄 3 *.PDF"]
             end
@@ -144,9 +147,12 @@ graph TD
 
     %% ── 6. SCRIPTS → DATA & ASSETS ─────────────────────────
 
-    DATAJS -->|"fetch()"| PORTFOLIOJSON
+    DATAJS -->|"fetch(data.sources)"| PORTFOLIOJSON
+    DATAJS -->|"fetch(data.sources)"| CARDSJSON
+    DATAJS -->|"fetch(data.sources)"| STARJSON
     BOOTJS -->|"fetch()"| SETTINGSJSON
-    SKILLTREEJS -->|"fetch()"| PORTFOLIOJSON
+    SKILLTREEJS -->|"loadDataSource()"| DATAJS
+    MODALSJS -->|"loadDataSource()"| DATAJS
     PORTFOLIOJSON -->|"techTags"| MAPJS
     pdfJS -.->|"fetch()"| RESUME
     RADIOJS -.->|"fetch()"| AUDIOFILES
@@ -184,7 +190,7 @@ graph TD
     class BOOTJS,CONSOLEJS,SCROLLJS,DATAJS,RADIOJS engine
     class VIZJS,pdfJS,PARALLAXJS,THEMEJS,MODALSJS ui
     class MERMAIDVIEWJS,SKILLTREEJS,TIMELINEJS,MAPJS aes
-    class PORTFOLIOJSON,SETTINGSJSON data
+    class PORTFOLIOJSON,CARDSJSON,SETTINGSJSON,STARJSON data
     class ARCHMD data
     class PNGS data
     class RESUME,GIFS,GAMEBUILDS,AUDIOFILES data

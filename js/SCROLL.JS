@@ -96,6 +96,9 @@
     sections = sectionIds.map(id => document.getElementById(id)).filter(Boolean);
   }
 
+  // Expose for DATA.JS to call after dynamic nav rebuild
+  window._cacheSections = rescanSections;
+
   function updateActive() {
     let current = sectionIds[0];
     const scrollY = window.scrollY + 150;

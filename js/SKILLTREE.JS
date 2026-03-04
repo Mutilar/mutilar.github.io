@@ -100,6 +100,61 @@ function _graphBreakText(text) {
   return tokens.join("<br>");
 }
 
+/**
+ * createNodeEl(opts) — shared DOM builder for kg-node elements.
+ *
+ *  opts.size       – circle diameter (px)
+ *  opts.rgb        – comma-separated RGB string for --tc
+ *  opts.label      – inner HTML for the name layer (may contain <br>)
+ *  opts.whisper    – inner HTML for the whisper layer
+ *  opts.onClick    – click handler (receives MouseEvent)
+ *  opts.fitRatio   – fraction of circle for text fit (default 0.50)
+ *
+ * Returns the DOM element. Caller positions it (left/top) and appends
+ * to graphWorld. Caller is responsible for hover registration.
+ */
+function createNodeEl(opts) {
+  var size    = opts.size    || 60;
+  var rgb     = opts.rgb     || '160,160,160';
+  var label   = opts.label   || '';
+  var whisper = opts.whisper  || label;
+  var ratio   = opts.fitRatio || 0.50;
+
+  var el = document.createElement("div");
+  el.className = "kg-node";
+  el.style.setProperty("--kg-size", size + "px");
+  el.style.setProperty("--tc", rgb);
+
+  var fontScale = Math.max(0.75, size / 80);
+  el.style.setProperty("--kg-font", Math.round(8 * fontScale) + "px");
+  el.style.setProperty("--kg-whisper", Math.round(7 * fontScale) + "px");
+
+  el.innerHTML =
+    '<div class="kg-node-accent" style="background:radial-gradient(circle at 30% 30%, rgba(' + rgb + ',0.15) 0%, transparent 70%);"></div>' +
+    '<div class="kg-node-name">' +
+      '<span class="kg-name-layer">' + label + '</span>' +
+      '<span class="kg-name-layer kg-name-whisper kg-name-show">' + whisper + '</span>' +
+      '<span class="kg-name-layer kg-name-whisper"></span>' +
+    '</div>';
+
+  if (opts.onClick) {
+    el.addEventListener("click", function (e) { e.stopPropagation(); opts.onClick(e); });
+  }
+
+  var nameLayer     = el.querySelector(".kg-name-layer:not(.kg-name-whisper)");
+  var whisperLayers = el.querySelectorAll(".kg-name-whisper");
+  requestAnimationFrame(function () {
+    fitTextToCircle(nameLayer, size, size * ratio);
+    whisperLayers.forEach(function (wl) { fitTextToCircle(wl, size, size * ratio); });
+  });
+
+  // Attach references for crossfade consumers
+  el._nameLayer     = nameLayer;
+  el._whisperLayers = whisperLayers;
+
+  return el;
+}
+
 function createSkillTree(cfg) {
   var modal    = cfg.modal;
   var closeBtn = cfg.closeBtn;
@@ -633,26 +688,18 @@ function createSkillTree(cfg) {
 
   const graphModalClose = _kgShell.closeBtn;
 
-  /* ── Accent helper (resolve accent index → RGB string) ─────── */
-  var _accentsKG = (window.__SETTINGS && window.__SETTINGS.accents) || [];
-  function _resolveKG(src) {
-    if (src.accent != null && _accentsKG[src.accent])
-      return _accentsKG[src.accent].replace(/\s/g, '');
-    return src.color || '';
-  }
-
   /* ── Thematic config (from VIZ.JS) ──────────────────────────── */
   const themeConfig = {};
   ["robotics", "games", "software", "education", "work", "projects"].forEach(function (k) {
     var src = VIZ_THEMES[k];
-    themeConfig[k] = { color: _resolveKG(src), icon: src.icon, label: src.label, emoji: src.emoji };
+    themeConfig[k] = { color: src.color || VIZ_resolveAccent(src.accent), icon: src.icon, label: src.label, emoji: src.emoji };
   });
 
   /* ── Thread (overlay-theme) colors — one thread per theme×quadrant pair ── */
   const threadConfig = {
-    work:      { color: _resolveKG({ accent: 0 }),  label: "Work" },
-    education: { color: _resolveKG({ accent: 1 }),  label: "Education" },
-    projects:  { color: _resolveKG({ accent: 2 }),  label: "Projects" },
+    work:      { color: VIZ_resolveAccent(0),  label: "Work" },
+    education: { color: VIZ_resolveAccent(1),  label: "Education" },
+    projects:  { color: VIZ_resolveAccent(2),  label: "Projects" },
   };
 
   const themeMap = VIZ_SOURCE_MAP;
@@ -1139,8 +1186,12 @@ function createSkillTree(cfg) {
 
   /* ── Build Graph ──────────────────────────────────────────── */
   function buildGraph() {
-    const datasets = ["work", "education", "projects", "hackathons", "games"];
-    if (!datasets.every(d => modalState[d])) { setTimeout(buildGraph, 200); return; }
+    // Dynamic: include any modalState section whose items have DATE + domain/source
+    const datasets = Object.keys(modalState).filter(function (k) {
+      var items = modalState[k];
+      return Array.isArray(items) && items.length > 0 && items.some(function (i) { return i.DATE; });
+    });
+    if (datasets.length === 0) { setTimeout(buildGraph, 200); return; }
 
     const items = [];
     datasets.forEach(cat => {
@@ -1314,10 +1365,7 @@ function createSkillTree(cfg) {
         const emRe = /^([\p{Emoji_Presentation}\p{Extended_Pictographic}\uFE0F\u200D]+(?:\s*[\p{Emoji_Presentation}\p{Extended_Pictographic}\uFE0F\u200D]+)*)\s*/u;
         const emM = rawN.match(emRe);
         const emP = emM ? emM[1] : "";
-        const gName = VIZ_SHORTNAME_MAP[it.item.ID] || (emM ? rawN.slice(emM[0].length) : rawN).replace(/\s+/g, " ").trim() || rawN;
-        const wList = [wEmoji || emP || gName.charAt(0)];
-        const nameLayer = el.querySelector(".kg-name-layer:not(.kg-name-whisper)");
-        const whisperLayers = Array.from(el.querySelectorAll(".kg-name-whisper"));
+        const wList = [wEmoji || emP || (VIZ_SHORTNAME_MAP[it.item.ID] || rawN).charAt(0)];
 
         el.addEventListener("mouseenter", () => {
           const node = _nodes.find(nd => nd.el === el);
@@ -1340,8 +1388,8 @@ function createSkillTree(cfg) {
           targetX: it.x,
           targetY: it.y,
           whispers: wList,
-          nameLayer,
-          whisperLayers,
+          nameLayer: el._nameLayer,
+          whisperLayers: Array.from(el._whisperLayers),
           activeWhisper: 0,
           lastWhisperIdx: -1,
           wasFocused: false,
@@ -1529,21 +1577,7 @@ function createSkillTree(cfg) {
   function buildNodeElement(it) {
     const { item, category, theme, quadrant } = it;
     const cfg = category === "games" ? themeConfig.games : theme === "education" ? themeConfig.education : theme === "work" ? themeConfig.work : theme === "projects" ? themeConfig.projects : (themeConfig[quadrant] || themeConfig.software);
-    const themeCfg = themeConfig[theme] || themeConfig.software;
     const size = it.size || 60;
-
-    const el = document.createElement("div");
-    el.className = "kg-node";
-    el.setAttribute("tabindex", "0");
-    el.setAttribute("role", "img");
-    el.setAttribute("aria-label", (item.NAME || "").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim());
-    el.dataset.theme = theme;
-    el.dataset.quadrant = quadrant;
-    el.style.setProperty("--tc", cfg.color);
-    el.style.setProperty("--kg-size", size + "px");
-    const fontScale = Math.max(0.75, size / 80);
-    el.style.setProperty("--kg-font", Math.round(8 * fontScale) + "px");
-    el.style.setProperty("--kg-whisper", Math.round(7 * fontScale) + "px");
 
     const rawName = (item.NAME || "")
       .replace(/<[^>]+>/g, " ")
@@ -1556,30 +1590,21 @@ function createSkillTree(cfg) {
 
     const graphName = VIZ_SHORTNAME_MAP[item.ID] || _graphBreakText(textPart);
     const wEmoji = VIZ_WHISPER_MAP[item.ID];
-    // Cascade matches MAP.JS: whisper map → leading emoji → first char of shortname
     const whisperFace = wEmoji || emojiPrefix || graphName.charAt(0);
-    const whispers = [whisperFace];
 
-    el.innerHTML =
-      `<div class="kg-node-accent" style="background:radial-gradient(circle at 30% 30%, rgba(${cfg.color},0.15) 0%, transparent 70%);"></div>` +
-      `<div class="kg-node-name">` +
-        `<span class="kg-name-layer">${graphName}</span>` +
-        `<span class="kg-name-layer kg-name-whisper kg-name-show">${whispers[0] || graphName}</span>` +
-        `<span class="kg-name-layer kg-name-whisper"></span>` +
-      `</div>`;
-
-    el.addEventListener("click", e => {
-      e.stopPropagation();
-      openEntry(category, item.ID);
+    const el = createNodeEl({
+      size:    size,
+      rgb:     cfg.color,
+      label:   graphName,
+      whisper: whisperFace || graphName,
+      onClick: function () { openEntry(category, item.ID); },
     });
 
-    const baseFont = Math.round(8 * fontScale);
-    const nameLayer = el.querySelector(".kg-name-layer:not(.kg-name-whisper)");
-    const whisperLayers = el.querySelectorAll(".kg-name-whisper");
-    requestAnimationFrame(() => {
-      fitTextToCircle(nameLayer, size, size * 0.50);
-      whisperLayers.forEach(wl => fitTextToCircle(wl, size, size * 0.50));
-    });
+    el.setAttribute("tabindex", "0");
+    el.setAttribute("role", "img");
+    el.setAttribute("aria-label", rawName);
+    el.dataset.theme = theme;
+    el.dataset.quadrant = quadrant;
 
     return el;
   }
@@ -1807,10 +1832,8 @@ function createSkillTree(cfg) {
     var deckCat  = categories.deck  || {};
 
     /* Resolve accent index → RGB from SETTINGS.json accents */
-    var _accents = (window.__SETTINGS && window.__SETTINGS.accents) || [];
     function _resolveColor(entry) {
-      if (entry.accent != null && _accents[entry.accent])
-        return _accents[entry.accent].replace(/\s/g, '');
+      if (entry.accent != null) return VIZ_resolveAccent(entry.accent);
       return entry.color || '160,160,160';
     }
 
@@ -1979,14 +2002,13 @@ function createSkillTree(cfg) {
   }
 
   /* ── Helpers ────────────────────────────────────────────── */
-  function _a(idx) { return (_accents[idx] || '').replace(/\s/g, '') || '160,160,160'; }
 
   function cmcToRGB(cmc) {
     var c = cmc || 0;
-    if (c <= 1) return _a(0);    // accent 0 (blue)
-    if (c <= 3) return _a(3);    // accent 3 (green)
-    if (c <= 5) return _a(1);    // accent 1 (yellow)
-    return _a(2);                // accent 2 (red)
+    if (c <= 1) return VIZ_resolveAccent(0);    // accent 0 (blue)
+    if (c <= 3) return VIZ_resolveAccent(3);    // accent 3 (green)
+    if (c <= 5) return VIZ_resolveAccent(1);    // accent 1 (yellow)
+    return VIZ_resolveAccent(2);                // accent 2 (red)
   }
 
   function saltToSize(salt) {
@@ -2066,19 +2088,18 @@ function createSkillTree(cfg) {
     _cardReg.close();
   }
 
-  /* ── Data fetch (from PORTFOLIO.json cards section) ──────── */
+  /* ── Data fetch (from CARDS.json via shared loader) ──────── */
   var _cardsData = null;
 
   function ensureData(cb) {
     if (_cardsData) { cb(_cardsData); return; }
-    fetch("PORTFOLIO.json")
-      .then(function (r) { return r.json(); })
+    loadCardsJSON()
       .then(function (raw) {
-        var cardsRaw = raw.cards || {};
-        _initShell(cardsRaw.categories || {});
+        if (!raw) throw new Error("CARDS.json returned null");
+        _initShell(raw.categories || {});
         // Normalize CARDS uppercase-emoji format → lowercase-string format
         var data = { sections: [] };
-        (cardsRaw.sections || []).forEach(function (sec) {
+        (raw.sections || []).forEach(function (sec) {
           data.sections.push({
             id:    sec.id,
             count: sec.count,
@@ -2270,44 +2291,25 @@ function createSkillTree(cfg) {
       var size = saltToSize(card.salt);
       var rgb  = cmcToRGB(card.cmc);
 
-      var el = document.createElement("div");
-      el.className = "kg-node";
-      el.style.setProperty("--kg-size", size + "px");
-      el.style.setProperty("--tc", rgb);
-      el.style.left = cx + "px";
-      el.style.top  = cy + "px";
-
       // First grapheme of cardName is the main emoji → use as whisper
       var nameChars = Array.from(card.cardName);
       var firstChar = nameChars[0] || "";
       var restName  = nameChars.slice(1).join("").trim();
       var displayName = restName.replace(/\s+/g, "<br>") || card.cardName.replace(/\s+/g, "<br>");
-      var whisperEmoji = firstChar;
-      var hoverEmoji = whisperEmoji || card.types || "";
+      var whisperContent = firstChar || card.types || displayName;
 
-      var whisperContent = hoverEmoji || displayName;
-
-      el.innerHTML =
-        '<div class="kg-node-accent" style="background:radial-gradient(circle at 30% 30%, rgba(' + rgb + ',0.2) 0%, transparent 70%);"></div>' +
-        '<div class="kg-node-name">' +
-          '<span class="kg-name-layer">' + displayName + '</span>' +
-          '<span class="kg-name-layer kg-name-whisper kg-name-show">' + whisperContent + '</span>' +
-          '<span class="kg-name-layer kg-name-whisper"></span>' +
-        '</div>';
-
-      el.addEventListener("click", function (e) {
-        e.stopPropagation();
-        openCardModal(card);
+      var el = createNodeEl({
+        size:     size,
+        rgb:      rgb,
+        label:    displayName,
+        whisper:  whisperContent,
+        fitRatio: 0.45,
+        onClick:  function () { openCardModal(card); },
       });
 
+      el.style.left = cx + "px";
+      el.style.top  = cy + "px";
       graphWorld.appendChild(el);
-
-      var nameLayer = el.querySelector(".kg-name-layer:not(.kg-name-whisper)");
-      var whisperLayers = el.querySelectorAll(".kg-name-whisper");
-      requestAnimationFrame(function () {
-        fitTextToCircle(nameLayer, size, size * 0.45);
-        whisperLayers.forEach(function (wl) { fitTextToCircle(wl, size, size * 0.45); });
-      });
 
       var typeArr = [card.types || "🧛"];
       var colorArr = Array.isArray(card.color) ? card.color : [card.color || "💎"];

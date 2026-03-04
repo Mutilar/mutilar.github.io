@@ -1,5 +1,5 @@
 // ═════════════════════════════════════════════════════════════════
-//  GLOBALS FROM DATA.JS  —  fetchCSV(), modalState
+//  GLOBALS FROM DATA.JS  —  loadCardsJSON(), modalState
 //  (DATA.JS is loaded before MODALS.JS)
 // ═════════════════════════════════════════════════════════════════
 
@@ -823,15 +823,36 @@ function closeGameModal() { _gameModal.close(); }
 
   const typeOrder = ["Planeswalker", "Creature", "Artifact", "Enchantment", "Instant", "Sorcery", "Land", "Token"];
 
+  // Reverse map: type emoji → human-readable name (for deck carousel grouping)
+  const _typeEmojiToName = {};
+  Object.keys(typeIcons).forEach(function (name) { _typeEmojiToName[typeIcons[name]] = name; });
+
   let sectionStates = [];
-  let _allCards = null;   // loaded once from CARDS.csv
+  let _allCards = null;   // loaded once from CARDS.json
   let _cardsLoading = null;
 
-  /** Load CARDS.csv once, return promise of all card rows */
+  /** Load CARDS.json once, flatten sections into a card list with deck ids.
+   *  Normalizes UPPERCASE JSON keys → the lowercase shape renderDeckModal expects:
+   *    { "card name", types (comma-sep names), art, deck }
+   */
   function _loadCards() {
     if (_allCards) return Promise.resolve(_allCards);
     if (_cardsLoading) return _cardsLoading;
-    _cardsLoading = fetchCSV("CARDS.csv?v=" + Date.now()).then(function (cards) {
+    _cardsLoading = loadCardsJSON().then(function (raw) {
+      if (!raw) return [];
+      var cards = [];
+      (raw.sections || []).forEach(function (sec) {
+        (sec.items || []).forEach(function (item) {
+          var typeEmoji = item.TYPE || "🧛";
+          var typeName  = _typeEmojiToName[typeEmoji] || typeEmoji;
+          cards.push({
+            "card name": item.NAME  || "",
+            types:       typeName,
+            art:         "png/card_art/" + (item.ID || "") + "/art.png",
+            deck:        sec.id,
+          });
+        });
+      });
       _allCards = cards;
       return cards;
     });

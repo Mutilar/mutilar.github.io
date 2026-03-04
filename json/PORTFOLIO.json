@@ -1,0 +1,610 @@
+{
+  "timeline": {
+    "whispers": {
+      "microsoft|SWE I &amp; II": [
+        "🌐 8B+<sup>INF/DAY</sup>",
+        "🔒 Champ<sup>SEC</sup>",
+        "🎯 Champ<sup>DRI</sup>",
+        "☁️ 50+<sup>DCs</sup>",
+        "🚀 GA",
+        "📡 Envoy"
+      ],
+      "bitnaughts": [
+        "🎮 CODE GAMIFIED",
+        "👁️ SEE CODE",
+        "🔄 TRY CODE",
+        "🎓 LEARN CODE",
+        "💻 4 HACKS",
+        "🌍 PLAY IT"
+      ],
+      "redtierobotics|Electrician": [
+        "⚡ AMAX"
+      ],
+      "redtierobotics|Electrical Lead": [
+        "🔌 CAD"
+      ],
+      "redtierobotics|Treasurer": [
+        "💰 $18K+<sup>Budget</sup>"
+      ],
+      "voodoo": [
+        "🎨 Pixel<sup>Art</sup>"
+      ],
+      "the-nobles": [
+        "👑 Mardu<sup>Vamps</sup>"
+      ],
+      "the-demons": [
+        "👹 Orzhov<sup>Aristo</sup>"
+      ],
+      "duskrosecodex": [
+        "📖 Codex"
+      ],
+      "microsoft|Senior SWE": [
+        "🧠 A.I.<sup>U.X.</sup>"
+      ],
+      "microsoft|SWE Intern": [
+        "⚡ MLOps"
+      ],
+      "marp": [
+        "🤖 Robot"
+      ],
+      "iterate": [
+        "🏆 $5,000"
+      ],
+      "ventana": [
+        "🔬 A.I."
+      ],
+      "home-iot": [
+        "🎛️ Control"
+      ],
+      "azuremlops": [
+        "🏗️ CI/CD"
+      ],
+      "chemistry": [
+        "🧪 A.R."
+      ],
+      "firmi": [
+        "💎 Fermi"
+      ],
+      "hackmerced": [
+        "🧑‍💻 350+"
+      ],
+      "motleymoves": [
+        "🏃 Running"
+      ],
+      "andeslab": [
+        "🏭 HVAC"
+      ],
+      "breeze": [
+        "💨 Aux<sup>Air</sup>"
+      ],
+      "dogpark": [
+        "🥈 2<sup>ND</sup>"
+      ],
+      "vicelab": [
+        "🛰️ Ag<sup>A.I.</sup>"
+      ],
+      "maces": [
+        "🚀 NASA"
+      ],
+      "citris|Event Organizer": [
+        "🏙️ Cyber<sup>Aware</sup>"
+      ],
+      "citris|Web Developer": [
+        "🏙️ Git<sup>Ops</sup>"
+      ],
+      "amaxesd": [
+        "⚡ ESD"
+      ],
+      "summerofgamedesign|Instructor": [
+        "👨‍🏫 50+<sup>Students</sup>"
+      ],
+      "summerofgamedesign|Founder": [
+        "💰 $25K+<sup>Budget</sup>"
+      ],
+      "alamorobotics": [
+        "🤖 Mindstorm"
+      ],
+      "acm": [
+        "💻 Outreach"
+      ],
+      "learnbeat": [
+        "📚 Learn<sup>STEM</sup>"
+      ],
+      "cse180": [
+        "🤖 ROS"
+      ],
+      "cse165": [
+        "📦 OOP"
+      ],
+      "cse160": [
+        "🌐 TCP"
+      ],
+      "cse120": [
+        "💻 SWE"
+      ],
+      "cse111": [
+        "🗃️ SQL"
+      ],
+      "cse100": [
+        "📊 BigO"
+      ],
+      "cse031": [
+        "⚙️ MIPS"
+      ],
+      "cse030": [
+        "📚 C<sup>++</sup>"
+      ],
+      "cse015": [
+        "🔢 Proofs"
+      ],
+      "ropgamedesign": [
+        "🕹️ Unity"
+      ],
+      "roparchitecture": [
+        "🏗️ CAD"
+      ],
+      "apjava": [
+        "♨️ Java"
+      ],
+      "gasleek": [
+        "🥇 1<sup>st</sup>"
+      ],
+      "sriracha": [
+        "🥉 3<sup>rd</sup>"
+      ],
+      "smartank": [
+        "🥇 Hardware"
+      ],
+      "spaceninjas": [
+        "🥷 Platformer"
+      ],
+      "graviton": [
+        "🌸 Tower<sup>Def</sup>"
+      ],
+      "galconq": [
+        "🌌 4<sup>x</sup>"
+      ],
+      "seerauber": [
+        "🥈 2<sup>nd</sup>"
+      ],
+      "ozone": [
+        "🥈 2<sup>nd</sup>"
+      ],
+      "blindsight": [
+        "🥉 3<sup>rd</sup>"
+      ],
+      "motorskills": [
+        "🥇 GCP"
+      ],
+      "gist": [
+        "🥇 Environment"
+      ],
+      "digestquest": [
+        "🥇 Design"
+      ]
+    },
+    "nameOverrides": {
+      "microsoft": {
+        "Senior SWE": "🪟 Microsoft (E+D)",
+        "__default": "🪟 Microsoft (AzureML)"
+      }
+    },
+    "titleOverrides": {
+      "marp": "Home Robot"
+    }
+  },
+  "techCategories": {
+    "lang": {
+      "accent": 0,
+      "label": "Languages",
+      "emoji": "📝"
+    },
+    "tool": {
+      "accent": 3,
+      "label": "Tools",
+      "emoji": "🔧"
+    },
+    "framework": {
+      "accent": 1,
+      "label": "Frameworks",
+      "emoji": "🧩"
+    },
+    "platform": {
+      "accent": 2,
+      "label": "Platforms",
+      "emoji": "☁️"
+    }
+  },
+  "techTags": {
+    "c": {
+      "cat": "lang",
+      "label": "C",
+      "whisper": "⚙️"
+    },
+    "c++": {
+      "cat": "lang",
+      "label": "C++",
+      "whisper": "🏎️"
+    },
+    "c#": {
+      "cat": "lang",
+      "label": "C#",
+      "whisper": "🎵"
+    },
+    "python": {
+      "cat": "lang",
+      "label": "Python",
+      "whisper": "🐍"
+    },
+    "javascript": {
+      "cat": "lang",
+      "label": "JS",
+      "whisper": "⚡"
+    },
+    "typescript": {
+      "cat": "lang",
+      "label": "TS",
+      "whisper": "🛡️"
+    },
+    "golang": {
+      "cat": "lang",
+      "label": "Go",
+      "whisper": "🐹"
+    },
+    "go": {
+      "cat": "lang",
+      "label": "Go",
+      "whisper": "🐹"
+    },
+    "rust": {
+      "cat": "lang",
+      "label": "Rust",
+      "whisper": "🦀"
+    },
+    "java": {
+      "cat": "lang",
+      "label": "Java",
+      "whisper": "♨️"
+    },
+    "kotlin": {
+      "cat": "lang",
+      "label": "Kotlin",
+      "whisper": "🟣"
+    },
+    "html": {
+      "cat": "lang",
+      "label": "HTML",
+      "whisper": "🌐"
+    },
+    "css": {
+      "cat": "lang",
+      "label": "CSS",
+      "whisper": "🎨"
+    },
+    "sql": {
+      "cat": "lang",
+      "label": "SQL",
+      "whisper": "🗄️"
+    },
+    "r": {
+      "cat": "lang",
+      "label": "R",
+      "whisper": "📊"
+    },
+    "fortran": {
+      "cat": "lang",
+      "label": "Fortran",
+      "whisper": "🧮"
+    },
+    "fortran90": {
+      "cat": "lang",
+      "label": "Fortran",
+      "whisper": "🧮"
+    },
+    "mips": {
+      "cat": "lang",
+      "label": "MIPS",
+      "whisper": "🔩"
+    },
+    "nesc": {
+      "cat": "lang",
+      "label": "nesC",
+      "whisper": "📡"
+    },
+    "shaderlab": {
+      "cat": "lang",
+      "label": "ShaderLab",
+      "whisper": "🌈"
+    },
+    "hlsl": {
+      "cat": "lang",
+      "label": "HLSL",
+      "whisper": "💠"
+    },
+    "vb.net": {
+      "cat": "lang",
+      "label": "VB.NET",
+      "whisper": "🪟"
+    },
+    ".net": {
+      "cat": "framework",
+      "label": ".NET",
+      "whisper": "🟦"
+    },
+    "react": {
+      "cat": "framework",
+      "label": "React",
+      "whisper": "⚛️"
+    },
+    "node.js": {
+      "cat": "framework",
+      "label": "Node.js",
+      "whisper": "💚"
+    },
+    "node": {
+      "cat": "framework",
+      "label": "Node.js",
+      "whisper": "💚"
+    },
+    "express": {
+      "cat": "framework",
+      "label": "Express",
+      "whisper": "🚂"
+    },
+    "jquery": {
+      "cat": "framework",
+      "label": "jQuery",
+      "whisper": "💲"
+    },
+    "ros": {
+      "cat": "framework",
+      "label": "ROS",
+      "whisper": "🤖"
+    },
+    "cmake": {
+      "cat": "framework",
+      "label": "CMake",
+      "whisper": "🏗️"
+    },
+    "bazel": {
+      "cat": "framework",
+      "label": "Bazel",
+      "whisper": "🧱"
+    },
+    "envoy": {
+      "cat": "framework",
+      "label": "Envoy",
+      "whisper": "📨"
+    },
+    "keras": {
+      "cat": "framework",
+      "label": "Keras",
+      "whisper": "🧠"
+    },
+    "tensorflow": {
+      "cat": "framework",
+      "label": "TensorFlow",
+      "whisper": "🔶"
+    },
+    "pixi.js": {
+      "cat": "framework",
+      "label": "Pixi.JS",
+      "whisper": "🧚"
+    },
+    "vuforia": {
+      "cat": "framework",
+      "label": "Vuforia",
+      "whisper": "👁️"
+    },
+    "ar.js": {
+      "cat": "framework",
+      "label": "AR.JS",
+      "whisper": "📱"
+    },
+    "mapbox": {
+      "cat": "framework",
+      "label": "Mapbox",
+      "whisper": "🗺️"
+    },
+    "chart.js": {
+      "cat": "framework",
+      "label": "Chart.js",
+      "whisper": "📈"
+    },
+    "chartist": {
+      "cat": "framework",
+      "label": "Chartist",
+      "whisper": "📉"
+    },
+    "jest": {
+      "cat": "framework",
+      "label": "Jest",
+      "whisper": "🃏"
+    },
+    "lgpio": {
+      "cat": "framework",
+      "label": "lgpio",
+      "whisper": "📌"
+    },
+    "libfreenect": {
+      "cat": "framework",
+      "label": "libfreenect",
+      "whisper": "📷"
+    },
+    "tesseract": {
+      "cat": "framework",
+      "label": "Tesseract",
+      "whisper": "🔍"
+    },
+    "tortoise": {
+      "cat": "framework",
+      "label": "TorToiSe",
+      "whisper": "🐢"
+    },
+    "drupal": {
+      "cat": "framework",
+      "label": "Drupal",
+      "whisper": "💧"
+    },
+    "openscad": {
+      "cat": "framework",
+      "label": "OpenSCAD",
+      "whisper": "📐"
+    },
+    "mean": {
+      "cat": "framework",
+      "label": "MEAN",
+      "whisper": "🥞"
+    },
+    "azure": {
+      "cat": "platform",
+      "label": "Azure",
+      "whisper": "🔷"
+    },
+    "azure functions": {
+      "cat": "platform",
+      "label": "Azure Functions",
+      "whisper": "⛅"
+    },
+    "gcp": {
+      "cat": "platform",
+      "label": "GCP",
+      "whisper": "☁️"
+    },
+    "aws": {
+      "cat": "platform",
+      "label": "AWS",
+      "whisper": "🟠"
+    },
+    "github pages": {
+      "cat": "platform",
+      "label": "GitHub Pages",
+      "whisper": "🐙"
+    },
+    "mongodb": {
+      "cat": "platform",
+      "label": "MongoDB",
+      "whisper": "🍃"
+    },
+    "redis": {
+      "cat": "platform",
+      "label": "Redis",
+      "whisper": "🔴"
+    },
+    "docker": {
+      "cat": "platform",
+      "label": "Docker",
+      "whisper": "🐳"
+    },
+    "kubernetes": {
+      "cat": "platform",
+      "label": "K8s",
+      "whisper": "☸️"
+    },
+    "linux": {
+      "cat": "platform",
+      "label": "Linux",
+      "whisper": "🐧"
+    },
+    "raspberry pi": {
+      "cat": "platform",
+      "label": "RPi",
+      "whisper": "🍓"
+    },
+    "arduino": {
+      "cat": "platform",
+      "label": "Arduino",
+      "whisper": "🔌"
+    },
+    "bluetooth": {
+      "cat": "platform",
+      "label": "Bluetooth",
+      "whisper": "📶"
+    },
+    "sqlite": {
+      "cat": "platform",
+      "label": "SQLite",
+      "whisper": "🪶"
+    },
+    "influxdb": {
+      "cat": "platform",
+      "label": "InfluxDB",
+      "whisper": "⏱️"
+    },
+    "dynamodb": {
+      "cat": "platform",
+      "label": "DynamoDB",
+      "whisper": "🦕"
+    },
+    "alexa": {
+      "cat": "platform",
+      "label": "Alexa",
+      "whisper": "🗣️"
+    },
+    "unity": {
+      "cat": "tool",
+      "label": "Unity",
+      "whisper": "🎮"
+    },
+    "unity3d": {
+      "cat": "tool",
+      "label": "Unity",
+      "whisper": "🎮"
+    },
+    "grafana": {
+      "cat": "tool",
+      "label": "Grafana",
+      "whisper": "🔥"
+    },
+    "powerbi": {
+      "cat": "tool",
+      "label": "PowerBI",
+      "whisper": "📋"
+    },
+    "autocad": {
+      "cat": "tool",
+      "label": "AutoCAD",
+      "whisper": "📏"
+    },
+    "revit": {
+      "cat": "tool",
+      "label": "Revit",
+      "whisper": "🏛️"
+    },
+    "git": {
+      "cat": "tool",
+      "label": "Git",
+      "whisper": "🌿"
+    },
+    "android studio": {
+      "cat": "tool",
+      "label": "Android Studio",
+      "whisper": "📲"
+    },
+    "google earth engine": {
+      "cat": "tool",
+      "label": "GEE",
+      "whisper": "🌍"
+    },
+    "jupyter": {
+      "cat": "tool",
+      "label": "Jupyter",
+      "whisper": "📓"
+    },
+    "webgl": {
+      "cat": "tool",
+      "label": "WebGL",
+      "whisper": "🔺"
+    },
+    "paint.net": {
+      "cat": "tool",
+      "label": "Paint.NET",
+      "whisper": "🖌️"
+    },
+    "audacity": {
+      "cat": "tool",
+      "label": "Audacity",
+      "whisper": "🎧"
+    }
+  }
+}

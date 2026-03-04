@@ -1,17 +1,70 @@
 // ═══════════════════════════════════════════════════════════════
 //  RADIO PLAYER — Ambient music with Web Audio API equalizer
+//
+//  Self-injecting: builds DOM from SETTINGS.json → media.playlist.
+//  No playlist → adds radio-hidden class and returns.
+//  Uses THEME.JS API to inject its own theme toggle clone.
 // ═══════════════════════════════════════════════════════════════
 (() => {
-  const player    = document.getElementById("radioPlayer");
-  if (!player) return;
+  // ── Resolve settings ──────────────────────────────────────
+  var _s = window.__SETTINGS || {};
+  var _playlist = (_s.media && _s.media.playlist) || [];
+  if (!_playlist.length) {
+    document.body.classList.add("radio-hidden");
+    return;
+  }
 
-  const playlist = [
-    { src: "mp3/corporate.mp3", title: "Corporate" },
-    { src: "mp3/electric.mp3", title: "Electric" },
-    { src: "mp3/emotional.mp3", title: "Emotional" },
-    { src: "mp3/ethereal.mp3", title: "Ethereal" },
-    { src: "mp3/positive.mp3", title: "Positive" }
-  ];
+  // ── Self-inject radio player DOM ──────────────────────────
+  var player = document.getElementById("radioPlayer");
+  if (!player) {
+    player = document.createElement("div");
+    player.className = "radio-player";
+    player.id = "radioPlayer";
+
+    var _id = _s.identity || {};
+    var eqBarsHtml = '';
+    for (var _i = 0; _i < 16; _i++) eqBarsHtml += '<div class="radio-eq-bar" style="height:2px"></div>';
+
+    player.innerHTML =
+      '<div class="radio-brand-slot">' +
+        '<a href="#home" class="radio-brand" id="radioBrand">' +
+          '<span class="brand-icon">' + (_id.emoji || '') + '</span> ' +
+          '<strong>' + (_id.name || '') + '</strong>' +
+        '</a>' +
+        '<span id="radioThemeSlot"></span>' +
+      '</div>' +
+      '<div class="radio-group">' +
+        '<div class="radio-eq" id="radioEq">' + eqBarsHtml + '</div>' +
+        '<div class="radio-song"><span class="radio-song-title" id="radioTitle">Radio</span></div>' +
+        '<div class="radio-controls">' +
+          '<button class="radio-btn" id="radioPrev" title="Previous" aria-label="Previous track"><i class="fa fa-step-backward"></i></button>' +
+          '<button class="radio-btn radio-btn-play" id="radioPlayPause" title="Play" aria-label="Play" aria-pressed="false"><i class="fa fa-play" id="radioPlayIcon"></i></button>' +
+          '<button class="radio-btn" id="radioNext" title="Next" aria-label="Next track"><i class="fa fa-step-forward"></i></button>' +
+        '</div>' +
+        '<div class="radio-volume">' +
+          '<button class="radio-vol-btn" id="radioMute" title="Mute" aria-label="Toggle mute"><i class="fa fa-volume-up" id="radioVolIcon"></i></button>' +
+          '<input type="range" class="radio-vol-slider" id="radioVolume" min="0" max="100" value="30" aria-label="Volume">' +
+        '</div>' +
+      '</div>';
+
+    // Insert after nav, before page-content (for position:fixed on mobile)
+    var _nav = document.getElementById("mainNav");
+    if (_nav) {
+      _nav.insertAdjacentElement("afterend", player);
+    } else {
+      document.body.prepend(player);
+    }
+
+    // Inject theme toggle via THEME.JS public API
+    var slot = document.getElementById("radioThemeSlot");
+    if (slot && window._createThemeToggle && window._registerThemeToggle) {
+      var _themeBtn = window._createThemeToggle("themeToggleRadio", "theme-toggle-radio");
+      slot.parentNode.replaceChild(_themeBtn, slot);
+      window._registerThemeToggle(_themeBtn);
+    }
+  }
+
+  const playlist = _playlist;
 
   let currentTrack = 0;
   let isPlaying = false;
@@ -103,15 +156,13 @@
     if (isPlaying) play();
   }
 
-  // Equalizer visualization
+  // Equalizer visualization — accent colors from settings
   let freqData = null;
 
-  const eqGradient = [
-    [242, 80, 34],   // MS Red
-    [255, 185, 0],   // MS Yellow
-    [127, 186, 0],   // MS Green
-    [0, 164, 239]    // MS Blue
-  ];
+  var _rawAccents = (_s.accents || []).slice(0, 4);
+  const eqGradient = _rawAccents.length >= 4
+    ? _rawAccents.map(function(a) { return a.split(',').map(function(n) { return parseInt(n.trim(), 10); }); })
+    : [[242, 80, 34], [255, 185, 0], [127, 186, 0], [0, 164, 239]];
 
   function isLightMode() {
     return document.documentElement.classList.contains("light-mode");

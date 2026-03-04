@@ -1,72 +1,77 @@
 // ═══════════════════════════════════════════════════════════════
-//  JSON DATA LOADER — replaces CSV + PapaParse
+//  JSON DATA LOADER — Universal schema-introspecting ingestion
 //
-//  Loads PORTFOLIO.json, populates modalState for MODALS.JS,
-//  builds VIZ_DOMAIN_MAP & VIZ_SOURCE_MAP for VIZ.JS consumers,
-//  and renders entry-card grids.
+//  Reads SETTINGS.json → data.path + data.sources to discover
+//  every JSON file to load.  Each file is fetched, introspected,
+//  and registered into the shared global maps consumed by VIZ.JS,
+//  TIMELINE.JS, SKILLTREE.JS, MODALS.JS, and MAP.JS.
+//
+//  Adding a new dataset is zero-JS-change:
+//    1. Drop FOO.json into the json/ folder.
+//    2. Add "FOO.json" to SETTINGS.json → data.sources.
+//    3. If FOO.json has sections[].items[] with DATE fields,
+//       those items appear on the timeline automatically.
+//    4. If items have domain/source/quadrant, they appear on
+//       the knowledge graph automatically.
+//    5. If a DOM element with id "{sectionId}-grid" exists,
+//       entry cards are rendered there automatically.
+//
+//  Public API:
+//    loadDataSource(name) → Promise<json>   (cached, single-fetch)
+//    loadCardsJSON()      → alias for loadDataSource("CARDS")
+//    modalState           → { sectionId: items[], … }
+//    DATA_REGISTRY        → { sourceKey: rawJson, … }
 // ═══════════════════════════════════════════════════════════════
 
-// ── CSV helper — kept only for on-demand MTG deck card lists ──
-function fetchCSV(url) {
-  return fetch(url).then(r => {
-    if (!r.ok) throw new Error(`HTTP ${r.status} for ${url}`);
-    return r.text();
-  }).then(text => {
-    // Lightweight CSV parser (header row + data rows) — replaces PapaParse
-    const lines = [];
-    let cur = "", inQuote = false;
-    for (let i = 0; i < text.length; i++) {
-      const ch = text[i];
-      if (ch === '"') { inQuote = !inQuote; cur += ch; }
-      else if (ch === '\n' && !inQuote) { lines.push(cur); cur = ""; }
-      else if (ch === '\r' && !inQuote) { /* skip */ }
-      else { cur += ch; }
-    }
-    if (cur.trim()) lines.push(cur);
-    if (lines.length < 2) return [];
-    // Parse header
-    const headers = _splitCSVRow(lines[0]);
-    const result = [];
-    for (let r = 1; r < lines.length; r++) {
-      if (!lines[r].trim()) continue;
-      const vals = _splitCSVRow(lines[r]);
-      const obj = {};
-      headers.forEach((h, i) => { obj[h] = (vals[i] || "").trim(); });
-      result.push(obj);
-    }
-    return result;
-  }).catch(err => {
-    console.error("[fetchCSV]", err);
-    return [];
-  });
+// ── Data registry (key = lowercase source name sans .json) ───
+const DATA_REGISTRY = {};
+var _dataLoading = {};   // in-flight fetch promises
+
+// ── Resolve the json/ base path from SETTINGS ────────────────
+function _dataBasePath() {
+  var s = window.__SETTINGS;
+  return (s && s.data && s.data.path) || "";
 }
 
-/** Split a single CSV row respecting quoted fields */
-function _splitCSVRow(line) {
-  const fields = [];
-  let cur = "", inQuote = false;
-  for (let i = 0; i < line.length; i++) {
-    const ch = line[i];
-    if (ch === '"') {
-      if (inQuote && line[i + 1] === '"') { cur += '"'; i++; }
-      else { inQuote = !inQuote; }
-    } else if (ch === ',' && !inQuote) {
-      fields.push(cur); cur = "";
-    } else {
-      cur += ch;
-    }
-  }
-  fields.push(cur);
-  return fields;
+/**
+ * Load any JSON data source by name (cached, single-fetch).
+ * @param {string} name  Source name, e.g. "CARDS" or "CARDS.json"
+ * @returns {Promise<object|null>}
+ */
+function loadDataSource(name) {
+  var key = name.replace(/\.json$/i, "").toLowerCase();
+  if (DATA_REGISTRY[key]) return Promise.resolve(DATA_REGISTRY[key]);
+  if (_dataLoading[key])  return _dataLoading[key];
+
+  var file = name.endsWith(".json") ? name : name + ".json";
+  var url  = _dataBasePath() + file + "?v=" + Date.now();
+
+  _dataLoading[key] = fetch(url)
+    .then(function (r) {
+      if (!r.ok) throw new Error("HTTP " + r.status + " for " + file);
+      return r.json();
+    })
+    .then(function (json) {
+      DATA_REGISTRY[key] = json;
+      return json;
+    })
+    .catch(function (err) {
+      console.error("[loadDataSource:" + key + "]", err);
+      return null;
+    });
+  return _dataLoading[key];
 }
 
-// ═══════════════════════════════════════════════════════════════
-//  MODAL STATE  —  shared global written here, read by MODALS.JS
-// ═══════════════════════════════════════════════════════════════
-const modalState = { work: null, education: null, projects: null, hackathons: null, games: null, marp: null, bitnaughts: null, mtg: null };
+/** Backward-compatible alias consumed by MODALS.JS & SKILLTREE.JS */
+function loadCardsJSON() { return loadDataSource("CARDS"); }
 
 // ═══════════════════════════════════════════════════════════════
-//  ENTRY CARD BUILDER
+//  MODAL STATE  —  dynamic object, populated per-section at load
+// ═══════════════════════════════════════════════════════════════
+const modalState = {};
+
+// ═══════════════════════════════════════════════════════════════
+//  ENTRY CARD BUILDER  (unchanged — pure DOM factory)
 // ═══════════════════════════════════════════════════════════════
 function buildEntryCard(item, dataset, opts) {
   const hasGithub = item.GITHUB && item.GITHUB.trim() && item.GITHUB.trim() !== " ";
@@ -108,103 +113,137 @@ function buildEntryCard(item, dataset, opts) {
 }
 
 // ═══════════════════════════════════════════════════════════════
-//  JSON DATA LOADING  —  single fetch replaces 8 CSV fetches
+//  UNIVERSAL JSON INGESTION — schema-introspecting pipeline
+//
+//  For each loaded source, introspects top-level shape:
+//    • sections[]       → populate modalState, render grids, build VIZ maps
+//    • techCategories   → VIZ_TECH_CATEGORIES (MAP.JS)
+//    • techTags         → VIZ_TECH_TAGS       (MAP.JS)
+//    • timeline         → VIZ_TIMELINE.*      (TIMELINE.JS)
+//    • categories       → stored in registry for SKILLTREE.JS
 // ═══════════════════════════════════════════════════════════════
 
-// Grid configs — maps section id to its DOM grid element
-const _gridConfigs = {
-  marp:       { gridId: "marp-grid",       imgExt: ".png", modalImgExt: ".png" },
-  bitnaughts: { gridId: "bitnaughts-grid", imgExt: ".png", modalImgExt: ".png" },
-  work:       { gridId: "work-grid",       imgExt: ".png", modalImgExt: ".png" },
-  education:  { gridId: "education-grid",  imgExt: ".png", modalImgExt: ".png" },
-  projects:   { gridId: "projects-grid",   imgExt: ".png", modalImgExt: ".png" },
-  hackathons: { gridId: "hackathons-grid", imgExt: ".png", modalImgExt: ".png" },
-  games:      { gridId: "games-grid",      imgExt: ".png", modalImgExt: ".png" },
-  mtg:        { gridId: "mtg-grid",        imgExt: ".png", modalImgExt: ".png" },
-};
+function _ingestSource(key, data) {
+  // ── Sections: items[], modal state, VIZ maps, grid cards ──
+  if (data.sections && Array.isArray(data.sections)) {
+    data.sections.forEach(function (section) {
+      var sectionId = section.id;
+      if (!sectionId || !Array.isArray(section.items)) return;
 
-(async () => {
-  try {
-    const r = await fetch("PORTFOLIO.json?v=" + Date.now());
-    if (!r.ok) throw new Error(`HTTP ${r.status}`);
+      // Register in modalState for MODALS.JS
+      modalState[sectionId] = section.items;
 
-    const text = await r.text();
-    let data;
-    try {
-      data = JSON.parse(text);
-    } catch (e) {
-      throw new SyntaxError(e.message);
-    }
-
-    // Build VIZ maps from item fields
-    // These globals are consumed by VIZ.JS, TIMELINE.JS, SKILLTREE.JS
-    data.sections.forEach(section => {
-      section.items.forEach(item => {
-        if (item.domain)    VIZ_DOMAIN_MAP[item.ID] = item.domain;
-        // source: explicit field, or fall back to section id
+      // Build VIZ maps from item fields
+      section.items.forEach(function (item) {
+        if (!item.ID) return;
+        if (item.domain)    VIZ_DOMAIN_MAP[item.ID]    = item.domain;
         VIZ_SOURCE_MAP[item.ID] = item.source || section.id;
-        if (item.quadrant)  VIZ_QUADRANT_MAP[item.ID] = item.quadrant;
-        if (item.whisper)   VIZ_WHISPER_MAP[item.ID] = item.whisper;
+        if (item.quadrant)  VIZ_QUADRANT_MAP[item.ID]  = item.quadrant;
+        if (item.whisper)   VIZ_WHISPER_MAP[item.ID]   = item.whisper;
         if (item.shortname) VIZ_SHORTNAME_MAP[item.ID] = item.shortname;
       });
-    });
 
-    // Populate tech categories and tags for MAP.JS
-    // (PORTFOLIO.json is the source of truth for tech taxonomy)
-    if (data.techCategories) window.VIZ_TECH_CATEGORIES = data.techCategories;
-    if (data.techTags)       window.VIZ_TECH_TAGS       = data.techTags;
-
-    // Populate timeline metadata
-    if (data.timeline) {
-      Object.assign(VIZ_TIMELINE.whispers, data.timeline.whispers || {});
-      Object.assign(VIZ_TIMELINE.nameOverrides, data.timeline.nameOverrides || {});
-      Object.assign(VIZ_TIMELINE.titleOverrides, data.timeline.titleOverrides || {});
-    }
-
-    // Populate modalState and render grids
-    data.sections.forEach(section => {
-      const sectionId = section.id;
-      const cfg = _gridConfigs[sectionId];
-      if (!cfg) return;
-
-      modalState[sectionId] = section.items;
-      const g = document.getElementById(cfg.gridId);
+      // Render entry cards into matching grid (convention: "{sectionId}-grid")
+      var g = document.getElementById(sectionId + "-grid");
       if (!g) return;
+      var cfg = { imgExt: ".png", modalImgExt: ".png" };
 
       if (!section.items.length) {
-        g.innerHTML = '<p style="color:rgba(255,255,255,0.5);font-style:italic;padding:16px;">Failed to load data. Please refresh.</p>';
+        g.innerHTML = '<p style="color:rgba(255,255,255,0.5);font-style:italic;padding:16px;">No items.</p>';
         return;
       }
 
-      // MTG section: deck items get deck modal click override
-      if (sectionId === "mtg") {
-        section.items.forEach(function (i) {
-          const card = buildEntryCard(i, "mtg", cfg);
-          if (i.DECK && i.DECK.trim()) {
-            const newCard = card.cloneNode(true);
-            if (window._revealObserver) window._revealObserver.observe(newCard);
-            newCard.addEventListener("click", function () { openDeckModal(i); });
-            g.appendChild(newCard);
-          } else {
-            g.appendChild(card);
-          }
+      section.items.forEach(function (item) {
+        // Items with a DECK field get deck-modal click override (data-driven, not section-name-driven)
+        if (item.DECK && item.DECK.trim()) {
+          var deckCard = buildEntryCard(item, sectionId, cfg);
+          var clone = deckCard.cloneNode(true);
+          if (window._revealObserver) window._revealObserver.observe(clone);
+          clone.addEventListener("click", function () { openDeckModal(item); });
+          g.appendChild(clone);
+        } else {
+          g.appendChild(buildEntryCard(item, sectionId, cfg));
+        }
+      });
+    });
+  }
+
+  // ── Tech taxonomy for MAP.JS ──────────────────────────────
+  if (data.techCategories) window.VIZ_TECH_CATEGORIES = data.techCategories;
+  if (data.techTags)       window.VIZ_TECH_TAGS       = data.techTags;
+
+  // ── Timeline metadata ─────────────────────────────────────
+  if (data.timeline) {
+    Object.assign(VIZ_TIMELINE.whispers,       data.timeline.whispers       || {});
+    Object.assign(VIZ_TIMELINE.nameOverrides,  data.timeline.nameOverrides  || {});
+    Object.assign(VIZ_TIMELINE.titleOverrides, data.timeline.titleOverrides || {});
+  }
+}
+
+// ── Boot: fetch all sources declared in SETTINGS.json ────────
+(async () => {
+  try {
+    var cfg = (window.__SETTINGS && window.__SETTINGS.data) || {};
+    var basePath = cfg.path || "";
+    var sources  = cfg.sources || [];
+
+    // Fetch all data sources in parallel
+    var results = await Promise.all(sources.map(function (src) {
+      var url = basePath + src + "?v=" + Date.now();
+      return fetch(url)
+        .then(function (r) {
+          if (!r.ok) throw new Error("HTTP " + r.status + " for " + src);
+          return r.json();
+        })
+        .then(function (json) {
+          var key = src.replace(/\.json$/i, "").toLowerCase();
+          DATA_REGISTRY[key] = json;
+          return { key: key, data: json };
+        })
+        .catch(function (err) {
+          console.error("[DATA] " + src + ":", err);
+          return null;
         });
-      } else {
-        section.items.forEach(i => g.appendChild(buildEntryCard(i, sectionId, cfg)));
+    }));
+
+    // Ingest each source (order-independent — maps merge)
+    results.forEach(function (r) {
+      if (r) _ingestSource(r.key, r.data);
+    });
+
+    // ── Nav generation from per-section JSONs ──────────────
+    // Each source with "index" + "nav" contributes a nav entry.
+    // Sorted by index → replaces static nav from SETTINGS.json.
+    var navEntries = [];
+    results.forEach(function (r) {
+      if (r && r.data && r.data.nav && typeof r.data.index === "number") {
+        navEntries.push({ index: r.data.index, nav: r.data.nav });
       }
     });
 
-    // Signal that data is loaded (for consumers that poll modalState)
+    if (navEntries.length) {
+      navEntries.sort(function (a, b) { return a.index - b.index; });
+      var navEl = document.getElementById("mainNav");
+      if (navEl) {
+        var existing = navEl.querySelectorAll("a:not(.nav-brand)");
+        existing.forEach(function (a) { a.remove(); });
+        navEntries.forEach(function (entry, idx) {
+          var a = document.createElement("a");
+          a.href = entry.nav.href;
+          a.textContent = entry.nav.label;
+          if (idx === 0) a.className = "active";
+          navEl.appendChild(a);
+        });
+      }
+      // Re-cache sections for SCROLL.JS highlight
+      if (window._cacheSections) window._cacheSections();
+    }
+
+    // Signal that all data is loaded
     window.dispatchEvent(new Event("portfolioDataReady"));
 
   } catch (err) {
-    console.error("[portfolio.json]", err);
-    Object.values(_gridConfigs).forEach(cfg => {
-      const g = document.getElementById(cfg.gridId);
-      if (g && !g.children.length) {
-        g.innerHTML = '<p style="color:rgba(255,255,255,0.5);font-style:italic;padding:16px;">Failed to load data. Please refresh.</p>';
-      }
-    });
+    console.error("[DATA]", err);
   }
 })();
 

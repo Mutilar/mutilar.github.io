@@ -19,13 +19,17 @@
   "use strict";
 
   // ── Resolve SETTINGS.json path ─────────────────────────────
-  // If the page has a <meta name="settings-path">, use that.
-  // Otherwise default to "SETTINGS.json" (same directory).
+  // If the bootstrap already loaded settings into __SETTINGS, use those.
+  // Otherwise fetch via <meta name="settings-path"> or default path.
   var metaPath = document.querySelector('meta[name="settings-path"]');
-  var settingsUrl = metaPath ? metaPath.getAttribute("content") : "SETTINGS.json";
+  var settingsUrl = metaPath ? metaPath.getAttribute("content") : "json/SETTINGS.json";
 
-  fetch(settingsUrl + "?v=" + Date.now())
-    .then(function (r) { return r.ok ? r.json() : Promise.reject("HTTP " + r.status); })
+  var _settingsPromise = window.__SETTINGS
+    ? Promise.resolve(window.__SETTINGS)
+    : fetch(settingsUrl + "?v=" + Date.now())
+        .then(function (r) { return r.ok ? r.json() : Promise.reject("HTTP " + r.status); });
+
+  _settingsPromise
     .then(function (s) {
       window.__SETTINGS = s;
 
@@ -64,32 +68,31 @@
         if (s.seo.touchIcon) _setLink("apple-touch-icon", s.seo.touchIcon, "image/png");
       }
 
-      // ── 3. Nav brand ───────────────────────────────────────
-      var navBrand = document.getElementById("navBrand");
-      if (navBrand && s.identity) {
-        var icon = navBrand.querySelector(".brand-icon");
-        if (icon) icon.textContent = s.identity.emoji || "";
-        // Set brand text (after the icon span)
-        var brandText = navBrand.childNodes;
-        for (var i = 0; i < brandText.length; i++) {
-          if (brandText[i].nodeType === 3 && brandText[i].textContent.trim()) {
-            brandText[i].textContent = " " + s.identity.name;
-            break;
-          }
+      // ── 3. Nav brand (inject if absent, then hydrate) ──────
+      var nav = document.getElementById("mainNav");
+      if (nav && s.identity) {
+        var navBrand = document.getElementById("navBrand");
+        if (!navBrand) {
+          navBrand = document.createElement("a");
+          navBrand.href = "#home";
+          navBrand.className = "nav-brand";
+          navBrand.id = "navBrand";
+          nav.prepend(navBrand);
         }
+        navBrand.innerHTML = '<span class="brand-icon">' +
+          (s.identity.emoji || '') + '</span> ' + (s.identity.name || '');
       }
 
-      // Radio brand (mutilar-specific, safe to skip if absent)
-      var radioBrand = document.getElementById("radioBrand");
-      if (radioBrand && s.identity) {
-        var rIcon = radioBrand.querySelector(".brand-icon");
-        if (rIcon) rIcon.textContent = s.identity.emoji || "";
+      // Auth nav slot (shell for AUTH.JS — only when auth config present)
+      if (nav && s.auth && !document.getElementById("authNavSlot")) {
+        var authSlot = document.createElement("span");
+        authSlot.id = "authNavSlot";
+        authSlot.className = "auth-nav-slot";
+        nav.appendChild(authSlot);
       }
 
       // ── 4. Nav links ───────────────────────────────────────
-      if (s.nav && Array.isArray(s.nav)) {
-        var nav = document.getElementById("mainNav");
-        if (nav) {
+      if (s.nav && Array.isArray(s.nav) && nav) {
           // Remove existing nav links (keep brand + theme toggle)
           var existing = nav.querySelectorAll("a:not(.nav-brand)");
           existing.forEach(function (a) { a.remove(); });
@@ -101,7 +104,6 @@
             if (idx === 0) a.className = "active";
             nav.appendChild(a);
           });
-        }
       }
 
       // ── 5. Hero identity ───────────────────────────────────
@@ -457,7 +459,11 @@
       }
 
       // ── Viz tiles grid ──
-      if (sec.vizTiles && sec.vizTiles.length) {
+      // vizTiles can be: an inline array, or true to inherit top-level s.vizTiles
+      var secViz = Array.isArray(sec.vizTiles) ? sec.vizTiles
+                 : (sec.vizTiles === true && s.vizTiles) ? s.vizTiles
+                 : null;
+      if (secViz && secViz.length) {
         html += '<div class="card-grid card-grid-wide" style="margin-bottom:32px;" id="' + sec.id + '-cards"></div>';
       }
 
@@ -478,9 +484,12 @@
 
     // Hydrate viz tile grids after DOM insertion
     s.sections.forEach(function (sec) {
-      if (sec.vizTiles && sec.vizTiles.length) {
+      var secViz = Array.isArray(sec.vizTiles) ? sec.vizTiles
+                 : (sec.vizTiles === true && s.vizTiles) ? s.vizTiles
+                 : null;
+      if (secViz && secViz.length) {
         var grid = document.getElementById(sec.id + "-cards");
-        if (grid) _hydrateVizTiles(grid, sec.vizTiles);
+        if (grid) _hydrateVizTiles(grid, secViz);
       }
     });
   }

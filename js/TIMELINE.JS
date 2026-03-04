@@ -154,8 +154,12 @@
 
   // ── Build ──────────────────────────────────────────────────
   function buildTimeline() {
-    const datasets = ["work", "education", "projects", "hackathons", "games"];
-    if (!datasets.every(d => modalState[d])) { setTimeout(buildTimeline, 200); return; }
+    // Dynamic: include any modalState section whose items have DATE fields
+    const datasets = Object.keys(modalState).filter(function (k) {
+      var items = modalState[k];
+      return Array.isArray(items) && items.length > 0 && items.some(function (i) { return i.DATE; });
+    });
+    if (datasets.length === 0) { setTimeout(buildTimeline, 200); return; }
 
     const entries = [];
     datasets.forEach(cat => {

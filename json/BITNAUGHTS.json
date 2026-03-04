@@ -1,0 +1,72 @@
+{
+  "index": 3,
+  "nav": {
+    "href": "#bitnaughts",
+    "label": "BitNaughts"
+  },
+  "sections": [
+    {
+      "id": "bitnaughts",
+      "items": [
+        {
+          "ID": "bitnaughts",
+          "NAME": "☄️ BitNaughts",
+          "MOTTO": "Code Gamified!",
+          "GITHUB": "https://github.com/bitnaughts/bitnaughts",
+          "PLAY": "https://bitnaughts.io",
+          "TEXT": "<b>Parent Repository & Submodule Orchestrator</b><br>BitNaughts is an educational programming video game that teaches players coding concepts through interactive gameplay. The parent repo ties together the full project via <b>Git submodules</b> — linking bitnaughts.unity (game client); bitnaughts.github.io (WebGL front-end); and bitnaughts.mainframe (cloud back-end).",
+          "domain": "games",
+          "source": "projects",
+          "quadrant": "games",
+          "shortname": "☄️<br>Bit<br>Naughts",
+          "TECH": "🌿🔺"
+        },
+        {
+          "ID": "bitnaughts-unity",
+          "NAME": "🎮 Unity",
+          "TITLE": "Unity 6.0",
+          "MOTTO": "Cross-platform game interface",
+          "GITHUB": "https://github.com/bitnaughts/bitnaughts.unity",
+          "TEXT": "<b>Unity Game Client</b><br>The core game application built in <b>Unity 6.0</b> (100% C#). Players navigate a spaceship; dock at planets; and solve programming challenges through an in-game terminal that interprets assembly-style instructions.<br><br><b>Submodule Architecture:</b><ul><li><b>Assets</b> — Sprites; audio; and visual assets</li><li><b>UI/UX</b> — Interface design and user experience components</li><li><b>Components</b> — Modular game systems (navigation; docking; inventory)</li><li><b>C# Interpreter</b> — The embedded language interpreter engine</li><li><b>WebGLNativeInputField</b> — Custom input handling for WebGL builds</li></ul><b>Contributors:</b> 4 (Mutilar; botnaughts; vva0; nt314p)",
+          "TECH": "🎮🔺🎵"
+        },
+        {
+          "ID": "bitnaughts-interpreter",
+          "NAME": "👨‍💻 Interpreter",
+          "TITLE": "C#",
+          "MOTTO": "Stepping through each OP Code of abstracted languages",
+          "GITHUB": "https://github.com/bitnaughts/bitnaughts.interpreter",
+          "TEXT": "<b>Assembly Interpreter Engine</b><br>The core language processing engine written in <b>C#</b> that powers BitNaughts' in-game programming challenges. Players write assembly-level OP codes which this interpreter steps through instruction-by-instruction.<br><br><b>Architecture:</b><ul><li><b>Interpreter.cs</b> — Main execution loop; parses and executes OP code instructions sequentially</li><li><b>Instruction.cs</b> — Data model representing individual assembly instructions (opcode + operands)</li><li><b>Variable.cs</b> — Register and memory variable management for the virtual machine</li><li><b>ColorCoder.cs</b> — Syntax highlighting for the in-game terminal; color-codes keywords; registers; and literals</li></ul>Designed as a Git submodule consumed by bitnaughts.unity; enabling modular development of the language engine independent of the game client.",
+          "TECH": "🌿🎵"
+        },
+        {
+          "ID": "bitnaughts-github-io",
+          "NAME": "📺 bitnaughts.io",
+          "TITLE": "WebGL",
+          "MOTTO": "Play the demo in your browser!",
+          "GITHUB": "https://github.com/bitnaughts/bitnaughts.github.io",
+          "TEXT": "<b>WebGL Front-End — <a href='https://bitnaughts.io'>bitnaughts.io</a></b><br>The web-hosted runtime that serves Unity WebGL builds directly in the browser.</b><br><br><b>Pages:</b><ul><li><b>play.html</b> — Primary single-player game interface</li><li><b>duo.html</b> — Multiplayer / co-op mode</li><li><b>alpha.html</b> — Alpha testing build</li><li><b>portal.html</b> — Landing page and navigation portal</li></ul><b>Key Directories:</b><ul><li><b>Build/</b> — Compiled Unity WebGL artifacts (.unityweb; .json; UnityLoader.js)</li><li><b>StreamingAssets/</b> — Runtime data files loaded by Unity at play-time</li><li><b>TemplateData/</b> — Loading screen and progress bar assets</li><li><b>assets/</b> — Static images and media</li><li><b>documentation/</b> — Project docs and guides</li></ul>",
+          "TECH": "🎮🔺"
+        },
+        {
+          "ID": "bitnaughts-voice",
+          "NAME": "🎤 Voice",
+          "TITLE": "Narrator",
+          "MOTTO": "Forays into A.I. narration",
+          "GITHUB": "https://github.com/bitnaughts/bitnaughts.voice",
+          "TEXT": "<b>A.I. Voice Narration — TorToiSe TTS</b><br>A fork of <b>neonbjb/tortoise-tts</b> adapted for in-game AI narration. TorToiSe is a multi-voice text-to-speech system that uses an <b>autoregressive decoder</b> paired with a <b>diffusion model</b> to generate highly realistic speech.<br><br><b>Capabilities:</b><ul><li>Multi-voice synthesis — clone and generate speech in different character voices from short reference clips</li><li>High-quality prosody and intonation via autoregressive sequence modeling</li><li>Diffusion-based audio refinement for natural-sounding output</li><li>Configurable voice presets for distinct in-game characters and narrators</li></ul><b>Use Case:</b> Generate dynamic AI narration for BitNaughts' tutorial sequences; mission briefings; and in-game lore — replacing static audio recordings with procedurally generated speech.<br><b>License:</b> Apache-2.0",
+          "TECH": "🐢"
+        },
+        {
+          "ID": "bitnaughts-mainframe",
+          "NAME": "📡 Mainframe",
+          "TITLE": "Azure",
+          "MOTTO": "Serverless cloud resources for persistence",
+          "GITHUB": "https://github.com/bitnaughts/bitnaughts.mainframe",
+          "TEXT": "<b>Serverless Back-End — <a href='https://bitnaughts.azurewebsites.net'>bitnaughts.azurewebsites.net</a></b><br>An <b>Azure Function App</b> written in C# that provides cloud persistence for multiplayer game state. Hosted as a serverless endpoint with two HTTP-triggered functions.<br><br><b>Functions:</b><ul><li><b>Ping()</b> — Multiplayer state sync via <b>MongoDB</b>; upserts player data keyed by name; returns all other players' state (uses ♖ delimiter). Connection secured with <b>TLS 1.2</b> and TTL indexes for automatic document expiry (<code>expireAfterSeconds: 10</code>).</li><li><b>Mainframe()</b> — Git-based persistence layer; clones <b>bitnaughts.db</b> repo to temp storage; reads/writes player save files as .txt; then commits and pushes changes back via LibGit2Sharp.</li></ul><b>Stack:</b> Azure Functions; MongoDB (CosmosDB-compatible); LibGit2Sharp; Newtonsoft.Json",
+          "TECH": "🔷⛅🍃🎵"
+        }
+      ]
+    }
+  ]
+}

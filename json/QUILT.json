@@ -1,0 +1,45 @@
+{
+  "sections": [
+    {
+      "id": "quilts",
+      "items": [
+        {
+          "ID": "penguin-quilt",
+          "NAME": "🐧 Penguin Quilt",
+          "DATE": "Jan 2020 – Mar 2020",
+          "TITLE": "Wall Hanging",
+          "MOTTO": "Every stitch a story",
+          "TEXT": "<b>Penguin-themed wall hanging quilt</b><br>A 36×48\" wall hanging featuring foundation paper-pieced penguin blocks with an aurora borealis background. Hand-quilted with walking-foot straight lines.",
+          "domain": "education",
+          "source": "projects",
+          "quadrant": "software",
+          "shortname": "🐧<br>Quilt"
+        },
+        {
+          "ID": "star-quilt",
+          "NAME": "⭐ Lone Star",
+          "DATE": "Jun 2021 – Sep 2021",
+          "TITLE": "Bed Quilt",
+          "MOTTO": "Geometry in fabric",
+          "TEXT": "<b>Lone Star bed quilt</b><br>A queen-sized Lone Star quilt using a gradient of 24 fabrics from deep navy to bright gold. Machine-quilted with free-motion feathers in the negative space.",
+          "domain": "research",
+          "source": "projects",
+          "quadrant": "software",
+          "shortname": "⭐<br>Lone<br>Star"
+        },
+        {
+          "ID": "pixel-quilt",
+          "NAME": "🎮 Pixel Art",
+          "DATE": "Nov 2022 – Feb 2023",
+          "TITLE": "Lap Quilt",
+          "MOTTO": "8-bit nostalgia in thread",
+          "TEXT": "<b>Pixel art lap quilt</b><br>A 60×72\" lap quilt made from 1\" squares arranged into classic video game sprites. Each pixel is an individually cut and sewn square — over 4,300 pieces total.",
+          "domain": "games",
+          "source": "projects",
+          "quadrant": "games",
+          "shortname": "🎮<br>Pixel"
+        }
+      ]
+    }
+  ]
+}
