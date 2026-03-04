@@ -28,7 +28,7 @@
 //    modal            – DOM .modal-overlay element
 //    closeBtn         – DOM close button
 //    edgeSvgSelector  – CSS selector for SVG edge layer (default ".kg-edges")
-//    filterBtnClass   – CSS class on filter buttons (default "mtg-filter")
+//    filterBtnClass   – CSS class on filter buttons (default "viz-filter")
 //
 //    filterAxes       – Array of {
 //        key,           – string key used in node.filterKeys[key]
@@ -598,21 +598,61 @@ function createSkillTree(cfg) {
 // ═══════════════════════════════════════════════════════════════
 (() => {
   const graphModal = document.getElementById("knowledge-modal");
-  const graphModalClose = document.getElementById("knowledgeModalClose");
-  if (!graphModal || !graphModalClose) return;
+  if (!graphModal) return;
+
+  /* ── Build viz shell from VIZ_THEMES (no HTML fragment needed) ── */
+  const _kgFilterItems = [
+    { value: "all", tc: "255,255,255", tcLight: "30,30,30", allIndicator: "⬜", emoji: "", active: true, ariaPressed: "true", ariaLabel: "Show all categories" }
+  ];
+  ["robotics", "games", "software", "education", "work", "projects"].forEach(function (k) {
+    var t = VIZ_THEMES[k];
+    _kgFilterItems.push({ value: k, tc: t.color, dot: t.color, emoji: t.emoji, ariaPressed: "false", ariaLabel: "Filter: " + t.label });
+  });
+
+  var _kgShell = buildVizShell(graphModal, {
+    cardClass:  "kg-modal-card",
+    closeId:    "knowledgeModalClose",
+    toggleId:   "kgLayoutToggle",
+    svgClass:   "kg-edges",
+    filterGroups: [{
+      btnClass: "viz-filter",
+      dataAttr: "filter",
+      items: _kgFilterItems,
+    }],
+    accessibility: {
+      toolbarLabel: "Graph filters",
+      role: "application",
+      ariaRoledescription: "Interactive knowledge graph",
+      ariaLabel: "Radial node graph of career items grouped by domain. Use arrow keys to navigate between nodes, Enter to open details.",
+      liveRegionId: "kg-live",
+      srDescriptions: [
+        "Skill graph: radial layout of portfolio items organized by robotics, games, and software domains. Each node represents a project or experience. Use arrow keys to move between nodes; Enter opens details."
+      ],
+    },
+  });
+
+  const graphModalClose = _kgShell.closeBtn;
+
+  /* ── Accent helper (resolve accent index → RGB string) ─────── */
+  var _accentsKG = (window.__SETTINGS && window.__SETTINGS.accents) || [];
+  function _resolveKG(src) {
+    if (src.accent != null && _accentsKG[src.accent])
+      return _accentsKG[src.accent].replace(/\s/g, '');
+    return src.color || '';
+  }
 
   /* ── Thematic config (from VIZ.JS) ──────────────────────────── */
   const themeConfig = {};
   ["robotics", "games", "software", "education", "work", "projects"].forEach(function (k) {
     var src = VIZ_THEMES[k];
-    themeConfig[k] = { color: src.color, icon: src.icon, label: src.label, emoji: src.emoji };
+    themeConfig[k] = { color: _resolveKG(src), icon: src.icon, label: src.label, emoji: src.emoji };
   });
 
   /* ── Thread (overlay-theme) colors — one thread per theme×quadrant pair ── */
   const threadConfig = {
-    work:      { color: "0,120,212",  label: "Work" },       // MSFT Blue
-    education: { color: "255,185,0",  label: "Education" },  // MSFT Yellow
-    projects:  { color: "242,80,34",  label: "Projects" },   // MSFT Red
+    work:      { color: _resolveKG({ accent: 0 }),  label: "Work" },
+    education: { color: _resolveKG({ accent: 1 }),  label: "Education" },
+    projects:  { color: _resolveKG({ accent: 2 }),  label: "Projects" },
   };
 
   const themeMap = VIZ_SOURCE_MAP;
@@ -644,6 +684,7 @@ function createSkillTree(cfg) {
 
   /* ── Open / close ─────────────────────────────────────────── */
   var _kgReg = registerModal("knowledge-modal", {
+    key: "knowledgeModal",
     onOpen: function () {
       _filterSys.setAll();
       if (!graphBuilt) buildGraph();
@@ -1148,7 +1189,7 @@ function createSkillTree(cfg) {
     centerNode.style.cursor = "pointer";
     centerNode.addEventListener("click", e => {
       e.stopPropagation();
-      openQuiltModal();
+      openModal('biography');
     });
     _graphWorld.appendChild(centerNode);
 
@@ -1475,7 +1516,7 @@ function createSkillTree(cfg) {
       modal: graphModal,
       getNodes: function () { return _nodes; },
       onFocus: function (n) { _hoveredNode = n; updateProximityGlow(); },
-      onActivate: function (n) { openModal(n.category, n.item.ID); },
+      onActivate: function (n) { openEntry(n.category, n.item.ID); },
       liveRegionId: "kg-live",
     });
 
@@ -1529,7 +1570,7 @@ function createSkillTree(cfg) {
 
     el.addEventListener("click", e => {
       e.stopPropagation();
-      openModal(category, item.ID);
+      openEntry(category, item.ID);
     });
 
     const baseFont = Math.round(8 * fontScale);
@@ -1739,54 +1780,156 @@ function createSkillTree(cfg) {
 //  Click a node → card-view modal overlay with full art.
 // ═══════════════════════════════════════════════════════════════
 (() => {
-  const modal    = document.getElementById("mtg-tree-modal");
-  const closeBtn = document.getElementById("mtgTreeModalClose");
-  if (!modal || !closeBtn) return;
+  const modal = document.getElementById("mtg-tree-modal");
+  if (!modal) return;
 
-  /* ── Mana-color config (emoji-keyed) ─────────────────── */
-  const MTG_COLORS = {
-    "⚪": { rgb: "255,185,0",   icon: "☀️" },
-    "⚫": { rgb: "130,130,130", icon: "💀" },
-    "🔴": { rgb: "242,80,34",   icon: "🔥" },
-    "💎": { rgb: "160,160,160", icon: "◆"  },
-  };
-  const ALL_COLORS = Object.keys(MTG_COLORS);
+  /* ── Category config — populated from PORTFOLIO.json cards.categories ── */
+  var MTG_COLORS   = null;
+  var TYPE_ICONS   = null;
+  var TYPE_COLORS  = null;
+  var DECK_CFG     = null;
+  var ALL_COLORS   = [];
+  var ALL_TYPES    = [];
+  var ALL_DECKS    = [];
+  var DRANT_DIR    = {};
+  var _COLOR_EMOJIS = [];
+  var _mtgShell    = null;
+  var closeBtn     = null;
+  var filterAxes   = [];
+  var _mtgLayoutToggle = null;
+  var _shellReady  = false;
 
-  /* ── Type config (emoji-keyed) ──────────────────────────── */
-  const TYPE_ICONS = {
-    "🧛": "🧛", "✨": "✨", "🌩️": "🌩️",
-    "⚡": "⚡", "🔮": "🔮", "⛈️":  "⛈️",
-  };
-  const TYPE_COLORS = {
-    "🧛": "127,186,0",   "✨": "160,160,160", "🌩️": "0,164,239",
-    "⚡": "0,120,212",   "🔮": "242,80,34",   "⛈️":  "255,185,0",
-  };
-  const ALL_TYPES = Object.keys(TYPE_COLORS);
+  /* ── Shell builder (called once from ensureData) ─────────── */
+  function _initShell(categories) {
+    if (_shellReady) return;
+    var typeCat  = categories.type  || {};
+    var colorCat = categories.color || {};
+    var deckCat  = categories.deck  || {};
 
-  /* ── Drant directions — one per type, evenly around circle ─ */
-  const DRANT_DIR = {};
-  ALL_TYPES.forEach(function (type, i) {
-    var angle = (2 * Math.PI * i / ALL_TYPES.length) - Math.PI / 2;
-    DRANT_DIR[type] = {
-      angle: angle,
-      x: Math.cos(angle),
-      y: Math.sin(angle),
-      color: TYPE_COLORS[type] || "160,160,160",
-      icon:  TYPE_ICONS[type]  || "?",
-    };
-  });
+    /* Resolve accent index → RGB from SETTINGS.json accents */
+    var _accents = (window.__SETTINGS && window.__SETTINGS.accents) || [];
+    function _resolveColor(entry) {
+      if (entry.accent != null && _accents[entry.accent])
+        return _accents[entry.accent].replace(/\s/g, '');
+      return entry.color || '160,160,160';
+    }
 
-  /* ── Deck config (commander hubs at center) ─────────────── */
-  const DECK_CFG = {
-    "the-nobles": { label: "The Nobles", icon: "👑", angle: -Math.PI / 2, color: "255,185,0"   },
-    "the-demons": { label: "The Demons", icon: "😈", angle:  Math.PI / 2, color: "242,80,34"   },
-  };
-  const ALL_DECKS = Object.keys(DECK_CFG);
+    /* Populate type maps from data */
+    TYPE_COLORS = {};
+    TYPE_ICONS  = {};
+    Object.keys(typeCat).forEach(function (k) {
+      TYPE_COLORS[k] = _resolveColor(typeCat[k]);
+      TYPE_ICONS[k]  = typeCat[k].icon || k;
+    });
+    ALL_TYPES = Object.keys(TYPE_COLORS);
+
+    /* Populate color maps from data */
+    MTG_COLORS = {};
+    Object.keys(colorCat).forEach(function (k) {
+      MTG_COLORS[k] = { rgb: _resolveColor(colorCat[k]), icon: colorCat[k].icon || k };
+    });
+    ALL_COLORS = Object.keys(MTG_COLORS);
+
+    /* Populate deck config from data (angle computed from count) */
+    DECK_CFG = {};
+    var deckKeys = Object.keys(deckCat);
+    deckKeys.forEach(function (d, i) {
+      DECK_CFG[d] = {
+        label: deckCat[d].label || d,
+        icon:  deckCat[d].icon  || "🃏",
+        angle: (2 * Math.PI * i / deckKeys.length) - Math.PI / 2,
+        color: _resolveColor(deckCat[d]),
+      };
+    });
+    ALL_DECKS = Object.keys(DECK_CFG);
+
+    /* Drant directions — one per type, evenly around circle */
+    ALL_TYPES.forEach(function (type, i) {
+      var angle = (2 * Math.PI * i / ALL_TYPES.length) - Math.PI / 2;
+      DRANT_DIR[type] = {
+        angle: angle,
+        x:     Math.cos(angle),
+        y:     Math.sin(angle),
+        color: TYPE_COLORS[type] || "160,160,160",
+        icon:  TYPE_ICONS[type]  || "?",
+      };
+    });
+
+    /* Color-emoji set for splitter */
+    _COLOR_EMOJIS = Object.keys(MTG_COLORS);
+    _COLOR_EMOJIS.sort(function (a, b) { return b.length - a.length; });
+
+    /* Build viz shell filter items from data */
+    var _mtgTypeItems = [
+      { value: "all", tc: "255,255,255", tcLight: "30,30,30", allIndicator: "⬜", emoji: "", active: true }
+    ];
+    ALL_TYPES.forEach(function (t) {
+      _mtgTypeItems.push({ value: t, tc: TYPE_COLORS[t], dot: TYPE_COLORS[t], emoji: TYPE_ICONS[t], active: true });
+    });
+
+    var _mtgDeckItems = [
+      { value: "all", tc: "255,255,255", tcLight: "30,30,30", allIndicator: "⬜", emoji: "🃏", active: true }
+    ];
+    ALL_DECKS.forEach(function (d) {
+      var dc = DECK_CFG[d];
+      _mtgDeckItems.push({ value: d, tc: dc.color, dot: dc.color, emoji: dc.icon, active: true });
+    });
+
+    var _mtgColorItems = [
+      { value: "all", tc: "255,255,255", tcLight: "30,30,30", allIndicator: "⬜", emoji: "🎨", active: true }
+    ];
+    ALL_COLORS.forEach(function (c) {
+      var mc = MTG_COLORS[c];
+      _mtgColorItems.push({ value: c, tc: mc.rgb, dot: mc.rgb, emoji: mc.icon, active: true });
+    });
+
+    _mtgShell = buildVizShell(modal, {
+      cardClass:  "kg-modal-card",
+      closeId:    "mtgTreeModalClose",
+      toggleId:   "mtgLayoutToggle",
+      svgClass:   "kg-edges",
+      filterGroups: [
+        { btnClass: "viz-filter", dataAttr: "type",  items: _mtgTypeItems },
+        { btnClass: "viz-filter", dataAttr: "deck",  items: _mtgDeckItems,  separator: true },
+        { btnClass: "viz-filter", dataAttr: "color", items: _mtgColorItems, separator: true },
+      ],
+    });
+
+    closeBtn = _mtgShell.closeBtn;
+
+    /* Wire filter axes from shell-built buttons */
+    var typeBtns    = modal.querySelectorAll(".viz-filter[data-type]");
+    var colorBtns   = modal.querySelectorAll(".viz-filter[data-color]");
+    var deckBtns    = modal.querySelectorAll(".viz-filter[data-deck]");
+    var typeAllBtn  = modal.querySelector('.viz-filter[data-type="all"]');
+    var colorAllBtn = modal.querySelector('.viz-filter[data-color="all"]');
+    var deckAllBtn  = modal.querySelector('.viz-filter[data-deck="all"]');
+
+    filterAxes.length = 0;
+    filterAxes.push(
+      { key: "type",  allValues: ALL_TYPES,  allBtn: typeAllBtn,  itemBtns: Array.from(typeBtns).filter(function (b) { return b.dataset.type !== "all"; }) },
+      { key: "color", allValues: ALL_COLORS, allBtn: colorAllBtn, itemBtns: Array.from(colorBtns).filter(function (b) { return b.dataset.color !== "all"; }) },
+      { key: "deck",  allValues: ALL_DECKS,  allBtn: deckAllBtn,  itemBtns: Array.from(deckBtns).filter(function (b) { return b.dataset.deck !== "all"; }) }
+    );
+
+    /* Layout toggle — shell button now exists */
+    _mtgLayoutToggle = createLayoutToggle({
+      btn: "mtgLayoutToggle",
+      onDynamic: function () { if (_tree) relayoutMtg(); },
+    });
+
+    /* Stop tour on manual filter click */
+    modal.querySelectorAll(".viz-filter").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        if (_mtgTour && _mtgTour.isTouring()) _mtgTour.stop();
+      });
+    });
+
+    _shellReady = true;
+  }
 
   /* ── Color-emoji splitter (colors can be multi-emoji) ──── */
-  var _COLOR_EMOJIS = Object.keys(MTG_COLORS);
-  // Sort longest-first so multi-codepoint emojis match first
-  _COLOR_EMOJIS.sort(function (a, b) { return b.length - a.length; });
+  // _COLOR_EMOJIS populated by _initShell from PORTFOLIO.json cards.categories
 
   function splitColorEmojis(str) {
     var result = [];
@@ -1836,12 +1979,14 @@ function createSkillTree(cfg) {
   }
 
   /* ── Helpers ────────────────────────────────────────────── */
+  function _a(idx) { return (_accents[idx] || '').replace(/\s/g, '') || '160,160,160'; }
+
   function cmcToRGB(cmc) {
     var c = cmc || 0;
-    if (c <= 1) return "0,120,212";    // MSFT Blue
-    if (c <= 3) return "127,186,0";    // MSFT Green
-    if (c <= 5) return "255,185,0";    // MSFT Yellow
-    return "242,80,34";                // MSFT Red
+    if (c <= 1) return _a(0);    // accent 0 (blue)
+    if (c <= 3) return _a(3);    // accent 3 (green)
+    if (c <= 5) return _a(1);    // accent 1 (yellow)
+    return _a(2);                // accent 2 (red)
   }
 
   function saltToSize(salt) {
@@ -1851,6 +1996,18 @@ function createSkillTree(cfg) {
   }
 
   /* ── Card-view modal (overlay on top of skill tree) ───── */
+  // ── MTG card shell (replaces MTG-CARD-MODAL.HTML fragment) ──
+  (function() {
+    var el = document.getElementById("mtg-card-modal");
+    if (el) el.innerHTML =
+      '<div class="glass-tile modal-card kg-detail-card">' +
+        '<div class="modal-sticky-bar"><div class="modal-sticky-group tl-glow">' +
+          '<div class="kg-badges" id="mtg-card-badges"></div>' +
+          '<button class="modal-close" id="mtgCardModalClose" aria-label="Close modal">&times;</button>' +
+        '</div></div>' +
+        '<img class="kg-detail-art" id="mtg-card-view-art" src="" alt="" />' +
+      '</div>';
+  })();
   var cardModal    = document.getElementById("mtg-card-modal");
   var cardModalImg = document.getElementById("mtg-card-view-art");
   var cardBadges   = document.getElementById("mtg-card-badges");
@@ -1864,36 +2021,36 @@ function createSkillTree(cfg) {
     // Type badge (color-coded to match skill tree)
     var t   = card.types || "🧛";
     var rgb = TYPE_COLORS[t] || "160,160,160";
-    badges += '<span class="mtg-badge" style="--bc:' + rgb + '">' + t + '</span>';
+    badges += '<span class="kg-badge" style="--bc:' + rgb + '">' + t + '</span>';
 
     // Mana color badges (color-coded to match skill tree)
     var colors = Array.isArray(card.color) ? card.color : [card.color || "💎"];
     colors.forEach(function (c) {
       var entry = MTG_COLORS[c];
       if (!entry) return;
-      badges += '<span class="mtg-badge" style="--bc:' + entry.rgb + '">' + entry.icon + '</span>';
+      badges += '<span class="kg-badge" style="--bc:' + entry.rgb + '">' + entry.icon + '</span>';
     });
 
     // Salt tier badge
     var salt = card.salt || 0;
     var saltIcon, saltTitle, saltRGB;
-    if (salt < 0.15)      { saltIcon = "🧊"; saltTitle = "Zero salt";  saltRGB = "0,164,239";   }
-    else if (salt < 0.40) { saltIcon = "🌿"; saltTitle = "Mild";       saltRGB = "127,186,0";   }
-    else if (salt < 0.80) { saltIcon = "🌶️"; saltTitle = "Spicy";      saltRGB = "255,185,0";   }
-    else if (salt < 1.20) { saltIcon = "🔥"; saltTitle = "Hot";        saltRGB = "242,80,34";   }
-    else                  { saltIcon = "☠️"; saltTitle = "Toxic";      saltRGB = "242,80,34";   }
-    badges += '<span class="mtg-badge" style="--bc:' + saltRGB + '" title="Salt ' + salt.toFixed(2) + ' — ' + saltTitle + '">' + saltIcon + '</span>';
+    if (salt < 0.15)      { saltIcon = "🧊"; saltTitle = "Zero salt";  saltRGB = _a(0); }
+    else if (salt < 0.40) { saltIcon = "🌿"; saltTitle = "Mild";       saltRGB = _a(3); }
+    else if (salt < 0.80) { saltIcon = "🌶️"; saltTitle = "Spicy";      saltRGB = _a(1); }
+    else if (salt < 1.20) { saltIcon = "🔥"; saltTitle = "Hot";        saltRGB = _a(2); }
+    else                  { saltIcon = "☠️"; saltTitle = "Toxic";      saltRGB = _a(2); }
+    badges += '<span class="kg-badge" style="--bc:' + saltRGB + '" title="Salt ' + salt.toFixed(2) + ' — ' + saltTitle + '">' + saltIcon + '</span>';
 
     // Price tier badge
     var price = card.price || 0;
     var priceIcon, priceTitle, priceRGB;
     if (price < 1)        { priceIcon = "🪙"; priceTitle = "Penny";   priceRGB = "160,160,160"; }
-    else if (price < 5)   { priceIcon = "💵"; priceTitle = "Budget";  priceRGB = "127,186,0";   }
-    else if (price < 15)  { priceIcon = "💰"; priceTitle = "Mid";     priceRGB = "255,185,0";   }
-    else if (price < 50)  { priceIcon = "💎"; priceTitle = "Premium"; priceRGB = "0,164,239";   }
-    else if (price < 100) { priceIcon = "👑"; priceTitle = "Baller";  priceRGB = "255,185,0";   }
-    else                  { priceIcon = "🏦"; priceTitle = "Vault";   priceRGB = "0,120,212";   }
-    badges += '<span class="mtg-badge" style="--bc:' + priceRGB + '" title="$' + price.toFixed(2) + ' — ' + priceTitle + '">' + priceIcon + '</span>';
+    else if (price < 5)   { priceIcon = "💵"; priceTitle = "Budget";  priceRGB = _a(3); }
+    else if (price < 15)  { priceIcon = "💰"; priceTitle = "Mid";     priceRGB = _a(1); }
+    else if (price < 50)  { priceIcon = "💎"; priceTitle = "Premium"; priceRGB = _a(0); }
+    else if (price < 100) { priceIcon = "👑"; priceTitle = "Baller";  priceRGB = _a(1); }
+    else                  { priceIcon = "🏦"; priceTitle = "Vault";   priceRGB = _a(0); }
+    badges += '<span class="kg-badge" style="--bc:' + priceRGB + '" title="$' + price.toFixed(2) + ' — ' + priceTitle + '">' + priceIcon + '</span>';
 
     cardBadges.innerHTML = badges;
 
@@ -1909,17 +2066,19 @@ function createSkillTree(cfg) {
     _cardReg.close();
   }
 
-  /* ── Data fetch ─────────────────────────────────────────── */
+  /* ── Data fetch (from PORTFOLIO.json cards section) ──────── */
   var _cardsData = null;
 
   function ensureData(cb) {
     if (_cardsData) { cb(_cardsData); return; }
-    fetch("CARDS.json")
+    fetch("PORTFOLIO.json")
       .then(function (r) { return r.json(); })
       .then(function (raw) {
+        var cardsRaw = raw.cards || {};
+        _initShell(cardsRaw.categories || {});
         // Normalize CARDS uppercase-emoji format → lowercase-string format
         var data = { sections: [] };
-        raw.sections.forEach(function (sec) {
+        (cardsRaw.sections || []).forEach(function (sec) {
           data.sections.push({
             id:    sec.id,
             count: sec.count,
@@ -1931,41 +2090,6 @@ function createSkillTree(cfg) {
       })
       .catch(function (err) { console.error("[mtg-tree] fetch error", err); });
   }
-
-  /* ── Filter axes (wired to HTML buttons) ────────────────── */
-  var typeBtns   = modal.querySelectorAll(".mtg-filter[data-type]");
-  var colorBtns  = modal.querySelectorAll(".mtg-filter[data-color]");
-  var deckBtns   = modal.querySelectorAll(".mtg-filter[data-deck]");
-  var typeAllBtn  = modal.querySelector('.mtg-filter[data-type="all"]');
-  var colorAllBtn = modal.querySelector('.mtg-filter[data-color="all"]');
-  var deckAllBtn  = modal.querySelector('.mtg-filter[data-deck="all"]');
-
-  var filterAxes = [
-    {
-      key: "type",
-      allValues: ALL_TYPES,
-      allBtn: typeAllBtn,
-      itemBtns: Array.from(typeBtns).filter(b => b.dataset.type !== "all"),
-    },
-    {
-      key: "color",
-      allValues: ALL_COLORS,
-      allBtn: colorAllBtn,
-      itemBtns: Array.from(colorBtns).filter(b => b.dataset.color !== "all"),
-    },
-    {
-      key: "deck",
-      allValues: ALL_DECKS,
-      allBtn: deckAllBtn,
-      itemBtns: Array.from(deckBtns).filter(b => b.dataset.deck !== "all"),
-    },
-  ];
-
-  /* ── Layout toggle (static/dynamic) ─────────────────────── */
-  var _mtgLayoutToggle = createLayoutToggle({
-    btn: "mtgLayoutToggle",
-    onDynamic: function () { if (_tree) relayoutMtg(); },
-  });
 
   function relayoutMtg() {
     if (!_tree) return;
@@ -2089,7 +2213,7 @@ function createSkillTree(cfg) {
       var hubY = Math.sin(dcfg.angle) * hubGap;
 
       var hubEl = document.createElement("div");
-      hubEl.className = "kg-node mtg-deck-hub";
+      hubEl.className = "kg-node kg-hub";
       hubEl.style.setProperty("--kg-size", hubSize + "px");
       hubEl.style.setProperty("--tc", dcfg.color);
       hubEl.style.left = hubX + "px";
@@ -2305,23 +2429,23 @@ function createSkillTree(cfg) {
 
   var MTG_TOUR_LABEL = '<strong>Traverse</strong><span class="scroll-arrow">\uD83D\uDD2D</span>';
 
-  var MTG_TOUR_STEPS = [
-    { label: "👑",   filters: { deck: ["the-nobles"],                type: null,              color: null } },
-    { label: "😈",   filters: { deck: ["the-demons"],                type: null,              color: null } },
-    { label: "⛈️",   filters: { deck: null,                          type: ["⛈️"],            color: null } },
-    { label: "🧛",   filters: { deck: null,                          type: ["🧛"],            color: null } },
-    { label: "✨",   filters: { deck: null,                          type: ["✨"],            color: null } },
-    { label: "🌩️",   filters: { deck: null,                          type: ["🌩️"],            color: null } },
-    { label: "⚡",   filters: { deck: null,                          type: ["⚡"],            color: null } },
-    { label: "🔮",   filters: { deck: null,                          type: ["🔮"],            color: null } },
-  ];
+  function _buildMtgTourSteps() {
+    var steps = [];
+    ALL_DECKS.forEach(function (d) {
+      steps.push({ label: DECK_CFG[d].icon, filters: { deck: [d], type: null, color: null } });
+    });
+    ALL_TYPES.forEach(function (t) {
+      steps.push({ label: TYPE_ICONS[t] || t, filters: { deck: null, type: [t], color: null } });
+    });
+    return steps;
+  }
 
   function _createMtgTour() {
     _mtgTour = createTourEngine({
       modal:     modal,
       viewport:  modal.querySelector(".viz-viewport"),
       hintLabel: MTG_TOUR_LABEL,
-      steps:     MTG_TOUR_STEPS,
+      steps:     _buildMtgTourSteps(),
       stepDelay: 2000,
       applyStep: function (step, idx) {
         if (!_tree) return;
@@ -2363,7 +2487,7 @@ function createSkillTree(cfg) {
           // Only glow if not all-active (i.e. axis is narrowed)
           if (fs[axis].size < allVals.length) {
             fs[axis].forEach(function (v) {
-              var pill = modal.querySelector('.mtg-filter[data-' + axis + '="' + v + '"]');
+              var pill = modal.querySelector('.viz-filter[data-' + axis + '="' + v + '"]');
               if (pill) {
                 void pill.offsetWidth;
                 pill.classList.add("viz-filter-glow");
@@ -2385,7 +2509,7 @@ function createSkillTree(cfg) {
       _tree = createSkillTree({
         modal:           modal,
         closeBtn:        closeBtn,
-        edgeSvgSelector: ".mtg-edges",
+        edgeSvgSelector: ".kg-edges",
         filterAxes:      filterAxes,
         buildNodes:      buildMtgNodes,
         isNodeVisible:   null,  // use default (multi-axis intersection)
@@ -2424,10 +2548,4 @@ function createSkillTree(cfg) {
     }
   };
 
-  /* ── Stop tour on manual filter interaction ─────────────── */
-  modal.querySelectorAll(".mtg-filter").forEach(function (btn) {
-    btn.addEventListener("click", function () {
-      if (_mtgTour && _mtgTour.isTouring()) _mtgTour.stop();
-    });
-  });
 })();

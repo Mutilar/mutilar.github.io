@@ -50,7 +50,6 @@ graph TD
                 direction LR
                 PORTFOLIOJSON["📋 PORTFOLIO.json"]
                 SETTINGSJSON["⚙️ SETTINGS.json"]
-                CARDSCSV["🃏 CARDS.csv"]
                 ARCHMD["🧜‍♀️ *.MD"]
                 RESUME["📄 3 *.PDF"]
             end
@@ -59,7 +58,6 @@ graph TD
                 PNGS["📸 350 *.png, *.gif"]
                 GIFS["🎞️ 6 *.gif"]
                 GAMEBUILDS["🎮 6 *.unityweb"]
-                FRAGMENTS["🧩 16 *.html"]
                 AUDIOFILES["🎵 5 *.mp3"]
             end
         end
@@ -124,8 +122,8 @@ graph TD
 
     %% ── 3. INDEX → SCRIPTS (deferred script tags) ──────────
 
-    INDEXHTML -->|"FETCH"| FRAGMENTS
-    FRAGMENTS -->|"innerHTML"| MODALSJS
+    INDEXHTML -->|"FETCH"| SETTINGSJSON
+    SETTINGSJSON -->|"domains"| VIZJS
     INDEXHTML -->|"DEFER"| SCRIPTS
 
     %% ── 4. CDN → SCRIPTS (libs consumed by JS) ─────────────
@@ -148,7 +146,8 @@ graph TD
 
     DATAJS -->|"fetch()"| PORTFOLIOJSON
     BOOTJS -->|"fetch()"| SETTINGSJSON
-    MODALSJS -->|"fetchCSV()"| CARDSCSV
+    SKILLTREEJS -->|"fetch()"| PORTFOLIOJSON
+    PORTFOLIOJSON -->|"techTags"| MAPJS
     pdfJS -.->|"fetch()"| RESUME
     RADIOJS -.->|"fetch()"| AUDIOFILES
     MERMAIDVIEWJS -.->|"fetch()"| ARCHMD
@@ -180,13 +179,12 @@ graph TD
     %% ── NODE CLASSES ────────────────────────────────────────
 
     class GITHUB,INDEXHTML,READMEMD,LICENSETXT hosting
-    class FRAGMENTS data
     class PDFJS,CNAME,CNAMEFILE config
     class STYLESCSS,FONTAWESOME style
     class BOOTJS,CONSOLEJS,SCROLLJS,DATAJS,RADIOJS engine
     class VIZJS,pdfJS,PARALLAXJS,THEMEJS,MODALSJS ui
     class MERMAIDVIEWJS,SKILLTREEJS,TIMELINEJS,MAPJS aes
-    class PORTFOLIOJSON,SETTINGSJSON,CARDSCSV data
+    class PORTFOLIOJSON,SETTINGSJSON data
     class ARCHMD data
     class PNGS data
     class RESUME,GIFS,GAMEBUILDS,AUDIOFILES data

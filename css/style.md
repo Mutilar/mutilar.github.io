@@ -212,7 +212,7 @@ The radio player migrates from top-right fixed to bottom full-width bar at 768px
 ### The Pill
 `display: inline-flex; align-items: center; gap: 5-7px; padding: 4-6px 10-14px; border-radius: 14-20px; font-size: 11-12px; font-weight: 600-700; letter-spacing: 0.3px; white-space: nowrap;`
 
-Used for: `.entry-title`, `.entry-win`, `.entry-play`, `.section-badge`, `.year-badge`, `.modal-badge`, `.modal-win-badge`, `.card-action-badge`, `.viz-filter`, `.mtg-filter`, `.modal-sticky-link`, `.nav-brand`.
+Used for: `.entry-title`, `.entry-win`, `.entry-play`, `.section-badge`, `.year-badge`, `.modal-badge`, `.modal-win-badge`, `.card-action-badge`, `.viz-filter`, `.modal-sticky-link`, `.nav-brand`.
 
 ### The Three-Layer Glow Shadow
 ```css

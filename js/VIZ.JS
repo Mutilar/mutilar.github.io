@@ -15,22 +15,26 @@
 //    VIZ_absMonth()             → year*12 + month
 // ═══════════════════════════════════════════════════════════════
 
-// ── Thematic config (single source of truth) ─────────────────
-// Maps category → { color (RGB string), icon (FA class), label, emoji }
-// SKILLTREE.JS and TIMELINE.JS both consume this.
-//
-// NOTE: TIMELINE.JS uses "0,164,239" for software; skilltree uses "0,120,212".
-// Each consumer picks the color it needs from this shared config.
-// The `altColor` field holds the alternate where they differ.
-const VIZ_THEMES = {
-  robotics:  { color: "242,80,34",   icon: "fa-cogs",           label: "Robotics",  emoji: "🤖" },
-  games:     { color: "127,186,0",   icon: "fa-gamepad",        label: "Games",      emoji: "🎮" },
-  software:  { color: "0,120,212",   altColor: "0,164,239", icon: "fa-code", label: "Software", emoji: "💻" },
-  research:  { color: "255,185,0",   icon: "fa-flask",          label: "Research",   emoji: "🔬" },
-  education: { color: "255,185,0",   icon: "fa-graduation-cap", label: "Education",  emoji: "🎓" },
-  work:      { color: "0,120,212",   icon: "fa-briefcase",      label: "Work",       emoji: "💼" },
-  projects:  { color: "242,80,34",   icon: "fa-rocket",         label: "Projects",   emoji: "🚀" },
-};
+// ── Thematic config (loaded from SETTINGS.json → visualization.domains) ──
+// Maps domain key → { color (RGB string), icon (FA class), label, emoji }
+// Populated from __SETTINGS before scripts load (see index.html bootstrap).
+// SKILLTREE.JS, TIMELINE.JS, MAP.JS all consume this shared config.
+// Accent indices are resolved here so all downstream consumers get .color strings.
+var VIZ_THEMES = (function () {
+  var raw = (window.__SETTINGS && window.__SETTINGS.visualization && window.__SETTINGS.visualization.domains) || {};
+  var accents = (window.__SETTINGS && window.__SETTINGS.accents) || [];
+  var out = {};
+  Object.keys(raw).forEach(function (k) {
+    var d = raw[k];
+    var resolved = {};
+    for (var p in d) resolved[p] = d[p];
+    if (resolved.accent != null && accents[resolved.accent]) {
+      resolved.color = accents[resolved.accent].replace(/\s/g, '');
+    }
+    out[k] = resolved;
+  });
+  return out;
+})();
 
 // ── Item → category mappings ─────────────────────────────────
 //
@@ -638,8 +642,9 @@ function createLayoutToggle(cfg) {
   var onStatic     = cfg.onStatic     || function () {};
   var staticLabel  = cfg.staticLabel  || "\uD83D\uDCCC";
   var dynamicLabel = cfg.dynamicLabel || "\uD83D\uDD00";
-  var staticColor  = cfg.staticColor  || "0,120,212";   // MSFT Blue
-  var dynamicColor = cfg.dynamicColor || "242,80,34";   // MSFT Red
+  var _vizAccents = (window.__SETTINGS && window.__SETTINGS.accents) || [];
+  var staticColor  = cfg.staticColor  || (_vizAccents[0] || "0,164,239").replace(/\s/g, '');
+  var dynamicColor = cfg.dynamicColor || (_vizAccents[2] || "242,80,34").replace(/\s/g, '');
   var _static      = cfg.startStatic !== undefined ? cfg.startStatic : VIZ_IS_MOBILE;
 
   function syncUI() {

@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════
-//  PARALLAX RENDERER — PER-WINDOW ATTENTION VIA CLIP REGIONS
+//  PARALLAX RENDERER — SCROLL-BLENDED PALETTE (NO CLIP REGIONS)
 // ═══════════════════════════════════════════════════════════════
 (() => {
   "use strict";
@@ -42,24 +42,37 @@
   const ctxGlint = cGlint.getContext("2d");
   const allCanvases = [cOrb, cGlint];
 
-  let parallaxWindows = [...document.querySelectorAll(".parallax-window")].map(el => ({
-    el,
-    attention: parseFloat(el.dataset.attention || "0"),
-    colors: parsePalette(el.dataset.colors)
-  }));
+  let parallaxWindows = [];
 
-  /** Rescan DOM for parallax windows (call after dynamic section injection). */
+  /** Rescan DOM for parallax windows and cache document-space positions.
+   *  Call after dynamic section injection or resize. */
   function rescanWindows() {
     parallaxWindows = [...document.querySelectorAll(".parallax-window")].map(el => ({
       el,
       attention: parseFloat(el.dataset.attention || "0"),
-      colors: parsePalette(el.dataset.colors)
+      colors: parsePalette(el.dataset.colors),
+      docTop: 0,
+      docHeight: 0
     }));
+    cachePositions();
   }
+
+  /** Cache document-space offsetTop / offsetHeight for each window.
+   *  Called on rescan and resize — avoids per-frame getBoundingClientRect. */
+  function cachePositions() {
+    for (const pw of parallaxWindows) {
+      pw.docTop    = pw.el.offsetTop;
+      pw.docHeight = pw.el.offsetHeight;
+    }
+  }
+
   window._rescanParallaxWindows = rescanWindows;
 
   // Re-scan when settings finish hydrating (sections may have been injected)
   window.addEventListener("settingsReady", rescanWindows);
+
+  // Initial scan
+  rescanWindows();
 
   function resize() {
     const dpr = window.devicePixelRatio || 1;
@@ -68,6 +81,7 @@
       c.height = window.innerHeight * dpr;
       c.getContext("2d").setTransform(dpr, 0, 0, dpr, 0, 0);
     }
+    cachePositions();   // layout may have changed
   }
 
   window.addEventListener("resize", resize);
@@ -265,21 +279,6 @@
     drawSoftBand(glintCtx, sweepToX(sw5), w * 0.10, a5 * 0.4, -17);
   }
 
-  // ── Compute visible window bands in screen-space ──────────
-  function getVisibleWindows() {
-    const vh = window.innerHeight;
-    const bands = [];
-    for (const pw of parallaxWindows) {
-      const rect = pw.el.getBoundingClientRect();
-      if (rect.bottom <= 0 || rect.top >= vh) continue;
-      const top = Math.max(0, rect.top);
-      const bottom = Math.min(vh, rect.bottom);
-      if (bottom - top < 1) continue;
-      bands.push({ top, bottom, attention: pw.attention, colors: pw.colors });
-    }
-    return bands;
-  }
-
   // ── Reduced-motion preference ─────────────────────────────
   const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
   let prefersReducedMotion = reducedMotionQuery.matches;
@@ -290,37 +289,57 @@
   });
 
   // ── Animation loop ─────────────────────────────────────────
+  // Single-pass: blend palette & attention from visible parallax windows
+  // weighted by viewport coverage.  No clip regions → no compositor desync.
   function frame(timestamp) {
     const w = window.innerWidth;
     const h = window.innerHeight;
-    const scrollOff = window.scrollY * 0.3;
+    const sy = window.scrollY;
+    const scrollOff = sy * 0.3;
 
     // When reduced motion is preferred, freeze at a fixed timestamp
     const t = prefersReducedMotion ? 0 : timestamp;
 
-    // Pass 1: Draw rest state (attention=0) as the base layer
-    drawOrbs(ctxOrb, t, 0, scrollOff, DEFAULT_PALETTE);
-    drawGlints(ctxGlint, t);
+    // ── Scroll-blended palette ────────────────────────────────
+    // Weight each visible parallax window by how many viewport-px it covers.
+    let totalW = 0;
+    let blendAtt = 0;
+    // Accumulate into flat arrays to avoid per-frame allocation
+    let r0=0,g0=0,b0=0, r1=0,g1=0,b1=0, r2=0,g2=0,b2=0, r3=0,g3=0,b3=0;
 
-    // Pass 2: For each visible attention window, clip & overdraw
-    const bands = getVisibleWindows();
-    for (const band of bands) {
-      if (band.attention <= 0 && band.colors === DEFAULT_PALETTE) continue;
+    for (const pw of parallaxWindows) {
+      const top    = pw.docTop - sy;
+      const bottom = top + pw.docHeight;
+      const vis    = Math.max(0, Math.min(h, bottom) - Math.max(0, top));
+      if (vis <= 0) continue;
 
-      ctxOrb.save();
-      ctxOrb.beginPath();
-      ctxOrb.rect(0, band.top, w, band.bottom - band.top);
-      ctxOrb.clip();
-      drawOrbs(ctxOrb, t, band.attention, scrollOff * 0.5, band.colors);
-      ctxOrb.restore();
-
-      ctxGlint.save();
-      ctxGlint.beginPath();
-      ctxGlint.rect(0, band.top, w, band.bottom - band.top);
-      ctxGlint.clip();
-      drawGlints(ctxGlint, t);
-      ctxGlint.restore();
+      totalW  += vis;
+      blendAtt += pw.attention * vis;
+      const c = pw.colors;
+      r0 += c[0][0]*vis; g0 += c[0][1]*vis; b0 += c[0][2]*vis;
+      r1 += c[1][0]*vis; g1 += c[1][1]*vis; b1 += c[1][2]*vis;
+      r2 += c[2][0]*vis; g2 += c[2][1]*vis; b2 += c[2][2]*vis;
+      r3 += c[3][0]*vis; g3 += c[3][1]*vis; b3 += c[3][2]*vis;
     }
+
+    let pal, att;
+    if (totalW > 0) {
+      const inv = 1 / totalW;
+      att = blendAtt * inv;
+      pal = [
+        [Math.round(r0*inv), Math.round(g0*inv), Math.round(b0*inv)],
+        [Math.round(r1*inv), Math.round(g1*inv), Math.round(b1*inv)],
+        [Math.round(r2*inv), Math.round(g2*inv), Math.round(b2*inv)],
+        [Math.round(r3*inv), Math.round(g3*inv), Math.round(b3*inv)],
+      ];
+    } else {
+      att = 0;
+      pal = DEFAULT_PALETTE;
+    }
+
+    // Single draw — no clip boundaries, no desync
+    drawOrbs(ctxOrb, t, att, scrollOff, pal);
+    drawGlints(ctxGlint, t);
 
     // Stop the loop when reduced motion is preferred (static frame)
     if (prefersReducedMotion) return;

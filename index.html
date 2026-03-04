@@ -149,9 +149,9 @@
 <div id="page-content">
 
   <!-- ▓▓▓ WINDOW 1: Hero — attention background peeks through ▓▓▓ -->
-  <div class="parallax-window parallax-window-hero" id="home" data-attention="1" data-colors="242,80,34; 127,186,0; 0,164,239; 255,185,0">
+  <div class="parallax-window parallax-window-hero" id="home" data-attention="1" data-accent-order="3,4,1,2">
     <div class="glass-tile hero-card reveal">
-      <a class="hero-portrait-link" href="javascript:void(0)" onclick="openQuiltModal()">
+      <a class="hero-portrait-link" href="javascript:void(0)" onclick="openModal('biography')">
         <img class="hero-portrait" src="png/brian.png" alt="Brian Hungerman">
         <span class="hero-portrait-penguin" aria-hidden="true"><span class="hero-penguin-bg" id="heroPenguinBgA">🌎</span><span class="hero-penguin-bg hero-penguin-bg-b" id="heroPenguinBgB"></span><span class="hero-penguin-emoji">🐧</span></span>
       </a>
@@ -180,7 +180,7 @@
   <div class="opaque-band" id="about">
     <div class="band-content band-header">
       <h2 class="section-heading reveal" style="margin-bottom:0;">👋🏻 About Me</h2>
-        <a class="section-badge section-badge-glow" href="#" onclick="event.preventDefault(); openResumePdfModal();"><i class="fa fa-file-text"></i> Resume</a>
+        <a class="section-badge section-badge-glow" href="#" onclick="event.preventDefault(); openModal('resume');"><i class="fa fa-file-text"></i> Resume</a>
     </div>
   </div>
 
@@ -256,7 +256,7 @@
   </div>
 
   <!-- ▓▓▓ PARALLAX: Marp content — rest bg shows through ▓▓▓ -->
-  <div class="parallax-window parallax-section-padding" data-attention="1" data-colors="0,0,0; 255,185,0; 242,80,34; 0,0,0">
+  <div class="parallax-window parallax-section-padding" data-attention="1" data-accent-order="0,2,3,0">
     <div style="max-width:1100px;margin:0 auto;">
       <div class="glass-tile reveal section-intro" style="margin-bottom:32px;">
         <img class="section-intro-img" src="png/marp.png" alt="Marp" loading="lazy">
@@ -275,7 +275,7 @@
           </div>
         </div>
         <div class="glass-tile video-card reveal" style="cursor:pointer;" role="button" tabindex="0" aria-label="Open MARP Diagrams" onclick="window.openMermaidModal && window.openMermaidModal('MARP.md')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click();}">
-          <div class="video-label">🧮 MARP Diagrams<span class="card-action-badge badge-dive">🔍 Dive Deeper</span><span class="year-badge">2025</span></div>
+          <div class="video-label">🧮 MARP Diagrams<span class="card-action-badge" style="--ba:var(--accent-1)">🔍 Dive Deeper</span><span class="year-badge">2025</span></div>
           <div class="video-wrap">
             <img src="png/marp-diagram.png" alt="Marp Wiring Diagram" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" loading="lazy">
           </div>
@@ -298,7 +298,7 @@
   </div>
 
   <!-- ▓▓▓ PARALLAX: BitNaughts content — rest bg shows through ▓▓▓ -->
-  <div class="parallax-window parallax-section-padding" data-attention="0" data-colors="0,0,0; 255,185,0; 242,80,34; 0,0,0">
+  <div class="parallax-window parallax-section-padding" data-attention="0" data-accent-order="0,2,3,0">
     <div style="max-width:1100px;margin:0 auto;">
       <div class="glass-tile reveal section-intro" style="margin-bottom:32px;">
         <img class="section-intro-img" src="png/bitnaughts-poster.png" alt="BitNaughts" loading="lazy">
@@ -352,7 +352,7 @@
   </div>
 
   <!-- ▓▓▓ PARALLAX: MTG content ▓▓▓ -->
-  <div class="parallax-window parallax-section-padding" data-attention="1" data-colors="0,164,239; 0,0,0; 0,0,0; 242,80,34">
+  <div class="parallax-window parallax-section-padding" data-attention="1" data-accent-order="1,0,0,3">
     <div style="max-width:1100px;margin:0 auto;">
       <div class="glass-tile reveal section-intro" style="margin-bottom:32px;">
         <img class="section-intro-img" src="png/mtg.png" alt="MTG" loading="lazy">
@@ -360,7 +360,7 @@
           <div class="step step-left">Two primordial gods: <strong>Order</strong> &amp; <strong>Chaos</strong>, and three factions emerge: <strong>Faithful</strong>, <strong>Greedy</strong> &amp; <strong>Defiant</strong>...</div>
           <div class="step step-center">...except <strong>Faith</strong> does not <strong>Save</strong>, <strong>Wealth</strong> does not <strong>Protect</strong> &amp; <strong>Rebellion</strong> does not <strong>Free</strong>...</div>
           <div class="step step-right">...what culminates is wry <strong><a href="#" onclick="event.preventDefault(); openLinkModal('https://en.wikipedia.org/wiki/Mythopoeia', 'Mythopoeia');">Mythopoeia</a></strong> that <strong>subverts tired clichés</strong>;</div>
-          <div class="step-summary"><strong><a href="#" onclick="event.preventDefault(); openPdfModal()">Dusk Rose Codex</a></strong> transforms <strong><a href="#" onclick="event.preventDefault(); openLinkModal('https://en.wikipedia.org/wiki/Magic:_The_Gathering', 'Magic: The Gathering');">Magic: The Gathering</a></strong> into satirical <strong><a href="#" onclick="event.preventDefault(); openLinkModal('https://mtg.fandom.com/wiki/Vorthos', 'Vorthos');">Vorthos</a></strong> scripture, bound by hand in crimson thread!</div>
+          <div class="step-summary"><strong><a href="#" onclick="event.preventDefault(); openModal('pdf')">Dusk Rose Codex</a></strong> transforms <strong><a href="#" onclick="event.preventDefault(); openLinkModal('https://en.wikipedia.org/wiki/Magic:_The_Gathering', 'Magic: The Gathering');">Magic: The Gathering</a></strong> into satirical <strong><a href="#" onclick="event.preventDefault(); openLinkModal('https://mtg.fandom.com/wiki/Vorthos', 'Vorthos');">Vorthos</a></strong> scripture, bound by hand in crimson thread!</div>
         </div>
       </div>
       <div class="card-grid card-grid-wide" style="margin-bottom:32px;">
@@ -370,8 +370,8 @@
             <iframe src="https://www.youtube.com/embed/0_k_snZ1DYk" srcdoc="<style>*{padding:0;margin:0;overflow:hidden}html,body{height:100%}img,span{position:absolute;width:100%;top:0;bottom:0;margin:auto}span{height:1.5em;text-align:center;font:48px/1.5 sans-serif;color:#fff;text-shadow:0 0 .5em #000}</style><a href='https://www.youtube.com/embed/0_k_snZ1DYk?autoplay=1' title='Play video: Dusk Rose Codex'><img src='https://img.youtube.com/vi/0_k_snZ1DYk/hqdefault.jpg' alt='Dusk Rose Codex video thumbnail'><span aria-hidden='true'>&#x25BA;</span></a>" title="Dusk Rose Codex" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
           </div>
         </div>
-        <div class="glass-tile video-card reveal" style="cursor:pointer;" role="button" tabindex="0" aria-label="Open Dusk Rose Codex PDF viewer" data-action="open" data-open="pdfModal">
-          <div class="video-label">📖 Dusk Rose Codex<span class="card-action-badge badge-dive">🔍 Dive Deeper</span><span class="year-badge">2025</span></div>
+        <div class="glass-tile video-card reveal" style="cursor:pointer;" role="button" tabindex="0" aria-label="Open Dusk Rose Codex PDF viewer" data-action="open" data-open="pdf">
+          <div class="video-label">📖 Dusk Rose Codex<span class="card-action-badge" style="--ba:var(--accent-1)">🔍 Dive Deeper</span><span class="year-badge">2025</span></div>
           <div class="video-wrap">
             <img src="png/bible.png" alt="Dusk Rose Codex" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" loading="lazy">
           </div>
@@ -390,13 +390,13 @@
     <div class="band-content band-header">
       <h2 class="section-heading reveal" style="margin-bottom:0;">👨‍💻 Work</h2>
       <div class="section-badge-group">
-        <a class="section-badge section-badge-glow" href="#" onclick="event.preventDefault(); openResumePdfModal();"><i class="fa fa-file-text"></i> Resume</a>
+        <a class="section-badge section-badge-glow" href="#" onclick="event.preventDefault(); openModal('resume');"><i class="fa fa-file-text"></i> Resume</a>
       </div>
     </div>
   </div>
 
   <!-- ▓▓▓ PARALLAX: Work content ▓▓▓ -->
-  <div class="parallax-window parallax-section-padding" data-attention="0" data-colors="0,164,239; 0,0,0; 0,0,0; 242,80,34">
+  <div class="parallax-window parallax-section-padding" data-attention="0" data-accent-order="1,0,0,3">
     <div style="max-width:1100px;margin:0 auto;">
       <div class="glass-tile reveal section-intro" style="margin-bottom:32px;">
         <img class="section-intro-img" src="png/beers-with-the-viers.png" alt="Work" loading="lazy">
@@ -428,7 +428,7 @@
   </div>
 
   <!-- ▓▓▓ PARALLAX: Education content ▓▓▓ -->
-  <div class="parallax-window parallax-section-padding" data-attention="1" data-colors="0,0,0; 0,164,239; 255,185,0; 0,0,0">
+  <div class="parallax-window parallax-section-padding" data-attention="1" data-accent-order="0,1,2,0">
     <div style="max-width:1100px;margin:0 auto;">
       <div class="glass-tile reveal section-intro" style="margin-bottom:32px;">
         <img class="section-intro-img" src="png/graduation.png" alt="Education" loading="lazy">
@@ -459,7 +459,7 @@
   </div>
 
   <!-- ▓▓▓ PARALLAX: Projects content ▓▓▓ -->
-  <div class="parallax-window parallax-section-padding" data-attention="0" data-colors="0,0,0; 0,164,239; 255,185,0; 0,0,0">
+  <div class="parallax-window parallax-section-padding" data-attention="0" data-accent-order="0,1,2,0">
     <div style="max-width:1100px;margin:0 auto;">
       <div class="glass-tile reveal section-intro" style="margin-bottom:32px;">
         <img class="section-intro-img" src="png/brian2.png" alt="Projects" loading="lazy">
@@ -478,7 +478,7 @@
           </div>
         </div>
         <div class="glass-tile video-card reveal" style="cursor:pointer;" role="button" tabindex="0" aria-label="See more about Iterate U.X." data-action="scroll-modal" data-scroll-to="projects" data-modal-dataset="projects" data-modal-id="iterate">
-          <div class="video-label">📱 Iterate U.X.<span class="card-action-badge badge-dive">🔍 Dive Deeper</span><span class="year-badge">2017</span></div>
+          <div class="video-label">📱 Iterate U.X.<span class="card-action-badge" style="--ba:var(--accent-1)">🔍 Dive Deeper</span><span class="year-badge">2017</span></div>
           <div class="video-wrap">
             <img src="png/iteratedemo.gif" alt="Iterate U.X." style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" loading="lazy">
           </div>
@@ -504,7 +504,7 @@
   </div>
 
   <!-- ▓▓▓ PARALLAX: Hackathons content ▓▓▓ -->
-  <div class="parallax-window parallax-section-padding" data-attention="1" data-colors="0,164,239; 0,0,0; 0,0,0; 242,80,34">
+  <div class="parallax-window parallax-section-padding" data-attention="1" data-accent-order="1,0,0,3">
     <div style="max-width:1100px;margin:0 auto;">
       <div class="glass-tile reveal section-intro" style="margin-bottom:32px;">
         <img class="section-intro-img" src="png/game-banner-lan.png" alt="Hackathons" loading="lazy">
@@ -523,7 +523,7 @@
           </div>
         </div>
         <div class="glass-tile video-card reveal" style="cursor:pointer;" role="button" tabindex="0" aria-label="See more about SRIRACHA" data-action="scroll-modal" data-scroll-to="hackathons" data-modal-dataset="hackathons" data-modal-id="sriracha">
-          <div class="video-label">🦿 SRIRACHA<span class="card-action-badge badge-dive">🔍 Dive Deeper</span><span class="year-badge">2018</span></div>
+          <div class="video-label">🦿 SRIRACHA<span class="card-action-badge" style="--ba:var(--accent-1)">🔍 Dive Deeper</span><span class="year-badge">2018</span></div>
           <div class="video-wrap">
             <img src="png/sriracha-people.png" alt="SRIRACHA team at SDHacks" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" loading="lazy">
           </div>
@@ -549,7 +549,7 @@
   </div>
 
   <!-- ▓▓▓ PARALLAX: Games content ▓▓▓ -->
-  <div class="parallax-window parallax-section-padding" data-attention="0" data-colors="0,164,239; 0,0,0; 0,0,0; 242,80,34">
+  <div class="parallax-window parallax-section-padding" data-attention="0" data-accent-order="1,0,0,3">
     <div style="max-width:1100px;margin:0 auto;">
       <div class="glass-tile reveal section-intro" style="margin-bottom:32px;">
         <img class="section-intro-img" src="png/game-banner.png" alt="Games" loading="lazy">
@@ -568,7 +568,7 @@
           </div>
         </div>
         <div class="glass-tile video-card reveal" style="cursor:pointer;" role="button" tabindex="0" aria-label="See more about GalConq" data-action="scroll-modal" data-scroll-to="games" data-modal-dataset="games" data-modal-id="galconq">
-          <div class="video-label">🌌 GalConq<span class="card-action-badge badge-dive">🔍 Dive Deeper</span><span class="year-badge">2014</span></div>
+          <div class="video-label">🌌 GalConq<span class="card-action-badge" style="--ba:var(--accent-1)">🔍 Dive Deeper</span><span class="year-badge">2014</span></div>
           <div class="video-wrap">
             <img src="png/galconq.png" alt="GalConq space strategy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" loading="lazy">
           </div>
@@ -622,7 +622,7 @@
     </div>
   </div>
 
-  <div class="parallax-window footer-pane" id="footer-pane" data-attention="0" data-colors="242,80,34; 127,186,0; 0,164,239; 255,185,0">
+  <div class="parallax-window footer-pane" id="footer-pane" data-attention="0" data-accent-order="3,4,1,2">
     <div class="footer-pane-inner">
 
       <!-- Intro blurb -->
@@ -699,22 +699,22 @@
       </div>
       <!-- Architecture & repo tiles -->
       <div class="glass-tile video-card reveal" style="cursor:pointer;margin-bottom:32px;" role="button" tabindex="0" aria-label="Open Architecture Diagrams" onclick="window.openMermaidModal && window.openMermaidModal('ARCH.md')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click();}">
-        <div class="video-label">🧜‍♀️ Mermaid<span class="card-action-badge badge-dive">🔍 See More!</span><span class="year-badge">2026</span></div>
+        <div class="video-label">🧜‍♀️ Mermaid<span class="card-action-badge" style="--ba:var(--accent-1)">🔍 See More!</span><span class="year-badge">2026</span></div>
         <div class="video-wrap">
           <img src="png/mutilar-architecture-preview.png" alt="Mutilar Architecture Preview" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" loading="lazy">
         </div>
       </div>
 
       <div class="glass-tile video-card reveal" style="cursor:pointer;margin-bottom:32px;" role="button" tabindex="0" aria-label="Open Bootfile Style Guide" onclick="openBootfileModal()">
-        <div class="video-label">⏻ Bootfile<span class="card-action-badge badge-dive">🔍 Style Guide</span><span class="year-badge">2025</span></div>
+        <div class="video-label">⏻ Bootfile<span class="card-action-badge" style="--ba:var(--accent-1)">🔍 Style Guide</span><span class="year-badge">2025</span></div>
         <div class="video-wrap" style="display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.3);">
-          <span style="font-size:4rem;filter:drop-shadow(0 0 12px rgba(0,164,239,0.5));">⏻</span>
+          <span style="font-size:4rem;filter:drop-shadow(0 0 12px rgba(var(--accent-1),0.5));">⏻</span>
         </div>
       </div>
 
       <!-- Copyright -->
       <footer class="glass-footer">
-        <p><strong><a href="#" onclick="event.preventDefault(); openLinkModal('https://time.is/', 'Time.is');" style="text-decoration:none;">📅 <span id="footer-year"></span></a></strong><br><strong><a href="#" onclick="event.preventDefault(); openQuiltModal();" style="text-decoration:none;cursor:pointer;">🐧 Brian Hungerman</a></strong><br><strong><a href="#" onclick="event.preventDefault(); openLinkModal('https://brianhungerman.com', 'brianhungerman.com');"><i class="fa fa-globe"></i> brianhungerman.com</a></strong></p>
+        <p><strong><a href="#" onclick="event.preventDefault(); openLinkModal('https://time.is/', 'Time.is');" style="text-decoration:none;">📅 <span id="footer-year"></span></a></strong><br><strong><a href="#" onclick="event.preventDefault(); openModal('biography');" style="text-decoration:none;cursor:pointer;">🐧 Brian Hungerman</a></strong><br><strong><a href="#" onclick="event.preventDefault(); openLinkModal('https://brianhungerman.com', 'brianhungerman.com');"><i class="fa fa-globe"></i> brianhungerman.com</a></strong></p>
       </footer>
 
     </div>
@@ -727,7 +727,6 @@
 <div class="modal-overlay" id="modal"></div>
 <div class="modal-overlay" id="deck-modal"></div>
 <div class="modal-overlay" id="pdf-modal"></div>
-<div class="modal-overlay" id="resume-pdf-modal"></div>
 <div class="modal-overlay" id="link-modal"></div>
 <div class="modal-overlay" id="game-modal"></div>
 <div class="modal-overlay" id="bitnaughts-modal"></div>
@@ -752,14 +751,8 @@
 </script>
 <script>
 (function () {
-  /* ── Modal fragment IDs (matches html/<id>.html) ── */
-  const MODAL_IDS = [
-    'modal', 'deck-modal', 'pdf-modal', 'resume-pdf-modal',
-    'link-modal', 'game-modal', 'bitnaughts-modal', 'bitnaughts-iphone-modal',
-    'quilt-modal', 'knowledge-modal', 'mtg-tree-modal',
-    'mtg-card-modal', 'map-modal', 'timeline-modal',
-    'bootfile-modal'
-  ];
+  /* ── Modal fragment IDs (all shells now built programmatically by JS) ── */
+  const MODAL_IDS = [];
 
   /* ── JS files in original defer order ── */
   const SCRIPTS = [
@@ -768,23 +761,26 @@
     'js/SKILLTREE.JS', 'js/MERMAID.JS', 'js/MAP.JS', 'js/RADIO.JS'
   ];
 
-  /* 1. Fetch all fragments in parallel */
-  Promise.all(
-    MODAL_IDS.map(id =>
-      fetch('html/' + id.toUpperCase() + '.HTML')
-        .then(r => { if (!r.ok) throw new Error(id + ': ' + r.status); return r.text(); })
-        .then(html => { document.getElementById(id).innerHTML = html; })
-    )
-  ).then(() => {
-    /* 2. Load scripts sequentially to preserve execution order */
-    return SCRIPTS.reduce((chain, src) => chain.then(() => new Promise((resolve, reject) => {
-      const s = document.createElement('script');
-      s.src = src;
-      s.onload = resolve;
-      s.onerror = () => reject(new Error('Failed to load ' + src));
-      document.body.appendChild(s);
-    })), Promise.resolve());
-  }).catch(err => console.error('[fragment-loader]', err));
+  /* 1. Fetch SETTINGS.json first so VIZ.JS can read domains */
+  fetch('SETTINGS.json?v=' + Date.now())
+    .then(function (r) { return r.ok ? r.json() : {}; })
+    .catch(function () { return {}; })
+    .then(function (settings) {
+      window.__SETTINGS = settings;
+
+      /* 2. Load scripts sequentially to preserve execution order */
+      return SCRIPTS.reduce(function (chain, src) {
+        return chain.then(function () {
+          return new Promise(function (resolve, reject) {
+            var s = document.createElement('script');
+            s.src = src;
+            s.onload = resolve;
+            s.onerror = function () { reject(new Error('Failed to load ' + src)); };
+            document.body.appendChild(s);
+          });
+        });
+      }, Promise.resolve());
+    }).catch(function (err) { console.error('[loader]', err); });
 })();
 </script>
 

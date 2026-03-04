@@ -705,7 +705,7 @@
       tile.style.cursor = "pointer";
       tile.classList.add("dev-toast-link");
       tile._onTap = function () {
-        if (typeof openQuiltModal === "function") openQuiltModal();
+        if (typeof openModal === "function") openModal('biography');
       };
       // Simulate hero portrait hover
       var heroLink = document.querySelector(".hero-portrait-link");

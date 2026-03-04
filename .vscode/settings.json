@@ -1,7 +1,8 @@
 {
   "github.copilot.chat.codeGeneration.instructions": [
     {
-      "file": ".github/instructions/BOOTFILE.md"
+      "file": ".github/instructions/BOOTFILE.md",
+      "file": ".github/mutilar.github.io/instructions/BOOTFILE.md"
     }
   ]
 }

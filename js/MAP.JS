@@ -14,130 +14,33 @@
 //  the other three visualizations (timeline, skill tree, mermaid)
 //  address.
 //
+//  Category definitions loaded from data files (no hardcoding):
+//    VIZ_THEMES          ← SETTINGS.json → visualization.domains
+//    VIZ_TECH_CATEGORIES ← PORTFOLIO.json → techCategories
+//    VIZ_TECH_TAGS       ← PORTFOLIO.json → techTags
+//
 //  Depends on: VIZ.JS  (initPanZoom, createFilterSystem,
 //                        createExploreHint, animateCameraFit,
 //                        createLayoutToggle, createCrossfader,
 //                        createTourEngine,
 //                        VIZ_THEMES, VIZ_DOMAIN_MAP)
-//              MODALS.JS (toggleModal, openModal)
-//              DATA.JS   (modalState, portfolioDataReady event)
+//              MODALS.JS (toggleModal, openEntry)
+//              DATA.JS   (modalState, portfolioDataReady event,
+//                         VIZ_TECH_CATEGORIES, VIZ_TECH_TAGS)
 // ═══════════════════════════════════════════════════════════════
 (() => {
   /* ─── DOM refs ──────────────────────────────────────────── */
   const mapModal      = document.getElementById("map-modal");
-  const mapModalClose = document.getElementById("mapModalClose");
-  if (!mapModal || !mapModalClose) return;
+  if (!mapModal) return;
 
-  /* ─── Tech taxonomy ─────────────────────────────────────── */
-  //
-  // Each tech tag maps to a category for coloring & filtering.
-  // Categories align with VIZ_THEMES where possible.
-  //
-  //   lang      → Languages         (color: software blue)
-  //   framework → Frameworks & SDKs (color: research gold)
-  //   platform  → Platforms & infra  (color: robotics red)
-  //   tool      → Programs & tools   (color: games green)
-  //
-  const TECH_CATEGORIES = {
-    lang:      { color: "0,120,212",  label: "Languages",  emoji: "📝" },
-    tool:      { color: "127,186,0",  label: "Tools",      emoji: "🔧" },
-    framework: { color: "255,185,0",  label: "Frameworks", emoji: "🧩" },
-    platform:  { color: "242,80,34",  label: "Platforms",  emoji: "☁️" },
-  };
-
-  // Master tag registry: tag → { cat, label, emoji? }
-  // Tags are matched case-insensitively against item TEXT fields.
-  const TECH_TAGS = {
-    // ── Languages ────────────────────────────────────────────
-    "c":           { cat: "lang", label: "C",         whisper: "⚙️" },
-    "c++":         { cat: "lang", label: "C++",       whisper: "🏎️" },
-    "c#":          { cat: "lang", label: "C#",        whisper: "🎵" },
-    "python":      { cat: "lang", label: "Python",    whisper: "🐍" },
-    "javascript":  { cat: "lang", label: "JS",        whisper: "⚡" },
-    "typescript":  { cat: "lang", label: "TS",        whisper: "🛡️" },
-    "golang":      { cat: "lang", label: "Go",        whisper: "🐹" },
-    "go":          { cat: "lang", label: "Go",        whisper: "🐹" },
-    "rust":        { cat: "lang", label: "Rust",      whisper: "🦀" },
-    "java":        { cat: "lang", label: "Java",      whisper: "♨️" },
-    "kotlin":      { cat: "lang", label: "Kotlin",    whisper: "🟣" },
-    "html":        { cat: "lang", label: "HTML",      whisper: "🌐" },
-    "css":         { cat: "lang", label: "CSS",       whisper: "🎨" },
-    "sql":         { cat: "lang", label: "SQL",       whisper: "🗄️" },
-    "r":           { cat: "lang", label: "R",         whisper: "📊" },
-    "fortran":     { cat: "lang", label: "Fortran",   whisper: "🧮" },
-    "fortran90":   { cat: "lang", label: "Fortran",   whisper: "🧮" },
-    "mips":        { cat: "lang", label: "MIPS",      whisper: "🔩" },
-    "nesc":        { cat: "lang", label: "nesC",      whisper: "📡" },
-    "shaderlab":   { cat: "lang", label: "ShaderLab", whisper: "🌈" },
-    "hlsl":        { cat: "lang", label: "HLSL",      whisper: "💠" },
-    "vb.net":      { cat: "lang", label: "VB.NET",    whisper: "🪟" },
-
-    // ── Frameworks & SDKs ────────────────────────────────────
-    ".net":        { cat: "framework", label: ".NET",        whisper: "🟦" },
-    "react":       { cat: "framework", label: "React",       whisper: "⚛️" },
-    "node.js":     { cat: "framework", label: "Node.js",     whisper: "💚" },
-    "node":        { cat: "framework", label: "Node.js",     whisper: "💚" },
-    "express":     { cat: "framework", label: "Express",     whisper: "🚂" },
-    "jquery":      { cat: "framework", label: "jQuery",      whisper: "💲" },
-    "ros":         { cat: "framework", label: "ROS",         whisper: "🤖" },
-    "cmake":       { cat: "framework", label: "CMake",       whisper: "🏗️" },
-    "bazel":       { cat: "framework", label: "Bazel",       whisper: "🧱" },
-    "envoy":       { cat: "framework", label: "Envoy",       whisper: "📨" },
-    "keras":       { cat: "framework", label: "Keras",       whisper: "🧠" },
-    "tensorflow":  { cat: "framework", label: "TensorFlow",  whisper: "🔶" },
-    "pixi.js":     { cat: "framework", label: "Pixi.JS",     whisper: "🧚" },
-    "vuforia":     { cat: "framework", label: "Vuforia",     whisper: "👁️" },
-    "ar.js":       { cat: "framework", label: "AR.JS",       whisper: "📱" },
-    "mapbox":      { cat: "framework", label: "Mapbox",      whisper: "🗺️" },
-    "chart.js":    { cat: "framework", label: "Chart.js",    whisper: "📈" },
-    "chartist":    { cat: "framework", label: "Chartist",    whisper: "📉" },
-    "jest":        { cat: "framework", label: "Jest",        whisper: "🃏" },
-    "lgpio":       { cat: "framework", label: "lgpio",       whisper: "📌" },
-    "libfreenect": { cat: "framework", label: "libfreenect",  whisper: "📷" },
-    "tesseract":   { cat: "framework", label: "Tesseract",   whisper: "🔍" },
-    "tortoise":    { cat: "framework", label: "TorToiSe",    whisper: "🐢" },
-    "drupal":      { cat: "framework", label: "Drupal",      whisper: "💧" },
-    "openscad":    { cat: "framework", label: "OpenSCAD",    whisper: "📐" },
-    "mean":        { cat: "framework", label: "MEAN",        whisper: "🥞" },
-
-    // ── Platforms & infra ────────────────────────────────────
-    "azure":         { cat: "platform", label: "Azure",          whisper: "🔷" },
-    "azure functions": { cat: "platform", label: "Azure Functions", whisper: "⛅" },
-    "gcp":           { cat: "platform", label: "GCP",            whisper: "☁️" },
-    "aws":           { cat: "platform", label: "AWS",            whisper: "🟠" },
-    "github pages":  { cat: "platform", label: "GitHub Pages",   whisper: "🐙" },
-    "mongodb":       { cat: "platform", label: "MongoDB",        whisper: "🍃" },
-    "redis":         { cat: "platform", label: "Redis",          whisper: "🔴" },
-    "docker":        { cat: "platform", label: "Docker",         whisper: "🐳" },
-    "kubernetes":    { cat: "platform", label: "K8s",            whisper: "☸️" },
-    "linux":         { cat: "platform", label: "Linux",          whisper: "🐧" },
-    "raspberry pi":  { cat: "platform", label: "RPi",            whisper: "🍓" },
-    "arduino":       { cat: "platform", label: "Arduino",        whisper: "🔌" },
-    "bluetooth":     { cat: "platform", label: "Bluetooth",      whisper: "📶" },
-    "sqlite":        { cat: "platform", label: "SQLite",         whisper: "🪶" },
-    "influxdb":      { cat: "platform", label: "InfluxDB",       whisper: "⏱️" },
-    "dynamodb":      { cat: "platform", label: "DynamoDB",       whisper: "🦕" },
-    "alexa":         { cat: "platform", label: "Alexa",          whisper: "🗣️" },
-
-    // ── Programs & tools ─────────────────────────────────────
-    "unity":         { cat: "tool", label: "Unity",          whisper: "🎮" },
-    "unity3d":       { cat: "tool", label: "Unity",          whisper: "🎮" },
-    "grafana":       { cat: "tool", label: "Grafana",        whisper: "🔥" },
-    "powerbi":       { cat: "tool", label: "PowerBI",        whisper: "📋" },
-    "autocad":       { cat: "tool", label: "AutoCAD",        whisper: "📏" },
-    "revit":         { cat: "tool", label: "Revit",          whisper: "🏛️" },
-    "git":           { cat: "tool", label: "Git",            whisper: "🌿" },
-    "android studio": { cat: "tool", label: "Android Studio", whisper: "📲" },
-    "google earth engine": { cat: "tool", label: "GEE",      whisper: "🌍" },
-    "jupyter":       { cat: "tool", label: "Jupyter",        whisper: "📓" },
-    "webgl":         { cat: "tool", label: "WebGL",          whisper: "🔺" },
-    "paint.net":     { cat: "tool", label: "Paint.NET",      whisper: "🖌️" },
-    "audacity":      { cat: "tool", label: "Audacity",       whisper: "🎧" },
-  };
+  /* ─── Category data (populated from data files via _initShell) ── */
+  var TECH_CATEGORIES = null;  // from VIZ_TECH_CATEGORIES (PORTFOLIO.json)
+  var TECH_TAGS       = null;  // from VIZ_TECH_TAGS (PORTFOLIO.json)
 
   // Dedup: merge aliases that share the same label
   // e.g. "node.js" and "node" both → "Node.js"
   function _canonicalTag(tag) {
+    if (!TECH_TAGS) return null;
     var entry = TECH_TAGS[tag.toLowerCase()];
     return entry ? entry.label : null;
   }
@@ -156,6 +59,7 @@
 
   /* ─── State ─────────────────────────────────────────────── */
   let built = false;
+  let _shellReady = false;
   let _nodes = [];         // all nodes (tech + project)
   let _techNodes = [];     // tech nodes only
   let _projectNodes = [];  // project nodes only
@@ -175,10 +79,11 @@
   let activeFilters = new Set(DOMAIN_THEMES);
   let _filterSys = null;
   let _techFilterSys = null;
+  let _mapShell = null;
 
-  // Tech category filter state
-  const TECH_CAT_KEYS = Object.keys(TECH_CATEGORIES);
-  let activeTechFilters = new Set(TECH_CAT_KEYS);
+  // Tech category filter state (populated in _initShell from data)
+  var TECH_CAT_KEYS = [];
+  let activeTechFilters = new Set();
 
   /* ─── Open / close ──────────────────────────────────────── */
   var _mapReg = registerModal("map-modal", {
@@ -253,7 +158,7 @@
     for (var tag in TECH_TAGS) {
       if (TECH_TAGS[tag].label === canonicalLabel) return TECH_TAGS[tag];
     }
-    return { cat: "tool", label: canonicalLabel };
+    return { cat: TECH_CAT_KEYS[0] || "other", label: canonicalLabel };
   }
 
   // Reverse lookup: canonical label → whisper emoji
@@ -266,17 +171,8 @@
 
   // Build reverse map: whisper emoji → canonical label
   // Used to decode item.TECH emoji strings from PORTFOLIO.json
+  // Rebuilt in _initShell() when TECH_TAGS is available from data
   var _whisperToLabel = {};
-  (function () {
-    var seen = {};
-    for (var tag in TECH_TAGS) {
-      var entry = TECH_TAGS[tag];
-      if (entry.whisper && !seen[entry.label]) {
-        _whisperToLabel[entry.whisper] = entry.label;
-        seen[entry.label] = true;
-      }
-    }
-  })();
 
   // Parse an emoji string like "🍃⚛️💚" into canonical tech labels
   function _parseTechEmojis(emojiStr) {
@@ -305,9 +201,93 @@
   }
 
   /* ═════════════════════════════════════════════════════════
+     SHELL — Built lazily when data is available (no hardcoding)
+     Reads VIZ_THEMES from SETTINGS.json (via __SETTINGS)
+     and VIZ_TECH_CATEGORIES from PORTFOLIO.json (via DATA.JS)
+     ═════════════════════════════════════════════════════════ */
+  function _initShell() {
+    if (_shellReady) return;
+
+    // Read category data from globals populated by DATA.JS
+    // Resolve accent indices → actual RGB from SETTINGS.json accents
+    var _rawCats = window.VIZ_TECH_CATEGORIES || {};
+    var _accents = (window.__SETTINGS && window.__SETTINGS.accents) || [];
+    TECH_CATEGORIES = {};
+    Object.keys(_rawCats).forEach(function (k) {
+      var src = _rawCats[k];
+      TECH_CATEGORIES[k] = {
+        color: (src.accent != null && _accents[src.accent]) ? _accents[src.accent].replace(/\s/g, '') : (src.color || '160,160,160'),
+        label: src.label,
+        emoji: src.emoji
+      };
+    });
+    TECH_TAGS       = window.VIZ_TECH_TAGS || {};
+    TECH_CAT_KEYS   = Object.keys(TECH_CATEGORIES);
+    activeTechFilters = new Set(TECH_CAT_KEYS);
+
+    // Build domain filter items from VIZ_THEMES (SETTINGS.json)
+    var _domainItems = [
+      { value: "all", tc: "255,255,255", tcLight: "30,30,30", allIndicator: "\u2B1C", active: true, ariaPressed: "true", ariaLabel: "Show all domains" }
+    ];
+    ["education", "research", "software", "robotics", "games"].forEach(function(k) {
+      var t = VIZ_THEMES[k];
+      if (!t) return;
+      _domainItems.push({ value: k, tc: t.color, dot: t.color, emoji: t.emoji, ariaPressed: "false", ariaLabel: "Filter: " + t.label });
+    });
+
+    // Build tech filter items from TECH_CATEGORIES (PORTFOLIO.json)
+    var _techItems = [
+      { value: "all", tc: "255,255,255", allIndicator: "\u2B1C", active: true, ariaPressed: "true", ariaLabel: "Show all tech categories" }
+    ];
+    TECH_CAT_KEYS.forEach(function(k) {
+      var cat = TECH_CATEGORIES[k];
+      _techItems.push({ value: k, tc: cat.color, dot: cat.color, emoji: cat.emoji, title: cat.label, ariaPressed: "false", ariaLabel: "Filter: " + cat.label });
+    });
+
+    _mapShell = buildVizShell(mapModal, {
+      cardClass: "map-modal-card",
+      closeId: "mapModalClose",
+      toggleId: "mapLayoutToggle",
+      svgClass: "map-edges",
+      filterGroups: [
+        { btnClass: "viz-filter", dataAttr: "filter", filterGroup: "domain", items: _domainItems },
+        { btnClass: "viz-filter", dataAttr: "filter", filterGroup: "tech", separator: true, separatorClass: "map-filter-divider", items: _techItems }
+      ],
+      accessibility: {
+        toolbarLabel: "Map filters",
+        role: "application",
+        ariaRoledescription: "Interactive constellation map",
+        ariaLabel: "Force-directed graph of technologies and projects. Use arrow keys to navigate between nodes, Enter to open details.",
+        liveRegionId: "map-live",
+        srDescriptions: [
+          "Constellation map: force-directed network of technologies and projects. Tech nodes are connected to the projects that use them. Use arrow keys to move between nodes; Enter opens project details or solo-filters a tech category."
+        ]
+      }
+    });
+
+    // Rebuild whisper lookup from loaded tags
+    _whisperToLabel = {};
+    (function () {
+      var seen = {};
+      for (var tag in TECH_TAGS) {
+        var entry = TECH_TAGS[tag];
+        if (entry.whisper && !seen[entry.label]) {
+          _whisperToLabel[entry.whisper] = entry.label;
+          seen[entry.label] = true;
+        }
+      }
+    })();
+
+    _shellReady = true;
+  }
+
+  /* ═════════════════════════════════════════════════════════
      BUILD — Construct the bipartite force-directed graph
      ═════════════════════════════════════════════════════════ */
   function _build() {
+    // Ensure shell is built from data before constructing graph
+    _initShell();
+
     _graphWorld = mapModal.querySelector(".viz-world");
     _edgeSVG    = mapModal.querySelector(".map-edges");
     if (!_graphWorld || !_edgeSVG) return;
@@ -372,7 +352,7 @@
     var techLabels = Object.keys(techSet);
     _techNodes = techLabels.map((label, i) => {
       var info = techSet[label];
-      var catInfo = TECH_CATEGORIES[info.cat] || TECH_CATEGORIES.tool;
+      var catInfo = TECH_CATEGORIES[info.cat] || TECH_CATEGORIES[TECH_CAT_KEYS[0]] || { color: "160,160,160", label: "Other", emoji: "" };
       var r = TECH_R + Math.min(info.count * 3, 22); // scale by # of connections
 
       var el = document.createElement("div");
@@ -498,7 +478,7 @@
       var target = projMap[l.projectID];
       if (!source || !target) return null;
 
-      var catInfo = TECH_CATEGORIES[source.cat] || TECH_CATEGORIES.tool;
+      var catInfo = TECH_CATEGORIES[source.cat] || TECH_CATEGORIES[TECH_CAT_KEYS[0]] || { color: "160,160,160", label: "Other", emoji: "" };
       var path = document.createElementNS(svgNS, "path");
       path.setAttribute("fill", "none");
       path.setAttribute("stroke", "rgba(" + catInfo.color + ",0.3)");
@@ -568,7 +548,7 @@
       onActivate: function (n) {
         if (n.type === "project" && n.item) {
           var sec = _findSection(n.itemID);
-          if (sec) openModal(sec, n.itemID);
+          if (sec) openEntry(sec, n.itemID);
         } else if (n.type === "tech" && _techFilterSys) {
           _techFilterSys.setOnly(n.cat);
         }
@@ -971,7 +951,7 @@
         if (node.type === "project" && node.item) {
           // Find which section this item belongs to
           var sectionId = _findSection(node.itemID);
-          if (sectionId) openModal(sectionId, node.itemID);
+          if (sectionId) openEntry(sectionId, node.itemID);
         } else if (node.type === "tech") {
           // Solo-filter to this tech's category
           if (_techFilterSys) _techFilterSys.setOnly(node.cat);
@@ -1027,19 +1007,21 @@
   }
 
   /* ─── Tour engine (via shared createTourEngine) ─────────── */
-  const MAP_TOUR_STEPS = [
+  // Tour steps derived from loaded category data (no hardcoding)
+  function _buildTourSteps() {
+    var steps = [];
     // Phase 1: Tech categories (all domains visible)
-    { techCat: ["lang"],      label: "📝 Languages" },
-    { techCat: ["tool"],      label: "🔧 Tools" },
-    { techCat: ["framework"], label: "🧩 Frameworks" },
-    { techCat: ["platform"],  label: "☁️ Platforms" },
+    TECH_CAT_KEYS.forEach(function (k) {
+      var cat = TECH_CATEGORIES[k];
+      if (cat) steps.push({ techCat: [k], label: cat.emoji + " " + cat.label });
+    });
     // Phase 2: Domains (all tech categories visible)
-    { domain: ["education"],  label: "🎓 Education" },
-    { domain: ["research"],   label: "🔬 Research" },
-    { domain: ["software"],   label: "💻 Software" },
-    { domain: ["robotics"],   label: "🤖 Robotics" },
-    { domain: ["games"],      label: "🎮 Games" },
-  ];
+    DOMAIN_THEMES.forEach(function (d) {
+      var t = VIZ_THEMES[d];
+      if (t) steps.push({ domain: [d], label: t.emoji + " " + t.label });
+    });
+    return steps;
+  }
 
   function _initTour() {
     var vp = mapModal.querySelector(".viz-viewport");
@@ -1049,7 +1031,7 @@
       modal:     mapModal,
       viewport:  vp,
       hintLabel: '<strong>Traverse</strong><span class="scroll-arrow">🔭</span>',
-      steps:     MAP_TOUR_STEPS,
+      steps:     _buildTourSteps(),
       stepDelay: 2500,
 
       applyStep: function (step) {

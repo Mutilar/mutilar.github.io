@@ -312,28 +312,29 @@
   }
 
   // ── Viz tiles renderer (shared by both sites) ───────────────
-  // Renders an array of vizTile config objects into a container
-  // as glassmorphic video-card tiles with toggler badges.
+  // Renders vizTile configs as glassmorphic cards with radio-style
+  // toggler badges. Selecting a toggler swaps the preview image and
+  // controls which modal opens when the tile itself is clicked.
   function _hydrateVizTiles(container, tiles) {
     container.innerHTML = tiles.map(function (t) {
-      // Action: either data-action/data-open or onclick
-      var actionAttrs = "";
-      if (t.action && t.open) {
-        actionAttrs = ' data-action="' + t.action + '" data-open="' + t.open + '"';
-      } else if (t.onclick) {
-        actionAttrs = ' onclick="' + t.onclick + '"';
-      }
+      // Determine initial open target from the active toggler
+      var activeToggler = (t.togglers || []).filter(function (g) { return g.active; })[0] || (t.togglers || [])[0];
+      var initialOpen    = activeToggler ? (activeToggler.open || "") : (t.open || "");
+      var initialOpenArg = activeToggler ? (activeToggler.openArg || "") : "";
 
-      // Toggler badges
+      // Toggler badges (radio buttons)
       var togglerHtml = "";
       if (t.togglers && t.togglers.length) {
         togglerHtml = t.togglers.map(function (tog, i) {
-          var cls = "card-action-badge " + (tog.badge || "badge-dive") + " badge-toggler" + (tog.active ? " active" : "");
+          var cls = "card-action-badge badge-toggler" + (tog.active ? " active" : "");
+          var accentVar = "--ba:var(--accent-" + (tog.accent || 1) + ")";
           var dataSrc = tog.src ? ' data-src="' + tog.src + '"' : "";
-          var dataClick = tog.click ? ' data-click="' + tog.click + '"' : ' data-click=""';
-          var style = i === 0 ? ' style="margin-left:auto;"' : "";
-          var ariaLabel = tog.click ? ' aria-label="' + tog.label + '"' : "";
-          return '<span class="' + cls + '"' + dataSrc + dataClick + style + ariaLabel + ' role="button" tabindex="0">' +
+          var dataOpen = tog.open ? ' data-open="' + tog.open + '"' : "";
+          var dataOpenArg = tog.openArg ? ' data-open-arg="' + tog.openArg + '"' : "";
+          var inlineStyle = accentVar + (i === 0 ? ";margin-left:auto" : "");
+          return '<span class="' + cls + '"' + dataSrc + dataOpen + dataOpenArg +
+            ' style="' + inlineStyle + '"' +
+            ' aria-label="' + tog.label + '" role="radio" aria-checked="' + (tog.active ? "true" : "false") + '" tabindex="0">' +
             '<span class="toggler-dot">' + (tog.dot || "🔵") + "</span> " + tog.label + "</span>";
         }).join("");
       }
@@ -341,7 +342,7 @@
       // Image or placeholder
       var contentHtml;
       if (t.img) {
-        contentHtml = '<img src="' + t.img + '" alt="' + (t.imgAlt || t.label) + '"' +
+        contentHtml = '<img class="viz-tile-img" src="' + t.img + '" alt="' + (t.imgAlt || t.label) + '"' +
           ' style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity 0.4s ease;" loading="lazy">';
       } else {
         contentHtml = '<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;' +
@@ -349,12 +350,55 @@
       }
 
       return '<div class="glass-tile video-card reveal" style="cursor:pointer;" role="button" tabindex="0"' +
-        ' aria-label="' + (t.ariaLabel || t.label) + '"' + actionAttrs +
+        ' aria-label="' + (t.ariaLabel || t.label) + '"' +
+        ' data-action="' + (t.action || "open") + '"' +
+        ' data-open="' + initialOpen + '"' +
+        (initialOpenArg ? ' data-open-arg="' + initialOpenArg + '"' : '') +
         " onkeydown=\"if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click();}\">" +
         '<div class="video-label">' + (t.emoji || "") + " " + t.label + togglerHtml + "</div>" +
         '<div class="video-wrap">' + contentHtml + "</div>" +
         "</div>";
     }).join("");
+
+    // Wire toggler radio behavior via event delegation on the container
+    container.addEventListener("click", function (e) {
+      var toggler = e.target.closest(".badge-toggler");
+      if (!toggler) return;
+      e.stopPropagation();
+
+      var tile = toggler.closest(".video-card");
+      if (!tile) return;
+
+      // Radio: deactivate siblings, activate this one
+      tile.querySelectorAll(".badge-toggler").forEach(function (t) {
+        t.classList.remove("active");
+        t.setAttribute("aria-checked", "false");
+      });
+      toggler.classList.add("active");
+      toggler.setAttribute("aria-checked", "true");
+
+      // Swap preview image
+      var newSrc = toggler.dataset.src;
+      if (newSrc) {
+        var img = tile.querySelector(".viz-tile-img");
+        if (img) {
+          img.style.opacity = "0";
+          setTimeout(function () {
+            img.src = newSrc;
+            img.onload = function () { img.style.opacity = "1"; };
+          }, 200);
+        }
+      }
+
+      // Update the tile's open target
+      var newOpen = toggler.dataset.open || "";
+      tile.dataset.open = newOpen;
+      if (toggler.dataset.openArg) {
+        tile.dataset.openArg = toggler.dataset.openArg;
+      } else {
+        delete tile.dataset.openArg;
+      }
+    });
   }
 
   // ── Sections renderer ────────────────────────────────────────
@@ -507,11 +551,15 @@
     if (!a || !b || !penguin) return;
 
     // Build glowMap + emojis from config
+    // cycle[i][1] can be a raw RGB string or an accent index (number).
+    var accents = Array.isArray(s.accents) ? s.accents : [];
     var glowMap = {};
     var emojis  = [];
     for (var i = 0; i < hero.cycle.length; i++) {
       emojis.push(hero.cycle[i][0]);
-      glowMap[hero.cycle[i][0]] = hero.cycle[i][1];
+      var c = hero.cycle[i][1];
+      glowMap[hero.cycle[i][0]] = (typeof c === 'number' && accents[c])
+        ? accents[c].replace(/\s/g, '') : String(c || '');
     }
 
     var HIDING_EMOJI = emojis[emojis.length - 1];

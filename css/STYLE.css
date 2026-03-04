@@ -15,12 +15,22 @@
   --accent-3: 242, 80, 34;
   --accent-4: 127, 186, 0;
 
-  /* Legacy aliases — consumed by 280 existing rules */
+  /* Legacy aliases — kept for external consumers only.
+     All internal rules use positional --accent-N vars. */
   --accent-blue:   var(--accent-1);
   --accent-yellow: var(--accent-2);
   --accent-red:    var(--accent-3);
   --accent-green:  var(--accent-4);
 }
+
+/* Light-mode accent tints — slightly muted for light backgrounds.
+   Override positional vars so every rgba(var(--accent-N)) adapts.
+   Fork? Adjust these in tandem with :root, or delete for same
+   palette in both modes. */
+html.light-mode {
+  --accent-1: 0, 120, 212;
+}
+
 
 /* ═══════════════════════════════════════════════════════════════
    RESET & FOUNDATION
@@ -70,7 +80,7 @@ a {
   left: 16px;
   z-index: 100000;
   padding: 8px 16px;
-  background: rgb(var(--accent-blue));
+  background: rgb(var(--accent-1));
   color: #fff;
   border-radius: 0 0 6px 6px;
   font-size: 14px;
@@ -93,7 +103,7 @@ hr {
 }
 
 ::selection {
-  background: rgba(var(--accent-blue), 0.35);
+  background: rgba(var(--accent-1), 0.35);
   color: #fff;
 }
 } /* end @layer reset */
@@ -468,19 +478,19 @@ a.scroll-hint:hover strong {
 }
 
 .radio-player.playing .radio-btn-play {
-  background: rgba(var(--accent-blue), 0.15);
-  border-color: rgba(var(--accent-blue), 0.4);
-  color: rgba(var(--accent-blue), 0.95);
-  box-shadow: 0 0 15px rgba(var(--accent-blue), 0.25),
-              0 0 40px rgba(var(--accent-blue), 0.12),
-              0 0 80px rgba(var(--accent-blue), 0.06);
+  background: rgba(var(--accent-1), 0.15);
+  border-color: rgba(var(--accent-1), 0.4);
+  color: rgba(var(--accent-1), 0.95);
+  box-shadow: 0 0 15px rgba(var(--accent-1), 0.25),
+              0 0 40px rgba(var(--accent-1), 0.12),
+              0 0 80px rgba(var(--accent-1), 0.06);
 }
 
 .radio-player.playing .radio-btn-play:hover {
-  background: rgba(var(--accent-blue), 0.25);
-  box-shadow: 0 0 20px rgba(var(--accent-blue), 0.4),
-              0 0 50px rgba(var(--accent-blue), 0.2),
-              0 0 100px rgba(var(--accent-blue), 0.1);
+  background: rgba(var(--accent-1), 0.25);
+  box-shadow: 0 0 20px rgba(var(--accent-1), 0.4),
+              0 0 50px rgba(var(--accent-1), 0.2),
+              0 0 100px rgba(var(--accent-1), 0.1);
 }
 
 /* Volume */
@@ -591,18 +601,18 @@ a.scroll-hint:hover strong {
 
 /* ── Tile glow (applied when navigateToModal targets a tile) ── */
 @keyframes tile-glow-pulse {
-  0%, 100% { box-shadow: 0 0 12px 2px rgba(255,255,255,0.25), 0 0 32px 4px rgba(var(--accent-blue),0.18); }
-  50%      { box-shadow: 0 0 20px 6px rgba(255,255,255,0.40), 0 0 48px 10px rgba(var(--accent-blue),0.30); }
+  0%, 100% { box-shadow: 0 0 12px 2px rgba(255,255,255,0.25), 0 0 32px 4px rgba(var(--accent-1),0.18); }
+  50%      { box-shadow: 0 0 20px 6px rgba(255,255,255,0.40), 0 0 48px 10px rgba(var(--accent-1),0.30); }
 }
 .tile-glow {
   animation: tile-glow-pulse 1.2s ease-in-out infinite;
-  border-color: rgba(var(--accent-blue),0.5) !important;
+  border-color: rgba(var(--accent-1),0.5) !important;
   z-index: 2;
   position: relative;
 }
 @keyframes tile-glow-fadeout {
-  0%   { box-shadow: 0 0 20px 6px rgba(255,255,255,0.40), 0 0 48px 10px rgba(var(--accent-blue),0.30);
-         border-color: rgba(var(--accent-blue),0.5); }
+  0%   { box-shadow: 0 0 20px 6px rgba(255,255,255,0.40), 0 0 48px 10px rgba(var(--accent-1),0.30);
+         border-color: rgba(var(--accent-1),0.5); }
   100% { box-shadow: 0 0 0 0 transparent, 0 0 0 0 transparent;
          border-color: rgba(255,255,255,0.12); }
 }
@@ -652,7 +662,7 @@ a.scroll-hint:hover strong {
 }
 
 .section-desc a {
-  color: rgba(var(--accent-blue), 0.9);
+  color: rgba(var(--accent-1), 0.9);
   text-decoration: underline;
   text-underline-offset: 2px;
 }
@@ -676,7 +686,7 @@ a.scroll-hint:hover strong {
 }
 
 .section-blurb a {
-  color: rgba(var(--accent-blue), 0.9);
+  color: rgba(var(--accent-1), 0.9);
   text-decoration: underline;
   text-underline-offset: 2px;
 }
@@ -726,17 +736,18 @@ a.scroll-hint:hover strong {
 }
 
 .section-badge-glow {
-  color: rgba(var(--accent-yellow), 0.9);
-  background: rgba(var(--accent-yellow), 0.1);
-  border-color: rgba(var(--accent-yellow), 0.3);
-  box-shadow: 0 0 8px rgba(var(--accent-yellow), 0.3), 0 0 20px rgba(var(--accent-yellow), 0.1);
-  animation: win-pulse 2s ease-in-out infinite;
+  --ba: var(--accent-2);
+  color: rgba(var(--accent-2), 0.9);
+  background: rgba(var(--accent-2), 0.1);
+  border-color: rgba(var(--accent-2), 0.3);
+  box-shadow: 0 0 8px rgba(var(--accent-2), 0.3), 0 0 20px rgba(var(--accent-2), 0.1);
+  animation: accent-pulse 2s ease-in-out infinite;
 }
 
 .section-badge-glow:hover {
   color: #fff;
-  background: rgba(var(--accent-yellow), 0.25);
-  border-color: rgba(var(--accent-yellow), 0.6);
+  background: rgba(var(--accent-2), 0.25);
+  border-color: rgba(var(--accent-2), 0.6);
 }
 
 /* Responsive badge text: long on desktop, short on mobile */
@@ -872,7 +883,7 @@ a.scroll-hint:hover strong {
 
 /* Penguin overlay */
 .hero-portrait-penguin {
-  --glow: var(--accent-blue);
+  --glow: var(--accent-1);
   position: absolute;
   inset: 0;
   display: flex;
@@ -972,7 +983,7 @@ html.light-mode .hero-name .hero-surname {
 }
 
 .hero-tagline strong a {
-  color: rgba(var(--accent-blue), 0.95);
+  color: rgba(var(--accent-1), 0.95);
   transition: color 0.3s;
 }
 
@@ -988,7 +999,7 @@ html.light-mode .hero-name .hero-surname {
 }
 
 .hero-bio strong a {
-  color: rgba(var(--accent-blue), 0.85);
+  color: rgba(var(--accent-1), 0.85);
 }
 
 .hero-links {
@@ -1122,84 +1133,77 @@ html.light-mode .hero-name .hero-surname {
   gap: 5px;
   margin-top: 10px;
   font-size: 12px;
-  color: rgba(var(--accent-blue), 0.7);
+  color: rgba(var(--accent-1), 0.7);
   padding: 4px 10px;
   border-radius: 8px;
-  background: rgba(var(--accent-blue), 0.08);
-  border: 1px solid rgba(var(--accent-blue), 0.15);
+  background: rgba(var(--accent-1), 0.08);
+  border: 1px solid rgba(var(--accent-1), 0.15);
   transition: all 0.3s;
 }
 
 .entry-card .entry-github:hover {
-  background: rgba(var(--accent-blue), 0.15);
+  background: rgba(var(--accent-1), 0.15);
   color: #fff;
 }
 
 .entry-card .entry-win {
+  --ba: var(--accent-2);
   display: inline-flex;
   align-items: center;
   gap: 5px;
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.3px;
-  color: rgba(var(--accent-yellow), 0.9);
+  color: rgba(var(--accent-2), 0.9);
   padding: 4px 10px;
   border-radius: 10px;
-  background: rgba(var(--accent-yellow), 0.1);
-  border: 1px solid rgba(var(--accent-yellow), 0.3);
-  box-shadow: 0 0 8px rgba(var(--accent-yellow), 0.3), 0 0 20px rgba(var(--accent-yellow), 0.1);
+  background: rgba(var(--accent-2), 0.1);
+  border: 1px solid rgba(var(--accent-2), 0.3);
+  box-shadow: 0 0 8px rgba(var(--accent-2), 0.3), 0 0 20px rgba(var(--accent-2), 0.1);
   white-space: nowrap;
-  animation: win-pulse 2s ease-in-out infinite;
+  animation: accent-pulse 2s ease-in-out infinite;
 }
 
 .entry-card .entry-play {
+  --ba: var(--accent-2);
   display: inline-flex;
   align-items: center;
   gap: 5px;
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.3px;
-  color: rgba(var(--accent-yellow), 0.9);
+  color: rgba(var(--accent-2), 0.9);
   padding: 5px 12px;
   border-radius: 10px;
-  background: rgba(var(--accent-yellow), 0.1);
-  border: 1px solid rgba(var(--accent-yellow), 0.3);
-  box-shadow: 0 0 8px rgba(var(--accent-yellow), 0.3), 0 0 20px rgba(var(--accent-yellow), 0.1);
+  background: rgba(var(--accent-2), 0.1);
+  border: 1px solid rgba(var(--accent-2), 0.3);
+  box-shadow: 0 0 8px rgba(var(--accent-2), 0.3), 0 0 20px rgba(var(--accent-2), 0.1);
   white-space: nowrap;
   text-decoration: none;
   cursor: pointer;
   transition: all 0.3s;
-  animation: win-pulse 2s ease-in-out infinite;
+  animation: accent-pulse 2s ease-in-out infinite;
 }
 
 .entry-card .entry-play:hover {
-  background: rgba(var(--accent-yellow), 0.25);
+  background: rgba(var(--accent-2), 0.25);
   color: #fff;
-  border-color: rgba(var(--accent-yellow), 0.6);
+  border-color: rgba(var(--accent-2), 0.6);
   transform: scale(1.05);
 }
 
-@keyframes play-pulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(var(--accent-green), 0.3); }
-  50% { box-shadow: 0 0 8px 2px rgba(var(--accent-green), 0.15); }
-}
-
-@keyframes win-pulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(var(--accent-yellow), 0.3); }
-  50% { box-shadow: 0 0 8px 2px rgba(var(--accent-yellow), 0.15); }
+@keyframes accent-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(var(--ba), 0.3); }
+  50% { box-shadow: 0 0 8px 2px rgba(var(--ba), 0.15); }
 }
 
 .entry-card .entry-title-highlight {
-  color: rgba(var(--accent-yellow), 0.9);
-  background: rgba(var(--accent-yellow), 0.1);
-  border: 1px solid rgba(var(--accent-yellow), 0.3);
+  --ba: var(--accent-2);
+  color: rgba(var(--accent-2), 0.9);
+  background: rgba(var(--accent-2), 0.1);
+  border: 1px solid rgba(var(--accent-2), 0.3);
   font-weight: 700;
-  animation: win-pulse 2s ease-in-out infinite;
-}
-
-@keyframes title-pulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(var(--accent-yellow), 0.3); }
-  50% { box-shadow: 0 0 8px 2px rgba(var(--accent-yellow), 0.15); }
+  animation: accent-pulse 2s ease-in-out infinite;
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -1257,6 +1261,7 @@ html.light-mode .hero-name .hero-surname {
    CARD ACTION BADGES  (Watch Me / Dive Deeper)
    ═══════════════════════════════════════════════════════════════ */
 .card-action-badge {
+  --ba: var(--accent-2);          /* badge accent — override inline or via class */
   display: inline-flex;
   align-items: center;
   gap: 5px;
@@ -1269,9 +1274,9 @@ html.light-mode .hero-name .hero-surname {
   flex-shrink: 0;
   order: 10;
   color: #fff;
-  background: rgba(var(--accent-yellow), 0.18);
-  border: 1px solid rgba(var(--accent-yellow), 0.45);
-  box-shadow: 0 0 6px rgba(var(--accent-yellow), 0.25), inset 0 0 4px rgba(var(--accent-yellow), 0.08);
+  background: rgba(var(--ba), 0.18);
+  border: 1px solid rgba(var(--ba), 0.45);
+  box-shadow: 0 0 6px rgba(var(--ba), 0.25), inset 0 0 4px rgba(var(--ba), 0.08);
   animation: badgePulse 2.5s ease-in-out infinite;
 }
 
@@ -1282,35 +1287,16 @@ html.light-mode .hero-name .hero-surname {
   border: 1px solid rgba(255, 255, 255, 0.25);
 }
 
-.card-action-badge.badge-dive {
-  background: rgba(var(--accent-blue), 0.15);
-  border: 1px solid rgba(var(--accent-blue), 0.45);
-  box-shadow: 0 0 6px rgba(var(--accent-blue), 0.3), inset 0 0 4px rgba(var(--accent-blue), 0.08);
-  animation: badgePulseDive 2.5s ease-in-out infinite;
-}
-
 @keyframes badgePulse {
-  0%, 100% { box-shadow: 0 0 6px rgba(var(--accent-yellow), 0.25), inset 0 0 4px rgba(var(--accent-yellow), 0.08); }
-  50%      { box-shadow: 0 0 14px rgba(var(--accent-yellow), 0.5), inset 0 0 6px rgba(var(--accent-yellow), 0.15); }
-}
-
-@keyframes badgePulseDive {
-  0%, 100% { box-shadow: 0 0 6px rgba(var(--accent-blue), 0.3), inset 0 0 4px rgba(var(--accent-blue), 0.08); }
-  50%      { box-shadow: 0 0 14px rgba(var(--accent-blue), 0.55), inset 0 0 6px rgba(var(--accent-blue), 0.15); }
+  0%, 100% { box-shadow: 0 0 6px rgba(var(--ba), 0.25), inset 0 0 4px rgba(var(--ba), 0.08); }
+  50%      { box-shadow: 0 0 14px rgba(var(--ba), 0.5), inset 0 0 6px rgba(var(--ba), 0.15); }
 }
 
 html.light-mode .card-action-badge {
-  color: rgba(var(--accent-yellow), 0.95);
-  background: rgba(var(--accent-yellow), 0.12);
-  border-color: rgba(var(--accent-yellow), 0.35);
-  box-shadow: 0 0 6px rgba(var(--accent-yellow), 0.15), inset 0 0 4px rgba(var(--accent-yellow), 0.05);
-}
-
-html.light-mode .card-action-badge.badge-dive {
-  color: rgba(0, 120, 212, 0.9);
-  background: rgba(0, 120, 212, 0.1);
-  border-color: rgba(0, 120, 212, 0.35);
-  box-shadow: 0 0 6px rgba(0, 120, 212, 0.15), inset 0 0 4px rgba(0, 120, 212, 0.05);
+  color: rgba(var(--ba), 0.95);
+  background: rgba(var(--ba), 0.12);
+  border-color: rgba(var(--ba), 0.35);
+  box-shadow: 0 0 6px rgba(var(--ba), 0.15), inset 0 0 4px rgba(var(--ba), 0.05);
 }
 
 html.light-mode .card-action-badge.badge-static {
@@ -1319,6 +1305,26 @@ html.light-mode .card-action-badge.badge-static {
   color: rgba(0, 0, 0, 0.5);
   background: rgba(0, 0, 0, 0.06);
   border-color: rgba(0, 0, 0, 0.15);
+}
+
+/* ── Radio toggler states (viz tile badges) ────────────────── */
+.card-action-badge.badge-toggler {
+  cursor: pointer;
+  transition: opacity 0.3s ease, box-shadow 0.3s ease, background 0.3s ease, border-color 0.3s ease;
+}
+
+.card-action-badge.badge-toggler:not(.active) {
+  animation: none !important;
+  box-shadow: none;
+  opacity: 0.4;
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+html.light-mode .card-action-badge.badge-toggler:not(.active) {
+  opacity: 0.45;
+  background: rgba(0, 0, 0, 0.04);
+  border-color: rgba(0, 0, 0, 0.12);
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -1432,17 +1438,18 @@ html.light-mode .card-action-badge.badge-static {
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.3px;
-  color: rgba(var(--accent-yellow), 0.95);
+  color: rgba(var(--accent-2), 0.95);
   background: rgba(35, 35, 35, 0.8);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(var(--accent-yellow), 0.4);
-  box-shadow: 0 0 8px rgba(var(--accent-yellow), 0.3), 0 0 20px rgba(var(--accent-yellow), 0.1);
+  border: 1px solid rgba(var(--accent-2), 0.4);
+  box-shadow: 0 0 8px rgba(var(--accent-2), 0.3), 0 0 20px rgba(var(--accent-2), 0.1);
   white-space: nowrap;
-  animation: win-pulse 2s ease-in-out infinite;
+  animation: accent-pulse 2s ease-in-out infinite;
 }
 
 .modal-card .modal-subtitle .modal-play-badge {
+  --ba: var(--accent-2);
   display: inline-flex;
   align-items: center;
   gap: 5px;
@@ -1451,21 +1458,21 @@ html.light-mode .card-action-badge.badge-static {
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.3px;
-  color: rgba(var(--accent-yellow), 0.9);
-  background: rgba(var(--accent-yellow), 0.1);
-  border: 1px solid rgba(var(--accent-yellow), 0.3);
-  box-shadow: 0 0 8px rgba(var(--accent-yellow), 0.3), 0 0 20px rgba(var(--accent-yellow), 0.1);
+  color: rgba(var(--accent-2), 0.9);
+  background: rgba(var(--accent-2), 0.1);
+  border: 1px solid rgba(var(--accent-2), 0.3);
+  box-shadow: 0 0 8px rgba(var(--accent-2), 0.3), 0 0 20px rgba(var(--accent-2), 0.1);
   white-space: nowrap;
   text-decoration: none;
   cursor: pointer;
   transition: all 0.3s;
-  animation: win-pulse 2s ease-in-out infinite;
+  animation: accent-pulse 2s ease-in-out infinite;
 }
 
 .modal-card .modal-subtitle .modal-play-badge:hover {
-  background: rgba(var(--accent-yellow), 0.25);
+  background: rgba(var(--accent-2), 0.25);
   color: #fff;
-  border-color: rgba(var(--accent-yellow), 0.6);
+  border-color: rgba(var(--accent-2), 0.6);
   transform: scale(1.05);
 }
 
@@ -1485,8 +1492,8 @@ html.light-mode .card-action-badge.badge-static {
   margin: 20px 0;
   padding: 24px 28px 20px 28px;
   border: none;
-  border-left: 3px solid rgba(var(--accent-yellow), 0.4);
-  background: linear-gradient(135deg, rgba(var(--accent-yellow), 0.06) 0%, rgba(255, 255, 255, 0.02) 100%);
+  border-left: 3px solid rgba(var(--accent-2), 0.4);
+  background: linear-gradient(135deg, rgba(var(--accent-2), 0.06) 0%, rgba(255, 255, 255, 0.02) 100%);
   border-radius: 0 12px 12px 0;
   font-style: italic;
   color: rgba(255, 255, 255, 0.85);
@@ -1503,7 +1510,7 @@ html.light-mode .card-action-badge.badge-static {
   line-height: 1;
   font-style: normal;
   font-weight: 700;
-  color: rgba(var(--accent-yellow), 0.25);
+  color: rgba(var(--accent-2), 0.25);
   pointer-events: none;
 }
 
@@ -1521,14 +1528,14 @@ html.light-mode .card-action-badge.badge-static {
   font-style: normal;
   font-size: 12px;
   font-weight: 600;
-  color: rgba(var(--accent-yellow), 0.65);
+  color: rgba(var(--accent-2), 0.65);
   letter-spacing: 0.5px;
   text-transform: uppercase;
 }
 
 .modal-card .modal-body blockquote cite::before {
   content: '\2014\00a0';
-  color: rgba(var(--accent-yellow), 0.35);
+  color: rgba(var(--accent-2), 0.35);
 }
 
 .modal-card .modal-body blockquote + blockquote {
@@ -1570,8 +1577,8 @@ html.light-mode .card-action-badge.badge-static {
   margin: 20px 0;
   padding: 16px 16px 12px 16px;
   border: none;
-  border-left: 3px solid rgba(var(--accent-blue), 0.35);
-  background: linear-gradient(135deg, rgba(var(--accent-blue), 0.06) 0%, rgba(255, 255, 255, 0.02) 100%);
+  border-left: 3px solid rgba(var(--accent-1), 0.35);
+  background: linear-gradient(135deg, rgba(var(--accent-1), 0.06) 0%, rgba(255, 255, 255, 0.02) 100%);
   border-radius: 0 12px 12px 0;
 }
 
@@ -1588,7 +1595,7 @@ html.light-mode .card-action-badge.badge-static {
   font-style: normal;
   font-size: 11px;
   font-weight: 600;
-  color: rgba(var(--accent-blue), 0.6);
+  color: rgba(var(--accent-1), 0.6);
   letter-spacing: 0.4px;
   text-transform: uppercase;
   line-height: 1.4;
@@ -1596,11 +1603,11 @@ html.light-mode .card-action-badge.badge-static {
 
 .modal-card .modal-body .modal-figure figcaption::before {
   content: '\2014\00a0';
-  color: rgba(var(--accent-blue), 0.3);
+  color: rgba(var(--accent-1), 0.3);
 }
 
 .modal-card .modal-body a {
-  color: rgba(var(--accent-blue), 0.9);
+  color: rgba(var(--accent-1), 0.9);
   text-decoration: underline;
   text-underline-offset: 2px;
 }
@@ -1650,7 +1657,7 @@ html.light-mode .card-action-badge.badge-static {
 }
 
 .modal-sticky-link {
-  color: rgba(var(--accent-blue), 0.9);
+  color: rgba(var(--accent-1), 0.9);
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.3px;
@@ -1681,8 +1688,8 @@ html.light-mode .card-action-badge.badge-static {
   align-items: center;
   justify-content: center;
   border-radius: 12px;
-  background: rgba(var(--accent-red), 0.85);
-  border: 1px solid rgba(var(--accent-red), 0.4);
+  background: rgba(var(--accent-3), 0.85);
+  border: 1px solid rgba(var(--accent-3), 0.4);
   color: #fff;
   font-size: 22px;
   cursor: pointer;
@@ -1692,9 +1699,9 @@ html.light-mode .card-action-badge.badge-static {
 }
 
 .modal-close:hover {
-  background: rgba(var(--accent-red), 1);
-  box-shadow: 0 0 12px rgba(var(--accent-red), 0.6),
-              0 0 28px rgba(var(--accent-red), 0.3);
+  background: rgba(var(--accent-3), 1);
+  box-shadow: 0 0 12px rgba(var(--accent-3), 0.6),
+              0 0 28px rgba(var(--accent-3), 0.3);
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -1743,7 +1750,7 @@ html.light-mode .bio-modal-card::after {
   font-weight: 700;
   letter-spacing: 0.6px;
   text-transform: uppercase;
-  color: rgba(var(--accent-yellow), 0.7);
+  color: rgba(var(--accent-2), 0.7);
   margin-top: 28px;
   margin-bottom: 12px;
 }
@@ -1780,7 +1787,7 @@ html.light-mode .bio-modal-card::after {
 }
 
 .bio-stat {
-  --bio-glow: var(--accent-yellow);
+  --bio-glow: var(--accent-2);
   flex: 1 1 0;
   min-width: 0;
   display: flex;
@@ -1809,7 +1816,7 @@ html.light-mode .bio-modal-card::after {
 
 /* ── Bio image viewer (crossfade) ── */
 .bio-img-viewer {
-  --bio-viewer-glow: var(--accent-yellow);
+  --bio-viewer-glow: var(--accent-2);
   position: relative;
   width: 100%;
   border-radius: 14px;
@@ -1872,8 +1879,8 @@ html.light-mode .bio-modal-card::after {
   position: relative;
   margin: 16px 0;
   padding: 16px 20px;
-  border-left: 3px solid rgba(var(--accent-blue), 0.3);
-  background: linear-gradient(135deg, rgba(var(--accent-blue), 0.04) 0%, rgba(255, 255, 255, 0.01) 100%);
+  border-left: 3px solid rgba(var(--accent-1), 0.3);
+  background: linear-gradient(135deg, rgba(var(--accent-1), 0.04) 0%, rgba(255, 255, 255, 0.01) 100%);
   border-radius: 0 12px 12px 0;
 }
 
@@ -1884,7 +1891,7 @@ html.light-mode .bio-modal-card::after {
 .bio-symbol-block h4 {
   margin: 0 0 8px 0;
   font-size: 14px;
-  color: rgba(var(--accent-blue), 0.85);
+  color: rgba(var(--accent-1), 0.85);
 }
 
 .bio-symbol-block p {
@@ -1898,8 +1905,8 @@ html.light-mode .bio-modal-card::after {
   position: relative;
   margin: 16px 0;
   padding: 16px 20px;
-  border-left: 3px solid rgba(var(--accent-blue), 0.3);
-  background: linear-gradient(135deg, rgba(var(--accent-blue), 0.04) 0%, rgba(255, 255, 255, 0.01) 100%);
+  border-left: 3px solid rgba(var(--accent-1), 0.3);
+  background: linear-gradient(135deg, rgba(var(--accent-1), 0.04) 0%, rgba(255, 255, 255, 0.01) 100%);
   border-radius: 0 12px 12px 0;
 }
 
@@ -1911,7 +1918,7 @@ html.light-mode .bio-modal-card::after {
   display: block;
   margin-bottom: 8px;
   font-size: 14px;
-  color: rgba(var(--accent-blue), 0.85);
+  color: rgba(var(--accent-1), 0.85);
 }
 
 .bio-principle-block p {
@@ -1956,8 +1963,8 @@ html.light-mode .bio-modal-card::after {
 }
 
 @keyframes bio-tour-pulse {
-  0%, 100% { box-shadow: 0 0 12px rgba(var(--accent-yellow), 0.25), 0 0 24px rgba(var(--accent-yellow), 0.08); }
-  50%      { box-shadow: 0 0 20px rgba(var(--accent-yellow), 0.45), 0 0 40px rgba(var(--accent-yellow), 0.15); }
+  0%, 100% { box-shadow: 0 0 12px rgba(var(--accent-2), 0.25), 0 0 24px rgba(var(--accent-2), 0.08); }
+  50%      { box-shadow: 0 0 20px rgba(var(--accent-2), 0.45), 0 0 40px rgba(var(--accent-2), 0.15); }
 }
 
 .bio-tour-glow {
@@ -1971,7 +1978,7 @@ html.light-mode .bio-modal-card::after {
   font-weight: 700;
   letter-spacing: 1.2px;
   text-transform: uppercase;
-  color: rgba(var(--accent-yellow), 0.5);
+  color: rgba(var(--accent-2), 0.5);
   margin-top: 28px !important;
   margin-bottom: 0 !important;
   padding-top: 8px;
@@ -1983,7 +1990,7 @@ html.light-mode .bio-modal-card::after {
 }
 
 #bio-quilt-img:hover {
-  box-shadow: 0 0 20px rgba(var(--accent-yellow), 0.4), 0 0 40px rgba(var(--accent-yellow), 0.15);
+  box-shadow: 0 0 20px rgba(var(--accent-2), 0.4), 0 0 40px rgba(var(--accent-2), 0.15);
   transform: scale(1.01);
 }
 
@@ -2084,7 +2091,7 @@ html.light-mode .bio-modal-card::after {
 }
 
 .game-modal-card .modal-sticky-title {
-  color: rgba(var(--accent-yellow), 0.9);
+  color: rgba(var(--accent-2), 0.9);
 }
 
 .game-embed-wrap {
@@ -2119,7 +2126,7 @@ html.light-mode .bio-modal-card::after {
 }
 
 .link-modal-card .modal-sticky-title {
-  color: rgba(var(--accent-blue), 0.9);
+  color: rgba(var(--accent-1), 0.9);
 }
 
 .link-embed-wrap {
@@ -2282,7 +2289,7 @@ html.light-mode .bio-modal-card::after {
 }
 
 .marp-bom a {
-  color: rgba(var(--accent-blue), 0.9);
+  color: rgba(var(--accent-1), 0.9);
   text-decoration: none;
 }
 
@@ -2368,7 +2375,7 @@ html.light-mode .bio-modal-card::after {
 .deck-section-count {
   font-size: 13px;
   font-weight: 600;
-  color: rgba(var(--accent-yellow), 0.9);
+  color: rgba(var(--accent-2), 0.9);
   margin-left: 4px;
 }
 
@@ -2531,10 +2538,10 @@ html.light-mode .bio-modal-card::after {
 
 /* Card-name links in body text */
 .deck-body a[data-card-link] {
-  color: rgba(var(--accent-blue), 0.9);
+  color: rgba(var(--accent-1), 0.9);
   cursor: pointer;
   text-decoration: none;
-  border-bottom: 1px dotted rgba(var(--accent-blue), 0.4);
+  border-bottom: 1px dotted rgba(var(--accent-1), 0.4);
   transition: color 0.2s, border-color 0.2s;
 }
 
@@ -2545,8 +2552,8 @@ html.light-mode .bio-modal-card::after {
 
 /* Highlight pulse when a card is anchored */
 @keyframes card-anchor-pulse {
-  0%   { box-shadow: 0 0 0 0 rgba(var(--accent-blue), 0.7); }
-  40%  { box-shadow: 0 0 20px 8px rgba(var(--accent-blue), 0.5); }
+  0%   { box-shadow: 0 0 0 0 rgba(var(--accent-1), 0.7); }
+  40%  { box-shadow: 0 0 20px 8px rgba(var(--accent-1), 0.5); }
   100% { box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5); }
 }
 
@@ -2651,16 +2658,16 @@ html.light-mode .bio-modal-card::after {
   font-size: 14px;
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.12);
-  color: rgba(var(--accent-blue), 0.8);
+  color: rgba(var(--accent-1), 0.8);
   transition: all 0.3s ease;
 }
 
 .footer-detail-item:hover .footer-detail-icon {
-  background: rgba(var(--accent-blue), 0.15);
-  border-color: rgba(var(--accent-blue), 0.4);
+  background: rgba(var(--accent-1), 0.15);
+  border-color: rgba(var(--accent-1), 0.4);
   color: #fff;
-  box-shadow: 0 0 8px rgba(var(--accent-blue), 0.3),
-              0 0 20px rgba(var(--accent-blue), 0.1);
+  box-shadow: 0 0 8px rgba(var(--accent-1), 0.3),
+              0 0 20px rgba(var(--accent-1), 0.1);
 }
 
 .footer-detail-desc {
@@ -2677,7 +2684,7 @@ html.light-mode .bio-modal-card::after {
   border-radius: 4px;
   background: rgba(255, 255, 255, 0.07);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  color: rgba(var(--accent-blue), 0.85);
+  color: rgba(var(--accent-1), 0.85);
   transition: all 0.3s ease;
 }
 
@@ -2699,11 +2706,11 @@ html.light-mode .bio-modal-card::after {
 }
 
 .footer-detail-desc a:hover code {
-  background: rgba(var(--accent-blue), 0.15);
-  border-color: rgba(var(--accent-blue), 0.4);
+  background: rgba(var(--accent-1), 0.15);
+  border-color: rgba(var(--accent-1), 0.4);
   color: #fff;
-  box-shadow: 0 0 8px rgba(var(--accent-blue), 0.25),
-              0 0 20px rgba(var(--accent-blue), 0.1);
+  box-shadow: 0 0 8px rgba(var(--accent-1), 0.25),
+              0 0 20px rgba(var(--accent-1), 0.1);
 }
 
 .footer-repo-actions {
@@ -2747,7 +2754,7 @@ html.light-mode .bio-modal-card::after {
 }
 
 .glass-footer a {
-  color: rgba(var(--accent-blue), 0.6);
+  color: rgba(var(--accent-1), 0.6);
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -3058,7 +3065,7 @@ html.light-mode body {
 }
 
 html.light-mode ::selection {
-  background: rgba(0, 120, 212, 0.25);
+  background: rgba(var(--accent-1), 0.25);
   color: #1a1a1a;
 }
 
@@ -3150,10 +3157,10 @@ html.light-mode .radio-btn-play:hover {
 }
 
 html.light-mode .radio-player.playing .radio-btn-play {
-  background: rgba(0, 120, 212, 0.12);
-  border-color: rgba(0, 120, 212, 0.35);
-  color: rgba(0, 120, 212, 0.9);
-  box-shadow: 0 0 15px rgba(0, 120, 212, 0.15);
+  background: rgba(var(--accent-1), 0.12);
+  border-color: rgba(var(--accent-1), 0.35);
+  color: rgba(var(--accent-1), 0.9);
+  box-shadow: 0 0 15px rgba(var(--accent-1), 0.15);
 }
 
 html.light-mode .radio-vol-btn {
@@ -3243,16 +3250,16 @@ html.light-mode .footer-detail-item strong {
 }
 
 html.light-mode .footer-detail-icon {
-  background: rgba(0, 120, 212, 0.08);
-  border-color: rgba(0, 120, 212, 0.18);
-  color: rgba(0, 120, 212, 0.8);
+  background: rgba(var(--accent-1), 0.08);
+  border-color: rgba(var(--accent-1), 0.18);
+  color: rgba(var(--accent-1), 0.8);
 }
 
 html.light-mode .footer-detail-item:hover .footer-detail-icon {
-  background: rgba(0, 120, 212, 0.15);
-  border-color: rgba(0, 120, 212, 0.4);
-  color: #0078D4;
-  box-shadow: 0 0 8px rgba(0, 120, 212, 0.2);
+  background: rgba(var(--accent-1), 0.15);
+  border-color: rgba(var(--accent-1), 0.4);
+  color: rgb(var(--accent-1));
+  box-shadow: 0 0 8px rgba(var(--accent-1), 0.2);
 }
 
 html.light-mode .footer-detail-desc {
@@ -3262,13 +3269,13 @@ html.light-mode .footer-detail-desc {
 html.light-mode .footer-detail-desc code {
   background: rgba(0, 0, 0, 0.05);
   border-color: rgba(0, 0, 0, 0.08);
-  color: rgba(0, 120, 212, 0.85);
+  color: rgba(var(--accent-1), 0.85);
 }
 
 html.light-mode .footer-detail-desc a:hover code {
-  background: rgba(0, 120, 212, 0.1);
-  border-color: rgba(0, 120, 212, 0.3);
-  color: #0078D4;
+  background: rgba(var(--accent-1), 0.1);
+  border-color: rgba(var(--accent-1), 0.3);
+  color: rgb(var(--accent-1));
 }
 
 html.light-mode .footer-detail-row .footer-detail-item {
@@ -3298,7 +3305,7 @@ html.light-mode .glass-footer {
 }
 
 html.light-mode .glass-footer a {
-  color: rgba(var(--accent-blue), 0.6);
+  color: rgba(var(--accent-1), 0.6);
 }
 
 /* ── Text & heading colors ────────────────────────────────── */
@@ -3314,7 +3321,7 @@ html.light-mode .hero-tagline {
 }
 
 html.light-mode .hero-tagline strong a {
-  color: rgba(0, 120, 212, 0.9);
+  color: rgba(var(--accent-1), 0.9);
 }
 
 html.light-mode .hero-tagline strong a:hover {
@@ -3326,7 +3333,7 @@ html.light-mode .hero-bio {
 }
 
 html.light-mode .hero-bio strong a {
-  color: rgba(0, 120, 212, 0.8);
+  color: rgba(var(--accent-1), 0.8);
 }
 
 html.light-mode hr {
@@ -3372,7 +3379,7 @@ html.light-mode .section-desc {
 }
 
 html.light-mode .section-desc a {
-  color: rgba(0, 120, 212, 0.85);
+  color: rgba(var(--accent-1), 0.85);
 }
 
 html.light-mode .section-blurb {
@@ -3380,7 +3387,7 @@ html.light-mode .section-blurb {
 }
 
 html.light-mode .section-blurb a {
-  color: rgba(0, 120, 212, 0.85);
+  color: rgba(var(--accent-1), 0.85);
 }
 
 html.light-mode .scroll-hint {
@@ -3416,17 +3423,17 @@ html.light-mode .section-badge:hover {
 }
 
 html.light-mode .section-badge.section-badge-glow {
-  color: rgba(var(--accent-yellow), 1);
-  background: rgba(var(--accent-yellow), 0.8);
-  border-color: rgba(var(--accent-yellow), 0.4);
-  box-shadow: 0 0 8px rgba(var(--accent-yellow), 0.25), 0 0 16px rgba(var(--accent-yellow), 0.1);
-  animation: win-pulse-light 2s ease-in-out infinite;
+  color: rgba(var(--accent-2), 1);
+  background: rgba(var(--accent-2), 0.8);
+  border-color: rgba(var(--accent-2), 0.4);
+  box-shadow: 0 0 8px rgba(var(--accent-2), 0.25), 0 0 16px rgba(var(--accent-2), 0.1);
+  animation: accent-pulse-light 2s ease-in-out infinite;
 }
 
 html.light-mode .section-badge.section-badge-glow:hover {
-  color: rgba(var(--accent-yellow), 1);
-  background: rgba(var(--accent-yellow), 0.95);
-  border-color: rgba(var(--accent-yellow), 0.55);
+  color: rgba(var(--accent-2), 1);
+  background: rgba(var(--accent-2), 0.95);
+  border-color: rgba(var(--accent-2), 0.55);
 }
 
 html.light-mode .section-intro-img {
@@ -3454,14 +3461,14 @@ html.light-mode .entry-card .entry-motto {
 }
 
 html.light-mode .entry-card .entry-github {
-  color: rgba(0, 120, 212, 0.7);
-  background: rgba(0, 120, 212, 0.06);
-  border-color: rgba(0, 120, 212, 0.15);
+  color: rgba(var(--accent-1), 0.7);
+  background: rgba(var(--accent-1), 0.06);
+  border-color: rgba(var(--accent-1), 0.15);
 }
 
 html.light-mode .entry-card .entry-github:hover {
-  background: rgba(0, 120, 212, 0.12);
-  color: #0078D4;
+  background: rgba(var(--accent-1), 0.12);
+  color: rgb(var(--accent-1));
 }
 
 html.light-mode .entry-card .entry-logo {
@@ -3494,7 +3501,7 @@ html.light-mode .modal-card .modal-body {
 }
 
 html.light-mode .modal-card .modal-body a {
-  color: rgba(0, 120, 212, 0.85);
+  color: rgba(var(--accent-1), 0.85);
 }
 
 html.light-mode .modal-card .modal-subtitle .modal-badge {
@@ -3509,31 +3516,31 @@ html.light-mode .modal-sticky-bar {
 /* ── Win / Play badges (card + modal) ─────────────────────── */
 html.light-mode .entry-card .entry-win,
 html.light-mode .modal-card .modal-subtitle .modal-win-badge {
-  color: rgba(var(--accent-yellow), 1);
-  background: rgba(var(--accent-yellow), 0.8);
-  border-color: rgba(var(--accent-yellow), 0.4);
-  box-shadow: 0 0 8px rgba(var(--accent-yellow), 0.25), 0 0 16px rgba(var(--accent-yellow), 0.1);
+  color: rgba(var(--accent-2), 1);
+  background: rgba(var(--accent-2), 0.8);
+  border-color: rgba(var(--accent-2), 0.4);
+  box-shadow: 0 0 8px rgba(var(--accent-2), 0.25), 0 0 16px rgba(var(--accent-2), 0.1);
 }
 
 html.light-mode .entry-card .entry-play,
 html.light-mode .modal-card .modal-subtitle .modal-play-badge {
-  color: rgba(var(--accent-yellow), 0.95);
-  background: rgba(var(--accent-yellow), 0.12);
-  border-color: rgba(var(--accent-yellow), 0.35);
-  box-shadow: 0 0 8px rgba(var(--accent-yellow), 0.25), 0 0 16px rgba(var(--accent-yellow), 0.1);
+  color: rgba(var(--accent-2), 0.95);
+  background: rgba(var(--accent-2), 0.12);
+  border-color: rgba(var(--accent-2), 0.35);
+  box-shadow: 0 0 8px rgba(var(--accent-2), 0.25), 0 0 16px rgba(var(--accent-2), 0.1);
 }
 
 html.light-mode .entry-card .entry-play:hover,
 html.light-mode .modal-card .modal-subtitle .modal-play-badge:hover {
-  background: rgba(var(--accent-yellow), 0.22);
-  color: rgba(var(--accent-yellow), 1);
-  border-color: rgba(var(--accent-yellow), 0.55);
+  background: rgba(var(--accent-2), 0.22);
+  color: rgba(var(--accent-2), 1);
+  border-color: rgba(var(--accent-2), 0.55);
 }
 
 html.light-mode .entry-card .entry-title-highlight {
-  color: rgba(var(--accent-yellow), 0.95);
-  background: rgba(var(--accent-yellow), 0.12);
-  border-color: rgba(var(--accent-yellow), 0.35);
+  color: rgba(var(--accent-2), 0.95);
+  background: rgba(var(--accent-2), 0.12);
+  border-color: rgba(var(--accent-2), 0.35);
 }
 
 /* ── Win / Play badge glow (light mode) ───────────────────── */
@@ -3541,34 +3548,25 @@ html.light-mode .entry-card .entry-win,
 html.light-mode .entry-card .entry-title-highlight,
 html.light-mode .modal-card .modal-subtitle .modal-win-badge,
 html.light-mode .modal-card .modal-subtitle .modal-play-badge {
-  animation: win-pulse-light 2s ease-in-out infinite;
+  animation: accent-pulse-light 2s ease-in-out infinite;
 }
 
 html.light-mode .entry-card .entry-play {
-  animation: win-pulse-light 2s ease-in-out infinite;
+  animation: accent-pulse-light 2s ease-in-out infinite;
 }
 
 html.light-mode .card-action-badge {
   animation: badgePulse-light 2.5s ease-in-out infinite;
 }
 
-html.light-mode .card-action-badge.badge-dive {
-  animation: badgePulseDive-light 2.5s ease-in-out infinite;
-}
-
-@keyframes win-pulse-light {
-  0%, 100% { box-shadow: 0 0 8px rgba(var(--accent-yellow), 0.25), 0 0 16px rgba(var(--accent-yellow), 0.1); }
-  50%      { box-shadow: 0 0 14px rgba(var(--accent-yellow), 0.45), 0 0 24px rgba(var(--accent-yellow), 0.2); }
+@keyframes accent-pulse-light {
+  0%, 100% { box-shadow: 0 0 8px rgba(var(--ba), 0.25), 0 0 16px rgba(var(--ba), 0.1); }
+  50%      { box-shadow: 0 0 14px rgba(var(--ba), 0.45), 0 0 24px rgba(var(--ba), 0.2); }
 }
 
 @keyframes badgePulse-light {
-  0%, 100% { box-shadow: 0 0 6px rgba(var(--accent-yellow), 0.15), inset 0 0 4px rgba(var(--accent-yellow), 0.05); }
-  50%      { box-shadow: 0 0 14px rgba(var(--accent-yellow), 0.35), inset 0 0 6px rgba(var(--accent-yellow), 0.1); }
-}
-
-@keyframes badgePulseDive-light {
-  0%, 100% { box-shadow: 0 0 6px rgba(0, 120, 212, 0.15), inset 0 0 4px rgba(0, 120, 212, 0.05); }
-  50%      { box-shadow: 0 0 14px rgba(0, 120, 212, 0.35), inset 0 0 6px rgba(0, 120, 212, 0.1); }
+  0%, 100% { box-shadow: 0 0 6px rgba(var(--ba), 0.15), inset 0 0 4px rgba(var(--ba), 0.05); }
+  50%      { box-shadow: 0 0 14px rgba(var(--ba), 0.35), inset 0 0 6px rgba(var(--ba), 0.1); }
 }
 
 /* ── Deck modal ───────────────────────────────────────────── */
@@ -3597,8 +3595,8 @@ html.light-mode .deck-carousel-btn:hover {
 }
 
 html.light-mode .deck-body a[data-card-link] {
-  color: rgba(0, 120, 212, 0.85);
-  border-bottom-color: rgba(0, 120, 212, 0.3);
+  color: rgba(var(--accent-1), 0.85);
+  border-bottom-color: rgba(var(--accent-1), 0.3);
 }
 
 /* ── MARP BOM ─────────────────────────────────────────────── */
@@ -3623,7 +3621,7 @@ html.light-mode .marp-bom tbody tr:hover {
   background: rgba(0, 0, 0, 0.03);
 }
 
-html.light-mode .marp-bom a { color: rgba(0, 120, 212, 0.85); }
+html.light-mode .marp-bom a { color: rgba(var(--accent-1), 0.85); }
 
 /* ── Modal sticky-bar light overrides ─────────────────────── */
 html.light-mode .modal-sticky-title {
@@ -3631,15 +3629,15 @@ html.light-mode .modal-sticky-title {
 }
 
 html.light-mode .game-modal-card .modal-sticky-title {
-  color: rgba(var(--accent-yellow), 0.95);
+  color: rgba(var(--accent-2), 0.95);
 }
 
 html.light-mode .link-modal-card .modal-sticky-title {
-  color: rgba(0, 120, 212, 0.95);
+  color: rgba(var(--accent-1), 0.95);
 }
 
 html.light-mode .modal-sticky-link {
-  color: rgba(0, 120, 212, 0.85);
+  color: rgba(var(--accent-1), 0.85);
   background: rgba(240, 240, 240, 0.75);
   border-color: rgba(0, 0, 0, 0.12);
 }
@@ -3651,7 +3649,7 @@ html.light-mode .modal-sticky-link:hover {
 
 /* ── Biography modal light overrides ──────────────────────── */
 html.light-mode .bio-modal-card .modal-body h3 {
-  color: rgba(var(--accent-yellow), 0.85);
+  color: rgba(var(--accent-2), 0.85);
 }
 
 html.light-mode .bio-modal-card .modal-body h4 {
@@ -3693,12 +3691,12 @@ html.light-mode .bio-section-lead {
 }
 
 html.light-mode .bio-symbol-block {
-  border-left-color: rgba(0, 120, 212, 0.3);
-  background: linear-gradient(135deg, rgba(0, 120, 212, 0.05) 0%, rgba(0, 0, 0, 0.01) 100%);
+  border-left-color: rgba(var(--accent-1), 0.3);
+  background: linear-gradient(135deg, rgba(var(--accent-1), 0.05) 0%, rgba(0, 0, 0, 0.01) 100%);
 }
 
 html.light-mode .bio-symbol-block h4 {
-  color: rgba(0, 120, 212, 0.85);
+  color: rgba(var(--accent-1), 0.85);
 }
 
 html.light-mode .bio-symbol-block p,
@@ -3708,12 +3706,12 @@ html.light-mode .bio-principle-block .step {
 }
 
 html.light-mode .bio-principle-block {
-  border-left-color: rgba(0, 120, 212, 0.3);
-  background: linear-gradient(135deg, rgba(0, 120, 212, 0.05) 0%, rgba(0, 0, 0, 0.01) 100%);
+  border-left-color: rgba(var(--accent-1), 0.3);
+  background: linear-gradient(135deg, rgba(var(--accent-1), 0.05) 0%, rgba(0, 0, 0, 0.01) 100%);
 }
 
 html.light-mode .bio-principle-block > strong {
-  color: rgba(0, 120, 212, 0.85);
+  color: rgba(var(--accent-1), 0.85);
 }
 
 html.light-mode .bio-principle-block p {
@@ -3721,7 +3719,7 @@ html.light-mode .bio-principle-block p {
 }
 
 html.light-mode .bio-colophon {
-  color: rgba(var(--accent-yellow), 0.55);
+  color: rgba(var(--accent-2), 0.55);
 }
 
 html.light-mode .bio-tour-glow {
@@ -3729,8 +3727,8 @@ html.light-mode .bio-tour-glow {
 }
 
 @keyframes bio-tour-pulse-light {
-  0%, 100% { box-shadow: 0 0 12px rgba(var(--accent-yellow), 0.2), 0 0 24px rgba(var(--accent-yellow), 0.06); }
-  50%      { box-shadow: 0 0 20px rgba(var(--accent-yellow), 0.35), 0 0 40px rgba(var(--accent-yellow), 0.12); }
+  0%, 100% { box-shadow: 0 0 12px rgba(var(--accent-2), 0.2), 0 0 24px rgba(var(--accent-2), 0.06); }
+  50%      { box-shadow: 0 0 20px rgba(var(--accent-2), 0.35), 0 0 40px rgba(var(--accent-2), 0.12); }
 }
 
 html.light-mode .tl-ruler-year {
@@ -3802,10 +3800,10 @@ html.light-mode .tl-sliver-meta {
 }
 
 html.light-mode .tl-win {
-  color: rgba(var(--accent-yellow), 1);
-  background: rgba(var(--accent-yellow), 0.8);
-  border-color: rgba(var(--accent-yellow), 0.4);
-  box-shadow: 0 0 4px rgba(var(--accent-yellow), 0.15);
+  color: rgba(var(--accent-2), 1);
+  background: rgba(var(--accent-2), 0.8);
+  border-color: rgba(var(--accent-2), 0.4);
+  box-shadow: 0 0 4px rgba(var(--accent-2), 0.15);
 }
 
 /* ── Scrollbar ────────────────────────────────────────────── */
@@ -4013,7 +4011,6 @@ html.light-mode .outline-pill {
   .entry-play,
   .entry-title-highlight,
   .card-action-badge,
-  .card-action-badge.badge-dive,
   .tile-glow,
   .modal-play-badge,
   .modal-win-badge {
@@ -4038,7 +4035,7 @@ html.light-mode .outline-pill {
 .kg-node:focus-visible,
 .tl-sliver:focus-visible,
 .mm-node:focus-visible {
-  outline: 2px solid rgb(var(--accent-blue));
+  outline: 2px solid rgb(var(--accent-1));
   outline-offset: 3px;
   z-index: 50;
 }
@@ -4198,8 +4195,7 @@ html.light-mode .viz-filter:not(.active) .viz-dot {
 }
 
 /* ── Filter pill glow (explore/traverse tour) ─────────────── */
-.viz-filter.viz-filter-glow,
-.mtg-filter.viz-filter-glow {
+.viz-filter.viz-filter-glow {
   color: #fff;
   border-color: rgba(var(--tc), 0.9) !important;
   background: rgba(var(--tc), 0.25) !important;
@@ -4209,8 +4205,7 @@ html.light-mode .viz-filter:not(.active) .viz-dot {
   animation: viz-pill-glow 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
 }
 
-html.light-mode .viz-filter.viz-filter-glow,
-html.light-mode .mtg-filter.viz-filter-glow {
+html.light-mode .viz-filter.viz-filter-glow {
   color: rgba(0, 0, 0, 0.9);
   background: rgba(var(--tc-light, var(--tc)), 0.2) !important;
   box-shadow: 0 0 10px rgba(var(--tc-light, var(--tc)), 0.3),
@@ -5244,11 +5239,11 @@ html.light-mode .viz-filter.filter-pulse {
   padding: 0;
   border-radius: 50%;
   font-size: 8px;
-  color: rgba(var(--accent-yellow), 0.95);
-  background: rgba(var(--accent-yellow), 0.1);
-  border: 1px solid rgba(var(--accent-yellow), 0.3);
-  box-shadow: 0 0 4px rgba(var(--accent-yellow), 0.25);
-  animation: win-pulse 2s ease-in-out infinite;
+  color: rgba(var(--accent-2), 0.95);
+  background: rgba(var(--accent-2), 0.1);
+  border: 1px solid rgba(var(--accent-2), 0.3);
+  box-shadow: 0 0 4px rgba(var(--accent-2), 0.25);
+  animation: accent-pulse 2s ease-in-out infinite;
   flex-shrink: 0;
   margin-left: auto;
 }
@@ -5751,177 +5746,50 @@ html.light-mode .map-project-node {
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   MTG SKILL TREE — Interactive card tree visualization
+   SHARED — Filter separator, hub nodes, node detail view
    ═══════════════════════════════════════════════════════════════ */
 
-/* ── "See MARP" / "See ARCH" badges on the Mermaid tile ──── */
-.card-action-badge.badge-mermaid {
-  background: rgba(var(--accent-green), 0.18);
-  border: 1px solid rgba(var(--accent-green), 0.5);
-  box-shadow: 0 0 6px rgba(var(--accent-green), 0.3), inset 0 0 4px rgba(var(--accent-green), 0.08);
-  animation: badgePulseMermaid 2.5s ease-in-out infinite;
-  cursor: pointer;
-  margin-left: 4px;
-}
-
-@keyframes badgePulseMermaid {
-  0%, 100% { box-shadow: 0 0 6px rgba(var(--accent-green), 0.3), inset 0 0 4px rgba(var(--accent-green), 0.08); }
-  50%      { box-shadow: 0 0 14px rgba(var(--accent-green), 0.55), inset 0 0 6px rgba(var(--accent-green), 0.15); }
-}
-
-html.light-mode .card-action-badge.badge-mermaid {
-  color: rgba(var(--accent-green), 0.9);
-  background: rgba(var(--accent-green), 0.1);
-  border-color: rgba(var(--accent-green), 0.4);
-  box-shadow: 0 0 6px rgba(var(--accent-green), 0.15), inset 0 0 4px rgba(var(--accent-green), 0.05);
-}
-
-/* ── Mermaid badge (generic) ───────────────────────────────── */
-
-/* ── "See MTG" badge on the Skilltree tile ─────────────────── */
-.card-action-badge.badge-mtg {
-  background: rgba(var(--accent-yellow), 0.18);
-  border: 1px solid rgba(var(--accent-yellow), 0.5);
-  box-shadow: 0 0 6px rgba(var(--accent-yellow), 0.3), inset 0 0 4px rgba(var(--accent-yellow), 0.08);
-  animation: badgePulseMtg 2.5s ease-in-out infinite;
-  cursor: pointer;
-  margin-left: 4px;
-}
-
-@keyframes badgePulseMtg {
-  0%, 100% { box-shadow: 0 0 6px rgba(var(--accent-yellow), 0.3), inset 0 0 4px rgba(var(--accent-yellow), 0.08); }
-  50%      { box-shadow: 0 0 14px rgba(var(--accent-yellow), 0.55), inset 0 0 6px rgba(var(--accent-yellow), 0.15); }
-}
-
-html.light-mode .card-action-badge.badge-mtg {
-  color: rgba(var(--accent-yellow), 0.9);
-  background: rgba(var(--accent-yellow), 0.1);
-  border-color: rgba(var(--accent-yellow), 0.4);
-  box-shadow: 0 0 6px rgba(var(--accent-yellow), 0.15), inset 0 0 4px rgba(var(--accent-yellow), 0.05);
-}
-
-/* ── MTG modal card ────────────────────────────────────────── */
-.mtg-modal-card .modal-sticky-bar {
-  flex-wrap: wrap;
-  justify-content: flex-end;
-  gap: 6px;
-  padding: 12px 16px 8px;
-  margin: 0;
-  border-radius: 20px 20px 0 0;
-  z-index: 30;
-}
-
-.mtg-modal-card .viz-filter-row {
-  min-height: 40px;
-}
-
-.mtg-modal-card .viz-world {
-  width: 0;
-  height: 0;
-}
-
-/* ── Filter buttons (reuse viz-filter pattern) ─────────────── */
-.mtg-filter {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  padding: 5px 10px;
-  border-radius: 16px;
-  font-size: 12px;
-  font-weight: 600;
-  cursor: pointer;
-  border: 1.5px solid rgba(var(--tc), 0.35);
-  background: rgba(var(--tc), 0.08);
-  color: rgba(255, 255, 255, 0.7);
-  transition: all 0.2s ease;
-  white-space: nowrap;
-}
-
-.mtg-filter:hover {
-  background: rgba(var(--tc), 0.18);
-  border-color: rgba(var(--tc), 0.6);
-  color: #fff;
-}
-
-.mtg-filter.active {
-  background: rgba(var(--tc), 0.22);
-  border-color: rgba(var(--tc), 0.7);
-  color: #fff;
-  box-shadow: 0 0 8px rgba(var(--tc), 0.2);
-}
-
-.mtg-filter-sep {
+/* ── Filter group separator (vertical bar between pill groups) ── */
+.viz-filter-sep {
   color: rgba(255, 255, 255, 0.2);
   font-size: 14px;
   user-select: none;
   padding: 0 2px;
 }
 
-html.light-mode .mtg-filter {
-  color: rgba(0, 0, 0, 0.5);
-  background: rgba(var(--tc), 0.05);
-  border-color: rgba(var(--tc), 0.2);
-}
-html.light-mode .mtg-filter:hover {
-  background: rgba(var(--tc), 0.12);
-  color: rgba(0, 0, 0, 0.8);
-}
-html.light-mode .mtg-filter.active {
-  background: rgba(var(--tc), 0.15);
-  border-color: rgba(var(--tc), 0.5);
-  color: rgba(0, 0, 0, 0.85);
-}
-html.light-mode .mtg-filter-sep {
+html.light-mode .viz-filter-sep {
   color: rgba(0, 0, 0, 0.15);
 }
 
-/* ── MTG edge SVG layer ────────────────────────────────────── */
-.mtg-edges {
-  position: absolute;
-  top: -2000px;
-  left: -2000px;
-  width: 4000px;
-  height: 4000px;
-  pointer-events: none;
-  overflow: visible;
-  z-index: 1;
-}
-
-/* ── MTG center node ───────────────────────────────────────── */
-.mtg-center {
+/* ── Hub nodes (non-interactive structural anchors) ────────── */
+.kg-hub {
   cursor: default;
 }
 
-/* ── Deck hub nodes ────────────────────────────────────────── */
-.mtg-deck-hub {
-  cursor: default;
-}
-
-/* ── Card tooltip ──────────────────────────────────────────── */
-/* ── MTG card-view modal (stacks above skilltree modal) ── */
+/* ── Node detail overlay (stacks above parent viz modal) ──── */
 #mtg-card-modal.open {
   z-index: 250;
 }
 
-.mtg-card-view-card {
+.kg-detail-card {
   max-width: 400px;
   padding: 12px 12px 0;
   overflow: hidden;
 }
 
-.mtg-card-view-card .modal-sticky-bar {
+.kg-detail-card .modal-sticky-bar {
   margin: -12px -12px 0;
   padding: 8px 12px 6px;
 }
 
-/* ── Color-coded badges (right-justified, left of X) ───── */
-.mtg-card-badges {
+/* ── Color-coded badges (right-justified, left of ×) ──────── */
+.kg-badges {
   display: flex;
   align-items: center;
   gap: 5px;
 }
 
-.mtg-badge {
+.kg-badge {
   --bc: 160,160,160;
   display: inline-flex;
   align-items: center;
@@ -5940,18 +5808,18 @@ html.light-mode .mtg-filter-sep {
   transition: box-shadow 0.3s, background 0.3s;
 }
 
-.mtg-card-view-art {
+.kg-detail-art {
   width: 100%;
   display: block;
   border-radius: 0 0 14px 14px;
 }
 
 /* Light mode */
-html.light-mode .mtg-card-view-card {
+html.light-mode .kg-detail-card {
   background: rgba(250, 250, 250, 0.95);
   border-color: rgba(0, 0, 0, 0.1);
 }
-html.light-mode .mtg-badge {
+html.light-mode .kg-badge {
   background: rgba(var(--bc), 0.25);
   border-color: rgba(var(--bc), 0.35);
   box-shadow: 0 0 6px rgba(var(--bc), 0.2),
@@ -5960,18 +5828,14 @@ html.light-mode .mtg-badge {
 
 /* ── Mobile ───────────────────────────────────────────────── */
 @media (max-width: 600px) {
-  .mtg-modal-card .viz-filter-row {
+  .kg-modal-card .viz-filter-row {
     flex-wrap: wrap;
     gap: 4px;
   }
-  .mtg-filter {
-    padding: 4px 7px;
-    font-size: 11px;
-  }
-  .mtg-card-view-card {
+  .kg-detail-card {
     max-width: 90vw;
   }
-  .mtg-badge {
+  .kg-badge {
     width: 30px;
     height: 30px;
     font-size: 15px;
@@ -6067,19 +5931,10 @@ html.light-mode .mtg-badge {
 }
 
 /* ── Toast glow pulses (mirrors tile-glow-pulse pattern) ── */
-@keyframes toast-error-glow {
-  0%, 100% { box-shadow: 0 0 12px 2px rgba(var(--accent-red), 0.2),  0 0 32px 4px rgba(var(--accent-red), 0.1); }
-  50%      { box-shadow: 0 0 20px 6px rgba(var(--accent-red), 0.35), 0 0 48px 10px rgba(var(--accent-red), 0.18); }
+@keyframes toast-glow {
+  0%, 100% { box-shadow: 0 0 12px 2px rgba(var(--ta), 0.2),  0 0 32px 4px rgba(var(--ta), 0.1); }
+  50%      { box-shadow: 0 0 20px 6px rgba(var(--ta), 0.35), 0 0 48px 10px rgba(var(--ta), 0.18); }
 }
-@keyframes toast-warn-glow {
-  0%, 100% { box-shadow: 0 0 12px 2px rgba(var(--accent-yellow), 0.15), 0 0 32px 4px rgba(var(--accent-yellow), 0.08); }
-  50%      { box-shadow: 0 0 20px 6px rgba(var(--accent-yellow), 0.28), 0 0 48px 10px rgba(var(--accent-yellow), 0.14); }
-}
-@keyframes toast-log-glow {
-  0%, 100% { box-shadow: 0 0 12px 2px rgba(var(--accent-green), 0.12), 0 0 32px 4px rgba(var(--accent-green), 0.06); }
-  50%      { box-shadow: 0 0 20px 6px rgba(var(--accent-green), 0.22), 0 0 48px 10px rgba(var(--accent-green), 0.11); }
-}
-
 .dev-toast-prefix {
   flex-shrink: 0;
   font-weight: 700;
@@ -6098,44 +5953,47 @@ html.light-mode .mtg-badge {
 /* Clickable link toast */
 .dev-toast-link .dev-toast-msg {
   text-decoration: underline;
-  text-decoration-color: rgba(var(--accent-blue), 0.5);
+  text-decoration-color: rgba(var(--accent-1), 0.5);
   text-underline-offset: 3px;
 }
 .dev-toast-link:hover {
-  border-color: rgba(var(--accent-blue), 0.6);
-  background: rgba(var(--accent-blue), 0.08);
+  border-color: rgba(var(--accent-1), 0.6);
+  background: rgba(var(--accent-1), 0.08);
 }
 
 /* Log level colors */
 .dev-toast-log {
-  border-color: rgba(var(--accent-green), 0.35);
-  animation: toast-log-glow 2.4s ease-in-out infinite;
+  --ta: var(--accent-4);
+  border-color: rgba(var(--ta), 0.35);
+  animation: toast-glow 2.4s ease-in-out infinite;
 }
 .dev-toast-log .dev-toast-prefix {
-  color: rgba(var(--accent-green), 0.9);
+  color: rgba(var(--ta), 0.9);
 }
 
 .dev-toast-warn {
-  border-color: rgba(var(--accent-yellow), 0.4);
-  animation: toast-warn-glow 2.4s ease-in-out infinite;
+  --ta: var(--accent-2);
+  border-color: rgba(var(--ta), 0.4);
+  animation: toast-glow 2.4s ease-in-out infinite;
 }
 .dev-toast-warn .dev-toast-prefix {
-  color: rgba(var(--accent-yellow), 0.9);
+  color: rgba(var(--ta), 0.9);
 }
 .dev-toast-warn .dev-toast-msg {
-  color: rgba(var(--accent-yellow), 0.85);
+  color: rgba(var(--ta), 0.85);
 }
 
 .dev-toast-error {
-  border-color: rgba(var(--accent-red), 0.45);
+  --ta: var(--accent-3);
+  border-color: rgba(var(--ta), 0.45);
   background: rgba(20, 20, 20, 0.45);
-  animation: toast-error-glow 2.4s ease-in-out infinite;
+  animation: toast-glow 2.4s ease-in-out infinite;
 }
 .dev-toast-error .dev-toast-prefix {
-  color: rgba(var(--accent-red), 0.95);
+  color: rgba(var(--ta), 0.95);
 }
 .dev-toast-error .dev-toast-msg {
-  color: rgba(var(--accent-red), 0.9);
+  color: rgba(var(--ta), 0.9);
 }
 .dev-toast-source {
   display: block;
@@ -6150,8 +6008,8 @@ html.light-mode .mtg-badge {
   white-space: nowrap;
 }
 .dev-toast-error .dev-toast-source {
-  color: rgba(var(--accent-red), 0.8);
-  background: rgba(var(--accent-red), 0.1);
+  color: rgba(var(--ta), 0.8);
+  background: rgba(var(--ta), 0.1);
 }
 
 /* Stack-trace collapsible dropdown */
@@ -6225,13 +6083,13 @@ html.light-mode .mtg-badge {
 
 /* Level-tinted spinner arcs */
 .dev-toast-error .dev-toast-countdown {
-  stroke: rgba(var(--accent-red), 0.6);
+  stroke: rgba(var(--ta), 0.6);
 }
 .dev-toast-warn .dev-toast-countdown {
-  stroke: rgba(var(--accent-yellow), 0.6);
+  stroke: rgba(var(--ta), 0.6);
 }
 .dev-toast-log .dev-toast-countdown {
-  stroke: rgba(var(--accent-green), 0.5);
+  stroke: rgba(var(--ta), 0.5);
 }
 .dev-toast-stack {
   margin: 8px 0 2px 0;
@@ -6264,36 +6122,36 @@ html.light-mode .mtg-badge {
   flex-shrink: 0;
 }
 .dev-toast-frame-file {
-  color: rgba(var(--accent-blue), 0.85);
+  color: rgba(var(--accent-1), 0.85);
   margin-left: auto;
   flex-shrink: 0;
   text-decoration: underline;
-  text-decoration-color: rgba(var(--accent-blue), 0.3);
+  text-decoration-color: rgba(var(--accent-1), 0.3);
 }
 .dev-toast-error .dev-toast-stack {
   background: rgba(30, 30, 30, 0.35);
-  border-color: rgba(var(--accent-red), 0.12);
+  border-color: rgba(var(--ta), 0.12);
 }
 .dev-toast-error .dev-toast-frame-fn {
-  color: rgba(var(--accent-red), 0.85);
+  color: rgba(var(--ta), 0.85);
 }
 .dev-toast-error .dev-toast-frame-at {
-  color: rgba(var(--accent-red), 0.4);
+  color: rgba(var(--ta), 0.4);
 }
 .dev-toast-error .dev-toast-frame-file {
-  color: rgba(var(--accent-red), 0.85);
-  text-decoration-color: rgba(var(--accent-red), 0.3);
+  color: rgba(var(--ta), 0.85);
+  text-decoration-color: rgba(var(--ta), 0.3);
 }
 .dev-toast-warn .dev-toast-stack {
   background: rgba(35, 35, 35, 0.3);
-  border-color: rgba(var(--accent-yellow), 0.12);
+  border-color: rgba(var(--ta), 0.12);
 }
 .dev-toast-warn .dev-toast-frame-fn {
-  color: rgba(var(--accent-yellow), 0.85);
+  color: rgba(var(--ta), 0.85);
 }
 .dev-toast-warn .dev-toast-frame-file {
-  color: rgba(var(--accent-yellow), 0.85);
-  text-decoration-color: rgba(var(--accent-yellow), 0.3);
+  color: rgba(var(--ta), 0.85);
+  text-decoration-color: rgba(var(--ta), 0.3);
 }
 
 /* Light mode */
@@ -6305,28 +6163,28 @@ html.light-mode #dev-toast .dev-toast-line {
               0 0 40px rgba(0, 0, 0, 0.02);
 }
 html.light-mode .dev-toast-log .dev-toast-prefix {
-  color: rgba(var(--accent-green), 0.85);
+  color: rgba(var(--ta), 0.85);
 }
 html.light-mode .dev-toast-warn {
-  border-color: rgba(var(--accent-yellow), 0.2);
+  border-color: rgba(var(--ta), 0.2);
 }
 html.light-mode .dev-toast-warn .dev-toast-prefix {
-  color: rgba(var(--accent-yellow), 0.9);
+  color: rgba(var(--ta), 0.9);
 }
 html.light-mode .dev-toast-warn .dev-toast-msg {
-  color: rgba(var(--accent-yellow), 0.85);
+  color: rgba(var(--ta), 0.85);
 }
 html.light-mode .dev-toast-error {
   background: rgba(250, 250, 250, 0.5);
-  border-color: rgba(var(--accent-red), 0.3);
-  box-shadow: 0 0 15px rgba(var(--accent-red), 0.06),
-              0 0 40px rgba(var(--accent-red), 0.03);
+  border-color: rgba(var(--ta), 0.3);
+  box-shadow: 0 0 15px rgba(var(--ta), 0.06),
+              0 0 40px rgba(var(--ta), 0.03);
 }
 html.light-mode .dev-toast-error .dev-toast-prefix {
-  color: rgba(var(--accent-red), 0.9);
+  color: rgba(var(--ta), 0.9);
 }
 html.light-mode .dev-toast-error .dev-toast-msg {
-  color: rgba(var(--accent-red), 0.85);
+  color: rgba(var(--ta), 0.85);
 }
 html.light-mode .dev-toast-details summary {
   color: rgba(80, 80, 80, 0.7);
@@ -6335,10 +6193,10 @@ html.light-mode .dev-toast-countdown {
   stroke: rgba(0, 0, 0, 0.2);
 }
 html.light-mode .dev-toast-error .dev-toast-countdown {
-  stroke: rgba(var(--accent-red), 0.45);
+  stroke: rgba(var(--ta), 0.45);
 }
 html.light-mode .dev-toast-warn .dev-toast-countdown {
-  stroke: rgba(var(--accent-yellow), 0.45);
+  stroke: rgba(var(--ta), 0.45);
 }
 html.light-mode .dev-toast-stack {
   background: rgba(0, 0, 0, 0.05);
@@ -6350,26 +6208,26 @@ html.light-mode .dev-toast-frame-at {
   color: rgba(100, 100, 100, 0.5);
 }
 html.light-mode .dev-toast-frame-file {
-  color: rgba(0, 120, 212, 0.85);
-  text-decoration-color: rgba(0, 120, 212, 0.3);
+  color: rgba(var(--accent-1), 0.85);
+  text-decoration-color: rgba(var(--accent-1), 0.3);
 }
 html.light-mode .dev-toast-error .dev-toast-stack {
-  background: rgba(var(--accent-red), 0.06);
+  background: rgba(var(--ta), 0.06);
 }
 html.light-mode .dev-toast-error .dev-toast-frame-fn {
-  color: rgba(var(--accent-red), 0.85);
+  color: rgba(var(--ta), 0.85);
 }
 html.light-mode .dev-toast-error .dev-toast-frame-file {
-  color: rgba(var(--accent-red), 0.85);
+  color: rgba(var(--ta), 0.85);
 }
 html.light-mode .dev-toast-warn .dev-toast-stack {
-  background: rgba(var(--accent-yellow), 0.06);
+  background: rgba(var(--ta), 0.06);
 }
 html.light-mode .dev-toast-warn .dev-toast-frame-fn {
-  color: rgba(var(--accent-yellow), 0.85);
+  color: rgba(var(--ta), 0.85);
 }
 html.light-mode .dev-toast-warn .dev-toast-frame-file {
-  color: rgba(var(--accent-yellow), 0.85);
+  color: rgba(var(--ta), 0.85);
 }
 
 /* Hide on mobile to avoid clutter */

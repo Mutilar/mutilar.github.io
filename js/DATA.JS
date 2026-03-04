@@ -102,7 +102,7 @@ function buildEntryCard(item, dataset, opts) {
     ${hasGithub ? `<a href="${item.GITHUB}" target="_blank" class="entry-github" onclick="event.stopPropagation();"><i class="fa fa-github"></i> Open Source</a>` : ""}
   `;
 
-  card.addEventListener("click", () => openModal(dataset, item.ID, modalImgExt));
+  card.addEventListener("click", () => openEntry(dataset, item.ID, modalImgExt));
   if (window._revealObserver) window._revealObserver.observe(card);
   return card;
 }
@@ -148,6 +148,11 @@ const _gridConfigs = {
         if (item.shortname) VIZ_SHORTNAME_MAP[item.ID] = item.shortname;
       });
     });
+
+    // Populate tech categories and tags for MAP.JS
+    // (PORTFOLIO.json is the source of truth for tech taxonomy)
+    if (data.techCategories) window.VIZ_TECH_CATEGORIES = data.techCategories;
+    if (data.techTags)       window.VIZ_TECH_TAGS       = data.techTags;
 
     // Populate timeline metadata
     if (data.timeline) {

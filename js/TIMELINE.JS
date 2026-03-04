@@ -7,8 +7,39 @@
 // ═══════════════════════════════════════════════════════════════
 (() => {
   const timelineModal = document.getElementById("timeline-modal");
+  if (!timelineModal) return;
+
+  // ── Timeline modal shell (replaces TIMELINE-MODAL.HTML fragment) ──
+  var _tlFilterHTML = '';
+  var _tlAccents = (window.__SETTINGS && window.__SETTINGS.accents) || [];
+  var _tlToggleColor = (_tlAccents[2] || '242,80,34').replace(/\s/g, '');
+  _tlFilterHTML += '<button class="viz-layout-toggle dynamic" id="tlLayoutToggle" style="--tc:' + _tlToggleColor + '"' +
+    ' title="Static: items keep their positions when filtering. Dynamic: timeline reflows to fit visible items."' +
+    ' aria-label="Toggle static or dynamic layout">\uD83D\uDD00</button>';
+  _tlFilterHTML += '<button class="viz-filter active" data-filter="all" style="--tc:255,255,255;--tc-light:30,30,30" aria-pressed="true" aria-label="Show all categories"><span class="all-indicator">\u2B1C</span></button>';
+  ["robotics", "games", "software", "research", "education"].forEach(function(k) {
+    var t = VIZ_THEMES[k];
+    var tc = (t.accent != null && _tlAccents[t.accent]) ? _tlAccents[t.accent].replace(/\s/g, '') : t.color || '';
+    _tlFilterHTML += '<button class="viz-filter" data-filter="' + k + '" style="--tc:' + tc + '" aria-pressed="false" aria-label="Filter: ' + t.label + '">' +
+      '<span class="viz-dot" style="background:rgba(' + tc + ',0.9);"></span> ' + t.emoji + '</button>';
+  });
+  _tlFilterHTML += '<button class="modal-close" id="timelineModalClose" aria-label="Close modal">&times;</button>';
+
+  timelineModal.innerHTML =
+    '<div class="glass-tile modal-card timeline-modal-card" style="position:relative;">' +
+      '<div class="modal-sticky-bar">' +
+        '<div class="viz-filter-group viz-filter-group--flat tl-glow" role="toolbar" aria-label="Timeline filters">' +
+          _tlFilterHTML +
+        '</div>' +
+      '</div>' +
+      '<div class="timeline-container" id="timeline-container" role="application" aria-roledescription="Interactive timeline" aria-label="Vertical swimlane timeline of career items. Use arrow keys to navigate between entries, Enter to open details.">' +
+        '<div class="sr-only" id="tl-live" aria-live="polite" aria-atomic="true"></div>' +
+        '<div class="sr-only">Timeline: vertical month-resolution swimlane showing career history from education through professional work. Entries are color-coded by domain. Use arrow keys to navigate entries; Enter opens details.</div>' +
+        '<div class="timeline-entries" id="timeline-entries"><p style="color:rgba(255,255,255,0.5);font-style:italic;padding:24px;">Loading timeline\u2026</p></div>' +
+      '</div>' +
+    '</div>';
+
   const timelineModalClose = document.getElementById("timelineModalClose");
-  if (!timelineModal || !timelineModalClose) return;
 
   const MONTH_H   = 48;   // px per month
   const MIN_SPAN  = 1;    // minimum 1-month height for point events
@@ -757,7 +788,7 @@
       `</div>`;
 
     el.addEventListener("click", () => {
-      openModal(category, item.ID);
+      openEntry(category, item.ID);
     });
 
     return el;
