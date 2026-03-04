@@ -4,6 +4,31 @@
     "href": "#marp",
     "label": "MARP"
   },
+  "header": {
+    "id": "marp",
+    "heading": "🤖 MARP",
+    "badges": [
+      { "label": "Mutilar/Marp", "icon": "fa fa-github", "href": "https://github.com/Mutilar/Marp", "external": true }
+    ],
+    "attention": 1,
+    "accentOrder": "0,2,3,0",
+    "intro": {
+      "img": "png/marp.png",
+      "alt": "Marp",
+      "steps": [
+        { "align": "left",   "html": "From retrofiting a <strong>decades-old robot</strong> with a <strong><a href=\"#marp\" onclick=\"event.preventDefault(); navigateToModal('marp','marppi')\">Modern Brain</a></strong> via a <strong>Raspberry Pi 5</strong>..." },
+        { "align": "center", "html": "...to reimagining the <strong><a href=\"#marp\" onclick=\"event.preventDefault(); navigateToModal('marp','marpgamepad')\">Control Interface</a></strong> via a <strong>Valve Steamdeck</strong>..." },
+        { "align": "right",  "html": "...bringing it to life with new <strong>Eyes</strong>, <strong>Ears</strong> & <strong>Mouth</strong>;" }
+      ],
+      "summary": "<em>MARP</em> is a robotics test-bed that bridges my <strong><a href=\"#work\" onclick=\"event.preventDefault(); navigateToModal('work','redtierobotics')\">FRC experience</a></strong> with my design skills & aesthetic!"
+    },
+    "headerItems": [
+      { "type": "img", "label": "🎮 MARP U.X.", "year": "2025", "src": "png/marp.gif", "alt": "Marp Gamepad Demo" },
+      { "type": "img", "label": "🧮 MARP Diagrams", "year": "2025", "src": "png/marp-diagram.png", "alt": "Marp Wiring Diagram", "action": "mermaid", "actionTarget": "MARP.md", "actionBadge": "🔍 Dive Deeper", "ariaLabel": "Open MARP Diagrams" },
+      { "type": "grid", "wide": true }
+    ],
+    "scrollHint": { "target": "#bitnaughts", "label": "BitNaughts", "arrow": "☄" }
+  },
   "sections": [
     {
       "id": "marp",

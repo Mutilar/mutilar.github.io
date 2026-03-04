@@ -3,5 +3,81 @@
   "nav": {
     "href": "#about",
     "label": "About"
+  },
+  "header": {
+    "id": "about",
+    "heading": "👋🏻 About Me",
+    "badges": [
+      { "label": "Resume", "icon": "fa fa-file-text", "href": "#", "action": "modal", "target": "resume", "glow": true }
+    ],
+    "attention": 0,
+    "intro": {
+      "img": "png/brian2.png",
+      "alt": "Brian Hungerman",
+      "steps": [
+        { "align": "left",   "html": "From tinkering on <strong><a href=\"#marp\">MARP</a></strong>, a <strong>home robot</strong>..." },
+        { "align": "center", "html": "...to scaling <strong><a href=\"#work\" onclick=\"event.preventDefault(); navigateToModal('work','microsoft')\">AzureML</a></strong> to <strong>billions of requests/day</strong>..." },
+        { "align": "right",  "html": "...to prototyping <strong><a href=\"#bitnaughts\">BitNaughts</a>: Code Gamified</strong>;" }
+      ],
+      "summary": "I'm constantly learning new things, especially in <strong><a href=\"#\" onclick=\"event.preventDefault(); openLinkModal('https://en.wikipedia.org/wiki/Graph_theory', 'Graph Theory');\">Graph Theory</a></strong> & <strong><a href=\"#\" onclick=\"event.preventDefault(); openLinkModal('https://en.wikipedia.org/wiki/Gamification', 'Gamification');\">Gamification</a></strong>!"
+    },
+    "headerItems": [
+      {
+        "type": "viz",
+        "id": "viz-cards",
+        "wide": true,
+        "style": "margin-bottom:32px;",
+        "tiles": [
+          {
+            "emoji": "🧭",
+            "label": "Skill Tree",
+            "ariaLabel": "Open Graph of Knowledge",
+            "action": "open",
+            "img": "png/graph.png",
+            "imgAlt": "Graph of Knowledge",
+            "togglers": [
+              { "label": "PORT", "dot": "🔵", "active": true, "src": "png/graph.png", "accent": 1, "open": "knowledgeModal" },
+              { "label": "MTG", "dot": "⚫", "src": "png/graph-mtg.png", "accent": 2, "open": "mtgTreeModal" }
+            ]
+          },
+          {
+            "emoji": "🕰️",
+            "label": "Road Map",
+            "ariaLabel": "See more in Timeline",
+            "action": "open",
+            "img": "png/timeline.png",
+            "imgAlt": "Timeline",
+            "togglers": [
+              { "label": "MORE", "dot": "🔵", "active": true, "src": "png/timeline.png", "accent": 1, "open": "timelineModal" }
+            ]
+          },
+          {
+            "emoji": "🛠️",
+            "label": "Tool Kit",
+            "ariaLabel": "Open Constellation Map",
+            "action": "open",
+            "img": "png/constellation.png",
+            "imgAlt": "Constellation Map",
+            "togglers": [
+              { "label": "TECH", "dot": "🔵", "active": true, "src": "png/constellation.png", "accent": 1, "open": "mapModal" }
+            ]
+          },
+          {
+            "emoji": "🧜",
+            "label": "Diagrams",
+            "ariaLabel": "See more about Architecture",
+            "action": "open",
+            "img": "png/marp.png",
+            "imgAlt": "Architecture",
+            "mds": [ "md/MARP.md", "md/ARCH.md" ]
+          }
+        ]
+      }
+    ],
+    "scrollHint": {
+      "target": "#marp",
+      "label": "Traverse",
+      "arrow": "🔭"
+    }
   }
 }

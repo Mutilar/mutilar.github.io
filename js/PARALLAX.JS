@@ -279,6 +279,17 @@
     drawSoftBand(glintCtx, sweepToX(sw5), w * 0.10, a5 * 0.4, -17);
   }
 
+  // ── Modal-aware glint time ────────────────────────────────
+  let _modalCount  = 0;
+  let _glintTime   = 0;
+  let _lastGlintTs = -1;
+  let _glintOpacity = 1;          // current canvas opacity (smoothed)
+  const GLINT_FADE_SPEED = 0.04;  // opacity change per frame (~2.4 /s)
+
+  window.addEventListener("modal-count-changed", (e) => {
+    _modalCount = e.detail.count;
+  });
+
   // ── Reduced-motion preference ─────────────────────────────
   const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
   let prefersReducedMotion = reducedMotionQuery.matches;
@@ -337,9 +348,22 @@
       pal = DEFAULT_PALETTE;
     }
 
+    // ── Glint virtual clock: half-speed when 1 modal, frozen when ≥2 ──
+    if (_lastGlintTs < 0) _lastGlintTs = t;
+    const dt = t - _lastGlintTs;
+    _lastGlintTs = t;
+    const glintSpeed = _modalCount >= 2 ? 0 : (_modalCount >= 1 ? 0.5 : 1);
+    _glintTime += dt * glintSpeed;
+
+    // Smooth opacity: fade out when ≥2 modals, restore otherwise
+    const targetOpacity = _modalCount >= 2 ? 0.08 : 1;
+    if (_glintOpacity < targetOpacity)      _glintOpacity = Math.min(_glintOpacity + GLINT_FADE_SPEED, targetOpacity);
+    else if (_glintOpacity > targetOpacity) _glintOpacity = Math.max(_glintOpacity - GLINT_FADE_SPEED, targetOpacity);
+    cGlint.style.opacity = _glintOpacity;
+
     // Single draw — no clip boundaries, no desync
     drawOrbs(ctxOrb, t, att, scrollOff, pal);
-    drawGlints(ctxGlint, t);
+    drawGlints(ctxGlint, _glintTime);
 
     // Stop the loop when reduced motion is preferred (static frame)
     if (prefersReducedMotion) return;

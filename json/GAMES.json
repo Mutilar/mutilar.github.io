@@ -4,6 +4,32 @@
     "href": "#games",
     "label": "Games"
   },
+  "header": {
+    "id": "games",
+    "heading": "🎮 Games",
+    "badges": [
+      { "label": "SeeRäuber", "icon": "fa fa-github", "href": "https://github.com/searauber", "external": true },
+      { "label": "BitNaughts", "icon": "fa fa-github", "href": "https://github.com/bitnaughts", "external": true }
+    ],
+    "attention": 0,
+    "accentOrder": "1,0,0,3",
+    "intro": {
+      "img": "png/game-banner.png",
+      "alt": "Games",
+      "steps": [
+        { "align": "left",   "html": "From hands-on applications of <strong>graph theory</strong> & <strong>data structures</strong>..." },
+        { "align": "center", "html": "...to tinkering with <strong>finite state machines</strong> & <strong>model view controllers</strong>..." },
+        { "align": "right",  "html": "...to understanding challenges in <strong>big data processing</strong>, <strong>rendering</strong> & <strong>visualization</strong>;" }
+      ],
+      "summary": "Game design offers unique coding challenges to solve, all while fostering creativity & design skills!"
+    },
+    "headerItems": [
+      { "type": "youtube", "label": "🎥 Summer of Game Design", "year": "2016", "youtubeId": "CdIjw2bCvF0", "title": "Graviton Demo" },
+      { "type": "img", "label": "🌌 GalConq", "year": "2014", "src": "png/galconq.png", "alt": "GalConq space strategy", "action": "scroll-modal", "scrollTo": "games", "modalDataset": "games", "modalId": "galconq", "actionBadge": "🔍 Dive Deeper", "ariaLabel": "See more about GalConq" },
+      { "type": "grid" }
+    ],
+    "scrollHint": { "target": "#footer-band", "label": "Cheers", "arrow": "🍻" }
+  },
   "sections": [
     {
       "id": "games",

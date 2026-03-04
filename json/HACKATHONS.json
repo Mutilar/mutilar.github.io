@@ -4,6 +4,32 @@
     "href": "#hackathons",
     "label": "Hacks"
   },
+  "header": {
+    "id": "hackathons",
+    "heading": "⛏️ Hacks",
+    "badges": [
+      { "label": "Plebeiathon", "icon": "fa fa-github", "href": "https://github.com/plebeiathon", "external": true },
+      { "label": "DevPost", "icon": "fa fa-trophy", "href": "https://devpost.com/BrianHungerman", "external": true, "glow": true }
+    ],
+    "attention": 1,
+    "accentOrder": "1,0,0,3",
+    "intro": {
+      "img": "png/game-banner-lan.png",
+      "alt": "Hackathons",
+      "steps": [
+        { "align": "left",   "html": "From AR to visualize the <strong>missing link</strong> from <strong><a href=\"#hackathons\" onclick=\"event.preventDefault(); navigateToModal('hackathons','gist')\">farm to table</a></strong>..." },
+        { "align": "center", "html": "...to a semi-autonomous <strong>robotic tank</strong> called <strong><a href=\"#hackathons\" onclick=\"event.preventDefault(); navigateToModal('hackathons','sriracha')\">SRIRACHA</a></strong>..." },
+        { "align": "right",  "html": "...to OCR on <strong>nutrition labels</strong> as a <strong><a href=\"#hackathons\" onclick=\"event.preventDefault(); navigateToModal('hackathons','digestquest')\">FitBit for your stomach</a></strong>;" }
+      ],
+      "summary": "I've traveled all of <strong><a href=\"#\" onclick=\"event.preventDefault(); openLinkModal('https://en.wikipedia.org/wiki/California', 'California');\">California</a></strong> competing in hackathons, collaborating with colleagues & building teams of passionate engineers!"
+    },
+    "headerItems": [
+      { "type": "youtube", "label": "🎥 Blindsight Demo (1:44)", "year": "2018", "youtubeId": "PapgFHyC6_k", "title": "Blindsight Demo" },
+      { "type": "img", "label": "🦿 SRIRACHA", "year": "2018", "src": "png/sriracha-people.png", "alt": "SRIRACHA team at SDHacks", "action": "scroll-modal", "scrollTo": "hackathons", "modalDataset": "hackathons", "modalId": "sriracha", "actionBadge": "🔍 Dive Deeper", "ariaLabel": "See more about SRIRACHA" },
+      { "type": "grid" }
+    ],
+    "scrollHint": { "target": "#games", "label": "Games", "arrow": "🎮" }
+  },
   "sections": [
     {
       "id": "hackathons",

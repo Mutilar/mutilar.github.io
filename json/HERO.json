@@ -1,0 +1,18 @@
+{
+  "index": 0,
+  "nav": {
+    "href": "#home",
+    "label": "Home"
+  },
+  "hero": {
+    "id": "home",
+    "attention": 1,
+    "accentOrder": "3,4,1,2",
+    "portraitAction": "openModal('biography')",
+    "scrollHint": {
+      "target": "#about",
+      "label": "About Me",
+      "arrow": "👋🏻"
+    }
+  }
+}

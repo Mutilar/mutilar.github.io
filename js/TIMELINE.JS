@@ -69,6 +69,7 @@
 
   // ── Open / close ───────────────────────────────────────────
   var _tlReg = registerModal("timeline-modal", {
+    ariaLabel: "Timeline",
     onOpen: function () {
       _filterSys.setAll();
       if (!timelineBuilt) buildTimeline();

@@ -4,6 +4,28 @@
     "href": "#education",
     "label": "Education"
   },
+  "header": {
+    "id": "education",
+    "heading": "🎓 Education",
+    "badges": [
+      { "label": "University of California, Merced", "shortLabel": "UCMerced", "icon": "fa fa-university", "href": "#", "action": "link-modal", "actionTarget": "https://www.ucmerced.edu/", "title": "University of California, Merced" },
+      { "label": "2016 – 2019", "icon": "fa fa-calendar", "static": true, "desktopOnly": true },
+      { "label": "Magna Cum Laude", "shortLabel": "GPA 3.74", "icon": "fa fa-graduation-cap", "static": true, "glow": true, "emphasis": true }
+    ],
+    "attention": 1,
+    "accentOrder": "0,1,2,0",
+    "intro": {
+      "img": "png/graduation.png",
+      "alt": "Education",
+      "steps": [
+        { "align": "left",   "html": "From <strong><a href=\"#education\" onclick=\"event.preventDefault(); navigateToModal('education','cse015')\">discrete mathematics</a></strong> & <strong><a href=\"#education\" onclick=\"event.preventDefault(); navigateToModal('education','cse030')\">data structures</a></strong> laying the groundwork..." },
+        { "align": "center", "html": "...to <strong><a href=\"#education\" onclick=\"event.preventDefault(); navigateToModal('education','cse100')\">algorithms</a></strong>, <strong><a href=\"#education\" onclick=\"event.preventDefault(); navigateToModal('education','cse160')\">networks</a></strong> & <strong><a href=\"#education\" onclick=\"event.preventDefault(); navigateToModal('education','cse111')\">databases</a></strong> building the toolkit..." },
+        { "align": "right",  "html": "...to <strong><a href=\"#education\" onclick=\"event.preventDefault(); navigateToModal('education','cse180')\">robotics</a></strong>, <strong><a href=\"#education\" onclick=\"event.preventDefault(); navigateToModal('education','cse120')\">software engineering</a></strong> & <strong><a href=\"#education\" onclick=\"event.preventDefault(); navigateToModal('education','cse031')\">computer organization</a></strong> tying it all together;" }
+      ],
+      "summary": "I've compiled every lab, assignment & project from my journey through <strong><a href=\"#\" onclick=\"event.preventDefault(); openLinkModal('https://engineering.ucmerced.edu/academics/CSE/computer-science-engineering', 'UCM Computer Science & Engineering');\">UCM's Computer Science & Engineering</a></strong> program!"
+    },
+    "scrollHint": { "target": "#projects", "label": "Projects", "arrow": "🛠️" }
+  },
   "sections": [
     {
       "id": "education",

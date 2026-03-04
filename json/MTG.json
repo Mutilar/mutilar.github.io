@@ -4,6 +4,31 @@
     "href": "#mtg",
     "label": "MTG"
   },
+  "header": {
+    "id": "mtg",
+    "heading": "🔮 Magic: The Gathering",
+    "badges": [
+      { "label": "Archidekt", "icon": "fa fa-clone", "href": "https://archidekt.com/u/Mutilar", "external": true }
+    ],
+    "attention": 1,
+    "accentOrder": "1,0,0,3",
+    "intro": {
+      "img": "png/mtg.png",
+      "alt": "MTG",
+      "steps": [
+        { "align": "left",   "html": "Two primordial gods: <strong>Order</strong> & <strong>Chaos</strong>, and three factions emerge: <strong>Faithful</strong>, <strong>Greedy</strong> & <strong>Defiant</strong>..." },
+        { "align": "center", "html": "...except <strong>Faith</strong> does not <strong>Save</strong>, <strong>Wealth</strong> does not <strong>Protect</strong> & <strong>Rebellion</strong> does not <strong>Free</strong>..." },
+        { "align": "right",  "html": "...what culminates is wry <strong><a href=\"#\" onclick=\"event.preventDefault(); openLinkModal('https://en.wikipedia.org/wiki/Mythopoeia', 'Mythopoeia');\">Mythopoeia</a></strong> that <strong>subverts tired clichés</strong>;" }
+      ],
+      "summary": "<strong><a href=\"#\" onclick=\"event.preventDefault(); openModal('pdf')\">Dusk Rose Codex</a></strong> transforms <strong><a href=\"#\" onclick=\"event.preventDefault(); openLinkModal('https://en.wikipedia.org/wiki/Magic:_The_Gathering', 'Magic: The Gathering');\">Magic: The Gathering</a></strong> into satirical <strong><a href=\"#\" onclick=\"event.preventDefault(); openLinkModal('https://mtg.fandom.com/wiki/Vorthos', 'Vorthos');\">Vorthos</a></strong> scripture, bound by hand in crimson thread!"
+    },
+    "headerItems": [
+      { "type": "youtube", "label": "🎥 Dusk Rose Codex (3:26)", "year": "2025", "youtubeId": "0_k_snZ1DYk", "title": "Dusk Rose Codex" },
+      { "type": "img", "label": "📖 Dusk Rose Codex", "year": "2025", "src": "png/bible.png", "alt": "Dusk Rose Codex", "action": "open", "actionTarget": "pdf", "actionBadge": "🔍 Dive Deeper", "ariaLabel": "Open Dusk Rose Codex PDF viewer" },
+      { "type": "grid", "wide": true }
+    ],
+    "scrollHint": { "target": "#work", "label": "Work", "arrow": "👨‍💻" }
+  },
   "sections": [
     {
       "id": "mtg",

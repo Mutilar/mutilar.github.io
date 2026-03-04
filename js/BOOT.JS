@@ -106,56 +106,8 @@
           });
       }
 
-      // ── 5. Hero identity ───────────────────────────────────
-      if (s.identity) {
-        var heroName = document.querySelector(".hero-name");
-        if (heroName) heroName.innerHTML = s.identity.name;
-
-        var heroTagline = document.querySelector(".hero-tagline");
-        if (heroTagline && s.identity.tagline) heroTagline.innerHTML = s.identity.tagline;
-
-        var heroPortrait = document.querySelector(".hero-portrait");
-        if (heroPortrait && s.identity.portrait) {
-          if (heroPortrait.tagName === "IMG") {
-            heroPortrait.src = s.identity.portrait;
-            heroPortrait.alt = s.identity.name;
-          }
-        }
-
-        var penguinEmoji = document.querySelector(".hero-penguin-emoji");
-        if (penguinEmoji) penguinEmoji.textContent = s.identity.emoji || "";
-      }
-
-      // ── 6. Hero social links ───────────────────────────────
-      if (s.social) {
-        var heroLinks = document.querySelector(".hero-links");
-        if (heroLinks) {
-          // Build from social config
-          heroLinks.innerHTML = "";
-          _addSocialLink(heroLinks, s.social.linkedin,  "LinkedIn",  "fa-brands fa-linkedin");
-          _addSocialLink(heroLinks, s.social.github,    "GitHub",    "fa-brands fa-github");
-          _addSocialLink(heroLinks, s.social.twitter,   "Twitter",   "fa-brands fa-twitter");
-          _addSocialLink(heroLinks, s.social.email,     "Email",     "fa fa-envelope");
-          _addSocialLink(heroLinks, s.social.blog,      "Blog",      "fa fa-bookmark");
-          _addSocialLink(heroLinks, s.social.reference, "Reference", "fa fa-eye");
-          _addSocialLink(heroLinks, s.social.spotify,   "Spotify",   "fa-brands fa-spotify");
-        }
-      }
-
-      // ── 7. Hero portrait link target ───────────────────────
-      var portraitLink = document.querySelector(".hero-portrait-link");
-      if (portraitLink && s.social) {
-        var target = s.social.github || s.social.linkedin || "#";
-        // Only set href if it's a plain link (not onclick-driven)
-        if (!portraitLink.getAttribute("onclick")) {
-          portraitLink.href = target;
-          portraitLink.target = "_blank";
-          portraitLink.rel = "noopener";
-        }
-      }
-
-      // ── 8. Hero penguin background cycle ───────────────────
-      _initHeroCycle(s);
+      // ── 5–8. Hero (identity, social, portrait, cycle)
+      // Now rendered by DATA.JS from HERO.json
 
       // ── 9. Footer year ─────────────────────────────────────
       var footerYear = document.getElementById("footer-year");
@@ -186,15 +138,7 @@
         }
       }
 
-      // ── 12. Scroll hint ─────────────────────────────────────
-      if (s.hero) {
-        var scrollHint = document.querySelector(".scroll-hint");
-        if (scrollHint) {
-          if (s.hero.scrollHintTarget) scrollHint.href = s.hero.scrollHintTarget;
-          var hintLabel = scrollHint.querySelector("strong");
-          if (hintLabel && s.hero.scrollHintLabel) hintLabel.textContent = s.hero.scrollHintLabel;
-        }
-      }
+      // ── 12. Scroll hint — now rendered by DATA.JS from HERO.json
 
       // ── 13. Viz tiles (mutilar-specific top-level) ────────
       if (s.vizTiles && Array.isArray(s.vizTiles)) {
@@ -205,10 +149,7 @@
       // ── 14. Sections (generates band+parallax from array) ──
       if (s.sections && Array.isArray(s.sections)) _hydrateSections(s);
 
-      // ── 15. CTA (page-level, not per-section) ─────────────
-      if (s.cta) _hydrateCta(s.cta);
-
-      // ── 16. Footer (page-level) ───────────────────────────
+      // ── 15. Footer (page-level) ───────────────────────────
       if (s.footer) _hydrateFooter(s.footer);
 
       // ── Legacy: landing block (deprecated, backward compat) ─
@@ -317,7 +258,29 @@
   // Renders vizTile configs as glassmorphic cards with radio-style
   // toggler badges. Selecting a toggler swaps the preview image and
   // controls which modal opens when the tile itself is clicked.
+  //
+  // If a tile has "mds": [...] instead of "togglers", auto-expand
+  // the md file paths into togglers. Label = filename stem, accent
+  // cycles 1-4, open = mermaidModal.  After render, async-fetch each
+  // md's title: line and hot-swap the dot emoji on the badge.
   function _hydrateVizTiles(container, tiles) {
+    // ── Auto-expand mds[] → togglers[] ──
+    tiles.forEach(function (t) {
+      if (t.mds && Array.isArray(t.mds) && t.mds.length) {
+        t.togglers = t.mds.map(function (md, i) {
+          var stem = md.replace(/.*\//, "").replace(/\.md$/i, "");
+          return {
+            label: stem,
+            dot: "📄",
+            accent: (i % 4) + 1,
+            open: "mermaidModal",
+            openArg: md,
+            active: i === 0
+          };
+        });
+      }
+    });
+
     container.innerHTML = tiles.map(function (t) {
       // Determine initial open target from the active toggler
       var activeToggler = (t.togglers || []).filter(function (g) { return g.active; })[0] || (t.togglers || [])[0];
@@ -401,7 +364,36 @@
         delete tile.dataset.openArg;
       }
     });
+
+    // ── Async dot-emoji enrichment from mermaid title: lines ──
+    // After initial render, fetch each md file's first few hundred
+    // bytes, parse the `title: EMOJI TEXT` line, and hot-swap the
+    // placeholder dot on the rendered badge with the real emoji.
+    tiles.forEach(function (t) {
+      if (!t.mds || !t.mds.length) return;
+      t.mds.forEach(function (md) {
+        fetch(md + "?v=" + Date.now())
+          .then(function (r) { return r.ok ? r.text() : ""; })
+          .then(function (text) {
+            if (!text) return;
+            var m = text.match(/title:\s*(.+)/);
+            if (!m) return;
+            var titleLine = m[1].trim();
+            // Extract leading emoji(s) from title
+            var emojiMatch = titleLine.match(/^(\p{Emoji_Presentation}|\p{Emoji}\uFE0F?)/u);
+            if (!emojiMatch) return;
+            var emoji = emojiMatch[1];
+            // Find the badge whose data-open-arg matches this md path
+            var badge = container.querySelector('.badge-toggler[data-open-arg="' + md + '"] .toggler-dot');
+            if (badge) badge.textContent = emoji;
+          })
+          .catch(function () {});
+      });
+    });
   }
+
+  // Expose for DATA.JS to re-hydrate after dynamic section creation
+  window._hydrateVizTiles = _hydrateVizTiles;
 
   // ── Sections renderer ────────────────────────────────────────
   // Generates mutilar-identical layout from settings.sections[]:
@@ -420,6 +412,18 @@
       html += '<div class="opaque-band" id="' + sec.id + '">';
       html += '<div class="band-content band-header">';
       html += '<h2 class="section-heading reveal" style="margin-bottom:0;">' + (sec.heading || "") + '</h2>';
+      if (sec.body) {
+        html += '<p class="landing-body" style="margin-bottom:0;">' + sec.body + '</p>';
+      }
+      if (sec.buttons && sec.buttons.length) {
+        html += '<div class="landing-cta-row" style="margin-top:1.5rem;">';
+        sec.buttons.forEach(function (btn) {
+          var cls = "landing-cta" + (btn.style === "secondary" ? " landing-cta-secondary" : "");
+          html += '<a href="' + btn.href + '" class="' + cls + '" target="_blank" rel="noopener">';
+          html += '<i class="' + btn.icon + '"></i> ' + btn.label + '</a>';
+        });
+        html += '</div>';
+      }
       if (sec.badge) {
         html += '<a class="section-badge" href="' + (sec.badge.href || "#") + '"' +
           (sec.badge.href && sec.badge.href !== "#" ? ' target="_blank"' : '') +
@@ -494,24 +498,6 @@
     });
   }
 
-  // ── CTA hydration (page-level) ─────────────────────────────
-  function _hydrateCta(cta) {
-    var ctaTile = document.getElementById("landing-cta-tile");
-    if (!ctaTile) return;
-    var ctaHtml = '<h2 class="section-heading reveal" style="margin-bottom:0.5rem;">' + (cta.heading || "") + "</h2>";
-    ctaHtml += '<p class="landing-body" style="margin-bottom:0;">' + (cta.body || "") + "</p>";
-    if (cta.buttons && cta.buttons.length) {
-      ctaHtml += '<div class="landing-cta-row" style="margin-top:1.5rem;">';
-      cta.buttons.forEach(function (btn) {
-        var cls = "landing-cta" + (btn.style === "secondary" ? " landing-cta-secondary" : "");
-        ctaHtml += '<a href="' + btn.href + '" class="' + cls + '" target="_blank" rel="noopener">';
-        ctaHtml += '<i class="' + btn.icon + '"></i> ' + btn.label + "</a>";
-      });
-      ctaHtml += "</div>";
-    }
-    ctaTile.innerHTML = ctaHtml;
-  }
-
   // ── Footer hydration (page-level) ──────────────────────────
   function _hydrateFooter(footer) {
     var footerText = document.querySelector(".landing-footer-text");
@@ -527,7 +513,6 @@
   // Only runs if settings has "landing" but no "sections".
   function _hydrateLandingLegacy(s) {
     var L = s.landing;
-    if (L.cta) _hydrateCta(L.cta);
     if (L.footer) _hydrateFooter(L.footer);
   }
 
@@ -545,89 +530,6 @@
     container.appendChild(a);
   }
 
-  // ── Hero penguin background cycle ──────────────────────────
-  function _initHeroCycle(s) {
-    var link = document.querySelector(".hero-portrait-link");
-    if (!link) return;
-
-    var hero = s && s.hero;
-    if (!hero || !Array.isArray(hero.cycle) || hero.cycle.length < 2) return;
-
-    var a       = document.getElementById("heroPenguinBgA");
-    var b       = document.getElementById("heroPenguinBgB");
-    var penguin = link.querySelector(".hero-penguin-emoji");
-    var circle  = link.querySelector(".hero-portrait-penguin");
-    if (!a || !b || !penguin) return;
-
-    // Build glowMap + emojis from config
-    // cycle[i][1] can be a raw RGB string or an accent index (number).
-    var accents = Array.isArray(s.accents) ? s.accents : [];
-    var glowMap = {};
-    var emojis  = [];
-    for (var i = 0; i < hero.cycle.length; i++) {
-      emojis.push(hero.cycle[i][0]);
-      var c = hero.cycle[i][1];
-      glowMap[hero.cycle[i][0]] = (typeof c === 'number' && accents[c])
-        ? accents[c].replace(/\s/g, '') : String(c || '');
-    }
-
-    var HIDING_EMOJI = emojis[emojis.length - 1];
-    var idx   = 0;
-    var front = a;
-    var back  = b;
-    var timer = null;
-
-    function step() {
-      idx = (idx + 1) % emojis.length;
-      back.textContent = emojis[idx];
-      back.style.opacity = "0.35";
-      front.style.opacity = "0";
-      var tmp = front;
-      front = back;
-      back = tmp;
-
-      if (circle && glowMap[emojis[idx]]) {
-        circle.style.setProperty("--glow", glowMap[emojis[idx]]);
-      }
-
-      if (emojis[idx] === HIDING_EMOJI) {
-        penguin.style.transition = "opacity 0.8s ease";
-        penguin.style.opacity = "0";
-      } else if (penguin.style.opacity === "0") {
-        penguin.style.transition = "opacity 0.8s ease";
-        penguin.style.opacity = "1";
-      }
-    }
-
-    function start() {
-      if (timer) return;
-      idx = 0;
-      front = a; back = b;
-      a.textContent = emojis[0];
-      a.style.opacity = "0.35";
-      b.style.opacity = "0";
-      penguin.style.opacity = "";
-      penguin.style.transition = "";
-      if (circle) circle.style.setProperty("--glow", glowMap[emojis[0]]);
-      timer = setInterval(step, 1000);
-    }
-
-    function stop() {
-      if (timer) { clearInterval(timer); timer = null; }
-      a.style.opacity = "0";
-      b.style.opacity = "0";
-      penguin.style.opacity = "";
-      penguin.style.transition = "";
-    }
-
-    link.addEventListener("mouseenter", start);
-    link.addEventListener("mouseleave", stop);
-
-    // Also respond to programmatic .hover class toggle
-    new MutationObserver(function () {
-      if (link.classList.contains("hover")) start();
-      else if (!link.matches(":hover")) stop();
-    }).observe(link, { attributes: true, attributeFilter: ["class"] });
-  }
+  // ── Hero cycle — moved to DATA.JS (_initHeroCycle) ────────
 
 })();

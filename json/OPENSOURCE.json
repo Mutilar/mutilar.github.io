@@ -1,0 +1,83 @@
+{
+  "index": 11,
+  "header": {
+    "id": "open-source",
+    "heading": "🏗️ Open Source",
+    "badges": [
+      { "label": "Mutilar.github.io", "icon": "fa fa-github", "href": "https://github.com/Mutilar/mutilar.github.io", "external": true }
+    ],
+    "frosted": true,
+    "attention": 0,
+    "accentOrder": "3,4,1,2",
+    "intro": {
+      "img": "png/brian-ghibli.png",
+      "alt": "Brian Hungerman",
+      "steps": [
+        { "align": "left",   "html": "From a <strong><a href=\"#\" onclick=\"event.preventDefault(); openLinkModal('https://en.wikipedia.org/wiki/Coprime_integers', 'Coprime Integers');\">Coprime</a> parallax orb engine</strong> working away in the background..." },
+        { "align": "center", "html": "...to <strong><a href=\"#\" onclick=\"event.preventDefault(); openLinkModal('https://aesthetics.fandom.com/wiki/Glassmorphism', 'Glassmorphism');\">Glassmorphic</a> tiles</strong> floating in the foreground..." },
+        { "align": "right",  "html": "...to <strong><a href=\"#\" onclick=\"event.preventDefault(); openLinkModal('https://www.papaparse.com/', 'PapaParse');\">CSV-driven</a> data</strong> powering it all;" }
+      ],
+      "summary": "<strong><a href=\"https://github.com/Mutilar/mutilar.github.io\" target=\"_blank\">Mutilar.github.io</a></strong> is yet another one of my 45 <strong>open-source</strong> projects on display here!"
+    },
+    "headerItems": [
+      {
+        "type": "detail",
+        "label": "🏗️ Architecture",
+        "actionBadge": "<i class=\"fa fa-cogs\"></i> Under the Hood",
+        "actionBadgeStatic": true,
+        "action": "mermaid",
+        "actionTarget": "md/ARCH.md",
+        "ariaLabel": "Open Architecture Diagrams",
+        "details": [
+          { "icon": "fa fa-database",        "title": "CSV-Driven Data",    "desc": "Content lives in editable <code>*.csv</code> files parsed at runtime by <code>PapaParse</code>" },
+          { "icon": "fa fa-window-restore",  "title": "Glass Morphism",     "desc": "Frosted glass tiles &amp; bands via <code>backdrop-filter</code> &amp; <span class=\"outline-pill\">subtle borders</span>" },
+          { "icon": "fa fa-music",           "title": "Integrated Radio",   "desc": "Open-sourced music with <code>EQ visualizer</code> &amp; volume controls" }
+        ]
+      },
+      {
+        "type": "detail",
+        "label": "📂 Repository",
+        "actionBadge": "<i class=\"fa fa-github\"></i> GitHub",
+        "actionBadgeStatic": true,
+        "href": "https://github.com/Mutilar/mutilar.github.io",
+        "external": true,
+        "ariaLabel": "Open Repository on GitHub",
+        "details": [
+          { "icon": "fa fa-sitemap", "title": "File Structure", "desc": "<code>INDEX.html</code> · <code>css/</code> · <code>js/</code> · <code>PORTFOLIO.json</code> · <code>CARDS.json</code> · <code>png/</code> · <code>games/</code>" },
+          { "icon": "fa fa-cogs",    "title": "JS Modules",     "desc": "<code>PARALLAX.JS</code> · <code>SCROLL.JS</code> · <code>MODALS.JS</code> · <code>DATA.JS</code> · <code>RADIO.JS</code>" }
+        ],
+        "detailRow": [
+          { "icon": "fa fa-cloud",         "title": "GitHub Pages" },
+          { "icon": "fa fa-balance-scale",  "title": "MIT Licensed" }
+        ]
+      },
+      {
+        "type": "img",
+        "label": "🧜‍♀️ Mermaid",
+        "year": "2026",
+        "src": "png/mutilar-architecture-preview.png",
+        "alt": "Mutilar Architecture Preview",
+        "action": "mermaid",
+        "actionTarget": "md/ARCH.md",
+        "actionBadge": "🔍 See More!",
+        "ariaLabel": "Open Architecture Diagrams"
+      },
+      {
+        "type": "icon",
+        "emoji": "⏻",
+        "label": "⏻ Bootfile",
+        "year": "2025",
+        "action": "bootfile",
+        "actionBadge": "🔍 Style Guide",
+        "ariaLabel": "Open Bootfile Style Guide"
+      }
+    ],
+    "copyrightFooter": {
+      "links": [
+        { "emoji": "📅", "spanId": "footer-year", "action": "link-modal", "href": "https://time.is/", "title": "Time.is" },
+        { "emoji": "🐧", "label": "Brian Hungerman", "action": "modal", "target": "biography" },
+        { "icon": "fa fa-globe", "label": "brianhungerman.com", "action": "link-modal", "href": "https://brianhungerman.com", "title": "brianhungerman.com" }
+      ]
+    }
+  }
+}

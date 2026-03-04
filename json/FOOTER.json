@@ -1,0 +1,16 @@
+{
+  "index": 10,
+  "header": {
+    "id": "footer-band",
+    "heading": "🍻 Cheers",
+    "badges": [
+      { "label": "Mutilar", "icon": "fa fa-github", "href": "https://github.com/Mutilar/mutilar.github.io", "external": true }
+    ],
+    "attention": 1,
+    "windowClass": "parallax-window-gap",
+    "windowStyle": "display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:50vh;max-height:none;padding-bottom:24px;",
+    "connect": { "social": true },
+    "noGrid": true,
+    "scrollHint": { "target": "#open-source", "label": "Open Source", "arrow": "🏗️" }
+  }
+}

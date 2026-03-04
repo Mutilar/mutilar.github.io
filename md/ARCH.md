@@ -48,7 +48,7 @@ graph TD
             direction TB
             subgraph DOCS["📎 DOCS"]
                 direction LR
-                SECTIONJSONS["📋 {SECTION}.json × 10<br/>(index + nav + items)"]
+                SECTIONJSONS["📋 {SECTION}.json × 12<br/>(index + nav + header + items)"]
                 PORTFOLIOJSON["📋 PORTFOLIO.json<br/>(metadata only)"]
                 CARDSJSON["🃏 CARDS.json"]
                 SETTINGSJSON["⚙️ SETTINGS.json"]

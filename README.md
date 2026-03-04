@@ -319,3 +319,7 @@ Light mode is a 600+ line parallel implementation via `html.light-mode` class (u
 **Brian Hungerman · 2026**
 
 13,400 LOC portfolio site built in 14 days with Opus 4.6 (fast mode).
+
+Each session: call to adventure (the prompt), threshold crossing (context gathering), trials (debugging, refactoring), transformation (the commit).
+
+Systems theory: boundary spanning.

@@ -87,6 +87,7 @@
 
   /* ─── Open / close ──────────────────────────────────────── */
   var _mapReg = registerModal("map-modal", {
+    ariaLabel: "Constellation Map",
     onOpen: function () {
       if (_filterSys) _filterSys.setAll();
       if (_techFilterSys) _techFilterSys.setAll();

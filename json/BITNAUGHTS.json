@@ -4,6 +4,33 @@
     "href": "#bitnaughts",
     "label": "BitNaughts"
   },
+  "header": {
+    "id": "bitnaughts",
+    "heading": "☄ BitNaughts",
+    "badges": [
+      { "label": "BitNaughts", "icon": "fa fa-github", "href": "https://github.com/bitnaughts", "external": true }
+    ],
+    "attention": 0,
+    "accentOrder": "0,2,3,0",
+    "intro": {
+      "img": "png/bitnaughts-poster.png",
+      "alt": "BitNaughts",
+      "steps": [
+        { "align": "left",   "html": "Transforming <strong><a href=\"#projects\" onclick=\"event.preventDefault(); navigateToModal('projects','iterate')\">Iterate</a></strong> into a new <strong><a href=\"#bitnaughts\" onclick=\"event.preventDefault(); navigateToModal('bitnaughts','bitnaughts-unity')\">Interpreter</a></strong> into a <strong>gamified environment</strong>..." },
+        { "align": "center", "html": "...to pitching at four consecutive <strong><a href=\"#\" onclick=\"event.preventDefault(); openLinkModal('https://www.microsoft.com/en-us/garage', 'Microsoft Garage');\">Microsoft Hackathons</a></strong>..." },
+        { "align": "right",  "html": "...to open-sourcing the <strong>whole stack</strong> from <strong><a href=\"#bitnaughts\" onclick=\"event.preventDefault(); navigateToModal('bitnaughts','bitnaughts-unity')\">Unity</a></strong> to <strong><a href=\"#bitnaughts\" onclick=\"event.preventDefault(); navigateToModal('bitnaughts','bitnaughts-mainframe')\">Azure</a></strong>;" }
+      ],
+      "summary": "<strong><a href=\"#bitnaughts\" onclick=\"event.preventDefault(); navigateToModal('bitnaughts','bitnaughts')\">BitNaughts</a></strong> isn't just an educational programming video-game: it's code gamified!"
+    },
+    "headerItems": [
+      { "type": "youtube", "label": "🎥 Microsoft Hackathon (3:00)", "year": "2023", "youtubeId": "V7oA7aGZlSE", "title": "Hackathon 23 Pitch" },
+      { "type": "youtube", "label": "🎥 Microsoft Hackathon (1:33)", "year": "2022", "youtubeId": "0ftAfiPsyds", "title": "Hackathon 22 Pitch" },
+      { "type": "youtube", "label": "🎥 Microsoft Hackathon (2:18)", "year": "2021", "youtubeId": "-gN4dHWMkSI", "title": "Hackathon 21 Pitch" },
+      { "type": "youtube", "label": "🎥 Microsoft Hackathon (2:12)", "year": "2020", "youtubeId": "kQaZFAu65z4", "title": "Hackathon 20 Pitch" },
+      { "type": "grid", "wide": true }
+    ],
+    "scrollHint": { "target": "#mtg", "label": "Magic: The Gathering", "arrow": "🔮" }
+  },
   "sections": [
     {
       "id": "bitnaughts",

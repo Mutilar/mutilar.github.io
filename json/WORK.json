@@ -4,6 +4,26 @@
     "href": "#work",
     "label": "Work"
   },
+  "header": {
+    "id": "work",
+    "heading": "👨‍💻 Work",
+    "badges": [
+      { "label": "Resume", "icon": "fa fa-file-text", "href": "#", "action": "modal", "target": "resume", "glow": true }
+    ],
+    "attention": 0,
+    "accentOrder": "1,0,0,3",
+    "intro": {
+      "img": "png/beers-with-the-viers.png",
+      "alt": "Work",
+      "steps": [
+        { "align": "left",   "html": "From building <strong><a href=\"#work\" onclick=\"event.preventDefault(); navigateToModal('work','ventana')\">platforms to fight cancer</a></strong> with <strong>machine learning</strong> & <strong>big data</strong>..." },
+        { "align": "center", "html": "...to teaching <strong><a href=\"#work\" onclick=\"event.preventDefault(); navigateToModal('work','summerofgamedesign')\">game design</a></strong>, <strong><a href=\"#work\" onclick=\"event.preventDefault(); navigateToModal('work','learnbeat')\">coding</a></strong>, and <strong><a href=\"#work\" onclick=\"event.preventDefault(); navigateToModal('work','alamorobotics')\">robotics</a></strong> across the <strong>socioeconomic spectrum</strong>..." },
+        { "align": "right",  "html": "...to analysing <strong><a href=\"#work\" onclick=\"event.preventDefault(); navigateToModal('work','vicelab')\">hydrologic & ecosystemic implications</a></strong> of <strong>Central Valley agriculture</strong>;" }
+      ],
+      "summary": "I've had amazing opportunities to work at empowering companies, non-profits & innovative research labs!"
+    },
+    "scrollHint": { "target": "#education", "label": "Education", "arrow": "🎓" }
+  },
   "sections": [
     {
       "id": "work",

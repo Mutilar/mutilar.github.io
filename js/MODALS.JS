@@ -13,6 +13,7 @@ function toggleModal(el, open) {
     el.classList.remove("closing");
     el.classList.add("open");
     _modalOpenCount++;
+    window.dispatchEvent(new CustomEvent("modal-count-changed", { detail: { count: _modalOpenCount } }));
     document.body.style.overflow = "hidden";
     document.documentElement.style.overflow = "hidden";
     // Move focus into the modal
@@ -23,6 +24,7 @@ function toggleModal(el, open) {
     el.classList.add("closing");
     el.classList.remove("open");
     _modalOpenCount = Math.max(0, _modalOpenCount - 1);
+    window.dispatchEvent(new CustomEvent("modal-count-changed", { detail: { count: _modalOpenCount } }));
 
     const onEnd = () => {
       el.classList.remove("closing");
@@ -91,8 +93,12 @@ function registerModal(id, opts) {
   opts = opts || {};
   var el = document.getElementById(id);
   if (!el) {
-    var noop = function() {};
-    return { open: noop, close: noop, el: null };
+    el = document.createElement('div');
+    el.className = 'modal-overlay';
+    el.id = id;
+    el.setAttribute('role', opts.role || 'dialog');
+    if (opts.ariaLabel) el.setAttribute('aria-label', opts.ariaLabel);
+    document.body.appendChild(el);
   }
 
   var entry = { el: el, close: close, open: open };
@@ -771,6 +777,7 @@ function closeGameModal() { _gameModal.close(); }
 
   var _stopBootfileTour = null;
   var _bootfileModal = registerModal("bootfile-modal", {
+    ariaLabel: "bootfile Style Guide",
     onClose: function () { if (_stopBootfileTour) _stopBootfileTour(); }
   });
 
@@ -1144,7 +1151,15 @@ function hydrateBiographyModalFromSettings(settings) {
   var schema = settings && settings.modals && settings.modals.biography;
   var elId = (schema && schema.elementId) || 'biography-modal';
   var modal = document.getElementById(elId);
-  if (!schema || !modal) return;
+  if (!modal) {
+    // Auto-create the overlay (same pattern as registerModal)
+    modal = document.createElement('div');
+    modal.className = 'modal-overlay';
+    modal.id = elId;
+    modal.setAttribute('role', 'dialog');
+    document.body.appendChild(modal);
+  }
+  if (!schema) return;
   if (!Array.isArray(schema.sections) || !schema.sections.length) return;
 
   // Build outer shell
@@ -1546,23 +1561,19 @@ _stopBioTour = _wireBioTour(quiltModal);
 } // end _initBioWiring
 
 // ── Auto-hydrate + wire biography ────────────────────────────
-var _bioModalId = document.getElementById("biography-modal") ? "biography-modal" : "quilt-modal";
-var _bioModalEl = document.getElementById(_bioModalId);
-if (_bioModalEl) {
-  if (_bioModalEl.querySelector('.modal-card')) {
-    // DOM already populated (fragment or pre-hydrated by inline script)
-    _initBioWiring(_bioModalEl, _bioModalId);
-  } else if (window.__SETTINGS && window.__SETTINGS.modals && window.__SETTINGS.modals.biography) {
-    // Settings available synchronously — hydrate then wire
-    hydrateBiographyModalFromSettings(window.__SETTINGS);
-    _initBioWiring(_bioModalEl, _bioModalId);
-  } else {
-    // Wait for BOOT.JS settingsReady, then hydrate + wire
-    window.addEventListener('settingsReady', function (e) {
-      hydrateBiographyModalFromSettings(e.detail);
-      if (_bioModalEl.querySelector('.modal-card')) {
-        _initBioWiring(_bioModalEl, _bioModalId);
-      }
-    }, { once: true });
-  }
+// Derive modal ID from SETTINGS (no hardcoded DOM sniffing).
+function _bootBiography(settings) {
+  var schema = settings && settings.modals && settings.modals.biography;
+  var id = (schema && schema.elementId) || 'biography-modal';
+  hydrateBiographyModalFromSettings(settings);
+  var el = document.getElementById(id);
+  if (el) _initBioWiring(el, id);
+}
+
+if (window.__SETTINGS && window.__SETTINGS.modals && window.__SETTINGS.modals.biography) {
+  _bootBiography(window.__SETTINGS);
+} else {
+  window.addEventListener('settingsReady', function (e) {
+    _bootBiography(e.detail);
+  }, { once: true });
 }

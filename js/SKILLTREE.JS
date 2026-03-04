@@ -732,6 +732,7 @@ function createSkillTree(cfg) {
   /* ── Open / close ─────────────────────────────────────────── */
   var _kgReg = registerModal("knowledge-modal", {
     key: "knowledgeModal",
+    ariaLabel: "Graph of Knowledge",
     onOpen: function () {
       _filterSys.setAll();
       if (!graphBuilt) buildGraph();

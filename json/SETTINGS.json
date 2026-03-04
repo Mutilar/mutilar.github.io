@@ -108,7 +108,7 @@
   "data": {
     "path": "json/",
     "sources": [
-      "HOME.json",
+      "HERO.json",
       "ABOUT.json",
       "MARP.json",
       "BITNAUGHTS.json",
@@ -118,9 +118,10 @@
       "PROJECTS.json",
       "HACKATHONS.json",
       "GAMES.json",
+      "FOOTER.json",
+      "OPENSOURCE.json",
       "PORTFOLIO.json",
-      "CARDS.json",
-      "QUILT.json"
+      "CARDS.json"
     ]
   },
   "media": {
@@ -153,96 +154,6 @@
     "heading": "👀 Interested?",
     "subtitle": "Let's build something."
   },
-  "vizTiles": [
-    {
-      "emoji": "🧭",
-      "label": "Skill Tree",
-      "ariaLabel": "Open Graph of Knowledge",
-      "action": "open",
-      "img": "png/graph.png",
-      "imgAlt": "Graph of Knowledge",
-      "togglers": [
-        {
-          "label": "PORT",
-          "dot": "🔵",
-          "active": true,
-          "src": "png/graph.png",
-          "accent": 1,
-          "open": "knowledgeModal"
-        },
-        {
-          "label": "MTG",
-          "dot": "⚫",
-          "src": "png/graph-mtg.png",
-          "accent": 2,
-          "open": "mtgTreeModal"
-        }
-      ]
-    },
-    {
-      "emoji": "🕰️",
-      "label": "Road Map",
-      "ariaLabel": "See more in Timeline",
-      "action": "open",
-      "img": "png/timeline.png",
-      "imgAlt": "Timeline",
-      "togglers": [
-        {
-          "label": "MORE",
-          "dot": "🔵",
-          "active": true,
-          "src": "png/timeline.png",
-          "accent": 1,
-          "open": "timelineModal"
-        }
-      ]
-    },
-    {
-      "emoji": "🛠️",
-      "label": "Tool Kit",
-      "ariaLabel": "Open Constellation Map",
-      "action": "open",
-      "img": "png/constellation.png",
-      "imgAlt": "Constellation Map",
-      "togglers": [
-        {
-          "label": "TECH",
-          "dot": "🔵",
-          "active": true,
-          "src": "png/constellation.png",
-          "accent": 1,
-          "open": "mapModal"
-        }
-      ]
-    },
-    {
-      "emoji": "🧜",
-      "label": "Diagrams",
-      "ariaLabel": "See more about Architecture",
-      "action": "open",
-      "img": "png/marp.png",
-      "imgAlt": "Architecture",
-      "togglers": [
-        {
-          "label": "MARP",
-          "dot": "🔵",
-          "active": true,
-          "src": "png/marp.png",
-          "accent": 1,
-          "open": "mermaidModal",
-          "openArg": "MARP.md"
-        },
-        {
-          "label": "ARCH",
-          "dot": "⚫",
-          "src": "png/arch.png",
-          "accent": 4,
-          "open": "mermaidModal",
-          "openArg": "ARCH.md"
-        }
-      ]
-    }
-  ],
   "modals": {
     "biography": {
       "type": "biography",

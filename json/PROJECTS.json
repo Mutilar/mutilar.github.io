@@ -4,6 +4,32 @@
     "href": "#projects",
     "label": "Projects"
   },
+  "header": {
+    "id": "projects",
+    "heading": "🛠️ Projects",
+    "badges": [
+      { "label": "Iterate", "icon": "fa fa-github", "href": "https://github.com/iteratecode", "external": true },
+      { "label": "Mutilar", "icon": "fa fa-github", "href": "https://github.com/Mutilar", "external": true }
+    ],
+    "attention": 0,
+    "accentOrder": "0,1,2,0",
+    "intro": {
+      "img": "png/brian2.png",
+      "alt": "Projects",
+      "steps": [
+        { "align": "left",   "html": "From empowering those with <strong>asthma</strong> with <strong><a href=\"#projects\" onclick=\"event.preventDefault(); navigateToModal('projects','breeze')\">real-time air quality data</a></strong>..." },
+        { "align": "center", "html": "...to leveraging <strong>big data</strong> to promote <strong><a href=\"#projects\" onclick=\"event.preventDefault(); navigateToModal('projects','ozone')\">sustainability initiatives</a></strong>..." },
+        { "align": "right",  "html": "...to providing an <strong><a href=\"#projects\" onclick=\"event.preventDefault(); navigateToModal('projects','iterate')\">intuitive learning environment</a></strong> for <strong>new programmers</strong>;" }
+      ],
+      "summary": "The intersection of computer science & entrepreneurship is a fascinating blend of creativity, pitching & coding!"
+    },
+    "headerItems": [
+      { "type": "youtube", "label": "🎥 AMAX ESD (2:55)", "year": "2015", "youtubeId": "5hGkIXoP2AI", "title": "AMAX ESD" },
+      { "type": "img", "label": "📱 Iterate U.X.", "year": "2017", "src": "png/iteratedemo.gif", "alt": "Iterate U.X.", "action": "scroll-modal", "scrollTo": "projects", "modalDataset": "projects", "modalId": "iterate", "actionBadge": "🔍 Dive Deeper", "ariaLabel": "See more about Iterate U.X." },
+      { "type": "grid" }
+    ],
+    "scrollHint": { "target": "#hackathons", "label": "Hacks", "arrow": "⛏️" }
+  },
   "sections": [
     {
       "id": "projects",
