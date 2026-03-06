@@ -187,9 +187,13 @@ window.closeModal = function (key) {
 };
 
 // ═══════════════════════════════════════════════════════════════
-//  MODAL SYSTEM  (modalState provided by DATA.JS)
-//  Each modal auto-creates its overlay if absent (via _ensureOverlay).
-//  Every modal is registered with a key → openModal(key, ...args).
+//  MODAL CONSTRUCT SYSTEM
+//  JSON schemas in SETTINGS.json → `_constructs[type]` builders
+//  → `_hydrateModals(settings)` boot loop.
+//
+//  To add a new modal type, add a JSON block in SETTINGS.json
+//  under "modals" and (if needed) a new construct function below.
+//  No hardcoded HTML. No IIFEs. Pure schema → DOM hydration.
 // ═══════════════════════════════════════════════════════════════
 function _ensureOverlay(id) {
   var el = document.getElementById(id);
@@ -197,228 +201,306 @@ function _ensureOverlay(id) {
   return el;
 }
 
-var modal = _ensureOverlay("modal");
-// ── Entry modal shell (replaces MODAL.HTML fragment) ──
-modal.innerHTML =
-  '<div class="glass-tile modal-card" style="position:relative;">' +
-    '<div class="modal-sticky-bar"><div class="modal-sticky-group tl-glow">' +
-      '<p class="modal-subtitle" id="modal-title"></p>' +
-      '<button class="modal-close" id="modalClose" aria-label="Close modal">&times;</button>' +
-    '</div></div>' +
-    '<img class="modal-img" id="modal-image" src="" alt="" />' +
-    '<div class="modal-header-row"><h2 class="modal-title" id="modal-name"></h2></div>' +
-    '<div class="modal-body" id="modal-biography"></div>' +
-  '</div>';
+// ─── Universal shell: every modal gets the same outer frame ──
+function _buildModalShell(schema) {
+  var el = _ensureOverlay(schema.elementId);
+  var cardClass = "glass-tile modal-card" + (schema.cardClass ? " " + schema.cardClass : "");
+  var bar = schema.stickyBar || {};
 
-// Track the currently-glowing tile so we can fade it out later
-let _glowingTile = null;
+  // Title element
+  var titleTag = bar.titleTag || "h2";
+  var titleClass = bar.titleClass || "modal-sticky-title";
+  var titleId = bar.titleId ? ' id="' + bar.titleId + '"' : '';
+  var titleIcon = bar.icon ? '<i class="' + bar.icon + '"></i> ' : '';
+  var titleContent = titleIcon + (bar.title || '');
+  var titleHTML = '<' + titleTag + ' class="' + titleClass + '"' + titleId + '>' + titleContent + '</' + titleTag + '>';
+
+  // Links
+  var linksHTML = '';
+  (bar.links || []).forEach(function(link) {
+    var href = link.href || '#';
+    var id = link.id ? ' id="' + link.id + '"' : '';
+    var target = ' target="_blank"';
+    linksHTML += '<a class="modal-sticky-link"' + id + ' href="' + href + '"' + target + '><i class="' + link.icon + '"></i> ' + (link.label || '') + '</a>';
+  });
+
+  // Close button
+  var closeHTML = '<button class="modal-close" aria-label="Close modal">&times;</button>';
+
+  el.innerHTML =
+    '<div class="' + cardClass + '" style="position:relative;">' +
+      '<div class="modal-sticky-bar"><div class="modal-sticky-group tl-glow">' +
+        titleHTML + linksHTML + closeHTML +
+      '</div></div>' +
+      '<div class="modal-content"></div>' +
+    '</div>';
+
+  return { el: el, content: el.querySelector('.modal-content') };
+}
+
+// ─── Construct registry: type → builder(shell, schema, key) → { onOpen, onClose } ──
+var _constructs = {};
+
+// ┌─────────────────────────────────────────────────────────────┐
+// │  CONSTRUCT: entry — portfolio item detail modal             │
+// └─────────────────────────────────────────────────────────────┘
+var _glowingTile = null;
 
 function _applyGlow(dataset, id) {
-  // Clear any previous glow
-  if (_glowingTile) {
-    _glowingTile.classList.remove('tile-glow', 'tile-glow-fade');
-    _glowingTile = null;
-  }
-  // Find the tile in its native section grid first, fall back to any match
-  const gridId = dataset + '-grid';
-  const grid = document.getElementById(gridId);
-  const tile = grid
-    ? grid.querySelector(`[data-entry-id="${id}"]`)
-    : document.querySelector(`[data-entry-id="${id}"]`);
-  if (tile) {
-    tile.classList.add('tile-glow');
-    _glowingTile = tile;
-  }
+  if (_glowingTile) { _glowingTile.classList.remove('tile-glow', 'tile-glow-fade'); _glowingTile = null; }
+  var gridId = dataset + '-grid';
+  var grid = document.getElementById(gridId);
+  var tile = grid
+    ? grid.querySelector('[data-entry-id="' + id + '"]')
+    : document.querySelector('[data-entry-id="' + id + '"]');
+  if (tile) { tile.classList.add('tile-glow'); _glowingTile = tile; }
 }
 
 function _fadeOutGlow() {
   if (_glowingTile) {
     _glowingTile.classList.remove('tile-glow');
     _glowingTile.classList.add('tile-glow-fade');
-    const el = _glowingTile;
+    var el = _glowingTile;
     _glowingTile = null;
-    setTimeout(() => el.classList.remove('tile-glow-fade'), 500);
+    setTimeout(function() { el.classList.remove('tile-glow-fade'); }, 500);
   }
 }
 
-var _dataModal = registerModal("modal", {
-  key: "entry",
-  onClose: _fadeOutGlow
-});
+_constructs["entry"] = function(shell, schema, key) {
+  var slot = shell.content;
+  slot.innerHTML =
+    '<img class="modal-img" id="modal-image" src="" alt="" />' +
+    '<div class="modal-header-row"><h2 class="modal-title" id="modal-name"></h2></div>' +
+    '<div class="modal-body" id="modal-biography"></div>';
 
-function _populateEntry(dataset, id, imgExt) {
-  const data = modalState[dataset];
-  if (!data) return;
-  const item = data.find(d => d.ID === id);
-  if (!item) return;
+  var reg = registerModal(schema.elementId, { key: key, onClose: _fadeOutGlow });
 
-  const modalImg = document.getElementById("modal-image");
-  modalImg.style.display = "none";
-  modalImg.onload = function () { this.style.display = ""; };
-  modalImg.onerror = function () { this.style.display = "none"; };
-  modalImg.src = "png/" + id + (imgExt || ".png");
-  modalImg.alt = item.NAME || "";
+  function populate(dataset, id, imgExt) {
+    var data = modalState[dataset];
+    if (!data) return;
+    var item = data.find(function(d) { return d.ID === id; });
+    if (!item) return;
 
-  document.getElementById("modal-name").innerHTML = (item.NAME || "").replace(/<br\s*\/?>/gi, " ");
+    var modalImg = document.getElementById("modal-image");
+    modalImg.style.display = "none";
+    modalImg.onload = function () { this.style.display = ""; };
+    modalImg.onerror = function () { this.style.display = "none"; };
+    modalImg.src = "png/" + id + (imgExt || ".png");
+    modalImg.alt = item.NAME || "";
 
-  const titleStr = item.TITLE || item.MOTTO || "";
-  const titleBadges = titleStr.split(',').map(t => t.trim()).filter(Boolean)
-    .map(t => `<span class="modal-badge">${t}</span>`).join('');
-  const winBadge = item.WIN && item.WIN.trim()
-    ? `<span class="modal-win-badge"><i class="fa fa-trophy"></i> ${item.WIN}</span>`
-    : '';
+    document.getElementById("modal-name").innerHTML = (item.NAME || "").replace(/<br\s*\/?>/gi, " ");
 
-  const hasPlay = item.PLAY && item.PLAY.trim();
-  const isExternal = hasPlay && item.PLAY.trim().startsWith('http');
-  const playBadge = hasPlay
-    ? (isExternal
-      ? `<a href="${item.PLAY.trim()}" target="_blank" class="modal-play-badge" onclick="event.stopPropagation();"><i class="fa fa-gamepad"></i> Play me!</a>`
-      : `<a href="#" class="modal-play-badge" onclick="event.preventDefault(); event.stopPropagation(); closeModal('entry'); openModal('game', '${item.PLAY.trim()}', '${(item.NAME || '').replace(/'/g, "\\'")}', ${item.PLAY_W || 960}, ${item.PLAY_H || 600})"><i class="fa fa-gamepad"></i> Play me!</a>`)
-    : '';
-  document.getElementById("modal-title").innerHTML = playBadge + titleBadges + winBadge;
+    var titleStr = item.TITLE || item.MOTTO || "";
+    var titleBadges = titleStr.split(',').map(function(t) { return t.trim(); }).filter(Boolean)
+      .map(function(t) { return '<span class="modal-badge">' + t + '</span>'; }).join('');
+    var winBadge = item.WIN && item.WIN.trim()
+      ? '<span class="modal-win-badge"><i class="fa fa-trophy"></i> ' + item.WIN + '</span>'
+      : '';
 
-  document.getElementById("modal-biography").innerHTML = item.TEXT && item.TEXT !== "tbd"
-    ? item.TEXT
-    : "<p style='color:rgba(255,255,255,0.5);font-style:italic;'>Details coming soon…</p>";
+    var hasPlay = item.PLAY && item.PLAY.trim();
+    var isExternal = hasPlay && item.PLAY.trim().startsWith('http');
+    var playBadge = '';
+    if (hasPlay) {
+      if (isExternal) {
+        playBadge = '<a href="' + item.PLAY.trim() + '" target="_blank" class="modal-play-badge" onclick="event.stopPropagation();"><i class="fa fa-gamepad"></i> Play me!</a>';
+      } else {
+        playBadge = '<a href="#" class="modal-play-badge" onclick="event.preventDefault(); event.stopPropagation(); closeModal(\'entry\'); openModal(\'game\', \'' + item.PLAY.trim() + '\', \'' + (item.NAME || '').replace(/'/g, "\\'") + '\', ' + (item.PLAY_W || 960) + ', ' + (item.PLAY_H || 600) + ')"><i class="fa fa-gamepad"></i> Play me!</a>';
+      }
+    }
+    document.getElementById("modal-title").innerHTML = playBadge + titleBadges + winBadge;
 
-  // Glow the source tile
-  _applyGlow(dataset, id);
-}
+    document.getElementById("modal-biography").innerHTML = item.TEXT && item.TEXT !== "tbd"
+      ? item.TEXT
+      : "<p style='color:rgba(255,255,255,0.5);font-style:italic;'>Details coming soon…</p>";
 
-// Override registry entry so openModal('entry', ...) does setup then opens
-_modalByKey["entry"] = {
-  el: _dataModal.el,
-  open: function(dataset, id, imgExt) {
-    _populateEntry(dataset, id, imgExt);
-    _dataModal.open();
-  },
-  close: _dataModal.close
+    _applyGlow(dataset, id);
+  }
+
+  _modalByKey[key] = {
+    el: reg.el,
+    open: function(dataset, id, imgExt) { populate(dataset, id, imgExt); reg.open(); },
+    close: reg.close
+  };
+
+  // Close modal on in-page anchor clicks (but not navigateToModal links)
+  shell.el.addEventListener("click", function (e) {
+    var link = e.target.closest("a[href^='#']");
+    if (!link) return;
+    var onclickAttr = link.getAttribute("onclick") || "";
+    if (onclickAttr.indexOf("navigateToModal") !== -1) return;
+    closeModal('entry');
+  });
+
+  return { onOpen: null, onClose: null };
 };
 
-function navigateToModal(dataset, id, imgExt) {
-  // Clear any existing glow without the fade-out animation
-  if (_glowingTile) {
-    _glowingTile.classList.remove('tile-glow', 'tile-glow-fade');
-    _glowingTile = null;
-  }
-  openModal('entry', dataset, id, imgExt);
-}
+// ┌─────────────────────────────────────────────────────────────┐
+// │  CONSTRUCT: iframe — link, game, bootfile, any iframe modal │
+// └─────────────────────────────────────────────────────────────┘
+_constructs["iframe"] = function(shell, schema, key) {
+  var slot = shell.content;
+  var wrapClass = schema.contentClass || "link-embed-wrap";
+  var iframeId = schema.iframeId || (key + "-iframe");
+  var iframeTitle = schema.iframeTitle || "External content";
+  var scrolling = schema.iframeScrolling || "";
+  var scrollAttr = scrolling ? ' scrolling="' + scrolling + '"' : '';
 
-window.openEntry       = function(dataset, id, imgExt) { openModal('entry', dataset, id, imgExt); };
-window.closeEntry      = function() { closeModal('entry'); };
-window.navigateToModal = navigateToModal;
+  slot.innerHTML = '<div class="' + wrapClass + '"><iframe id="' + iframeId + '" src="" title="' + iframeTitle + '" allowfullscreen' + scrollAttr + '></iframe></div>';
 
-// ── Footer year (safe alternative to document.write) ──
-const footerYear = document.getElementById("footer-year");
-if (footerYear) footerYear.textContent = new Date().getFullYear();
+  var iframe = document.getElementById(iframeId);
+  var resizeHandler = null;
 
-// Mermaid modals — lazily created by openMermaidModal() in MERMAID.JS
+  var reg = registerModal(schema.elementId, {
+    key: key,
+    onClose: function () {
+      if (iframe) iframe.src = "";
+      if (schema.fitToContainer) {
+        iframe.style.transform = '';
+        iframe.style.width = '';
+        iframe.style.height = '';
+        iframe.style.left = '';
+        iframe.style.top = '';
+        if (resizeHandler) { window.removeEventListener('resize', resizeHandler); resizeHandler = null; }
+      }
+    }
+  });
 
-// ═══════════════════════════════════════════════════════════════
-//  BITNAUGHTS GALLERY MODALS
-// ═══════════════════════════════════════════════════════════════
-function _buildGalleryShell(el, cfg) {
-  if (!el) return;
-  var items = '';
-  cfg.items.forEach(function(item) {
-    items += '<div class="bitnaughts-gallery-item">' +
-      '<div class="bitnaughts-gallery-label">' + item.label + '</div>' +
-      '<img src="' + item.src + '" alt="' + item.alt + '" loading="lazy">' +
+  _modalByKey[key] = {
+    el: reg.el,
+    open: function(url, title, nativeW, nativeH) {
+      // Update sticky bar title if present
+      var bar = schema.stickyBar || {};
+      if (bar.titleId) {
+        var titleIcon = bar.icon ? '<i class="' + bar.icon + '"></i> ' : '';
+        document.getElementById(bar.titleId).innerHTML = titleIcon + (title || bar.title || 'Link');
+      }
+      // Update sticky bar link href if present
+      if (bar.links && bar.links.length && bar.links[0].id) {
+        var linkEl = document.getElementById(bar.links[0].id);
+        if (linkEl) linkEl.href = url || bar.links[0].href || '#';
+      }
+
+      if (schema.fitToContainer) {
+        nativeW = nativeW || 960;
+        nativeH = nativeH || 600;
+        iframe.style.width = nativeW + 'px';
+        iframe.style.height = nativeH + 'px';
+
+        reg.open();
+
+        var fitIframe = function() {
+          var wrap = shell.el.querySelector('.' + wrapClass);
+          if (!wrap) return;
+          var wrapW = wrap.clientWidth;
+          var wrapH = wrap.clientHeight;
+          var sx = wrapW / nativeW;
+          var sy = wrapH / nativeH;
+          var s = Math.min(sx, sy);
+          iframe.style.transformOrigin = '0 0';
+          iframe.style.transform = 'scale(' + s + ')';
+          var scaledW = nativeW * s;
+          var scaledH = nativeH * s;
+          iframe.style.left = ((wrapW - scaledW) / 2) + 'px';
+          iframe.style.top = ((wrapH - scaledH) / 2) + 'px';
+        };
+
+        requestAnimationFrame(fitIframe);
+        setTimeout(fitIframe, 50);
+        if (resizeHandler) window.removeEventListener('resize', resizeHandler);
+        resizeHandler = fitIframe;
+        window.addEventListener('resize', fitIframe);
+      } else {
+        reg.open();
+      }
+
+      iframe.src = url || schema.iframeSrc || '';
+    },
+    close: reg.close
+  };
+
+  return { onOpen: null, onClose: null };
+};
+
+// ┌─────────────────────────────────────────────────────────────┐
+// │  CONSTRUCT: gallery — image gallery modal                   │
+// └─────────────────────────────────────────────────────────────┘
+_constructs["gallery"] = function(shell, schema, key) {
+  var slot = shell.content;
+  var galleryClass = schema.galleryClass || "gallery";
+  var itemClass = schema.itemClass || "gallery-item";
+  var labelClass = schema.labelClass || "gallery-label";
+  var items = schema.items || [];
+
+  var html = '';
+  items.forEach(function(item) {
+    html += '<div class="' + itemClass + '">' +
+      '<div class="' + labelClass + '">' + item.label + '</div>' +
+      '<img src="' + item.src + '" alt="' + (item.alt || '') + '" loading="lazy">' +
     '</div>';
   });
-  el.innerHTML =
-    '<div class="glass-tile modal-card bitnaughts-modal-card" style="position:relative;">' +
-      '<div class="modal-sticky-bar"><div class="modal-sticky-group tl-glow">' +
-        '<h2 class="modal-sticky-title">' + cfg.title + '</h2>' +
-        '<a class="modal-sticky-link" href="' + cfg.linkHref + '" target="_blank"><i class="fa fa-github"></i> ' + cfg.linkText + '</a>' +
-        '<button class="modal-close" aria-label="Close modal">&times;</button>' +
-      '</div></div>' +
-      '<div class="bitnaughts-gallery">' + items + '</div>' +
-    '</div>';
-}
+  slot.innerHTML = '<div class="' + galleryClass + '">' + html + '</div>';
 
-_buildGalleryShell(_ensureOverlay("bitnaughts-modal"), {
-  title: '\u2604 BitNaughts: Early Iterations',
-  linkHref: 'https://github.com/bitnaughts',
-  linkText: 'bitnaughts',
-  items: [
-    { label: '\uD83C\uDFA8 3D Ship Design', src: 'png/bn-3d.gif', alt: 'BitNaughts 3D Ship' },
-    { label: '\uD83D\uDDA5\uFE0F UI Prototype', src: 'png/bn-ui.gif', alt: 'BitNaughts UI' },
-    { label: '\uD83C\uDFAD Color Palette Exploration', src: 'png/bn-colors.gif', alt: 'BitNaughts Colors' }
-  ]
-});
-
-_buildGalleryShell(_ensureOverlay("bitnaughts-iphone-modal"), {
-  title: '\u2604 BitNaughts: U.X. Design',
-  linkHref: 'https://github.com/bitnaughts',
-  linkText: 'bitnaughts',
-  items: [
-    { label: '\uD83D\uDCF1 Ship Overview', src: 'png/bitnaughtsiphone.png', alt: 'BitNaughts iPhone Ship Overview' },
-    { label: '\uD83D\uDCF1 Navigation U.X.', src: 'png/bitnaughtsiphone2.png', alt: 'BitNaughts iPhone Navigation' },
-    { label: '\uD83D\uDCF1 Terminal U.X.', src: 'png/bitnaughtsiphone3.png', alt: 'BitNaughts iPhone Terminal' },
-    { label: '\uD83D\uDCF1 Inventory U.X.', src: 'png/bitnaughtsiphone4.png', alt: 'BitNaughts iPhone Inventory' }
-  ]
-});
-
-var _bnModal       = registerModal("bitnaughts-modal", { key: "bitnaughts" });
-var _bnIphoneModal = registerModal("bitnaughts-iphone-modal", { key: "bitnaughtsIphone" });
-
-window.openBitnaughtsModal       = function() { openModal('bitnaughts'); };
-window.openBitnaughtsIphoneModal = function() { openModal('bitnaughtsIphone'); };
-
-// Close modal when clicking an in-page anchor link (e.g. #games)
-// but NOT if the link navigates to another modal via navigateToModal
-modal.addEventListener("click", function (e) {
-  const link = e.target.closest("a[href^='#']");
-  if (!link) return;
-  const onclickAttr = link.getAttribute("onclick") || "";
-  if (onclickAttr.indexOf("navigateToModal") !== -1) return;
-  closeModal('entry');
-});
-
-// ═══════════════════════════════════════════════════════════════
-//  PDF VIEWER MODAL (single reusable overlay)
-//  openModal('pdf') / openModal('resume') — or any key registered
-//  below.  Config drives the PDF path, layout, and element IDs.
-// ═══════════════════════════════════════════════════════════════
-var _pdfOverlay = _ensureOverlay("pdf-modal");
-var _pdfCurrentCfg = null;
-
-var _pdfConfigs = {
-  pdf:    { src: "pdf/bible.pdf",  singlePage: false, title: "Dusk Rose Codex" },
-  resume: { src: "pdf/resume.pdf", singlePage: true,  title: "Resume" }
+  registerModal(schema.elementId, { key: key });
+  return { onOpen: null, onClose: null };
 };
 
-function _buildPdfShell(cfg) {
-  return '<div class="glass-tile modal-card pdf-modal-card" style="position:relative;">' +
-    '<div class="modal-sticky-bar"><div class="modal-sticky-group tl-glow">' +
-      '<a class="modal-sticky-link" href="' + cfg.src + '" target="_blank"><i class="fa fa-external-link"></i> Open in new tab</a>' +
-      '<button class="modal-close" aria-label="Close modal">&times;</button>' +
-    '</div></div>' +
-    '<div class="pdf-embed-wrap">' +
-      '<div id="pdf-loading" style="display:none;position:absolute;inset:0;align-items:center;justify-content:center;color:#aaa;font-family:system-ui,sans-serif;font-size:15px;z-index:10;">Loading PDF…</div>' +
-      '<div id="pdf-viewer"></div>' +
-    '</div></div>';
-}
+// ┌─────────────────────────────────────────────────────────────┐
+// │  CONSTRUCT: pdf — PDF viewer modal                          │
+// └─────────────────────────────────────────────────────────────┘
+var _pdfSharedOverlay = null;  // reuse one overlay for pdf & resume
 
-var _pdfReg = registerModal("pdf-modal", {
-  key: "pdf",
-  onOpen: function () {
-    var cfg = _pdfCurrentCfg || _pdfConfigs.pdf;
-    _pdfOverlay.innerHTML = _buildPdfShell(cfg);
-    // Re-wire close button after innerHTML swap
-    var btn = _pdfOverlay.querySelector(".modal-close");
-    if (btn) btn.addEventListener("click", function () { _pdfReg.close(); });
-    renderPdfInline(cfg.src, { viewerId: "pdf-viewer", loadingId: "pdf-loading", singlePage: cfg.singlePage });
-  },
-  onClose: function () { clearpdf("pdf-viewer"); _pdfCurrentCfg = null; }
-});
+_constructs["pdf"] = function(shell, schema, key) {
+  // Multiple pdf constructs share the same overlay element
+  if (!_pdfSharedOverlay) _pdfSharedOverlay = shell;
 
-// Register additional keys that target the same overlay
-_modalByKey["resume"] = {
-  el: _pdfReg.el,
-  open: function () { _pdfCurrentCfg = _pdfConfigs.resume; _pdfReg.open(); },
-  close: _pdfReg.close
+  var reg = registerModal(schema.elementId, {
+    key: key,
+    onOpen: function () {
+      var src = schema.src;
+      // Update the sticky link href to point to this PDF
+      var bar = schema.stickyBar || {};
+      if (bar.links && bar.links.length) {
+        var linkEl = shell.el.querySelector('.modal-sticky-link');
+        if (linkEl) linkEl.href = src;
+      }
+      // Build pdf viewer content
+      shell.content.innerHTML =
+        '<div class="pdf-embed-wrap">' +
+          '<div id="pdf-loading" style="display:none;position:absolute;inset:0;align-items:center;justify-content:center;color:#aaa;font-family:system-ui,sans-serif;font-size:15px;z-index:10;">Loading PDF…</div>' +
+          '<div id="pdf-viewer"></div>' +
+        '</div>';
+      // Re-wire close button after innerHTML swap
+      var btn = shell.el.querySelector(".modal-close");
+      if (btn) btn.addEventListener("click", function () { reg.close(); });
+      renderPdfInline(src, { viewerId: "pdf-viewer", loadingId: "pdf-loading", singlePage: !!schema.singlePage });
+    },
+    onClose: function () { clearpdf("pdf-viewer"); }
+  });
+
+  // For alias keys (e.g. "resume" pointing at same overlay as "pdf"),
+  // override the registry entry to set schema before opening
+  if (_pdfSharedOverlay && _pdfSharedOverlay !== shell) {
+    _modalByKey[key] = {
+      el: reg.el,
+      open: function() {
+        // Temporarily swap schema context for the shared overlay
+        var origLinks = _pdfSharedOverlay.el.querySelector('.modal-sticky-link');
+        if (origLinks) origLinks.href = schema.src;
+        _pdfSharedOverlay.content.innerHTML =
+          '<div class="pdf-embed-wrap">' +
+            '<div id="pdf-loading" style="display:none;position:absolute;inset:0;align-items:center;justify-content:center;color:#aaa;font-family:system-ui,sans-serif;font-size:15px;z-index:10;">Loading PDF…</div>' +
+            '<div id="pdf-viewer"></div>' +
+          '</div>';
+        var btn = _pdfSharedOverlay.el.querySelector(".modal-close");
+        if (btn) btn.addEventListener("click", function () { reg.close(); });
+        reg.open();
+        renderPdfInline(schema.src, { viewerId: "pdf-viewer", loadingId: "pdf-loading", singlePage: !!schema.singlePage });
+      },
+      close: reg.close
+    };
+  }
+
+  return { onOpen: null, onClose: null };
 };
 
 // ═══════════════════════════════════════════════════════════════

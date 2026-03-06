@@ -1,0 +1,12 @@
+﻿$(document).ready(function () {
+	setInterval(rotateCheckerboard, 3000)
+});
+
+var checkerboardRotation = 0;
+
+function rotateCheckerboard()
+{
+	$("#checkerboard").removeClass("rotate" + checkerboardRotation);
+	checkerboardRotation = (checkerboardRotation == 3 ? 0 : checkerboardRotation + 1);
+	$("#checkerboard").addClass("rotate" + checkerboardRotation);
+}

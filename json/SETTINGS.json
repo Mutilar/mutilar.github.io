@@ -3,7 +3,7 @@
     "name": "Brian Hungerman",
     "emoji": "🐧",
     "portrait": "png/brian.png",
-    "tagline": "<strong><a href=\"#\" onclick=\"event.preventDefault(); openModal('link', 'https://en.wikipedia.org/wiki/Software_engineering', 'Software Engineering');\">S.W.E.</a></strong> → <strong><a href=\"#\" onclick=\"event.preventDefault(); openModal('link', 'https://en.wikipedia.org/wiki/Artificial_intelligence', 'Artificial Intelligence');\">A.I.</a></strong> <strong><a href=\"#\" onclick=\"event.preventDefault(); openModal('link', 'https://en.wikipedia.org/wiki/User_experience', 'User Experience');\">U.X.</a></strong> @ <strong><a href=\"#\" onclick=\"event.preventDefault(); openModal('link', 'https://www.microsoft.com/applied-sciences', 'Microsoft Applied Sciences');\">A.S.G.</a></strong><br><strong><a href=\"#\" onclick=\"event.preventDefault(); openModal('link', 'https://en.wikipedia.org/wiki/Software_engineering', 'Software Engineering');\">S.W.E.</a></strong> → <strong><a href=\"#\" onclick=\"event.preventDefault(); openModal('link', 'https://en.wikipedia.org/wiki/Human%E2%80%93robot_interaction', 'Human–Robot Interaction');\">H.R.I.</a></strong> @ <strong><a href=\"#\" onclick=\"event.preventDefault(); openModal('marp');\">M.A.R.P.</a></strong><br><strong><a href=\"#\" onclick=\"event.preventDefault(); openModal('link', 'https://en.wikipedia.org/wiki/Software_engineering', 'Software Engineering');\">S.W.E.</a></strong> → <strong><a href=\"#\" onclick=\"event.preventDefault(); openModal('link', 'https://en.wikipedia.org/wiki/Game_theory', 'Game Theory');\">G.T.</a></strong>/<strong><a href=\"#\" onclick=\"event.preventDefault(); openModal('link', 'https://en.wikipedia.org/wiki/Information_theory', 'Information Theory');\">I.T.</a></strong>/<strong><a href=\"#\" onclick=\"event.preventDefault(); openModal('link', 'https://en.wikipedia.org/wiki/Systems_theory', 'Systems Theory');\">S.T.</a></strong>",
+    "tagline": "<strong><a href=\"#\" onclick=\"event.preventDefault(); openModal('link', 'https://en.wikipedia.org/wiki/Software_engineering', 'Software Engineering');\">S.W.E.</a></strong> → <strong><a href=\"#\" onclick=\"event.preventDefault(); openModal('link', 'https://en.wikipedia.org/wiki/Artificial_intelligence', 'Artificial Intelligence');\">A.I.</a></strong> <strong><a href=\"#\" onclick=\"event.preventDefault(); openModal('link', 'https://en.wikipedia.org/wiki/User_experience', 'User Experience');\">U.X.</a></strong> @ <strong><a href=\"#\" onclick=\"event.preventDefault(); openModal('link', 'html/AppliedSciences.html', 'Microsoft Applied Sciences');\">A.S.G.</a></strong><br><strong><a href=\"#\" onclick=\"event.preventDefault(); openModal('link', 'https://en.wikipedia.org/wiki/Software_engineering', 'Software Engineering');\">S.W.E.</a></strong> → <strong><a href=\"#\" onclick=\"event.preventDefault(); openModal('link', 'https://en.wikipedia.org/wiki/Human%E2%80%93robot_interaction', 'Human–Robot Interaction');\">H.R.I.</a></strong> @ <strong><a href=\"#\" onclick=\"event.preventDefault(); openModal('marp');\">M.A.R.P.</a></strong><br><strong><a href=\"#\" onclick=\"event.preventDefault(); openModal('link', 'https://en.wikipedia.org/wiki/Software_engineering', 'Software Engineering');\">S.W.E.</a></strong> → <strong><a href=\"#\" onclick=\"event.preventDefault(); openModal('link', 'https://en.wikipedia.org/wiki/Game_theory', 'Game Theory');\">G.T.</a></strong> + <strong><a href=\"#\" onclick=\"event.preventDefault(); openModal('link', 'https://en.wikipedia.org/wiki/Information_theory', 'Information Theory');\">I.T.</a></strong> + <strong><a href=\"#\" onclick=\"event.preventDefault(); openModal('link', 'https://en.wikipedia.org/wiki/Systems_theory', 'Systems Theory');\">S.T.</a></strong>",
     "jobTitle": "Senior Software Engineer",
     "organization": "Microsoft Applied Sciences"
   },
@@ -155,6 +155,125 @@
     "subtitle": "Let's build something."
   },
   "modals": {
+    "entry": {
+      "type": "entry",
+      "elementId": "modal",
+      "cardClass": "",
+      "stickyBar": {
+        "titleId": "modal-title",
+        "titleTag": "p",
+        "titleClass": "modal-subtitle"
+      }
+    },
+    "link": {
+      "type": "iframe",
+      "elementId": "link-modal",
+      "cardClass": "link-modal-card",
+      "stickyBar": {
+        "icon": "fa fa-globe",
+        "title": "Link",
+        "titleId": "link-modal-title",
+        "links": [{ "icon": "fa fa-external-link", "label": "Open in new tab", "id": "link-modal-link" }]
+      },
+      "contentClass": "link-embed-wrap",
+      "iframeId": "link-iframe",
+      "iframeTitle": "External content"
+    },
+    "game": {
+      "type": "iframe",
+      "elementId": "game-modal",
+      "cardClass": "game-modal-card",
+      "stickyBar": {
+        "icon": "fa fa-gamepad",
+        "title": "Play",
+        "titleId": "game-modal-title",
+        "links": [{ "icon": "fa fa-external-link", "label": "Open in new tab", "id": "game-modal-link" }]
+      },
+      "contentClass": "game-embed-wrap",
+      "iframeId": "game-iframe",
+      "iframeTitle": "Game",
+      "iframeScrolling": "no",
+      "fitToContainer": true
+    },
+    "bitnaughts": {
+      "type": "gallery",
+      "elementId": "bitnaughts-modal",
+      "cardClass": "bitnaughts-modal-card",
+      "stickyBar": {
+        "title": "☄ BitNaughts: Early Iterations",
+        "links": [{ "href": "https://github.com/bitnaughts", "icon": "fa fa-github", "label": "bitnaughts" }]
+      },
+      "galleryClass": "bitnaughts-gallery",
+      "itemClass": "bitnaughts-gallery-item",
+      "labelClass": "bitnaughts-gallery-label",
+      "items": [
+        { "label": "🎨 3D Ship Design", "src": "png/bn-3d.gif", "alt": "BitNaughts 3D Ship" },
+        { "label": "🖥️ UI Prototype", "src": "png/bn-ui.gif", "alt": "BitNaughts UI" },
+        { "label": "🎭 Color Palette Exploration", "src": "png/bn-colors.gif", "alt": "BitNaughts Colors" }
+      ]
+    },
+    "bitnaughtsIphone": {
+      "type": "gallery",
+      "elementId": "bitnaughts-iphone-modal",
+      "cardClass": "bitnaughts-modal-card",
+      "stickyBar": {
+        "title": "☄ BitNaughts: U.X. Design",
+        "links": [{ "href": "https://github.com/bitnaughts", "icon": "fa fa-github", "label": "bitnaughts" }]
+      },
+      "galleryClass": "bitnaughts-gallery",
+      "itemClass": "bitnaughts-gallery-item",
+      "labelClass": "bitnaughts-gallery-label",
+      "items": [
+        { "label": "📱 Ship Overview", "src": "png/bitnaughtsiphone.png", "alt": "BitNaughts iPhone Ship Overview" },
+        { "label": "📱 Navigation U.X.", "src": "png/bitnaughtsiphone2.png", "alt": "BitNaughts iPhone Navigation" },
+        { "label": "📱 Terminal U.X.", "src": "png/bitnaughtsiphone3.png", "alt": "BitNaughts iPhone Terminal" },
+        { "label": "📱 Inventory U.X.", "src": "png/bitnaughtsiphone4.png", "alt": "BitNaughts iPhone Inventory" }
+      ]
+    },
+    "pdf": {
+      "type": "pdf",
+      "elementId": "pdf-modal",
+      "cardClass": "pdf-modal-card",
+      "src": "pdf/bible.pdf",
+      "singlePage": false,
+      "stickyBar": {
+        "links": [{ "icon": "fa fa-external-link", "label": "Open in new tab" }]
+      }
+    },
+    "resume": {
+      "type": "pdf",
+      "elementId": "pdf-modal",
+      "src": "pdf/resume.pdf",
+      "singlePage": true,
+      "cardClass": "pdf-modal-card",
+      "stickyBar": {
+        "links": [{ "icon": "fa fa-external-link", "label": "Open in new tab" }]
+      }
+    },
+    "deck": {
+      "type": "deck",
+      "elementId": "deck-modal",
+      "cardClass": "deck-modal-card",
+      "stickyBar": {
+        "titleId": "deck-sticky-title",
+        "links": [{ "icon": "fa fa-clone", "label": "Archidekt", "id": "deck-hero-link" }]
+      }
+    },
+    "bootfile": {
+      "type": "iframe",
+      "elementId": "bootfile-modal",
+      "cardClass": "link-modal-card",
+      "stickyBar": {
+        "icon": "fa fa-file-code-o",
+        "title": "Style Guide",
+        "titleId": "bootfile-modal-title",
+        "links": [{ "icon": "fa fa-external-link", "label": "Open in new tab", "id": "bootfile-modal-link", "href": "https://bootfile.dev" }]
+      },
+      "contentClass": "link-embed-wrap",
+      "iframeId": "bootfile-iframe",
+      "iframeTitle": "Bootfile Style Guide",
+      "iframeSrc": "https://bootfile.dev"
+    },
     "biography": {
       "type": "biography",
       "elementId": "quilt-modal",
