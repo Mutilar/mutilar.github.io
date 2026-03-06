@@ -693,13 +693,12 @@ function _renderSections(headerEntries) {
       html += '<div class="' + gridCls + '" style="' + gridStyle + '">';
       h.headerItems.forEach(function (item) {
         if (item.type === "grid") {
-          var gCls = "card-grid" + (item.wide ? " card-grid-wide" : "");
-          html += '<div class="' + gCls + '" id="' + (item.id || h.id + "-grid") + '"'
-            + (item.style ? ' style="' + item.style + '"' : "") + "></div>";
+          html += '<div style="display:contents;" id="' + (item.id || h.id + "-grid") + '"'
+            + "></div>";
         } else if (item.type === "viz") {
           var vizId = item.id || (h.id + "-viz");
-          html += '<div class="card-grid card-grid-wide" id="' + vizId + '"'
-            + (item.style ? ' style="' + item.style + '"' : "") + "></div>";
+          html += '<div style="display:contents;" id="' + vizId + '"'
+            + "></div>";
           _pendingViz.push({ id: vizId, tiles: item.tiles });
         } else {
           html += _buildVideoCardHtml(item);
