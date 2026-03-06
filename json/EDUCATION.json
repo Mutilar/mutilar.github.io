@@ -22,7 +22,7 @@
         { "align": "center", "html": "...to <strong><a href=\"#education\" onclick=\"event.preventDefault(); navigateToModal('education','cse100')\">algorithms</a></strong>, <strong><a href=\"#education\" onclick=\"event.preventDefault(); navigateToModal('education','cse160')\">networks</a></strong> & <strong><a href=\"#education\" onclick=\"event.preventDefault(); navigateToModal('education','cse111')\">databases</a></strong> building the toolkit..." },
         { "align": "right",  "html": "...to <strong><a href=\"#education\" onclick=\"event.preventDefault(); navigateToModal('education','cse180')\">robotics</a></strong>, <strong><a href=\"#education\" onclick=\"event.preventDefault(); navigateToModal('education','cse120')\">software engineering</a></strong> & <strong><a href=\"#education\" onclick=\"event.preventDefault(); navigateToModal('education','cse031')\">computer organization</a></strong> tying it all together;" }
       ],
-      "summary": "I've compiled every lab, assignment & project from my journey through <strong><a href=\"#\" onclick=\"event.preventDefault(); openLinkModal('https://engineering.ucmerced.edu/academics/CSE/computer-science-engineering', 'UCM Computer Science & Engineering');\">UCM's Computer Science & Engineering</a></strong> program!"
+      "summary": "I've compiled every lab, assignment & project from my journey through <strong><a href=\"#\" onclick=\"event.preventDefault(); openModal('link', 'https://engineering.ucmerced.edu/academics/CSE/computer-science-engineering', 'UCM Computer Science & Engineering');\">UCM's Computer Science & Engineering</a></strong> program!"
     },
     "scrollHint": { "target": "#projects", "label": "Projects", "arrow": "🛠️" }
   },

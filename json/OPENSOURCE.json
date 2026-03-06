@@ -13,9 +13,9 @@
       "img": "png/brian-ghibli.png",
       "alt": "Brian Hungerman",
       "steps": [
-        { "align": "left",   "html": "From a <strong><a href=\"#\" onclick=\"event.preventDefault(); openLinkModal('https://en.wikipedia.org/wiki/Coprime_integers', 'Coprime Integers');\">Coprime</a> parallax orb engine</strong> working away in the background..." },
-        { "align": "center", "html": "...to <strong><a href=\"#\" onclick=\"event.preventDefault(); openLinkModal('https://aesthetics.fandom.com/wiki/Glassmorphism', 'Glassmorphism');\">Glassmorphic</a> tiles</strong> floating in the foreground..." },
-        { "align": "right",  "html": "...to <strong><a href=\"#\" onclick=\"event.preventDefault(); openLinkModal('https://www.papaparse.com/', 'PapaParse');\">CSV-driven</a> data</strong> powering it all;" }
+        { "align": "left",   "html": "From a <strong><a href=\"#\" onclick=\"event.preventDefault(); openModal('link', 'https://en.wikipedia.org/wiki/Coprime_integers', 'Coprime Integers');\">Coprime</a> parallax orb engine</strong> working away in the background..." },
+        { "align": "center", "html": "...to <strong><a href=\"#\" onclick=\"event.preventDefault(); openModal('link', 'https://aesthetics.fandom.com/wiki/Glassmorphism', 'Glassmorphism');\">Glassmorphic</a> tiles</strong> floating in the foreground..." },
+        { "align": "right",  "html": "...to <strong><a href=\"#\" onclick=\"event.preventDefault(); openModal('link', 'https://www.papaparse.com/', 'PapaParse');\">CSV-driven</a> data</strong> powering it all;" }
       ],
       "summary": "<strong><a href=\"https://github.com/Mutilar/mutilar.github.io\" target=\"_blank\">Mutilar.github.io</a></strong> is yet another one of my 45 <strong>open-source</strong> projects on display here!"
     },

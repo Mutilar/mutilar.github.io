@@ -99,7 +99,7 @@ function buildEntryCard(item, dataset, opts) {
       </div>
       ${(hasTitle || hasWin || hasPlay) ? `<div class="entry-badges">
         ${hasWin ? `<div class="entry-win"><i class="fa fa-trophy"></i> ${item.WIN}</div>` : ""}
-        ${hasPlay ? (item.PLAY.trim().startsWith('http') ? `<a href="${item.PLAY.trim()}" target="_blank" class="entry-play" onclick="event.stopPropagation();"><i class="fa fa-gamepad"></i> Play me!</a>` : `<a href="#" class="entry-play" onclick="event.preventDefault(); event.stopPropagation(); openGameModal('${item.PLAY.trim()}', '${(item.NAME || '').replace(/'/g, "\\'")}', ${item.PLAY_W || 960}, ${item.PLAY_H || 600})"><i class="fa fa-gamepad"></i> Play me!</a>`) : ""}
+        ${hasPlay ? (item.PLAY.trim().startsWith('http') ? `<a href="${item.PLAY.trim()}" target="_blank" class="entry-play" onclick="event.stopPropagation();"><i class="fa fa-gamepad"></i> Play me!</a>` : `<a href="#" class="entry-play" onclick="event.preventDefault(); event.stopPropagation(); openModal('game', '${item.PLAY.trim()}', '${(item.NAME || '').replace(/'/g, "\\'")}', ${item.PLAY_W || 960}, ${item.PLAY_H || 600})"><i class="fa fa-gamepad"></i> Play me!</a>`) : ""}
         ${hasTitle ? item.TITLE.split(',').map(t => { const txt = t.trim(); const low = txt.toLowerCase(); const highlight = low.startsWith('senior') || txt.startsWith('🧛') || txt.startsWith('🧠') || txt.startsWith('🎮'); const cls = highlight ? 'entry-title entry-title-highlight' : 'entry-title'; const icon = low.startsWith('senior') ? '🧑‍💻 ' : ''; return `<div class="${cls}">${icon}${txt}</div>`; }).join('') : ""}
       </div>` : ""}
     </div>
@@ -107,7 +107,7 @@ function buildEntryCard(item, dataset, opts) {
     ${hasGithub ? `<a href="${item.GITHUB}" target="_blank" class="entry-github" onclick="event.stopPropagation();"><i class="fa fa-github"></i> Open Source</a>` : ""}
   `;
 
-  card.addEventListener("click", () => openEntry(dataset, item.ID, modalImgExt));
+  card.addEventListener("click", () => openModal('entry', dataset, item.ID, modalImgExt));
   if (window._revealObserver) window._revealObserver.observe(card);
   return card;
 }
@@ -159,7 +159,7 @@ function _ingestSource(key, data) {
           var deckCard = buildEntryCard(item, sectionId, cfg);
           var clone = deckCard.cloneNode(true);
           if (window._revealObserver) window._revealObserver.observe(clone);
-          clone.addEventListener("click", function () { openDeckModal(item); });
+          clone.addEventListener("click", function () { openModal('deck', item); });
           g.appendChild(clone);
         } else {
           g.appendChild(buildEntryCard(item, sectionId, cfg));
@@ -460,7 +460,7 @@ function _buildBadgeHtml(b) {
     if (b.action === "modal")
       attrs += " onclick=\"event.preventDefault(); openModal('" + b.target + "');\"";
     else if (b.action === "link-modal")
-      attrs += " onclick=\"event.preventDefault(); openLinkModal('" + (b.actionTarget || b.href) + "', '" + (b.title || "") + "');\"";
+      attrs += " onclick=\"event.preventDefault(); openModal('link', '" + (b.actionTarget || b.href) + "', '" + (b.title || "") + "');\"";
   }
 
   var inner = "";
@@ -504,7 +504,7 @@ function _buildVideoCardHtml(v) {
       attrs += " onclick=\"window.openMermaidModal && window.openMermaidModal('" + v.actionTarget + "')\"";
       attrs += " onkeydown=\"if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click();}\"";
     } else if (v.action === "bootfile") {
-      attrs += " onclick=\"openBootfileModal()\"";
+      attrs += " onclick=\"openModal('bootfile')\"";
       attrs += " onkeydown=\"if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click();}\"";
     } else if (v.action === "open") {
       attrs += ' data-action="open" data-open="' + v.actionTarget + '"';
@@ -714,7 +714,7 @@ function _renderSections(headerEntries) {
         if (i > 0) html += '<br>';
         html += '<strong><a href="#" onclick="event.preventDefault(); ';
         if (link.action === "link-modal")
-          html += "openLinkModal('" + link.href + "', '" + link.title + "');";
+          html += "openModal('link', '" + link.href + "', '" + link.title + "');";
         else if (link.action === "modal")
           html += "openModal('" + link.target + "');";
         html += '" style="text-decoration:none;';

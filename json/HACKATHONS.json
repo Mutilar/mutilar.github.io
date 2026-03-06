@@ -21,7 +21,7 @@
         { "align": "center", "html": "...to a semi-autonomous <strong>robotic tank</strong> called <strong><a href=\"#hackathons\" onclick=\"event.preventDefault(); navigateToModal('hackathons','sriracha')\">SRIRACHA</a></strong>..." },
         { "align": "right",  "html": "...to OCR on <strong>nutrition labels</strong> as a <strong><a href=\"#hackathons\" onclick=\"event.preventDefault(); navigateToModal('hackathons','digestquest')\">FitBit for your stomach</a></strong>;" }
       ],
-      "summary": "I've traveled all of <strong><a href=\"#\" onclick=\"event.preventDefault(); openLinkModal('https://en.wikipedia.org/wiki/California', 'California');\">California</a></strong> competing in hackathons, collaborating with colleagues & building teams of passionate engineers!"
+      "summary": "I've traveled all of <strong><a href=\"#\" onclick=\"event.preventDefault(); openModal('link', 'https://en.wikipedia.org/wiki/California', 'California');\">California</a></strong> competing in hackathons, collaborating with colleagues & building teams of passionate engineers!"
     },
     "headerItems": [
       { "type": "youtube", "label": "🎥 Blindsight Demo (1:44)", "year": "2018", "youtubeId": "PapgFHyC6_k", "title": "Blindsight Demo" },

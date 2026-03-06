@@ -188,11 +188,16 @@ window.closeModal = function (key) {
 
 // ═══════════════════════════════════════════════════════════════
 //  MODAL SYSTEM  (modalState provided by DATA.JS)
-//  Guard: skip all portfolio-specific wiring when the main
-//  "modal" element isn't present (e.g. on bootfile.dev landing).
+//  Each modal auto-creates its overlay if absent (via _ensureOverlay).
+//  Every modal is registered with a key → openModal(key, ...args).
 // ═══════════════════════════════════════════════════════════════
-const modal = document.getElementById("modal");
-if (modal) {   // ← landing page has no "modal" element; skip portfolio wiring
+function _ensureOverlay(id) {
+  var el = document.getElementById(id);
+  if (!el) { el = document.createElement('div'); el.className = 'modal-overlay'; el.id = id; document.body.appendChild(el); }
+  return el;
+}
+
+var modal = _ensureOverlay("modal");
 // ── Entry modal shell (replaces MODAL.HTML fragment) ──
 modal.innerHTML =
   '<div class="glass-tile modal-card" style="position:relative;">' +
@@ -237,10 +242,11 @@ function _fadeOutGlow() {
 }
 
 var _dataModal = registerModal("modal", {
+  key: "entry",
   onClose: _fadeOutGlow
 });
 
-function openEntry(dataset, id, imgExt) {
+function _populateEntry(dataset, id, imgExt) {
   const data = modalState[dataset];
   if (!data) return;
   const item = data.find(d => d.ID === id);
@@ -267,7 +273,7 @@ function openEntry(dataset, id, imgExt) {
   const playBadge = hasPlay
     ? (isExternal
       ? `<a href="${item.PLAY.trim()}" target="_blank" class="modal-play-badge" onclick="event.stopPropagation();"><i class="fa fa-gamepad"></i> Play me!</a>`
-      : `<a href="#" class="modal-play-badge" onclick="event.preventDefault(); event.stopPropagation(); closeEntry(); openGameModal('${item.PLAY.trim()}', '${(item.NAME || '').replace(/'/g, "\\'")}', ${item.PLAY_W || 960}, ${item.PLAY_H || 600})"><i class="fa fa-gamepad"></i> Play me!</a>`)
+      : `<a href="#" class="modal-play-badge" onclick="event.preventDefault(); event.stopPropagation(); closeModal('entry'); openModal('game', '${item.PLAY.trim()}', '${(item.NAME || '').replace(/'/g, "\\'")}', ${item.PLAY_W || 960}, ${item.PLAY_H || 600})"><i class="fa fa-gamepad"></i> Play me!</a>`)
     : '';
   document.getElementById("modal-title").innerHTML = playBadge + titleBadges + winBadge;
 
@@ -277,9 +283,17 @@ function openEntry(dataset, id, imgExt) {
 
   // Glow the source tile
   _applyGlow(dataset, id);
-
-  _dataModal.open();
 }
+
+// Override registry entry so openModal('entry', ...) does setup then opens
+_modalByKey["entry"] = {
+  el: _dataModal.el,
+  open: function(dataset, id, imgExt) {
+    _populateEntry(dataset, id, imgExt);
+    _dataModal.open();
+  },
+  close: _dataModal.close
+};
 
 function navigateToModal(dataset, id, imgExt) {
   // Clear any existing glow without the fade-out animation
@@ -287,21 +301,12 @@ function navigateToModal(dataset, id, imgExt) {
     _glowingTile.classList.remove('tile-glow', 'tile-glow-fade');
     _glowingTile = null;
   }
-
-  // If the modal is already open, just swap content in-place
-  // (skip the close/open cycle so the overlay stays visible)
-  if (modal.classList.contains("open")) {
-    openEntry(dataset, id, imgExt);
-    return;
-  }
-
-  // Otherwise open fresh
-  openEntry(dataset, id, imgExt);
+  openModal('entry', dataset, id, imgExt);
 }
 
-function closeEntry() { _dataModal.close(); }
-window.openEntry  = openEntry;
-window.closeEntry = closeEntry;
+window.openEntry       = function(dataset, id, imgExt) { openModal('entry', dataset, id, imgExt); };
+window.closeEntry      = function() { closeModal('entry'); };
+window.navigateToModal = navigateToModal;
 
 // ── Footer year (safe alternative to document.write) ──
 const footerYear = document.getElementById("footer-year");
@@ -332,7 +337,7 @@ function _buildGalleryShell(el, cfg) {
     '</div>';
 }
 
-_buildGalleryShell(document.getElementById("bitnaughts-modal"), {
+_buildGalleryShell(_ensureOverlay("bitnaughts-modal"), {
   title: '\u2604 BitNaughts: Early Iterations',
   linkHref: 'https://github.com/bitnaughts',
   linkText: 'bitnaughts',
@@ -343,7 +348,7 @@ _buildGalleryShell(document.getElementById("bitnaughts-modal"), {
   ]
 });
 
-_buildGalleryShell(document.getElementById("bitnaughts-iphone-modal"), {
+_buildGalleryShell(_ensureOverlay("bitnaughts-iphone-modal"), {
   title: '\u2604 BitNaughts: U.X. Design',
   linkHref: 'https://github.com/bitnaughts',
   linkText: 'bitnaughts',
@@ -355,15 +360,11 @@ _buildGalleryShell(document.getElementById("bitnaughts-iphone-modal"), {
   ]
 });
 
-var _bnModal       = registerModal("bitnaughts-modal");
-var _bnIphoneModal = registerModal("bitnaughts-iphone-modal");
+var _bnModal       = registerModal("bitnaughts-modal", { key: "bitnaughts" });
+var _bnIphoneModal = registerModal("bitnaughts-iphone-modal", { key: "bitnaughtsIphone" });
 
-function openBitnaughtsModal()        { _bnModal.open(); }
-function closeBitnaughtsModal()       { _bnModal.close(); }
-function openBitnaughtsIphoneModal()  { _bnIphoneModal.open(); }
-function closeBitnaughtsIphoneModal() { _bnIphoneModal.close(); }
-window.openBitnaughtsModal       = openBitnaughtsModal;
-window.openBitnaughtsIphoneModal = openBitnaughtsIphoneModal;
+window.openBitnaughtsModal       = function() { openModal('bitnaughts'); };
+window.openBitnaughtsIphoneModal = function() { openModal('bitnaughtsIphone'); };
 
 // Close modal when clicking an in-page anchor link (e.g. #games)
 // but NOT if the link navigates to another modal via navigateToModal
@@ -372,7 +373,7 @@ modal.addEventListener("click", function (e) {
   if (!link) return;
   const onclickAttr = link.getAttribute("onclick") || "";
   if (onclickAttr.indexOf("navigateToModal") !== -1) return;
-  closeEntry();
+  closeModal('entry');
 });
 
 // ═══════════════════════════════════════════════════════════════
@@ -380,7 +381,7 @@ modal.addEventListener("click", function (e) {
 //  openModal('pdf') / openModal('resume') — or any key registered
 //  below.  Config drives the PDF path, layout, and element IDs.
 // ═══════════════════════════════════════════════════════════════
-var _pdfOverlay = document.getElementById("pdf-modal");
+var _pdfOverlay = _ensureOverlay("pdf-modal");
 var _pdfCurrentCfg = null;
 
 var _pdfConfigs = {
@@ -537,42 +538,15 @@ function buildVizShell(modalEl, cfg) {
 }
 window.buildVizShell = buildVizShell;
 
-// ═══════════════════════════════════════════════════════════════
-//  EXTERNAL LINK IFRAME MODAL
-// ═══════════════════════════════════════════════════════════════
-// ── Link modal shell (replaces LINK-MODAL.HTML fragment) ──
-(function() {
-  var el = document.getElementById("link-modal");
-  if (el) el.innerHTML =
-    '<div class="glass-tile modal-card link-modal-card" style="position:relative;">' +
-      '<div class="modal-sticky-bar"><div class="modal-sticky-group tl-glow">' +
-        '<h2 class="modal-sticky-title" id="link-modal-title"><i class="fa fa-globe"></i> Link</h2>' +
-        '<a class="modal-sticky-link" id="link-modal-link" href="#" target="_blank"><i class="fa fa-external-link"></i> Open in new tab</a>' +
-        '<button class="modal-close" aria-label="Close modal">&times;</button>' +
-      '</div></div>' +
-      '<div class="link-embed-wrap"><iframe id="link-iframe" src="" title="External content" allowfullscreen></iframe></div>' +
-    '</div>';
-})();
-var _linkIframe = document.getElementById("link-iframe");
-var _linkModal = registerModal("link-modal", {
-  onClose: function () { _linkIframe.src = ""; }
-});
-
-function openLinkModal(url, title) {
-  document.getElementById("link-modal-title").innerHTML = '<i class="fa fa-globe"></i> ' + (title || 'Link');
-  document.getElementById("link-modal-link").href = url;
-  _linkModal.open();
-  _linkIframe.src = url;
-}
-function closeLinkModal() { _linkModal.close(); }
+// (Link modal moved outside if-modal guard — see below)
 
 // ═══════════════════════════════════════════════════════════════
 //  GAME PLAYER MODAL
 // ═══════════════════════════════════════════════════════════════
 // ── Game modal shell (replaces GAME-MODAL.HTML fragment) ──
 (function() {
-  var el = document.getElementById("game-modal");
-  if (el) el.innerHTML =
+  var el = _ensureOverlay("game-modal");
+  el.innerHTML =
     '<div class="glass-tile modal-card game-modal-card" style="position:relative;">' +
       '<div class="modal-sticky-bar"><div class="modal-sticky-group tl-glow">' +
         '<h2 class="modal-sticky-title" id="game-modal-title"><i class="fa fa-gamepad"></i> Play</h2>' +
@@ -586,6 +560,7 @@ var _gameIframe = document.getElementById("game-iframe");
 var _gameResizeHandler = null;
 
 var _gameModal = registerModal("game-modal", {
+  key: "game",
   onClose: function () {
     _gameIframe.src = "";
     _gameIframe.style.transform = '';
@@ -597,170 +572,57 @@ var _gameModal = registerModal("game-modal", {
   }
 });
 
-function openGameModal(url, title, nativeW, nativeH) {
-  nativeW = nativeW || 960;
-  nativeH = nativeH || 600;
+// Override registry entry so openModal('game', url, title, w, h) works
+_modalByKey["game"] = {
+  el: _gameModal.el,
+  open: function(url, title, nativeW, nativeH) {
+    nativeW = nativeW || 960;
+    nativeH = nativeH || 600;
 
-  document.getElementById("game-modal-title").innerHTML = '<i class="fa fa-gamepad"></i> ' + (title || 'Play');
-  document.getElementById("game-modal-link").href = url;
+    document.getElementById("game-modal-title").innerHTML = '<i class="fa fa-gamepad"></i> ' + (title || 'Play');
+    document.getElementById("game-modal-link").href = url;
 
-  _gameIframe.style.width = nativeW + 'px';
-  _gameIframe.style.height = nativeH + 'px';
+    _gameIframe.style.width = nativeW + 'px';
+    _gameIframe.style.height = nativeH + 'px';
 
-  _gameModal.open();
+    _gameModal.open();
 
-  function fitIframe() {
-    var wrap = document.querySelector('.game-embed-wrap');
-    if (!wrap) return;
-    var wrapW = wrap.clientWidth;
-    var wrapH = wrap.clientHeight;
-    var sx = wrapW / nativeW;
-    var sy = wrapH / nativeH;
-    var s = Math.min(sx, sy);
-    _gameIframe.style.transformOrigin = '0 0';
-    _gameIframe.style.transform = 'scale(' + s + ')';
-    var scaledW = nativeW * s;
-    var scaledH = nativeH * s;
-    _gameIframe.style.left = ((wrapW - scaledW) / 2) + 'px';
-    _gameIframe.style.top = ((wrapH - scaledH) / 2) + 'px';
-  }
+    function fitIframe() {
+      var wrap = document.querySelector('.game-embed-wrap');
+      if (!wrap) return;
+      var wrapW = wrap.clientWidth;
+      var wrapH = wrap.clientHeight;
+      var sx = wrapW / nativeW;
+      var sy = wrapH / nativeH;
+      var s = Math.min(sx, sy);
+      _gameIframe.style.transformOrigin = '0 0';
+      _gameIframe.style.transform = 'scale(' + s + ')';
+      var scaledW = nativeW * s;
+      var scaledH = nativeH * s;
+      _gameIframe.style.left = ((wrapW - scaledW) / 2) + 'px';
+      _gameIframe.style.top = ((wrapH - scaledH) / 2) + 'px';
+    }
 
-  requestAnimationFrame(fitIframe);
-  setTimeout(fitIframe, 50);
+    requestAnimationFrame(fitIframe);
+    setTimeout(fitIframe, 50);
 
-  if (_gameResizeHandler) window.removeEventListener('resize', _gameResizeHandler);
-  _gameResizeHandler = fitIframe;
-  window.addEventListener('resize', fitIframe);
+    if (_gameResizeHandler) window.removeEventListener('resize', _gameResizeHandler);
+    _gameResizeHandler = fitIframe;
+    window.addEventListener('resize', fitIframe);
 
-  _gameIframe.src = url;
-}
+    _gameIframe.src = url;
+  },
+  close: _gameModal.close
+};
 
-function closeGameModal() { _gameModal.close(); }
-
-// ═══════════════════════════════════════════════════════════════
-//  BOOTFILE STYLE GUIDE MODAL
-// ═══════════════════════════════════════════════════════════════
-(() => {
-  var bootfileModal = document.getElementById("bootfile-modal");
-  if (!bootfileModal) return;
-
-  // ── Build shell (replaces BOOTFILE-MODAL.HTML fragment) ──
-  var _bfSec = [
-    { tour: '\u23FB Identity',
-      steps: ['A Markdown file that lives in your repository\u2026', '\u2026encoding who you are, how you build &amp; what matters\u2026', '\u2026one file; every session; zero ramp-up.'],
-      tiles: [
-        { v: '\uD83D\uDCC4 Bootfile', l: 'instructions.md', accent: 0, src: 'png/brian.png', alt: 'bootfile identity', q: 'The bootfile is the kernel of a repository. It mediates between the human and the agent, persisting across sessions via the filesystem.', qc: 'Definition 1.2' },
-        { v: '\uD83E\uDDE0 Kernel', l: 'human \u2192 agent', accent: 1, src: 'png/mutilar-architecture.png', alt: 'bootfile architecture', q: 'Ship your AI context with your code.', qc: 'bootfile.dev' },
-        { v: '\u23FB Context', l: 'zero ramp-up', accent: 3, src: 'png/arch.png', alt: 'bootfile context', q: 'One file. Every session. Zero ramp-up.', qc: 'bootfile.dev', a: ' data-action="open" data-open="archModal"' }
-      ] },
-    { tour: '\uD83C\uDFA8 Color',
-      steps: ['Four accent colors derived from the Microsoft brand quadrant\u2026', '\u2026defined as RGB triplets for rgba() compositing\u2026', '\u2026if a color isn\u2019t one of these four, it doesn\u2019t belong.'],
-      tiles: [
-        { v: '\uD83D\uDD35 #00A4EF', l: 'links &amp; focus', accent: 0, src: 'png/graph.png', alt: 'Blue &amp; accents in skill tree', q: 'Four accents, zero freelancers. If a color is not one of these four, it does not belong.', qc: 'Axiom 2.1' },
-        { v: '\uD83D\uDFE1 #FFB900', l: 'highlights', accent: 1, src: 'png/constellation.png', alt: 'All four accents in constellation', q: 'Neutral tones are structural. Everything else is accent. This constraint is the design system.', qc: 'Axiom 2.1' },
-        { v: '\uD83D\uDD34 #F25022', l: 'urgency', accent: 2, src: 'png/timeline.png', alt: 'Themed timeline', q: 'Every non-neutral color in the system derives from one of these four. No exceptions.', qc: '\u00A72 Color' }
-      ] },
-    { tour: '\uD83D\uDC8E Surfaces',
-      steps: ['Frosted semi-transparent surfaces with white hairline borders\u2026', '\u2026floating over a dark parallax backdrop\u2026', '\u2026every panel is a window into depth.'],
-      tiles: [
-        { v: '0.33', l: 'ambient \u03B1', accent: 0, src: 'png/brian2.png', alt: 'Glassmorphic cards', q: 'Every panel is a window into depth. No opaque cards. No flat blocks.', qc: 'Axiom 3.1' },
-        { v: '12px', l: 'base blur', accent: 1, src: 'png/marp-diagram.png', alt: 'Frosted panels', q: 'Opacity: 0.33 ambient, 0.40 modal overlays, 0.60 elevated surfaces. Blur: 12px base, 24px heavy overlays.', qc: '\u00A73 Surfaces' },
-        { v: '20px', l: 'card radius', accent: 2, src: 'png/bible.png', alt: 'Elevated surfaces', q: 'Border-radius: 20px cards, 14px pills, 8px buttons.', qc: '\u00A73 Surfaces' }
-      ] },
-    { tour: '\u2728 Glow',
-      steps: ['Interactivity is communicated through luminance intensification\u2026', '\u2026elements brighten; they do not swap hues\u2026', '\u2026if nothing glows, nothing is interactive.'],
-      tiles: [
-        { v: '\uD83D\uDCAB Ambient', l: 'idle glow', accent: 0, src: 'png/graph.png', alt: 'Ambient glow', q: 'Glow, not hue-swap. Three tiers: ambient glow, hover bloom, pulse.', qc: 'Axiom 4.1' },
-        { v: '\uD83D\uDD06 Bloom', l: 'hover 30\u219260%', accent: 1, src: 'png/constellation.png', alt: 'Hover bloom', q: 'On hover, box-shadow intensifies from 30% to 60% opacity. Scale: 1.0 \u2192 1.02 cards, 1.0 \u2192 1.05 buttons.', qc: '\u00A74.1 Hover' },
-        { v: '\uD83D\uDCA1 Pulse', l: 'attention cue', accent: 2, src: 'png/map.png', alt: 'Pulse attention', q: 'Keyboard focus renders a 2px accent-colored outline at 4px offset. Visible only on :focus-visible.', qc: '\u00A74.2 Focus' }
-      ] },
-    { tour: '\uD83C\uDF0A Motion',
-      steps: ['Nothing linearly slides in\u2026', '\u2026nothing sits perfectly still\u2026', '\u2026entrances spring; idles breathe.'],
-      tiles: [
-        { v: '\uD83C\uDFC0 Spring', l: '400\u2013600ms', accent: 2, src: 'png/bitnaughts-poster.png', alt: 'Springy entrances', q: 'Springy entrances, ambient idles. Elastic beziers for elements entering; slow sine-wave pulses for persistent attention cues.', qc: 'Axiom 5.1' },
-        { v: '\uD83E\uDEE7 Sine', l: '3\u20135s \u221E', accent: 3, src: 'png/marp.gif', alt: 'Ambient motion', q: 'When content changes but the container does not, the old content fades out while the new fades in, overlapping in time. No hard cuts.', qc: 'Axiom 5.2' },
-        { v: '\uD83D\uDD00 Crossfade', l: '300ms overlap', accent: 0, src: 'png/iteratedemo.gif', alt: 'Crossfade transitions', q: 'Entrance: cubic-bezier(0.34, 1.56, 0.64, 1). Hover: ease 200\u2013300ms. Crossfade: ease-in-out 300ms.', qc: '\u00A75 Motion' }
-      ] },
-    { tour: '\u270F\uFE0F Type',
-      steps: ['System sans-serif for body &amp; headings\u2026', '\u2026JetBrains Mono for code &amp; wordmarks\u2026', '\u2026EB Garamond for spec documents.'],
-      tiles: [
-        { v: 'Aa Sans', l: 'body 16px', accent: 0, src: 'png/brian2.png', alt: 'Body typography', q: 'Body: System sans-serif 400 at 16px. Headings: 600\u2013700 at 20\u201332px.', qc: '\u00A76 Typography' },
-        { v: '&lt;/&gt; Mono', l: 'code 13px', accent: 3, src: 'png/mutilar-architecture-preview.png', alt: 'Monospace code', q: 'Code &amp; monospace: JetBrains Mono 400\u2013600 at 13\u201314px. Wordmark: JetBrains Mono 600 at 28px.', qc: '\u00A76 Typography' },
-        { v: '\uD835\uDC34\uD835\uDC4E Serif', l: 'specs 18px', accent: 1, src: 'png/bible.png', alt: 'Serif documents', q: 'Spec documents: EB Garamond 400\u2013700 at 18px.', qc: '\u00A76 Typography' }
-      ] },
-    { tour: '\uD83C\uDFAD Acts', bc: 'bio-principle-block',
-      steps: ['Fork the template; swap PORTFOLIO.json\u2026', '\u2026the site synthesizes an instructions.md\u2026', '\u2026same source of truth; two serializations.'],
-      tiles: [
-        { v: '\uD83C\uDFAC Act I', l: 'build portfolio', accent: 3, src: 'png/mutilar-architecture-preview.png', alt: 'Portfolio site', q: 'Fork the template. Swap PORTFOLIO.json. Pick four accents. Deploy. A glassmorphic portfolio in ten minutes.', qc: 'Act I' },
-        { v: '\uD83D\uDCE4 Act II', l: 'export bootfile', accent: 1, src: 'png/arch.png', alt: 'bootfile export', q: 'The site synthesizes an instructions.md from your data. No API. No keys. Client-side templating. Drop it into .github/instructions/.', qc: 'Act II' },
-        { v: '\uD83D\uDD17 Source', l: 'same truth', accent: 0, src: 'png/graph.png', alt: 'Unified data', q: 'The portfolio and the bootfile are the same data in different serialization formats. One for humans; one for agents.', qc: '\u00A77', a: ' data-action="open" data-open="archModal"' }
-      ] }
-  ];
-
-  function _bfH(secs) {
-    var accents = (window.__SETTINGS && window.__SETTINGS.accents) || [];
-    var h = '';
-    secs.forEach(function(s) {
-      var bc = s.bc || 'bio-symbol-block';
-      h += '<h3 data-bio-tour="' + s.tour + '">' + s.tour + '</h3><hr>' +
-           '<div class="' + bc + '">' +
-           '<div class="step step-left">' + s.steps[0] + '</div>' +
-           '<div class="step step-center">' + s.steps[1] + '</div>' +
-           '<div class="step step-right">' + s.steps[2] + '</div></div>';
-      h += '<div class="bio-img-viewer">';
-      s.tiles.forEach(function(t, i) {
-        h += '<img class="bio-img-layer' + (i === 0 ? ' bio-img-active' : '') + '" src="' + t.src + '" alt="' + t.alt + '" />';
-      });
-      h += '</div><div class="bio-stat-row">';
-      s.tiles.forEach(function(t, i) {
-        var color = _resolveAccentColor(t, accents);
-        h += '<div class="bio-stat bio-stat-link' + (i === 0 ? ' bio-stat-active' : '') + '" tabindex="0" data-bio-img="' + i + '" data-bio-color="' + color + '"' + (t.a || '') + '>' +
-          '<span class="bio-stat-value">' + t.v + '</span><span class="bio-stat-label">' + t.l + '</span></div>';
-      });
-      h += '</div><div class="bio-quote-viewer">';
-      s.tiles.forEach(function(t, i) {
-        h += '<blockquote class="bio-quote-layer' + (i === 0 ? ' bio-quote-active' : '') + '"><p>' + t.q + '</p><cite>' + t.qc + '</cite></blockquote>';
-      });
-      h += '</div><hr>';
-    });
-    return h;
-  }
-
-  bootfileModal.innerHTML =
-    '<div class="glass-tile modal-card bio-modal-card" style="position:relative;">' +
-      '<div class="modal-sticky-bar"><div class="modal-sticky-group tl-glow">' +
-        '<button class="modal-close" id="bootfileModalClose" aria-label="Close modal">&times;</button>' +
-      '</div></div>' +
-      '<div class="modal-body">' + _bfH(_bfSec) +
-        '<footer class="glass-footer"><p><strong>\u23FB bootfile.dev</strong><br><em>Ship your AI context with your code.</em></p></footer><hr>' +
-        '<div class="scroll-hint bio-explore-hint" id="bootfileExploreHint" style="cursor:pointer;"><strong>Traverse</strong><span class="scroll-arrow">\uD83D\uDD2D</span></div>' +
-      '</div>' +
-    '</div>';
-
-  var _stopBootfileTour = null;
-  var _bootfileModal = registerModal("bootfile-modal", {
-    ariaLabel: "bootfile Style Guide",
-    onClose: function () { if (_stopBootfileTour) _stopBootfileTour(); }
-  });
-
-  window.openBootfileModal  = _bootfileModal.open;
-  window.closeBootfileModal = _bootfileModal.close;
-
-  // ── Touch scroll boost ──
-  var card = bootfileModal.querySelector(".modal-card");
-  if (card && typeof boostTouchScroll === "function") boostTouchScroll(card);
-
-  // ── Shared bio crossfade + tour wiring ──
-  _wireBioCrossfade(bootfileModal);
-  _stopBootfileTour = _wireBioTour(bootfileModal);
-})();
+window.openGameModal  = function(url, title, nativeW, nativeH) { openModal('game', url, title, nativeW, nativeH); };
+window.closeGameModal = function() { closeModal('game'); };
 
 // ═══════════════════════════════════════════════════════════════
 //  MTG DECK MODAL SYSTEM
 // ═══════════════════════════════════════════════════════════════
 (() => {
-  var deckModal = document.getElementById("deck-modal");
-  if (!deckModal) return;
+  var deckModal = _ensureOverlay("deck-modal");
 
   // ── Deck modal shell (replaces DECK-MODAL.HTML fragment) ──
   deckModal.innerHTML =
@@ -781,8 +643,23 @@ function closeGameModal() { _gameModal.close(); }
       '<div id="deck-sections"></div>' +
     '</div>';
 
-  var _deckReg = registerModal("deck-modal");
-  window.closeDeckModal = _deckReg.close;
+  var _deckReg = registerModal("deck-modal", { key: "deck" });
+
+  // Override registry: openModal('deck', item) does async card load
+  _modalByKey["deck"] = {
+    el: _deckReg.el,
+    open: function(item) {
+      if (!item) return;
+      var deckId = item.DECK.trim();
+      _loadCards().then(function(allCards) {
+        var cards = allCards.filter(function(c) { return c.deck === deckId; });
+        renderDeckModal(item, cards);
+      });
+    },
+    close: _deckReg.close
+  };
+  window.openDeckModal  = function(item) { openModal('deck', item); };
+  window.closeDeckModal = function() { closeModal('deck'); };
 
   const typeIcons = {
     Planeswalker: "🌟", Creature: "🧛", Artifact: "✨",
@@ -1065,7 +942,47 @@ function closeGameModal() { _gameModal.close(); }
   }
 })();
 
-} // end if (modal) — portfolio-specific wiring
+// ═══════════════════════════════════════════════════════════════
+//  EXTERNAL LINK IFRAME MODAL
+// ═══════════════════════════════════════════════════════════════
+(function() {
+  // Ensure overlay element exists (create if absent)
+  var el = document.getElementById("link-modal");
+  if (!el) {
+    el = document.createElement('div');
+    el.className = 'modal-overlay';
+    el.id = 'link-modal';
+    document.body.appendChild(el);
+  }
+  // Inject shell HTML BEFORE registerModal so close-button auto-wires
+  el.innerHTML =
+    '<div class="glass-tile modal-card link-modal-card" style="position:relative;">' +
+      '<div class="modal-sticky-bar"><div class="modal-sticky-group tl-glow">' +
+        '<h2 class="modal-sticky-title" id="link-modal-title"><i class="fa fa-globe"></i> Link</h2>' +
+        '<a class="modal-sticky-link" id="link-modal-link" href="#" target="_blank"><i class="fa fa-external-link"></i> Open in new tab</a>' +
+        '<button class="modal-close" aria-label="Close modal">&times;</button>' +
+      '</div></div>' +
+      '<div class="link-embed-wrap"><iframe id="link-iframe" src="" title="External content" allowfullscreen></iframe></div>' +
+    '</div>';
+  var _linkIframe = document.getElementById("link-iframe");
+  var _linkModal = registerModal("link-modal", {
+    key: "link",
+    onClose: function () { if (_linkIframe) _linkIframe.src = ""; }
+  });
+  // Override registry: openModal('link', url, title) sets up iframe
+  _modalByKey["link"] = {
+    el: _linkModal.el,
+    open: function(url, title) {
+      document.getElementById("link-modal-title").innerHTML = '<i class="fa fa-globe"></i> ' + (title || 'Link');
+      document.getElementById("link-modal-link").href = url;
+      _linkModal.open();
+      document.getElementById("link-iframe").src = url;
+    },
+    close: _linkModal.close
+  };
+  window.openLinkModal = function(url, title) { openModal('link', url, title); };
+  window.closeLinkModal = function() { closeModal('link'); };
+})();
 
 // ── Video-card event delegation (OUTSIDE if-modal guard) ─────
 // Convention: data-open="key" → openModal(key)
@@ -1092,9 +1009,9 @@ document.addEventListener("click", function(e) {
       if (fn) fn(openArg);
     }
   } else if (action === "scroll-navigate" || action === "navigate") {
-    if (window.navigateToModal) window.navigateToModal(card.dataset.navigateDataset, card.dataset.navigateId);
+    openModal('entry', card.dataset.navigateDataset, card.dataset.navigateId);
   } else if (action === "scroll-modal" || action === "modal") {
-    if (window.openEntry) window.openEntry(card.dataset.modalDataset, card.dataset.modalId);
+    openModal('entry', card.dataset.modalDataset, card.dataset.modalId);
   }
 });
 

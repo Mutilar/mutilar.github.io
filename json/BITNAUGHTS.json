@@ -17,7 +17,7 @@
       "alt": "BitNaughts",
       "steps": [
         { "align": "left",   "html": "Transforming <strong><a href=\"#projects\" onclick=\"event.preventDefault(); navigateToModal('projects','iterate')\">Iterate</a></strong> into a new <strong><a href=\"#bitnaughts\" onclick=\"event.preventDefault(); navigateToModal('bitnaughts','bitnaughts-unity')\">Interpreter</a></strong> into a <strong>gamified environment</strong>..." },
-        { "align": "center", "html": "...to pitching at four consecutive <strong><a href=\"#\" onclick=\"event.preventDefault(); openLinkModal('https://www.microsoft.com/en-us/garage', 'Microsoft Garage');\">Microsoft Hackathons</a></strong>..." },
+        { "align": "center", "html": "...to pitching at four consecutive <strong><a href=\"#\" onclick=\"event.preventDefault(); openModal('link', 'https://www.microsoft.com/en-us/garage', 'Microsoft Garage');\">Microsoft Hackathons</a></strong>..." },
         { "align": "right",  "html": "...to open-sourcing the <strong>whole stack</strong> from <strong><a href=\"#bitnaughts\" onclick=\"event.preventDefault(); navigateToModal('bitnaughts','bitnaughts-unity')\">Unity</a></strong> to <strong><a href=\"#bitnaughts\" onclick=\"event.preventDefault(); navigateToModal('bitnaughts','bitnaughts-mainframe')\">Azure</a></strong>;" }
       ],
       "summary": "<strong><a href=\"#bitnaughts\" onclick=\"event.preventDefault(); navigateToModal('bitnaughts','bitnaughts')\">BitNaughts</a></strong> isn't just an educational programming video-game: it's code gamified!"
