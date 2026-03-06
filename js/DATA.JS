@@ -284,6 +284,13 @@ function _renderHero(heroData) {
 // ── Tagline scramble-decode cycle ────────────────────────────
 var _SCRAMBLE_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*<>░▒▓│┤╡╢╖╕╣║╗╝╜╛┐└┴┬├─┼╞╟╚╔╩╦╠═╬";
 
+// Strip HTML tags to get visible text for the scramble animation
+function _stripHtml(html) {
+  var tmp = document.createElement("span");
+  tmp.innerHTML = html;
+  return tmp.textContent || tmp.innerText || "";
+}
+
 function _initTaglineCycle() {
   var el = document.querySelector(".hero-tagline");
   if (!el) return;
@@ -292,8 +299,11 @@ function _initTaglineCycle() {
   var phrases = raw.split(/<br\s*\/?>/i);
   if (phrases.length <= 1) return;
 
-  // Show first phrase immediately
-  el.textContent = phrases[0];
+  // Pre-compute plain-text versions for the scramble animation
+  var plainPhrases = phrases.map(_stripHtml);
+
+  // Show first phrase immediately (as rendered HTML)
+  el.innerHTML = phrases[0];
   var current = 0;
   var cycleTimer = null;
   var animFrame  = null;
@@ -301,29 +311,32 @@ function _initTaglineCycle() {
   function scheduleNext() {
     cycleTimer = setTimeout(function () {
       current = (current + 1) % phrases.length;
-      transitionTo(phrases[current]);
+      transitionTo(current);
     }, 2000);
   }
 
-  function transitionTo(target) {
+  function transitionTo(index) {
+    var targetPlain = plainPhrases[index];
+    var targetHtml  = phrases[index];
     var start   = performance.now();
     var dur     = 500;
-    var charMs  = dur / (target.length || 1);
+    var charMs  = dur / (targetPlain.length || 1);
 
     function tick(now) {
       var age = now - start;
       if (age >= dur) {
-        el.textContent = target;
+        // Animation done — set full HTML so links/bold render
+        el.innerHTML = targetHtml;
         scheduleNext();
         return;
       }
       var resolved = Math.floor(age / charMs);
-      var result   = target.substring(0, resolved);
+      var result   = targetPlain.substring(0, resolved);
       var stepT    = Math.floor(age / 30);
-      for (var i = resolved; i < target.length; i++) {
-        if (target[i] === " ") { result += " "; }
+      for (var i = resolved; i < targetPlain.length; i++) {
+        if (targetPlain[i] === " ") { result += " "; }
         else {
-          var idx = (i + stepT * 13 + target.charCodeAt(i) * 7) % _SCRAMBLE_CHARS.length;
+          var idx = (i + stepT * 13 + targetPlain.charCodeAt(i) * 7) % _SCRAMBLE_CHARS.length;
           result += _SCRAMBLE_CHARS[Math.abs(idx)];
         }
       }
@@ -343,7 +356,7 @@ function _initTaglineCycle() {
   window._restartTaglineCycle = function () {
     if (cycleTimer || animFrame) return;      // already running
     current = 0;
-    el.textContent = phrases[0];
+    el.innerHTML = phrases[0];
     scheduleNext();
   };
 }
@@ -685,7 +698,7 @@ function _renderSections(headerEntries) {
             + (item.style ? ' style="' + item.style + '"' : "") + "></div>";
         } else if (item.type === "viz") {
           var vizId = item.id || (h.id + "-viz");
-          html += '<div id="' + vizId + '"'
+          html += '<div class="card-grid card-grid-wide" id="' + vizId + '"'
             + (item.style ? ' style="' + item.style + '"' : "") + "></div>";
           _pendingViz.push({ id: vizId, tiles: item.tiles });
         } else {
