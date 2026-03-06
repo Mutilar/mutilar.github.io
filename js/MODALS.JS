@@ -240,6 +240,7 @@ function _buildModalShell(schema) {
 
 // ─── Construct registry: type → builder(shell, schema, key) → { onOpen, onClose } ──
 var _constructs = {};
+var _fallbackText = "Details coming soon\u2026";
 
 // ┌─────────────────────────────────────────────────────────────┐
 // │  CONSTRUCT: entry — portfolio item detail modal             │
@@ -285,7 +286,7 @@ _constructs["entry"] = function(shell, schema, key) {
     modalImg.style.display = "none";
     modalImg.onload = function () { this.style.display = ""; };
     modalImg.onerror = function () { this.style.display = "none"; };
-    modalImg.src = "png/" + id + (imgExt || ".png");
+    modalImg.src = (schema.imgPathTemplate || "png/{ID}{EXT}").replace("{ID}", id).replace("{EXT}", imgExt || ".png");
     modalImg.alt = item.NAME || "";
 
     document.getElementById("modal-name").innerHTML = (item.NAME || "").replace(/<br\s*\/?>/gi, " ");
@@ -311,7 +312,7 @@ _constructs["entry"] = function(shell, schema, key) {
 
     document.getElementById("modal-biography").innerHTML = item.TEXT && item.TEXT !== "tbd"
       ? item.TEXT
-      : "<p style='color:rgba(255,255,255,0.5);font-style:italic;'>Details coming soon…</p>";
+      : "<p style='color:rgba(255,255,255,0.5);font-style:italic;'>" + _fallbackText + "</p>";
 
     _applyGlow(dataset, id);
   }
@@ -449,6 +450,13 @@ _constructs["gallery"] = function(shell, schema, key) {
 // └─────────────────────────────────────────────────────────────┘
 var _pdfSharedOverlay = null;  // reuse one overlay for pdf & resume
 
+function _buildPdfViewerHTML(loadingText) {
+  return '<div class="pdf-embed-wrap">' +
+    '<div id="pdf-loading" style="display:none;position:absolute;inset:0;align-items:center;justify-content:center;color:#aaa;font-family:system-ui,sans-serif;font-size:15px;z-index:10;">' + (loadingText || _fallbackText) + '</div>' +
+    '<div id="pdf-viewer"></div>' +
+  '</div>';
+}
+
 _constructs["pdf"] = function(shell, schema, key) {
   // Multiple pdf constructs share the same overlay element
   if (!_pdfSharedOverlay) _pdfSharedOverlay = shell;
@@ -464,11 +472,7 @@ _constructs["pdf"] = function(shell, schema, key) {
         if (linkEl) linkEl.href = src;
       }
       // Build pdf viewer content
-      shell.content.innerHTML =
-        '<div class="pdf-embed-wrap">' +
-          '<div id="pdf-loading" style="display:none;position:absolute;inset:0;align-items:center;justify-content:center;color:#aaa;font-family:system-ui,sans-serif;font-size:15px;z-index:10;">Loading PDF…</div>' +
-          '<div id="pdf-viewer"></div>' +
-        '</div>';
+      shell.content.innerHTML = _buildPdfViewerHTML(schema.loadingText);
       // Re-wire close button after innerHTML swap
       var btn = shell.el.querySelector(".modal-close");
       if (btn) btn.addEventListener("click", function () { reg.close(); });
@@ -486,11 +490,7 @@ _constructs["pdf"] = function(shell, schema, key) {
         // Temporarily swap schema context for the shared overlay
         var origLinks = _pdfSharedOverlay.el.querySelector('.modal-sticky-link');
         if (origLinks) origLinks.href = schema.src;
-        _pdfSharedOverlay.content.innerHTML =
-          '<div class="pdf-embed-wrap">' +
-            '<div id="pdf-loading" style="display:none;position:absolute;inset:0;align-items:center;justify-content:center;color:#aaa;font-family:system-ui,sans-serif;font-size:15px;z-index:10;">Loading PDF…</div>' +
-            '<div id="pdf-viewer"></div>' +
-          '</div>';
+        _pdfSharedOverlay.content.innerHTML = _buildPdfViewerHTML(schema.loadingText);
         var btn = _pdfSharedOverlay.el.querySelector(".modal-close");
         if (btn) btn.addEventListener("click", function () { reg.close(); });
         reg.open();
@@ -620,149 +620,37 @@ function buildVizShell(modalEl, cfg) {
 }
 window.buildVizShell = buildVizShell;
 
-// (Link modal moved outside if-modal guard — see below)
-
-// ═══════════════════════════════════════════════════════════════
-//  GAME PLAYER MODAL
-// ═══════════════════════════════════════════════════════════════
-// ── Game modal shell (replaces GAME-MODAL.HTML fragment) ──
-(function() {
-  var el = _ensureOverlay("game-modal");
-  el.innerHTML =
-    '<div class="glass-tile modal-card game-modal-card" style="position:relative;">' +
-      '<div class="modal-sticky-bar"><div class="modal-sticky-group tl-glow">' +
-        '<h2 class="modal-sticky-title" id="game-modal-title"><i class="fa fa-gamepad"></i> Play</h2>' +
-        '<a class="modal-sticky-link" id="game-modal-link" href="#" target="_blank"><i class="fa fa-external-link"></i> Open in new tab</a>' +
-        '<button class="modal-close" aria-label="Close modal">&times;</button>' +
-      '</div></div>' +
-      '<div class="game-embed-wrap"><iframe id="game-iframe" src="" title="Game" allowfullscreen scrolling="no"></iframe></div>' +
-    '</div>';
-})();
-var _gameIframe = document.getElementById("game-iframe");
-var _gameResizeHandler = null;
-
-var _gameModal = registerModal("game-modal", {
-  key: "game",
-  onClose: function () {
-    _gameIframe.src = "";
-    _gameIframe.style.transform = '';
-    _gameIframe.style.width = '';
-    _gameIframe.style.height = '';
-    _gameIframe.style.left = '';
-    _gameIframe.style.top = '';
-    if (_gameResizeHandler) { window.removeEventListener('resize', _gameResizeHandler); _gameResizeHandler = null; }
-  }
-});
-
-// Override registry entry so openModal('game', url, title, w, h) works
-_modalByKey["game"] = {
-  el: _gameModal.el,
-  open: function(url, title, nativeW, nativeH) {
-    nativeW = nativeW || 960;
-    nativeH = nativeH || 600;
-
-    document.getElementById("game-modal-title").innerHTML = '<i class="fa fa-gamepad"></i> ' + (title || 'Play');
-    document.getElementById("game-modal-link").href = url;
-
-    _gameIframe.style.width = nativeW + 'px';
-    _gameIframe.style.height = nativeH + 'px';
-
-    _gameModal.open();
-
-    function fitIframe() {
-      var wrap = document.querySelector('.game-embed-wrap');
-      if (!wrap) return;
-      var wrapW = wrap.clientWidth;
-      var wrapH = wrap.clientHeight;
-      var sx = wrapW / nativeW;
-      var sy = wrapH / nativeH;
-      var s = Math.min(sx, sy);
-      _gameIframe.style.transformOrigin = '0 0';
-      _gameIframe.style.transform = 'scale(' + s + ')';
-      var scaledW = nativeW * s;
-      var scaledH = nativeH * s;
-      _gameIframe.style.left = ((wrapW - scaledW) / 2) + 'px';
-      _gameIframe.style.top = ((wrapH - scaledH) / 2) + 'px';
-    }
-
-    requestAnimationFrame(fitIframe);
-    setTimeout(fitIframe, 50);
-
-    if (_gameResizeHandler) window.removeEventListener('resize', _gameResizeHandler);
-    _gameResizeHandler = fitIframe;
-    window.addEventListener('resize', fitIframe);
-
-    _gameIframe.src = url;
-  },
-  close: _gameModal.close
-};
-
-window.openGameModal  = function(url, title, nativeW, nativeH) { openModal('game', url, title, nativeW, nativeH); };
-window.closeGameModal = function() { closeModal('game'); };
-
-// ═══════════════════════════════════════════════════════════════
-//  MTG DECK MODAL SYSTEM
-// ═══════════════════════════════════════════════════════════════
-(() => {
-  var deckModal = _ensureOverlay("deck-modal");
-
-  // ── Deck modal shell (replaces DECK-MODAL.HTML fragment) ──
-  deckModal.innerHTML =
-    '<div class="glass-tile modal-card deck-modal-card" style="position:relative;">' +
-      '<div class="modal-sticky-bar"><div class="modal-sticky-group tl-glow">' +
-        '<h2 class="modal-sticky-title" id="deck-sticky-title"></h2>' +
-        '<a class="modal-sticky-link" id="deck-hero-link" href="#" target="_blank"><i class="fa fa-clone"></i> Archidekt</a>' +
-        '<button class="modal-close" aria-label="Close modal">&times;</button>' +
-      '</div></div>' +
-      '<div class="deck-hero">' +
-        '<img class="deck-hero-img" id="deck-hero-img" src="" alt="" />' +
-        '<div class="deck-hero-info">' +
-          '<h2 class="deck-hero-name" id="deck-hero-name"></h2>' +
-          '<p class="deck-hero-motto" id="deck-hero-motto" style="display:none"></p>' +
-          '<div class="modal-body deck-body" id="deck-body"></div>' +
-        '</div>' +
+// ┌─────────────────────────────────────────────────────────────┐
+// │  CONSTRUCT: deck — MTG deck carousel modal                  │
+// └─────────────────────────────────────────────────────────────┘
+_constructs["deck"] = function(shell, schema, key) {
+  var slot = shell.content;
+  slot.innerHTML =
+    '<div class="deck-hero">' +
+      '<img class="deck-hero-img" id="deck-hero-img" src="" alt="" />' +
+      '<div class="deck-hero-info">' +
+        '<h2 class="deck-hero-name" id="deck-hero-name"></h2>' +
+        '<p class="deck-hero-motto" id="deck-hero-motto" style="display:none"></p>' +
+        '<div class="modal-body deck-body" id="deck-body"></div>' +
       '</div>' +
-      '<div id="deck-sections"></div>' +
-    '</div>';
+    '</div>' +
+    '<div id="deck-sections"></div>';
 
-  var _deckReg = registerModal("deck-modal", { key: "deck" });
+  var _deckReg = registerModal(schema.elementId, { key: key });
 
-  // Override registry: openModal('deck', item) does async card load
-  _modalByKey["deck"] = {
-    el: _deckReg.el,
-    open: function(item) {
-      if (!item) return;
-      var deckId = item.DECK.trim();
-      _loadCards().then(function(allCards) {
-        var cards = allCards.filter(function(c) { return c.deck === deckId; });
-        renderDeckModal(item, cards);
-      });
-    },
-    close: _deckReg.close
-  };
-  window.openDeckModal  = function(item) { openModal('deck', item); };
-  window.closeDeckModal = function() { closeModal('deck'); };
-
-  const typeIcons = {
-    Planeswalker: "🌟", Creature: "🧛", Artifact: "✨",
-    Enchantment: "🌩️", Instant: "⚡", Sorcery: "🔮",
-    Land: "⛈️", Token: "🪙"
-  };
-
-  const typeOrder = ["Planeswalker", "Creature", "Artifact", "Enchantment", "Instant", "Sorcery", "Land", "Token"];
-
-  // Reverse map: type emoji → human-readable name (for deck carousel grouping)
-  const _typeEmojiToName = {};
+  // All deck display data lives in SETTINGS.json → modals.deck
+  var typeIcons = schema.typeIcons || {};
+  var typeOrder = schema.typeOrder || Object.keys(typeIcons);
+  var plurals   = schema.plurals   || {};
+  var artTemplate     = schema.artPathTemplate || "png/card_art/{ID}/art.png";
+  var defaultTypeEmoji = schema.defaultType     || "🧛";
+  var _typeEmojiToName = {};
   Object.keys(typeIcons).forEach(function (name) { _typeEmojiToName[typeIcons[name]] = name; });
 
-  let sectionStates = [];
-  let _allCards = null;   // loaded once from CARDS.json
-  let _cardsLoading = null;
+  var sectionStates = [];
+  var _allCards = null;
+  var _cardsLoading = null;
 
-  /** Load CARDS.json once, flatten sections into a card list with deck ids.
-   *  Normalizes UPPERCASE JSON keys → the lowercase shape renderDeckModal expects:
-   *    { "card name", types (comma-sep names), art, deck }
-   */
   function _loadCards() {
     if (_allCards) return Promise.resolve(_allCards);
     if (_cardsLoading) return _cardsLoading;
@@ -771,12 +659,12 @@ window.closeGameModal = function() { closeModal('game'); };
       var cards = [];
       (raw.sections || []).forEach(function (sec) {
         (sec.items || []).forEach(function (item) {
-          var typeEmoji = item.TYPE || "🧛";
+          var typeEmoji = item.TYPE || defaultTypeEmoji;
           var typeName  = _typeEmojiToName[typeEmoji] || typeEmoji;
           cards.push({
             "card name": item.NAME  || "",
             types:       typeName,
-            art:         "png/card_art/" + (item.ID || "") + "/art.png",
+            art:         artTemplate.replace("{ID}", item.ID || ""),
             deck:        sec.id,
           });
         });
@@ -787,16 +675,8 @@ window.closeGameModal = function() { closeModal('game'); };
     return _cardsLoading;
   }
 
-  window.openDeckModal = function (item) {
-    const deckId = item.DECK.trim();
-    _loadCards().then(function (allCards) {
-      var cards = allCards.filter(function (c) { return c.deck === deckId; });
-      renderDeckModal(item, cards);
-    });
-  };
-
   function pluralize(type) {
-    return type === "Sorcery" ? "Sorceries" : type + "s";
+    return plurals[type] || (type + "s");
   }
 
   function getArtSrc(card) {
@@ -804,7 +684,7 @@ window.closeGameModal = function() { closeModal('game'); };
   }
 
   function getPos(index, focus) {
-    const diff = index - focus;
+    var diff = index - focus;
     if (diff === 0) return "0";
     if (diff === 1) return "1";
     if (diff === 2) return "2";
@@ -816,110 +696,136 @@ window.closeGameModal = function() { closeModal('game'); };
     return "hidden";
   }
 
+  function renderSectionCarousel(state) {
+    var container = state.carouselEl;
+    container.innerHTML = "";
+    if (state.prevBtn) state.prevBtn.style.visibility = state.index <= 0 ? "hidden" : "";
+    if (state.nextBtn) state.nextBtn.style.visibility = state.index >= state.cards.length - 1 ? "hidden" : "";
+    state.cards.forEach(function (card, i) {
+      var el = document.createElement("div");
+      el.className = "deck-card";
+      el.setAttribute("data-pos", getPos(i, state.index));
+      el.innerHTML = '<img src="' + getArtSrc(card) + '" alt="' + (card["card name"] || "") + '" loading="lazy" />' +
+        '<div class="deck-card-name">' + (card["card name"] || "") + '</div>';
+      (function (st, idx) {
+        el.addEventListener("click", function () {
+          var clickPos = getPos(idx, st.index);
+          if (clickPos !== "0" && clickPos !== "hidden" && clickPos !== "-hidden") {
+            st.index = idx;
+            updateSectionPositions(st);
+          }
+        });
+      })(state, i);
+      container.appendChild(el);
+    });
+    updateSectionCounter(state);
+  }
+
+  function updateSectionPositions(state) {
+    var cardEls = state.carouselEl.querySelectorAll(".deck-card");
+    cardEls.forEach(function (el, i) {
+      el.setAttribute("data-pos", getPos(i, state.index));
+    });
+    if (state.prevBtn) state.prevBtn.style.visibility = state.index <= 0 ? "hidden" : "";
+    if (state.nextBtn) state.nextBtn.style.visibility = state.index >= state.cards.length - 1 ? "hidden" : "";
+    updateSectionCounter(state);
+  }
+
+  function updateSectionCounter(state) {
+    state.counterEl.textContent = (state.index + 1) + " / " + state.cards.length;
+  }
+
   function renderDeckModal(item, cards) {
-    // Commander image
-    const commanderName = (item.TITLE || "").replace(/:/g, ",");
-    const commanderCard = cards.find(function (c) {
-      const name = c["card name"] || "";
+    var commanderName = (item.TITLE || "").replace(/:/g, ",");
+    var commanderCard = cards.find(function (c) {
+      var name = c["card name"] || "";
       return name.toLowerCase().includes(commanderName.toLowerCase()) ||
         commanderName.toLowerCase().includes(name.split(" // ")[0].toLowerCase());
     });
 
-    const heroImg = document.getElementById("deck-hero-img");
+    var heroImg = document.getElementById("deck-hero-img");
     if (commanderCard && commanderCard.art && commanderCard.art.trim()) {
       heroImg.src = commanderCard.art;
     } else {
       heroImg.src = "";
     }
 
-    const deckName = (item.NAME || "").replace(/<br\s*\/?>/gi, " ");
+    var deckName = (item.NAME || "").replace(/<br\s*\/?>/gi, " ");
     document.getElementById("deck-hero-name").textContent = deckName;
     document.getElementById("deck-sticky-title").textContent = deckName;
     document.getElementById("deck-hero-motto").textContent = item.MOTTO || "";
 
-    const heroLink = document.getElementById("deck-hero-link");
-    if (item.GITHUB && item.GITHUB.trim()) {
-      heroLink.href = item.GITHUB;
-      heroLink.style.display = "";
-    } else {
-      heroLink.style.display = "none";
+    var heroLink = document.getElementById("deck-hero-link");
+    if (heroLink) {
+      if (item.GITHUB && item.GITHUB.trim()) {
+        heroLink.href = item.GITHUB;
+        heroLink.style.display = "";
+      } else {
+        heroLink.style.display = "none";
+      }
     }
 
-    // Group cards by type (excluding commander)
-    const typeGroups = {};
+    var typeGroups = {};
     typeOrder.forEach(function (t) { typeGroups[t] = []; });
     cards.forEach(function (c) {
       if (c === commanderCard) return;
-      const types = (c.types || "").split(",").map(function (t) { return t.trim(); }).filter(Boolean);
-      const seen = {};
+      var types = (c.types || "").split(",").map(function (t) { return t.trim(); }).filter(Boolean);
+      var seen = {};
       types.forEach(function (t) {
         if (!seen[t] && typeGroups[t]) { seen[t] = true; typeGroups[t].push(c); }
       });
     });
 
-    // Build per-type sections
-    const sectionsEl = document.getElementById("deck-sections");
+    var sectionsEl = document.getElementById("deck-sections");
     sectionsEl.innerHTML = "";
     sectionStates = [];
 
     typeOrder.forEach(function (type) {
-      const group = typeGroups[type];
+      var group = typeGroups[type];
       if (group.length === 0) return;
-
-      // Sort: cards with art first, then alphabetical
       group.sort(function (a, b) {
-        const aHas = a.art && a.art.trim() ? 0 : 1;
-        const bHas = b.art && b.art.trim() ? 0 : 1;
+        var aHas = a.art && a.art.trim() ? 0 : 1;
+        var bHas = b.art && b.art.trim() ? 0 : 1;
         if (aHas !== bHas) return aHas - bHas;
         return (a["card name"] || "").localeCompare(b["card name"] || "");
       });
 
-      const section = document.createElement("div");
+      var section = document.createElement("div");
       section.className = "deck-section";
-
       section.innerHTML =
         '<div class="deck-section-heading">' +
         '<span class="deck-section-icon">' + (typeIcons[type] || "") + '</span>' +
         '<span class="deck-section-label">' + pluralize(type) + '</span>' +
         '</div>';
 
-      const wrap = document.createElement("div");
+      var wrap = document.createElement("div");
       wrap.className = "deck-carousel-wrap";
-
-      const prevBtn = document.createElement("button");
+      var prevBtn = document.createElement("button");
       prevBtn.className = "deck-carousel-btn deck-prev";
       prevBtn.textContent = "\u2039";
-
-      const nextBtn = document.createElement("button");
+      var nextBtn = document.createElement("button");
       nextBtn.className = "deck-carousel-btn deck-next";
       nextBtn.textContent = "\u203A";
-
-      const carousel = document.createElement("div");
+      var carousel = document.createElement("div");
       carousel.className = "deck-carousel";
-
       wrap.appendChild(prevBtn);
       wrap.appendChild(carousel);
       wrap.appendChild(nextBtn);
       section.appendChild(wrap);
 
-      const counter = document.createElement("div");
+      var counter = document.createElement("div");
       counter.className = "deck-carousel-counter";
       section.appendChild(counter);
-
       sectionsEl.appendChild(section);
 
-      const state = { cards: group, index: 0, carouselEl: carousel, counterEl: counter, prevBtn, nextBtn };
+      var state = { cards: group, index: 0, carouselEl: carousel, counterEl: counter, prevBtn: prevBtn, nextBtn: nextBtn };
       sectionStates.push(state);
-
       if (group.length <= 1) {
         prevBtn.style.display = "none";
         nextBtn.style.display = "none";
         counter.style.display = "none";
       }
-
       renderSectionCarousel(state);
-
-      // Wire prev/next
       (function (st) {
         prevBtn.addEventListener("click", function () {
           if (st.index > 0) { st.index--; updateSectionPositions(st); }
@@ -930,36 +836,32 @@ window.closeGameModal = function() { closeModal('game'); };
       })(state);
     });
 
-    // Body text
-    const bodyEl = document.getElementById("deck-body");
+    var bodyEl = document.getElementById("deck-body");
     bodyEl.innerHTML = item.TEXT && item.TEXT !== "tbd"
       ? item.TEXT
-      : "<p style='color:rgba(255,255,255,0.5);font-style:italic;'>Details coming soon…</p>";
+      : "<p style='color:rgba(255,255,255,0.5);font-style:italic;'>" + _fallbackText + "</p>";
 
-    // Wire up card-name links to navigate carousel
     bodyEl.querySelectorAll("a[data-card-link]").forEach(function (link) {
       link.addEventListener("click", function (e) {
         e.preventDefault();
-        const target = link.getAttribute("data-card-link").toLowerCase();
-        for (let si = 0; si < sectionStates.length; si++) {
-          const st = sectionStates[si];
-          for (let ci = 0; ci < st.cards.length; ci++) {
-            const name = (st.cards[ci]["card name"] || "").toLowerCase();
+        var target = link.getAttribute("data-card-link").toLowerCase();
+        for (var si = 0; si < sectionStates.length; si++) {
+          var st = sectionStates[si];
+          for (var ci = 0; ci < st.cards.length; ci++) {
+            var name = (st.cards[ci]["card name"] || "").toLowerCase();
             if (name === target || name.indexOf(target) !== -1 || target.indexOf(name.split(" // ")[0]) !== -1) {
               st.index = ci;
               updateSectionPositions(st);
-
-              const sectionEl = st.carouselEl.closest(".deck-section");
+              var sectionEl = st.carouselEl.closest(".deck-section");
               if (sectionEl) {
-                const modalCard = sectionEl.closest(".deck-modal-card");
-                const hero = modalCard.querySelector(".deck-hero");
-                const headerHeight = hero ? hero.offsetHeight : 0;
-                const sectionTop = sectionEl.offsetTop - headerHeight - 12;
+                var modalCard = sectionEl.closest(".deck-modal-card");
+                var hero = modalCard.querySelector(".deck-hero");
+                var headerHeight = hero ? hero.offsetHeight : 0;
+                var sectionTop = sectionEl.offsetTop - headerHeight - 12;
                 modalCard.scrollTo({ top: sectionTop, behavior: "smooth" });
               }
-
-              const cardEls = st.carouselEl.querySelectorAll(".deck-card");
-              const focusedCard = cardEls[ci];
+              var cardEls = st.carouselEl.querySelectorAll(".deck-card");
+              var focusedCard = cardEls[ci];
               if (focusedCard) {
                 focusedCard.classList.remove("card-anchored");
                 void focusedCard.offsetWidth;
@@ -978,97 +880,74 @@ window.closeGameModal = function() { closeModal('game'); };
     _deckReg.open();
   }
 
-  function renderSectionCarousel(state) {
-    const container = state.carouselEl;
-    container.innerHTML = "";
-
-    if (state.prevBtn) state.prevBtn.style.visibility = state.index <= 0 ? "hidden" : "";
-    if (state.nextBtn) state.nextBtn.style.visibility = state.index >= state.cards.length - 1 ? "hidden" : "";
-
-    state.cards.forEach(function (card, i) {
-      const el = document.createElement("div");
-      el.className = "deck-card";
-      el.setAttribute("data-pos", getPos(i, state.index));
-
-      el.innerHTML = '<img src="' + getArtSrc(card) + '" alt="' + (card["card name"] || "") + '" loading="lazy" />' +
-        '<div class="deck-card-name">' + (card["card name"] || "") + '</div>';
-
-      (function (st, idx) {
-        el.addEventListener("click", function () {
-          const clickPos = getPos(idx, st.index);
-          if (clickPos !== "0" && clickPos !== "hidden" && clickPos !== "-hidden") {
-            st.index = idx;
-            updateSectionPositions(st);
-          }
-        });
-      })(state, i);
-
-      container.appendChild(el);
-    });
-
-    updateSectionCounter(state);
-  }
-
-  function updateSectionPositions(state) {
-    const cardEls = state.carouselEl.querySelectorAll(".deck-card");
-    cardEls.forEach(function (el, i) {
-      el.setAttribute("data-pos", getPos(i, state.index));
-    });
-    if (state.prevBtn) state.prevBtn.style.visibility = state.index <= 0 ? "hidden" : "";
-    if (state.nextBtn) state.nextBtn.style.visibility = state.index >= state.cards.length - 1 ? "hidden" : "";
-    updateSectionCounter(state);
-  }
-
-  function updateSectionCounter(state) {
-    state.counterEl.textContent = (state.index + 1) + " / " + state.cards.length;
-  }
-})();
-
-// ═══════════════════════════════════════════════════════════════
-//  EXTERNAL LINK IFRAME MODAL
-// ═══════════════════════════════════════════════════════════════
-(function() {
-  // Ensure overlay element exists (create if absent)
-  var el = document.getElementById("link-modal");
-  if (!el) {
-    el = document.createElement('div');
-    el.className = 'modal-overlay';
-    el.id = 'link-modal';
-    document.body.appendChild(el);
-  }
-  // Inject shell HTML BEFORE registerModal so close-button auto-wires
-  el.innerHTML =
-    '<div class="glass-tile modal-card link-modal-card" style="position:relative;">' +
-      '<div class="modal-sticky-bar"><div class="modal-sticky-group tl-glow">' +
-        '<h2 class="modal-sticky-title" id="link-modal-title"><i class="fa fa-globe"></i> Link</h2>' +
-        '<a class="modal-sticky-link" id="link-modal-link" href="#" target="_blank"><i class="fa fa-external-link"></i> Open in new tab</a>' +
-        '<button class="modal-close" aria-label="Close modal">&times;</button>' +
-      '</div></div>' +
-      '<div class="link-embed-wrap"><iframe id="link-iframe" src="" title="External content" allowfullscreen></iframe></div>' +
-    '</div>';
-  var _linkIframe = document.getElementById("link-iframe");
-  var _linkModal = registerModal("link-modal", {
-    key: "link",
-    onClose: function () { if (_linkIframe) _linkIframe.src = ""; }
-  });
-  // Override registry: openModal('link', url, title) sets up iframe
-  _modalByKey["link"] = {
-    el: _linkModal.el,
-    open: function(url, title) {
-      document.getElementById("link-modal-title").innerHTML = '<i class="fa fa-globe"></i> ' + (title || 'Link');
-      document.getElementById("link-modal-link").href = url;
-      _linkModal.open();
-      document.getElementById("link-iframe").src = url;
+  _modalByKey[key] = {
+    el: _deckReg.el,
+    open: function(item) {
+      if (!item) return;
+      var deckId = item.DECK.trim();
+      _loadCards().then(function(allCards) {
+        var cards = allCards.filter(function(c) { return c.deck === deckId; });
+        renderDeckModal(item, cards);
+      });
     },
-    close: _linkModal.close
+    close: _deckReg.close
   };
-  window.openLinkModal = function(url, title) { openModal('link', url, title); };
-  window.closeLinkModal = function() { closeModal('link'); };
-})();
 
-// ── Video-card event delegation (OUTSIDE if-modal guard) ─────
-// Convention: data-open="key" → openModal(key)
-// Fallback:   data-open="fooModal" → window.openFooModal() (legacy)
+  return { onOpen: null, onClose: null };
+};
+
+// ═══════════════════════════════════════════════════════════════
+//  MODAL HYDRATION BOOT LOOP
+//  Reads SETTINGS.json → modals{} and builds each typed construct.
+//  biography is handled separately (needs post-hydrate wiring).
+// ═══════════════════════════════════════════════════════════════
+function _hydrateModals(settings) {
+  if (settings.fallbackText) _fallbackText = settings.fallbackText;
+  var schemas = (settings && settings.modals) || {};
+  Object.keys(schemas).forEach(function(key) {
+    var schema = schemas[key];
+    // biography is booted separately with _bootBiography
+    if (schema.type === 'biography') return;
+    var construct = _constructs[schema.type];
+    if (!construct) return;
+    var shell = _buildModalShell(schema);
+    construct(shell, schema, key);
+  });
+}
+
+// Boot modals from settings — immediate or deferred
+if (window.__SETTINGS) {
+  _hydrateModals(window.__SETTINGS);
+} else {
+  window.addEventListener('settingsReady', function (e) {
+    _hydrateModals(e.detail);
+  }, { once: true });
+}
+
+// ── Backward-compat thin wrappers ────────────────────────────
+function navigateToModal(dataset, id, imgExt) {
+  if (_glowingTile) { _glowingTile.classList.remove('tile-glow', 'tile-glow-fade'); _glowingTile = null; }
+  openModal('entry', dataset, id, imgExt);
+}
+window.openEntry       = function(dataset, id, imgExt) { openModal('entry', dataset, id, imgExt); };
+window.closeEntry      = function() { closeModal('entry'); };
+window.navigateToModal = navigateToModal;
+window.openGameModal   = function(url, title, nativeW, nativeH) { openModal('game', url, title, nativeW, nativeH); };
+window.closeGameModal  = function() { closeModal('game'); };
+window.openDeckModal   = function(item) { openModal('deck', item); };
+window.closeDeckModal  = function() { closeModal('deck'); };
+window.openLinkModal   = function(url, title) { openModal('link', url, title); };
+window.closeLinkModal  = function() { closeModal('link'); };
+window.openBitnaughtsModal       = function() { openModal('bitnaughts'); };
+window.openBitnaughtsIphoneModal = function() { openModal('bitnaughtsIphone'); };
+window.openBootfileModal  = function() { openModal('bootfile'); };
+window.closeBootfileModal = function() { closeModal('bootfile'); };
+
+// ── Footer year (safe alternative to document.write) ──
+var footerYear = document.getElementById("footer-year");
+if (footerYear) footerYear.textContent = new Date().getFullYear();
+
+// Mermaid modals — lazily created by openMermaidModal() in MERMAID.JS
 document.addEventListener("click", function(e) {
   const card = e.target.closest("[data-action]");
   if (!card) return;

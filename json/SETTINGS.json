@@ -154,11 +154,13 @@
     "heading": "👀 Interested?",
     "subtitle": "Let's build something."
   },
+  "fallbackText": "Details coming soon\u2026",
   "modals": {
     "entry": {
       "type": "entry",
       "elementId": "modal",
       "cardClass": "",
+      "imgPathTemplate": "png/{ID}{EXT}",
       "stickyBar": {
         "titleId": "modal-title",
         "titleTag": "p",
@@ -236,6 +238,7 @@
       "cardClass": "pdf-modal-card",
       "src": "pdf/bible.pdf",
       "singlePage": false,
+      "loadingText": "Loading PDF\u2026",
       "stickyBar": {
         "links": [{ "icon": "fa fa-external-link", "label": "Open in new tab" }]
       }
@@ -257,7 +260,21 @@
       "stickyBar": {
         "titleId": "deck-sticky-title",
         "links": [{ "icon": "fa fa-clone", "label": "Archidekt", "id": "deck-hero-link" }]
-      }
+      },
+      "typeIcons": {
+        "Planeswalker": "🌟",
+        "Creature": "🧛",
+        "Artifact": "✨",
+        "Enchantment": "🌩️",
+        "Instant": "⚡",
+        "Sorcery": "🔮",
+        "Land": "⛈️",
+        "Token": "🪙"
+      },
+      "typeOrder": ["Planeswalker", "Creature", "Artifact", "Enchantment", "Instant", "Sorcery", "Land", "Token"],
+      "plurals": { "Sorcery": "Sorceries" },
+      "artPathTemplate": "png/card_art/{ID}/art.png",
+      "defaultType": "🧛"
     },
     "bootfile": {
       "type": "iframe",
