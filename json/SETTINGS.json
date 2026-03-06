@@ -177,7 +177,7 @@
           "tiles": [
             {
               "value": "🧵 Quilt",
-              "label": "1st ARTIFACT",
+              "label": "1ST ARTIFACT",
               "imageSrc": "png/quilting.png",
               "imageAlt": "Quilting a penguin quilt",
               "quoteText": "Every child is an artist. The problem is how to remain an artist once we grow up.",
@@ -186,7 +186,7 @@
             },
             {
               "value": "🤖 FRC",
-              "label": "1st robot",
+              "label": "1ST ROBOT",
               "imageSrc": "png/redtie-learning.png",
               "imageAlt": "FRC 1458 robot",
               "action": {
@@ -200,7 +200,7 @@
             },
             {
               "value": "⚡ AMAX",
-              "label": "1st contract",
+              "label": "1ST CONTRACT",
               "imageSrc": "png/amax-thumbnail.png",
               "imageAlt": "AMAX ESD station",
               "action": {
