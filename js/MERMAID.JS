@@ -1,12 +1,27 @@
 // ═══════════════════════════════════════════════════════════════
-//  MERMAID DIAGRAM VIEWER — Reusable interactive flowchart engine
+//  MERMAID DIAGRAM VIEWER — Mermaid plugin for createVizDiagram
 //
-//  Factory function `createDiagram(cfg)` parses a Mermaid `graph TD`
-//  block from any .md file and renders glassmorphic DOM tiles + SVG
-//  arrows inside a pannable/zoomable viewport.  Instantiated once
-//  for the Architecture modal and once for the MARP wiring modal.
+//  Provides the Mermaid-specific pipeline (parser, layout engine,
+//  renderer, filter logic) consumed by the generic createVizDiagram
+//  factory in VIZ.JS.  All lifecycle plumbing (modal, pan/zoom,
+//  filter pills, explore tour, camera fit, keyboard nav) is
+//  handled by the engine.
 //
-//  Matches the SKILLTREE.JS / TIMELINE.JS aesthetic.
+//  Sections:
+//    1. Parser — lightweight `graph TD` subset
+//    2. Legend extractor — filter definitions from Legend subgraph
+//    3. Layout engine — recursive subgraph positioning
+//    4. Renderer — DOM tiles + SVG edges + hover wiring
+//    5. Filter system — AST pruning + static visibility toggle
+//    6. Static filter — neighbour dimming + explore glow
+//    7. Factory — createDiagram() wraps createVizDiagram()
+//    7b. openMermaidModal() — generic entry point
+//
+//  Depends on: VIZ.JS (createVizDiagram, initPanZoom,
+//              createFilterSystem, createExploreHint,
+//              animateCameraFit, createLayoutToggle,
+//              createCrossfader, initVizKeyboardNav)
+//              MODALS.JS (registerModal)
 // ═══════════════════════════════════════════════════════════════
 (() => {
 
@@ -927,36 +942,7 @@
   }
 
   /* ═════════════════════════════════════════════════════════════
-     5. PAN & ZOOM  (delegates to shared initPanZoom in VIZ.JS)
-     ═════════════════════════════════════════════════════════════ */
-
-  function _initPanZoom(viewport, state) {
-    var pz = initPanZoom(viewport, state.world, state, {
-      minScale: MIN_SCALE,
-      maxScale: MAX_SCALE,
-      getBounds: function () {
-        if (!state._dims) return null;
-        var vw = viewport.clientWidth, vh = viewport.clientHeight;
-        var s = state.scale;
-        var pad = 0.75;
-        return {
-          minX: vw * pad - state._dims.svgW * s,
-          maxX: vw * (1 - pad),
-          minY: vh * pad - state._dims.svgH * s,
-          maxY: vh * (1 - pad),
-        };
-      },
-      ignoreSelector: ".mm-node, .viz-explore-hint",
-      rubberBandDrag: true,
-      zoomStep: [0.92, 1.08],
-      bounceCurve: "cubic-bezier(0.25, 1, 0.5, 1)",
-      bounceDuration: 340,
-    });
-    state._update = pz.update;
-  }
-
-  /* ═════════════════════════════════════════════════════════════
-     6. FILTER SYSTEM — rebuilds layout excluding hidden classes
+     5. FILTER SYSTEM — rebuilds layout excluding hidden classes
      ═════════════════════════════════════════════════════════════ */
 
   /**
@@ -1096,577 +1082,250 @@
     return { title: ast.title, nodes, edges, subgraphs: liveSubgraphs, classDefs: ast.classDefs, classAssigns: ast.classAssigns };
   }
 
-  function buildFilters(pillContainer, legendNodes, colors, rebuild, onManualFilter) {
-    if (!pillContainer || !legendNodes.length) return null;
-    pillContainer.innerHTML = "";
-
-    // Deduplicate by class name
-    const seen = new Set();
-    const filters = [];
-    legendNodes.forEach(ln => {
-      if (!seen.has(ln.cls)) { seen.add(ln.cls); filters.push(ln); }
-    });
-
-    const allClasses = filters.map(f => f.cls);
-    const activeFilters = new Set(allClasses);
-
-    // "All" button
-    const allBtn = document.createElement("button");
-    allBtn.className = "viz-filter active";
-    allBtn.style.setProperty("--tc", "255,255,255");
-    allBtn.innerHTML = '<span class="all-indicator">\u2b1c</span> \ud83c\udf9b\ufe0f';
-    pillContainer.appendChild(allBtn);
-
-    const themeBtns = [];
-    filters.forEach(f => {
-      const tc = colors[f.cls] || "255,255,255";
-      const btn = document.createElement("button");
-      btn.className = "viz-filter active";
-      btn.dataset.filter = f.cls;
-      btn.style.setProperty("--tc", tc);
-      // Extract leading emoji from label, strip text
-      var emojiMatch = f.label.match(/^(\p{Emoji_Presentation}|\p{Emoji}\uFE0F?)/u);
-      var emojiOnly = emojiMatch ? emojiMatch[0] : '';
-      btn.innerHTML = '<span class="viz-dot" style="background:rgba(' + tc + ',0.9);"></span> ' + emojiOnly;
-      btn.title = f.label;
-      pillContainer.appendChild(btn);
-      themeBtns.push(btn);
-    });
-
-    // Delegate behaviour to shared createFilterSystem
-    const sys = createFilterSystem({
-      allThemes: allClasses,
-      activeFilters: activeFilters,
-      allBtn: allBtn,
-      themeBtns: themeBtns,
-      onFilter: function () { rebuild(activeFilters); },
-      onManualFilter: onManualFilter,
-    });
-
-    // Build class→label map for explore hint
-    const labelMap = {};
-    filters.forEach(f => { labelMap[f.cls] = f.label; });
-
-    return { allClasses: allClasses, labelMap: labelMap, setOnly: sys.setOnly, addFilter: sys.addFilter, setAll: sys.setAll, setNone: sys.setNone };
-  }
-
   /* ═════════════════════════════════════════════════════════════
-     7. FACTORY
+     7. FACTORY — Mermaid-specific plugin for createVizDiagram
      ═════════════════════════════════════════════════════════════ */
 
-  function createDiagram(cfg) {
-    let modal = document.getElementById(cfg.modalId);
+  /**
+   * _mermaidStaticFilter — static-mode filter logic with
+   * neighbour dimming and explore glow, extracted from the
+   * original rebuild() so it can be returned as a closure.
+   */
+  function _mermaidStaticFilter(ast, activeClasses, world, svgLayer, ctx) {
+    var filtered = filterAST(ast, activeClasses);
+    var liveNodes    = new Set(Object.keys(filtered.nodes));
+    var liveSgs      = new Set(filtered.subgraphs.map(function (sg) { return sg.id; }));
+    var liveEdgeKeys = new Set(filtered.edges.map(function (e) { return e.from + "->" + e.to; }));
 
-    // Auto-create modal overlay + inner DOM if not present.
-    // This is the ONLY template — no separate HTML fragment needed.
-    if (!modal) {
-      var liveId = cfg.modalId + "-live";
-      var ariaLabel = cfg.ariaLabel || "Diagram";
-      modal = document.createElement("div");
-      modal.className = "modal-overlay";
-      modal.id = cfg.modalId;
-      modal.setAttribute("role", "dialog");
-      modal.setAttribute("aria-label", ariaLabel);
-      modal.innerHTML =
-        '<div class="glass-tile modal-card viz-modal-card mm-modal-card" style="position:relative;">' +
-          '<div class="modal-sticky-bar">' +
-            '<div class="viz-filter-group tl-glow" role="toolbar" aria-label="Diagram filters">' +
-              '<div class="viz-filter-row">' +
-                '<span class="mm-filter-pills" id="' + cfg.filterId + '"></span>' +
-                '<button class="modal-close" aria-label="Close modal">&times;</button>' +
-              '</div>' +
-            '</div>' +
-          '</div>' +
-          '<div class="viz-viewport" style="cursor:grab;" role="application" aria-roledescription="Interactive flowchart" aria-label="' + ariaLabel + '. Use arrow keys to navigate between nodes, Enter to highlight connections.">' +
-            '<div class="sr-only" id="' + liveId + '" aria-live="polite" aria-atomic="true"></div>' +
-            '<div class="sr-only">' + ariaLabel + ': interactive flowchart. Use arrow keys to navigate nodes.</div>' +
-            '<div class="viz-world mm-world">' +
-              '<svg class="mm-edges" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 6000 6000" aria-hidden="true"></svg>' +
-            '</div>' +
-          '</div>' +
-        '</div>';
-      document.body.appendChild(modal);
-    }
-
-    // Ensure filterId is wired even on pre-existing DOM
-    var pillsSpan = modal.querySelector(".mm-filter-pills");
-    if (pillsSpan && !pillsSpan.id) pillsSpan.id = cfg.filterId;
-
-    const state = { built: false, x: 0, y: 0, scale: 1, world: null, _update: null };
-    let _svgLayer = null, _dims = null;
-    let _ast = null, _legend = null, _colors = null;
-    let _visibleBounds = null;  // { x, y, w, h } of visible content
-    let _fitHandle = null;      // current animateCameraFit handle
-
-    // ── Node actions: click handlers on specific nodes ────────
-    function wireNodeActions() {
-      if (!cfg.nodeActions || !_dims || !_dims.nodeElements) return;
-      Object.keys(cfg.nodeActions).forEach(function (nodeId) {
-        var ne = _dims.nodeElements[nodeId];
-        if (!ne) return;
-        ne.el.style.cursor = "pointer";
-        ne.el.classList.add("mm-actionable");
-        ne.el.addEventListener("click", function (e) {
-          e.stopPropagation();
-          cfg.nodeActions[nodeId]();
-        });
-      });
-    }
-
-    function fitView(animate) {
-      const vp = modal.querySelector(".viz-viewport");
-      if (!vp || !state.world || !_dims) return;
-      const bw = _visibleBounds ? _visibleBounds.w : _dims.svgW;
-      const bh = _visibleBounds ? _visibleBounds.h : _dims.svgH;
-      const bx = _visibleBounds ? _visibleBounds.x : 0;
-      const by = _visibleBounds ? _visibleBounds.y : 0;
-
-      // Cancel any in-flight animation
-      if (_fitHandle) { _fitHandle.cancel(); _fitHandle = null; }
-      state.world.style.transition = "";
-
-      _fitHandle = animateCameraFit(state, function () {
-        if (state._update) state._update();
-      }, {
-        vpWidth:  vp.clientWidth,
-        vpHeight: vp.clientHeight,
-        bounds:   { x: bx, y: by, w: bw, h: bh },
-        minScale: MIN_SCALE,
-        maxScale: 1,     // never zoom past 1× for diagram fit
-        padding:  20,
-        duration: 1000,
-        animate:  animate,
-      });
-    }
-
-    function rebuild(activeClasses) {
-      if (!_ast || !_svgLayer) return;
-
-      var isDynamic = _layoutToggle && !_layoutToggle.isStatic();
-
-      // ── DYNAMIC MODE: full re-render with filtered AST ─────
-      if (isDynamic) {
-        var dynAST = filterAST(_ast, activeClasses);
-        _dims = buildDiagram(dynAST, _colors, state.world, _svgLayer, _legend.legendIds, function() { return _exploring; });
-        state._dims = _dims;
-        wireNodeActions();
-        _visibleBounds = null; // fit full re-rendered diagram
-        requestAnimationFrame(function () { fitView(true); });
-        return;
-      }
-
-      // ── STATIC MODE: toggle visibility classes ─────────────
-
-      // Determine which nodes & subgraphs survive the filter
-      const filtered = filterAST(_ast, activeClasses);
-      const liveNodes = new Set(Object.keys(filtered.nodes));
-      const liveSgs   = new Set(filtered.subgraphs.map(sg => sg.id));
-      const liveEdgeKeys = new Set(filtered.edges.map(e => e.from + "->" + e.to));
-
-      // Toggle nodes
-      state.world.querySelectorAll(".mm-node[data-mm-id]").forEach(el => {
-        el.classList.toggle("mm-hidden", !liveNodes.has(el.dataset.mmId));
-      });
-
-      // Toggle subgraphs
-      state.world.querySelectorAll(".mm-subgraph[data-mm-sg]").forEach(el => {
-        el.classList.toggle("mm-hidden", !liveSgs.has(el.dataset.mmSg));
-      });
-
-      // Toggle edges + their labels
-      _svgLayer.querySelectorAll(".mm-edge[data-mm-from]").forEach(el => {
-        el.classList.toggle("mm-hidden", !liveEdgeKeys.has(el.dataset.mmFrom + "->" + el.dataset.mmTo));
-      });
-      _svgLayer.querySelectorAll(".mm-edge-label-group[data-mm-from]").forEach(el => {
-        el.classList.toggle("mm-hidden", !liveEdgeKeys.has(el.dataset.mmFrom + "->" + el.dataset.mmTo));
-      });
-
-      // ── Dim neighbour nodes/edges (visible but not primary) ─
-      const allActive = activeClasses.size >= Object.keys(_ast.classDefs).length;
-      // Build set of primary node IDs: nodes whose class is in the active set
-      const primaryNodeIds = new Set();
-      if (!allActive) {
-        Object.keys(filtered.nodes).forEach(id => {
-          const cls = _ast.classAssigns[id] || (_ast.nodes[id] && _ast.nodes[id].classes && _ast.nodes[id].classes[0]) || "";
-          if (!cls || cls === "footer" || activeClasses.has(cls)) primaryNodeIds.add(id);
-        });
-      }
-      // Also identify primary subgraph IDs (subgraphs whose inferred class is in keep)
-      const primarySgIds = new Set();
-      if (!allActive) {
-        const sgMap = new Map(); _ast.subgraphs.forEach(s => sgMap.set(s.id, s));
-        filtered.subgraphs.forEach(sg => {
-          const cls = inferSubgraphClass(sg.id, _ast);
-          if (cls && activeClasses.has(cls)) {
-            // Single-class subgraph with that class active → primary
-            primarySgIds.add(sg.id);
-          } else if (!cls) {
-            // Mixed or classless subgraph: primary if ANY descendant class is active
-            const s = sgMap.get(sg.id);
-            if (s) {
-              let hasActive = false;
-              (function walkSg(sub) {
-                (sub.children || []).forEach(cid => {
-                  const c = _ast.classAssigns[cid] || (_ast.nodes[cid] && _ast.nodes[cid].classes && _ast.nodes[cid].classes[0]) || "";
-                  if (c && activeClasses.has(c)) hasActive = true;
-                });
-                (sub.childSubgraphs || []).forEach(csid => { const ch = sgMap.get(csid); if (ch) walkSg(ch); });
-              })(s);
-              if (hasActive) primarySgIds.add(sg.id);
-            }
-          }
-        });
-      }
-
-      state.world.querySelectorAll(".mm-node[data-mm-id]").forEach(el => {
-        el.classList.toggle("mm-neighbour", !allActive && liveNodes.has(el.dataset.mmId) && !primaryNodeIds.has(el.dataset.mmId));
-      });
-      state.world.querySelectorAll(".mm-subgraph[data-mm-sg]").forEach(el => {
-        el.classList.toggle("mm-neighbour", !allActive && liveSgs.has(el.dataset.mmSg) && !primarySgIds.has(el.dataset.mmSg));
-      });
-      // Edges: dim if NEITHER endpoint is a primary node/subgraph
-      _svgLayer.querySelectorAll(".mm-edge[data-mm-from]").forEach(el => {
-        const fromPrimary = primaryNodeIds.has(el.dataset.mmFrom) || primarySgIds.has(el.dataset.mmFrom);
-        const toPrimary   = primaryNodeIds.has(el.dataset.mmTo)   || primarySgIds.has(el.dataset.mmTo);
-        el.classList.toggle("mm-neighbour", !allActive && !el.classList.contains("mm-hidden") && !fromPrimary && !toPrimary);
-      });
-      _svgLayer.querySelectorAll(".mm-edge-label-group[data-mm-from]").forEach(el => {
-        const fromPrimary = primaryNodeIds.has(el.dataset.mmFrom) || primarySgIds.has(el.dataset.mmFrom);
-        const toPrimary   = primaryNodeIds.has(el.dataset.mmTo)   || primarySgIds.has(el.dataset.mmTo);
-        el.classList.toggle("mm-neighbour", !allActive && !el.classList.contains("mm-hidden") && !fromPrimary && !toPrimary);
-      });
-
-      // ── Glow current explore class's elements during tour ───
-      if (_exploring && _exploreCurrentClass) {
-        // Clear any prior explore highlights
-        state.world.querySelectorAll(".mm-explore-glow").forEach(el => el.classList.remove("mm-explore-glow"));
-        _svgLayer.querySelectorAll(".mm-explore-glow").forEach(el => el.classList.remove("mm-explore-glow"));
-        state.world.classList.add("mm-explore-hovering");
-
-        // Helper: resolve effective class for a node/subgraph id
-        function nodeClassFor(id) {
-          return _ast.classAssigns[id] || (_ast.nodes[id] && _ast.nodes[id].classes && _ast.nodes[id].classes[0]) || "";
-        }
-
-        // Highlight nodes belonging to the current explore class
-        state.world.querySelectorAll(".mm-node[data-mm-id]:not(.mm-hidden)").forEach(el => {
-          if (el.dataset.mmClass === _exploreCurrentClass) {
-            el.classList.add("mm-explore-glow");
-          }
-        });
-        // Highlight subgraphs whose inferred class matches current explore class
-        state.world.querySelectorAll(".mm-subgraph[data-mm-sg]:not(.mm-hidden)").forEach(el => {
-          var sgCls = inferSubgraphClass(el.dataset.mmSg, _ast);
-          if (sgCls === _exploreCurrentClass) {
-            el.classList.add("mm-explore-glow");
-          }
-        });
-        // Highlight edges where at least one endpoint belongs to the current class
-        _svgLayer.querySelectorAll(".mm-edge[data-mm-from]:not(.mm-hidden)").forEach(el => {
-          var fromCls = nodeClassFor(el.dataset.mmFrom) || inferSubgraphClass(el.dataset.mmFrom, _ast);
-          var toCls   = nodeClassFor(el.dataset.mmTo)   || inferSubgraphClass(el.dataset.mmTo, _ast);
-          if (fromCls === _exploreCurrentClass || toCls === _exploreCurrentClass) {
-            el.classList.add("mm-explore-glow");
-          }
-        });
-        _svgLayer.querySelectorAll(".mm-edge-label-group[data-mm-from]:not(.mm-hidden)").forEach(el => {
-          var fromCls = nodeClassFor(el.dataset.mmFrom) || inferSubgraphClass(el.dataset.mmFrom, _ast);
-          var toCls   = nodeClassFor(el.dataset.mmTo)   || inferSubgraphClass(el.dataset.mmTo, _ast);
-          if (fromCls === _exploreCurrentClass || toCls === _exploreCurrentClass) {
-            el.classList.add("mm-explore-glow");
-          }
-        });
-
-        // Fade out glow after current step duration
-        if (_exploreGlowTimer) clearTimeout(_exploreGlowTimer);
-        _exploreGlowTimer = setTimeout(function () {
-          state.world.querySelectorAll(".mm-explore-glow").forEach(el => el.classList.remove("mm-explore-glow"));
-          _svgLayer.querySelectorAll(".mm-explore-glow").forEach(el => el.classList.remove("mm-explore-glow"));
-          state.world.classList.remove("mm-explore-hovering");
-        }, _exploreStepDuration);
-      }
-
-      // Compute bounding box for camera fit
-      // During explore: frame only the glowing (newly revealed) elements
-      // Otherwise: frame primary (non-neighbour) visible elements
-      let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
-      const glowSuffix = _exploring ? ".mm-explore-glow" : ":not(.mm-neighbour)";
-      const nodeSel = ".mm-node[data-mm-id]:not(.mm-hidden)" + glowSuffix;
-      const sgSel   = ".mm-subgraph[data-mm-sg]:not(.mm-hidden)" + glowSuffix;
-      function accumBounds(el) {
-        const x = parseFloat(el.style.left), y = parseFloat(el.style.top);
-        const w = parseFloat(el.style.width), h = parseFloat(el.style.height);
-        if (x < minX) minX = x;
-        if (y < minY) minY = y;
-        if (x + w > maxX) maxX = x + w;
-        if (y + h > maxY) maxY = y + h;
-      }
-      state.world.querySelectorAll(nodeSel).forEach(accumBounds);
-      state.world.querySelectorAll(sgSel).forEach(accumBounds);
-
-      // During explore, also include glowing edges (SVG paths) in bounding box
-      if (_exploring) {
-        _svgLayer.querySelectorAll(".mm-edge.mm-explore-glow").forEach(function (pathEl) {
-          try {
-            var bb = pathEl.getBBox();
-            if (bb.width > 0 || bb.height > 0) {
-              if (bb.x < minX) minX = bb.x;
-              if (bb.y < minY) minY = bb.y;
-              if (bb.x + bb.width > maxX) maxX = bb.x + bb.width;
-              if (bb.y + bb.height > maxY) maxY = bb.y + bb.height;
-            }
-          } catch (e) { /* getBBox can throw if element is not rendered */ }
-        });
-        _svgLayer.querySelectorAll(".mm-edge-label-group.mm-explore-glow").forEach(function (g) {
-          try {
-            var bb = g.getBBox();
-            if (bb.width > 0 || bb.height > 0) {
-              if (bb.x < minX) minX = bb.x;
-              if (bb.y < minY) minY = bb.y;
-              if (bb.x + bb.width > maxX) maxX = bb.x + bb.width;
-              if (bb.y + bb.height > maxY) maxY = bb.y + bb.height;
-            }
-          } catch (e) {}
-        });
-      }
-
-      if (minX < Infinity) {
-        const pad = 20;
-        _visibleBounds = { x: minX - pad, y: minY - pad, w: (maxX - minX) + pad * 2, h: (maxY - minY) + pad * 2 };
-      } else {
-        _visibleBounds = null;  // fallback to full diagram
-      }
-
-      requestAnimationFrame(() => fitView(true));
-    }
-
-    function load() {
-      if (state.built) return;
-      fetch(cfg.mdFile + "?v=" + Date.now())
-        .then(r => { if (!r.ok) throw new Error("HTTP " + r.status); return r.text(); })
-        .then(md => {
-          const m = md.match(/```mermaid\s*\n([\s\S]*?)```/);
-          if (!m) { console.warn("[mermaid] No mermaid block in", cfg.mdFile); return; }
-          _ast = parseMermaid(m[1]);
-          _legend = extractLegend(_ast);
-          _colors = colorsFromAST(_ast.classDefs);
-          _dims = buildDiagram(_ast, _colors, state.world, _svgLayer, _legend.legendIds, function() { return _exploring; });
-          state._dims = _dims;
-          state.built = true;
-          wireNodeActions();
-
-          // ── Keyboard navigation (a11y) ─────────────────────────
-          var liveId = cfg.modalId + "-live";
-          initVizKeyboardNav({
-            modal: modal,
-            getNodes: function () {
-              if (!_dims || !_dims.nodeElements) return [];
-              return Object.values(_dims.nodeElements).map(function (ne) {
-                return { el: ne.el, targetX: ne.x, targetY: ne.y, _hidden: ne.el.classList.contains("mm-filtered") };
-              });
-            },
-            onActivate: function (n) { n.el.click(); },
-            liveRegionId: liveId,
-          });
-
-          // Build filter pills from legend
-          const pillContainer = document.getElementById(cfg.filterId);
-          if (pillContainer && _legend.legendNodes.length) {
-            _filterAPI = buildFilters(pillContainer, _legend.legendNodes, _colors, rebuild, function() { stopExplore(false); });
-
-            // Add layout toggle as leftmost button (before All)
-            var toggleBtn = document.createElement("button");
-            toggleBtn.className = "viz-layout-toggle";
-            toggleBtn.title = "Static: nodes keep their positions when filtering. Dynamic: nodes reflow into compact positions.";
-            pillContainer.insertBefore(toggleBtn, pillContainer.firstChild);
-            _layoutToggle = createLayoutToggle({
-              btn: toggleBtn,
-              onDynamic: function () { _filterAPI.setAll(); },
-              onStatic: function () {
-                // Rebuild full diagram so all positions are restored
-                _dims = buildDiagram(_ast, _colors, state.world, _svgLayer, _legend.legendIds, function() { return _exploring; });
-                state._dims = _dims;
-                wireNodeActions();
-                _visibleBounds = null;
-                requestAnimationFrame(function () { fitView(true); });
-              },
-              startStatic: true,
-            });
-          }
-
-          requestAnimationFrame(() => fitView(false));
-        })
-        .catch(err => console.error("[mermaid]", cfg.mdFile, err));
-    }
-
-    // ── Auto-explore tour ────────────────────────────────────
-    let _filterAPI = null;
-    let _layoutToggle = null;
-    let _exploreTimers = [];
-    let _exploring = false;
-    let _exploreGlowTimer = null;
-    let _exploreGen = 0;  // generation counter to invalidate stale timers
-    let _exploreStepDuration = 3000; // current step's duration (updated per step)
-    let _exploreCurrentClass = null; // the class being highlighted in the current explore step
-
-    var EXPLORE_DEFAULT = '<strong>Explore</strong><span class="scroll-arrow">\uD83D\uDD2D</span>';
-    var _hintCF = createCrossfader();
-
-    function resetHintLabel() {
-      var hint = modal.querySelector(".viz-explore-hint");
-      if (!hint) return;
-      if (_exploring) {
-        _hintCF.fade(hint, EXPLORE_DEFAULT, function () { hint.classList.remove("exploring"); });
-      } else {
-        hint.innerHTML = EXPLORE_DEFAULT;
-        hint.classList.remove("exploring");
-      }
-    }
-
-    function setHintLabel(label) {
-      var hint = modal.querySelector(".viz-explore-hint");
-      if (!hint) return;
-      var m = label.match(/^(\p{Emoji_Presentation}|\p{Emoji}\uFE0F?)\s*/u);
-      var emoji = m ? m[1] : '\uD83D\uDD2D';
-      var text  = m ? label.slice(m[0].length) : label;
-      var html = '<strong>' + text + '</strong><span class="scroll-arrow">' + emoji + '</span>';
-      _hintCF.fade(hint, html);
-    }
-
-    function stopExplore(restoreAll) {
-      _exploreGen++;
-      _exploreTimers.forEach(t => clearTimeout(t));
-      _exploreTimers = [];
-      _exploring = false;
-      _exploreCurrentClass = null;
-      if (_exploreGlowTimer) { clearTimeout(_exploreGlowTimer); _exploreGlowTimer = null; }
-      // Clear any lingering explore glow
-      if (state.world) {
-        state.world.classList.remove("mm-exploring");
-        state.world.classList.remove("mm-explore-hovering");
-        state.world.querySelectorAll(".mm-explore-glow").forEach(el => el.classList.remove("mm-explore-glow"));
-      }
-      if (_svgLayer) {
-        _svgLayer.querySelectorAll(".mm-explore-glow").forEach(el => el.classList.remove("mm-explore-glow"));
-      }
-      // Clear pill glow
-      var pills = document.getElementById(cfg.filterId);
-      if (pills) pills.querySelectorAll(".viz-filter-glow").forEach(function (el) { el.classList.remove("viz-filter-glow"); });
-      resetHintLabel();
-      // Only restore all filters when explicitly requested (e.g. tour end, close)
-      // Not when a user manually clicks a filter pill
-      if (restoreAll !== false && _filterAPI) _filterAPI.setAll();
-    }
-
-    function startExplore() {
-      if (!_filterAPI) return;
-
-      // If already exploring, cancel and reset
-      if (_exploring) {
-        stopExplore();
-        return;
-      }
-
-      _exploreGen++;
-      var gen = _exploreGen;
-      _exploring = true;
-      if (state.world) state.world.classList.add("mm-exploring");
-      var hint = modal.querySelector(".viz-explore-hint");
-      if (hint) hint.classList.add("exploring");
-      var classes = _filterAPI.allClasses;
-      var labels = _filterAPI.labelMap;
-
-      // Constant step duration (ms)
-      var stepDuration = 3000;
-      var stepDurations = [];
-      for (var fi = 0; fi < classes.length + 1; fi++) {
-        stepDurations.push(stepDuration);
-      }
-      // Cumulative times for setTimeout scheduling
-      var cumulative = [0];
-      for (var ci = 0; ci < stepDurations.length; ci++) {
-        cumulative.push(cumulative[ci] + stepDurations[ci]);
-      }
-
-      // Glow the filter pill for the current explore step
-      var pillContainer = document.getElementById(cfg.filterId);
-      function glowFilterPill(cls) {
-        if (!pillContainer) return;
-        // Remove prior pill glow
-        pillContainer.querySelectorAll(".viz-filter-glow").forEach(function (el) { el.classList.remove("viz-filter-glow"); });
-        // Add glow to matching pill
-        var pill = pillContainer.querySelector('.viz-filter[data-filter="' + cls + '"]');
-        if (pill) pill.classList.add("viz-filter-glow");
-      }
-
-      // Start with first category only
-      // First, hide everything so the glow diff treats all first-step
-      // elements as "newly revealed" (matching subsequent steps).
-      state.world.querySelectorAll(".mm-node[data-mm-id]").forEach(function (el) { el.classList.add("mm-hidden"); });
-      state.world.querySelectorAll(".mm-subgraph[data-mm-sg]").forEach(function (el) { el.classList.add("mm-hidden"); });
-      _svgLayer.querySelectorAll(".mm-edge").forEach(function (el) { el.classList.add("mm-hidden"); });
-      _svgLayer.querySelectorAll(".mm-edge-label-group").forEach(function (el) { el.classList.add("mm-hidden"); });
-      _exploreStepDuration = stepDurations[0];
-      _exploreCurrentClass = classes[0];
-      _filterAPI.setOnly(classes[0]);
-      setHintLabel(labels[classes[0]] || classes[0]);
-      glowFilterPill(classes[0]);
-
-      // Add each subsequent category one at a time
-      for (var i = 1; i < classes.length; i++) {
-        (function (idx) {
-          _exploreTimers.push(setTimeout(function () {
-            if (!_exploring || gen !== _exploreGen) return;
-            _exploreStepDuration = stepDurations[idx];
-            _exploreCurrentClass = classes[idx];
-            _filterAPI.addFilter(classes[idx]);
-            setHintLabel(labels[classes[idx]] || classes[idx]);
-            glowFilterPill(classes[idx]);
-          }, cumulative[idx]));
-        })(i);
-      }
-
-      // Final: show all and reset hint to Explore
-      _exploreTimers.push(setTimeout(function () {
-        if (!_exploring || gen !== _exploreGen) return;
-        _filterAPI.setAll();
-        _exploring = false;
-        _exploreCurrentClass = null;
-        if (state.world) state.world.classList.remove("mm-exploring");
-        // Clear pill glow
-        if (pillContainer) pillContainer.querySelectorAll(".viz-filter-glow").forEach(function (el) { el.classList.remove("viz-filter-glow"); });
-        resetHintLabel();
-      }, cumulative[classes.length]));
-    }
-
-    var _reg = registerModal(cfg.modalId, {
-      onOpen:  function () { if (!state.built) load(); else requestAnimationFrame(() => fitView(false)); },
-      onClose: function () { stopExplore(); }
+    // Toggle nodes
+    world.querySelectorAll(".mm-node[data-mm-id]").forEach(function (el) {
+      el.classList.toggle("mm-hidden", !liveNodes.has(el.dataset.mmId));
     });
-    function open()  { _reg.open(); }
-    function close() { _reg.close(); }
+    // Toggle subgraphs
+    world.querySelectorAll(".mm-subgraph[data-mm-sg]").forEach(function (el) {
+      el.classList.toggle("mm-hidden", !liveSgs.has(el.dataset.mmSg));
+    });
+    // Toggle edges + labels
+    svgLayer.querySelectorAll(".mm-edge[data-mm-from]").forEach(function (el) {
+      el.classList.toggle("mm-hidden", !liveEdgeKeys.has(el.dataset.mmFrom + "->" + el.dataset.mmTo));
+    });
+    svgLayer.querySelectorAll(".mm-edge-label-group[data-mm-from]").forEach(function (el) {
+      el.classList.toggle("mm-hidden", !liveEdgeKeys.has(el.dataset.mmFrom + "->" + el.dataset.mmTo));
+    });
 
-    // Wire DOM
-    const vp = modal.querySelector(".viz-viewport");
-    if (vp) {
-      state.world = modal.querySelector(".viz-world");
-      _svgLayer   = modal.querySelector(".mm-edges");
-      if (state.world && _svgLayer) _initPanZoom(vp, state);
-    }
-
-    // ── Explore hint ─────────────────────────────────────────
-    if (vp) {
-      createExploreHint({
-        viewport: vp,
-        label: '<strong>Traverse</strong><span class="scroll-arrow">🔭</span>',
-        onStart: startExplore,
-        isTouring: function () { return _exploring; },
-        onCancel: stopExplore,
+    // ── Dim neighbours ──
+    var allActive = activeClasses.size >= Object.keys(ast.classDefs).length;
+    var primaryNodeIds = new Set();
+    var primarySgIds   = new Set();
+    if (!allActive) {
+      Object.keys(filtered.nodes).forEach(function (id) {
+        var cls = ast.classAssigns[id] || (ast.nodes[id] && ast.nodes[id].classes && ast.nodes[id].classes[0]) || "";
+        if (!cls || cls === "footer" || activeClasses.has(cls)) primaryNodeIds.add(id);
+      });
+      var sgMap = new Map();
+      ast.subgraphs.forEach(function (s) { sgMap.set(s.id, s); });
+      filtered.subgraphs.forEach(function (sg) {
+        var cls = inferSubgraphClass(sg.id, ast);
+        if (cls && activeClasses.has(cls)) {
+          primarySgIds.add(sg.id);
+        } else if (!cls) {
+          var s = sgMap.get(sg.id);
+          if (s) {
+            var hasActive = false;
+            (function walkSg(sub) {
+              (sub.children || []).forEach(function (cid) {
+                var c = ast.classAssigns[cid] || (ast.nodes[cid] && ast.nodes[cid].classes && ast.nodes[cid].classes[0]) || "";
+                if (c && activeClasses.has(c)) hasActive = true;
+              });
+              (sub.childSubgraphs || []).forEach(function (csid) { var ch = sgMap.get(csid); if (ch) walkSg(ch); });
+            })(s);
+            if (hasActive) primarySgIds.add(sg.id);
+          }
+        }
       });
     }
 
-    window[cfg.openGlobal]  = open;
-    window[cfg.closeGlobal] = close;
+    world.querySelectorAll(".mm-node[data-mm-id]").forEach(function (el) {
+      el.classList.toggle("mm-neighbour", !allActive && liveNodes.has(el.dataset.mmId) && !primaryNodeIds.has(el.dataset.mmId));
+    });
+    world.querySelectorAll(".mm-subgraph[data-mm-sg]").forEach(function (el) {
+      el.classList.toggle("mm-neighbour", !allActive && liveSgs.has(el.dataset.mmSg) && !primarySgIds.has(el.dataset.mmSg));
+    });
+    svgLayer.querySelectorAll(".mm-edge[data-mm-from]").forEach(function (el) {
+      var fp = primaryNodeIds.has(el.dataset.mmFrom) || primarySgIds.has(el.dataset.mmFrom);
+      var tp = primaryNodeIds.has(el.dataset.mmTo)   || primarySgIds.has(el.dataset.mmTo);
+      el.classList.toggle("mm-neighbour", !allActive && !el.classList.contains("mm-hidden") && !fp && !tp);
+    });
+    svgLayer.querySelectorAll(".mm-edge-label-group[data-mm-from]").forEach(function (el) {
+      var fp = primaryNodeIds.has(el.dataset.mmFrom) || primarySgIds.has(el.dataset.mmFrom);
+      var tp = primaryNodeIds.has(el.dataset.mmTo)   || primarySgIds.has(el.dataset.mmTo);
+      el.classList.toggle("mm-neighbour", !allActive && !el.classList.contains("mm-hidden") && !fp && !tp);
+    });
+
+    // ── Explore glow ──
+    var exploring    = ctx.isExploring();
+    var exploreClass = ctx.exploreClass();
+    var exploreDur   = ctx.exploreDuration();
+
+    if (exploring && exploreClass) {
+      world.querySelectorAll(".mm-explore-glow").forEach(function (el) { el.classList.remove("mm-explore-glow"); });
+      svgLayer.querySelectorAll(".mm-explore-glow").forEach(function (el) { el.classList.remove("mm-explore-glow"); });
+      world.classList.add("mm-explore-hovering");
+
+      function nodeClassFor(id) {
+        return ast.classAssigns[id] || (ast.nodes[id] && ast.nodes[id].classes && ast.nodes[id].classes[0]) || "";
+      }
+      world.querySelectorAll(".mm-node[data-mm-id]:not(.mm-hidden)").forEach(function (el) {
+        if (el.dataset.mmClass === exploreClass) el.classList.add("mm-explore-glow");
+      });
+      world.querySelectorAll(".mm-subgraph[data-mm-sg]:not(.mm-hidden)").forEach(function (el) {
+        if (inferSubgraphClass(el.dataset.mmSg, ast) === exploreClass) el.classList.add("mm-explore-glow");
+      });
+      svgLayer.querySelectorAll(".mm-edge[data-mm-from]:not(.mm-hidden)").forEach(function (el) {
+        var fc = nodeClassFor(el.dataset.mmFrom) || inferSubgraphClass(el.dataset.mmFrom, ast);
+        var tc = nodeClassFor(el.dataset.mmTo)   || inferSubgraphClass(el.dataset.mmTo, ast);
+        if (fc === exploreClass || tc === exploreClass) el.classList.add("mm-explore-glow");
+      });
+      svgLayer.querySelectorAll(".mm-edge-label-group[data-mm-from]:not(.mm-hidden)").forEach(function (el) {
+        var fc = nodeClassFor(el.dataset.mmFrom) || inferSubgraphClass(el.dataset.mmFrom, ast);
+        var tc = nodeClassFor(el.dataset.mmTo)   || inferSubgraphClass(el.dataset.mmTo, ast);
+        if (fc === exploreClass || tc === exploreClass) el.classList.add("mm-explore-glow");
+      });
+
+      if (_mmGlowTimer) clearTimeout(_mmGlowTimer);
+      _mmGlowTimer = setTimeout(function () {
+        world.querySelectorAll(".mm-explore-glow").forEach(function (el) { el.classList.remove("mm-explore-glow"); });
+        svgLayer.querySelectorAll(".mm-explore-glow").forEach(function (el) { el.classList.remove("mm-explore-glow"); });
+        world.classList.remove("mm-explore-hovering");
+      }, exploreDur);
+    }
+
+    // ── Compute visible bounds ──
+    var minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+    var glowSuffix = exploring ? ".mm-explore-glow" : ":not(.mm-neighbour)";
+    var nodeSel = ".mm-node[data-mm-id]:not(.mm-hidden)" + glowSuffix;
+    var sgSel   = ".mm-subgraph[data-mm-sg]:not(.mm-hidden)" + glowSuffix;
+
+    function accumBounds(el) {
+      var x = parseFloat(el.style.left), y = parseFloat(el.style.top);
+      var w = parseFloat(el.style.width), h = parseFloat(el.style.height);
+      if (x < minX) minX = x;
+      if (y < minY) minY = y;
+      if (x + w > maxX) maxX = x + w;
+      if (y + h > maxY) maxY = y + h;
+    }
+    world.querySelectorAll(nodeSel).forEach(accumBounds);
+    world.querySelectorAll(sgSel).forEach(accumBounds);
+
+    if (exploring) {
+      svgLayer.querySelectorAll(".mm-edge.mm-explore-glow").forEach(function (p) {
+        try { var bb = p.getBBox(); if (bb.width > 0 || bb.height > 0) { if (bb.x < minX) minX = bb.x; if (bb.y < minY) minY = bb.y; if (bb.x + bb.width > maxX) maxX = bb.x + bb.width; if (bb.y + bb.height > maxY) maxY = bb.y + bb.height; } } catch (e) {}
+      });
+      svgLayer.querySelectorAll(".mm-edge-label-group.mm-explore-glow").forEach(function (g) {
+        try { var bb = g.getBBox(); if (bb.width > 0 || bb.height > 0) { if (bb.x < minX) minX = bb.x; if (bb.y < minY) minY = bb.y; if (bb.x + bb.width > maxX) maxX = bb.x + bb.width; if (bb.y + bb.height > maxY) maxY = bb.y + bb.height; } } catch (e) {}
+      });
+    }
+
+    if (minX < Infinity) {
+      var pad = 20;
+      return { bounds: { x: minX - pad, y: minY - pad, w: (maxX - minX) + pad * 2, h: (maxY - minY) + pad * 2 } };
+    }
+    return null;
+  }
+
+  // Shared glow timer for explore cleanup (one per IIFE scope)
+  var _mmGlowTimer = null;
+
+  /**
+   * createDiagram(cfg) — Mermaid plugin wrapper.
+   * Delegates lifecycle to createVizDiagram (VIZ.JS),
+   * provides Mermaid-specific load/build/filter callbacks.
+   */
+  function createDiagram(cfg) {
+    var _ast    = null;
+    var _legend = null;
+    var _colors = null;
+
+    createVizDiagram({
+      modalId:              cfg.modalId,
+      filterId:             cfg.filterId,
+      ariaLabel:            cfg.ariaLabel,
+      openGlobal:           cfg.openGlobal,
+      closeGlobal:          cfg.closeGlobal,
+      nodeActions:          cfg.nodeActions,
+      nodeIgnoreSelector:   ".mm-node",
+      hiddenClass:          "mm-hidden",
+      startStatic:          true,
+      minScale:             MIN_SCALE,
+      maxScale:             MAX_SCALE,
+      maxFitScale:          1,
+      rubberBandDrag:       true,
+      zoomStep:             [0.92, 1.08],
+      fitPadding:           20,
+      fitDuration:          1000,
+      exploreStepDuration:  3000,
+
+      load: function () {
+        return fetch(cfg.mdFile + "?v=" + Date.now())
+          .then(function (r) { if (!r.ok) throw new Error("HTTP " + r.status); return r.text(); })
+          .then(function (md) {
+            var m = md.match(/```mermaid\s*\n([\s\S]*?)```/);
+            if (!m) throw new Error("No mermaid block in " + cfg.mdFile);
+            return m[1];
+          });
+      },
+
+      build: function (source, world, svgLayer, ctx) {
+        _ast    = parseMermaid(source);
+        _legend = extractLegend(_ast);
+        _colors = colorsFromAST(_ast.classDefs);
+
+        var dims = buildDiagram(_ast, _colors, world, svgLayer, _legend.legendIds,
+          function () { return ctx.isExploring(); });
+
+        // Build filter list from legend
+        var filters = [];
+        var seen = new Set();
+        _legend.legendNodes.forEach(function (ln) {
+          if (!seen.has(ln.cls)) {
+            seen.add(ln.cls);
+            filters.push({ cls: ln.cls, label: ln.label, color: _colors[ln.cls] || "255,255,255" });
+          }
+        });
+
+        return {
+          svgW: dims.svgW,
+          svgH: dims.svgH,
+          nodeElements: dims.nodeElements,
+          filters: filters,
+
+          rebuild: function (activeClasses, ctx2) {
+            var dynAST = filterAST(_ast, activeClasses);
+            var d = buildDiagram(dynAST, _colors, world, svgLayer, _legend.legendIds,
+              function () { return ctx2.isExploring(); });
+            return { svgW: d.svgW, svgH: d.svgH, nodeElements: d.nodeElements };
+          },
+
+          applyFilter: function (activeClasses, ctx2) {
+            return _mermaidStaticFilter(_ast, activeClasses, world, svgLayer, ctx2);
+          },
+
+          beforeExplore: function (w, svg) {
+            w.querySelectorAll(".mm-node[data-mm-id]").forEach(function (el) { el.classList.add("mm-hidden"); });
+            w.querySelectorAll(".mm-subgraph[data-mm-sg]").forEach(function (el) { el.classList.add("mm-hidden"); });
+            svg.querySelectorAll(".mm-edge").forEach(function (el) { el.classList.add("mm-hidden"); });
+            svg.querySelectorAll(".mm-edge-label-group").forEach(function (el) { el.classList.add("mm-hidden"); });
+          },
+
+          afterExplore: function (w, svg) {
+            if (_mmGlowTimer) { clearTimeout(_mmGlowTimer); _mmGlowTimer = null; }
+            w.classList.remove("mm-exploring", "mm-explore-hovering");
+            w.querySelectorAll(".mm-explore-glow").forEach(function (el) { el.classList.remove("mm-explore-glow"); });
+            svg.querySelectorAll(".mm-explore-glow").forEach(function (el) { el.classList.remove("mm-explore-glow"); });
+          },
+        };
+      },
+    });
   }
 
   /* ═════════════════════════════════════════════════════════════

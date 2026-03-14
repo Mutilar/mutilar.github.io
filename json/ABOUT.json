@@ -36,7 +36,8 @@
             "img": "png/graph.png",
             "imgAlt": "Graph of Knowledge",
             "togglers": [
-              { "label": "PORT", "dot": "🔵", "active": true, "src": "png/graph.png", "accent": 1, "open": "knowledgeModal" },
+              { "label": "PORTFOLIO", "dot": "🔵", "active": true, "src": "png/graph.png", "accent": 1, "open": "knowledgeModal" },
+              { "label": "TOOLKIT", "dot": "🛠️", "src": "png/graph-toolkit.png", "accent": 3, "open": "mapModal" },
               { "label": "MTG", "dot": "⚫", "src": "png/graph-mtg.png", "accent": 2, "open": "mtgTreeModal" }
             ]
           },
@@ -48,18 +49,7 @@
             "img": "png/timeline.png",
             "imgAlt": "Timeline",
             "togglers": [
-              { "label": "MORE", "dot": "🔵", "active": true, "src": "png/timeline.png", "accent": 1, "open": "timelineModal" }
-            ]
-          },
-          {
-            "emoji": "🛠️",
-            "label": "Tool Kit",
-            "ariaLabel": "Open Constellation Map",
-            "action": "open",
-            "img": "png/constellation.png",
-            "imgAlt": "Constellation Map",
-            "togglers": [
-              { "label": "TECH", "dot": "🔵", "active": true, "src": "png/constellation.png", "accent": 1, "open": "mapModal" }
+              { "label": "PORTFOLIO", "dot": "🔵", "active": true, "src": "png/timeline.png", "accent": 1, "open": "timelineModal" }
             ]
           },
           {
@@ -69,7 +59,10 @@
             "action": "open",
             "img": "png/marp.png",
             "imgAlt": "Architecture",
-            "mds": [ "md/MARP.md", "md/ARCH.md" ]
+            "togglers": [
+              { "label": "MARP", "dot": "🤖", "active": true, "src": "png/marp-diagram.png", "accent": 1, "open": "mermaidModal", "openArg": "md/MARP.md" },
+              { "label": "ARCH", "dot": "🏗️", "src": "png/arch.png", "accent": 2, "open": "mermaidModal", "openArg": "md/ARCH.md" }
+            ]
           }
         ]
       }

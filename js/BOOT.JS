@@ -363,29 +363,53 @@
       } else {
         delete tile.dataset.openArg;
       }
+
+      // If there's only one toggler, open the modal directly
+      if (tile.querySelectorAll(".badge-toggler").length === 1) {
+        tile.click();
+      }
     });
 
-    // ── Async dot-emoji enrichment from mermaid title: lines ──
-    // After initial render, fetch each md file's first few hundred
-    // bytes, parse the `title: EMOJI TEXT` line, and hot-swap the
-    // placeholder dot on the rendered badge with the real emoji.
+    // ── Async enrichment from mermaid md files ──
+    // After initial render, fetch each md file and extract:
+    //   1. title: line → leading emoji → hot-swap the badge dot
+    //   2. mermaid-output comment → preview image src → set data-src
+    //      on the badge so toggler clicks swap the tile preview image.
+    //      Also set the tile's initial image from the first (active) md.
     tiles.forEach(function (t) {
       if (!t.mds || !t.mds.length) return;
-      t.mds.forEach(function (md) {
+      t.mds.forEach(function (md, mdIndex) {
         fetch(md + "?v=" + Date.now())
           .then(function (r) { return r.ok ? r.text() : ""; })
           .then(function (text) {
             if (!text) return;
+            var badge = container.querySelector('.badge-toggler[data-open-arg="' + md + '"]');
+
+            // Extract and set dot emoji from title line
             var m = text.match(/title:\s*(.+)/);
-            if (!m) return;
-            var titleLine = m[1].trim();
-            // Extract leading emoji(s) from title
-            var emojiMatch = titleLine.match(/^(\p{Emoji_Presentation}|\p{Emoji}\uFE0F?)/u);
-            if (!emojiMatch) return;
-            var emoji = emojiMatch[1];
-            // Find the badge whose data-open-arg matches this md path
-            var badge = container.querySelector('.badge-toggler[data-open-arg="' + md + '"] .toggler-dot');
-            if (badge) badge.textContent = emoji;
+            if (m) {
+              var titleLine = m[1].trim();
+              var emojiMatch = titleLine.match(/^(\p{Emoji_Presentation}|\p{Emoji}\uFE0F?)/u);
+              if (emojiMatch && badge) {
+                badge.querySelector('.toggler-dot').textContent = emojiMatch[1];
+              }
+            }
+
+            // Extract mermaid-output preview image and wire it to the toggler
+            var outputMatch = text.match(/<!--\s*mermaid-output:\s*(\S+)\s*-->/);
+            if (outputMatch && badge) {
+              var previewSrc = outputMatch[1];
+              badge.dataset.src = previewSrc;
+
+              // Set initial tile image from the first (active) md
+              if (mdIndex === 0) {
+                var tile = badge.closest(".video-card");
+                if (tile) {
+                  var img = tile.querySelector(".viz-tile-img");
+                  if (img) img.src = previewSrc;
+                }
+              }
+            }
           })
           .catch(function () {});
       });

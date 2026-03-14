@@ -367,8 +367,8 @@ function createSkillTree(cfg) {
     // Helpers passed to buildNodes callback
     var helpers = {
       glowFilterId: glowId,
-      addEdge: function (from, to, color, width) {
-        return _addEdge(svgNS, glowId, from, to, color, width);
+      addEdge: function (from, to, color, width, strokeOpacity) {
+        return _addEdge(svgNS, glowId, from, to, color, width, strokeOpacity);
       },
       registerHover: function (el, nodeRef) {
         el.addEventListener("mouseenter", function () {
@@ -482,7 +482,7 @@ function createSkillTree(cfg) {
   }
 
   /* ── Edge helper ────────────────────────────────────────── */
-  function _addEdge(svgNS, glowId, from, to, color, width) {
+  function _addEdge(svgNS, glowId, from, to, color, width, strokeOpacity) {
     var dx = to.targetX - from.targetX, dy = to.targetY - from.targetY;
     var len = Math.sqrt(dx * dx + dy * dy);
     var fx = from.targetX, fy = from.targetY, tx = to.targetX, ty = to.targetY;
@@ -496,7 +496,7 @@ function createSkillTree(cfg) {
     var path = document.createElementNS(svgNS, "path");
     path.setAttribute("d", "M" + fx + "," + fy + " L" + tx + "," + ty);
     path.setAttribute("fill", "none");
-    path.setAttribute("stroke", "rgba(" + color + ",0.45)");
+    path.setAttribute("stroke", "rgba(" + color + "," + (strokeOpacity != null ? strokeOpacity : 0.45) + ")");
     path.setAttribute("stroke-width", String(width || 1));
     path.setAttribute("stroke-linecap", "round");
     path.setAttribute("filter", "url(#" + glowId + ")");
@@ -652,8 +652,14 @@ function createSkillTree(cfg) {
 //  to generalize into the factory without over-engineering.
 // ═══════════════════════════════════════════════════════════════
 (() => {
-  const graphModal = document.getElementById("knowledge-modal");
-  if (!graphModal) return;
+  let graphModal = document.getElementById("knowledge-modal");
+  if (!graphModal) {
+    graphModal = document.createElement('div');
+    graphModal.className = 'modal-overlay';
+    graphModal.id = 'knowledge-modal';
+    graphModal.setAttribute('role', 'dialog');
+    document.body.appendChild(graphModal);
+  }
 
   /* ── Build viz shell from VIZ_THEMES (no HTML fragment needed) ── */
   const _kgFilterItems = [
@@ -1806,8 +1812,14 @@ function createSkillTree(cfg) {
 //  Click a node → card-view modal overlay with full art.
 // ═══════════════════════════════════════════════════════════════
 (() => {
-  const modal = document.getElementById("mtg-tree-modal");
-  if (!modal) return;
+  let modal = document.getElementById("mtg-tree-modal");
+  if (!modal) {
+    modal = document.createElement('div');
+    modal.className = 'modal-overlay';
+    modal.id = 'mtg-tree-modal';
+    modal.setAttribute('role', 'dialog');
+    document.body.appendChild(modal);
+  }
 
   /* ── Category config — populated from PORTFOLIO.json cards.categories ── */
   var MTG_COLORS   = null;
@@ -2022,7 +2034,14 @@ function createSkillTree(cfg) {
   // ── MTG card shell (replaces MTG-CARD-MODAL.HTML fragment) ──
   (function() {
     var el = document.getElementById("mtg-card-modal");
-    if (el) el.innerHTML =
+    if (!el) {
+      el = document.createElement('div');
+      el.className = 'modal-overlay';
+      el.id = 'mtg-card-modal';
+      el.setAttribute('role', 'dialog');
+      document.body.appendChild(el);
+    }
+    el.innerHTML =
       '<div class="glass-tile modal-card kg-detail-card">' +
         '<div class="modal-sticky-bar"><div class="modal-sticky-group tl-glow">' +
           '<div class="kg-badges" id="mtg-card-badges"></div>' +
@@ -2548,6 +2567,830 @@ function createSkillTree(cfg) {
       _tree.open();
     } else {
       initMtgTree();
+    }
+  };
+
+})();
+
+
+// ═══════════════════════════════════════════════════════════════
+//  CONSTELLATION MAP — Consumer of createSkillTree()
+//
+//  Force-directed bipartite graph: TECH nodes ↔ PROJECT nodes.
+//  Two techs used together in a project become visually adjacent.
+//  Clusters emerge organically by tech category.
+//
+//  Uses createSkillTree() for: modal lifecycle, pan/zoom,
+//  multi-axis filter toggles, hover highlighting, proximity glow,
+//  entrance animation, and edge SVG management.
+//
+//  MAP-specific logic: tech extraction from portfolio items,
+//  synchronous force-directed layout (velocity Verlet),
+//  dynamic relayout on filter change, and a two-phase tour
+//  (tech categories → domains).
+//
+//  Category definitions loaded from data files (no hardcoding):
+//    VIZ_THEMES          ← SETTINGS.json → visualization.domains
+//    VIZ_TECH_CATEGORIES ← PORTFOLIO.json → techCategories
+//    VIZ_TECH_TAGS       ← PORTFOLIO.json → techTags
+// ═══════════════════════════════════════════════════════════════
+(() => {
+  /* ─── DOM refs ──────────────────────────────────────────── */
+  let modal = document.getElementById("map-modal");
+  if (!modal) {
+    modal = document.createElement('div');
+    modal.className = 'modal-overlay';
+    modal.id = 'map-modal';
+    modal.setAttribute('role', 'dialog');
+    document.body.appendChild(modal);
+  }
+
+  /* ─── Category data (populated from data files via _initShell) ── */
+  var TECH_CATEGORIES = null;  // from VIZ_TECH_CATEGORIES (PORTFOLIO.json)
+  var TECH_TAGS       = null;  // from VIZ_TECH_TAGS (PORTFOLIO.json)
+  var TECH_CAT_KEYS   = [];
+  var _whisperToLabel = {};
+  var _shellReady     = false;
+  var _mapShell       = null;
+  var closeBtn        = null;
+  var filterAxes      = [];
+
+  /* ─── Constants ─────────────────────────────────────────── */
+  const TECH_R        = 28;   // tech node radius
+  const PROJECT_R     = 18;   // project node radius
+  const SIM_ITERS     = 400;  // force simulation iterations
+  const SIM_ALPHA     = 0.3;  // initial simulation temperature
+  const LINK_DISTANCE = 180;  // ideal spring length
+  const REPULSION     = 3000; // charge repulsion strength
+  const CENTER_FORCE  = 0.006;// pull toward center
+  const MAP_MIN_SCALE = VIZ_MIN_SCALE;
+  const MAP_MAX_SCALE = 2;
+  const DOMAIN_THEMES = ["robotics", "games", "software", "research", "education"];
+
+  /* ─── State ─────────────────────────────────────────────── */
+  var _tree          = null;
+  var _mapTour       = null;
+  var _layoutToggle  = null;
+  var _cameraHandle  = null;
+  var _tourShowNames = false;
+  var _tourStepType  = null;
+  var _simLinks      = [];    // cached for relayout
+
+  /* ═════════════════════════════════════════════════════════
+     TECH EXTRACTION — Parse TEXT/TECH fields for tech mentions
+     ═════════════════════════════════════════════════════════ */
+  function _canonicalTag(tag) {
+    if (!TECH_TAGS) return null;
+    var entry = TECH_TAGS[tag.toLowerCase()];
+    return entry ? entry.label : null;
+  }
+
+  function _extractTechs(item) {
+    var found = new Set();
+
+    if (item.TECH) {
+      _parseTechEmojis(item.TECH).forEach(function (l) { found.add(l); });
+    }
+
+    var text = (item.TEXT || "") + " " + (item.TITLE || "") + " " + (item.MOTTO || "");
+    text = text.replace(/<[^>]+>/g, " ");
+
+    var sortedTags = Object.keys(TECH_TAGS).sort((a, b) => b.length - a.length);
+
+    sortedTags.forEach(tag => {
+      var escaped = tag.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      var re = new RegExp("(?:^|[\\s,;:(/])(" + escaped + ")(?=[\\s,;:)/.,!?]|$)", "i");
+      if (re.test(text)) {
+        var canonical = TECH_TAGS[tag].label;
+        found.add(canonical);
+      }
+    });
+
+    return Array.from(found);
+  }
+
+  function _techMeta(canonicalLabel) {
+    for (var tag in TECH_TAGS) {
+      if (TECH_TAGS[tag].label === canonicalLabel) return TECH_TAGS[tag];
+    }
+    return { cat: TECH_CAT_KEYS[0] || "other", label: canonicalLabel };
+  }
+
+  function _techWhisper(canonicalLabel) {
+    for (var tag in TECH_TAGS) {
+      if (TECH_TAGS[tag].label === canonicalLabel) return TECH_TAGS[tag].whisper || null;
+    }
+    return null;
+  }
+
+  function _parseTechEmojis(emojiStr) {
+    if (!emojiStr) return [];
+    var labels = [];
+    var whispers = Object.keys(_whisperToLabel).sort(function (a, b) { return b.length - a.length; });
+    var remaining = emojiStr;
+    while (remaining.length > 0) {
+      var matched = false;
+      for (var i = 0; i < whispers.length; i++) {
+        if (remaining.indexOf(whispers[i]) === 0) {
+          labels.push(_whisperToLabel[whispers[i]]);
+          remaining = remaining.slice(whispers[i].length);
+          matched = true;
+          break;
+        }
+      }
+      if (!matched) remaining = remaining.slice(1);
+    }
+    return labels;
+  }
+
+  /* ═════════════════════════════════════════════════════════
+     SHELL — Built lazily when data is available
+     ═════════════════════════════════════════════════════════ */
+  function _initShell() {
+    if (_shellReady) return;
+
+    var _rawCats = window.VIZ_TECH_CATEGORIES || {};
+    var _accents = (window.__SETTINGS && window.__SETTINGS.accents) || [];
+    TECH_CATEGORIES = {};
+    Object.keys(_rawCats).forEach(function (k) {
+      var src = _rawCats[k];
+      TECH_CATEGORIES[k] = {
+        color: (src.accent != null && _accents[src.accent]) ? _accents[src.accent].replace(/\s/g, '') : (src.color || '160,160,160'),
+        label: src.label,
+        emoji: src.emoji
+      };
+    });
+    TECH_TAGS       = window.VIZ_TECH_TAGS || {};
+    TECH_CAT_KEYS   = Object.keys(TECH_CATEGORIES);
+
+    var _domainItems = [
+      { value: "all", tc: "255,255,255", tcLight: "30,30,30", allIndicator: "\u2B1C", active: true, ariaPressed: "true", ariaLabel: "Show all domains" }
+    ];
+    ["education", "research", "software", "robotics", "games"].forEach(function(k) {
+      var t = VIZ_THEMES[k];
+      if (!t) return;
+      _domainItems.push({ value: k, tc: t.color, dot: t.color, emoji: t.emoji, ariaPressed: "false", ariaLabel: "Filter: " + t.label });
+    });
+
+    var _techItems = [
+      { value: "all", tc: "255,255,255", allIndicator: "\u2B1C", active: true, ariaPressed: "true", ariaLabel: "Show all tech categories" }
+    ];
+    TECH_CAT_KEYS.forEach(function(k) {
+      var cat = TECH_CATEGORIES[k];
+      _techItems.push({ value: k, tc: cat.color, dot: cat.color, emoji: cat.emoji, title: cat.label, ariaPressed: "false", ariaLabel: "Filter: " + cat.label });
+    });
+
+    _mapShell = buildVizShell(modal, {
+      cardClass: "map-modal-card",
+      closeId: "mapModalClose",
+      toggleId: "mapLayoutToggle",
+      svgClass: "map-edges",
+      filterGroups: [
+        { btnClass: "viz-filter", dataAttr: "filter", filterGroup: "domain", items: _domainItems },
+        { btnClass: "viz-filter", dataAttr: "filter", filterGroup: "tech", separator: true, separatorClass: "map-filter-divider", items: _techItems }
+      ],
+      accessibility: {
+        toolbarLabel: "Map filters",
+        role: "application",
+        ariaRoledescription: "Interactive constellation map",
+        ariaLabel: "Force-directed graph of technologies and projects. Use arrow keys to navigate between nodes, Enter to open details.",
+        liveRegionId: "map-live",
+        srDescriptions: [
+          "Constellation map: force-directed network of technologies and projects. Tech nodes are connected to the projects that use them. Use arrow keys to move between nodes; Enter opens project details or solo-filters a tech category."
+        ]
+      }
+    });
+
+    closeBtn = _mapShell.closeBtn;
+
+    var domainBtns = modal.querySelectorAll('.viz-filter[data-filter-group="domain"]');
+    var techBtns   = modal.querySelectorAll('.viz-filter[data-filter-group="tech"]');
+    var domainAllBtn = null, domainItemBtns = [];
+    var techAllBtn = null, techItemBtns = [];
+    domainBtns.forEach(function (b) {
+      if (b.dataset.filter === "all") domainAllBtn = b;
+      else domainItemBtns.push(b);
+    });
+    techBtns.forEach(function (b) {
+      if (b.dataset.filter === "all") techAllBtn = b;
+      else techItemBtns.push(b);
+    });
+
+    filterAxes.length = 0;
+    filterAxes.push(
+      { key: "domain",  allValues: DOMAIN_THEMES, allBtn: domainAllBtn, itemBtns: domainItemBtns },
+      { key: "techCat", allValues: TECH_CAT_KEYS, allBtn: techAllBtn,   itemBtns: techItemBtns }
+    );
+
+    _whisperToLabel = {};
+    (function () {
+      var seen = {};
+      for (var tag in TECH_TAGS) {
+        var entry = TECH_TAGS[tag];
+        if (entry.whisper && !seen[entry.label]) {
+          _whisperToLabel[entry.whisper] = entry.label;
+          seen[entry.label] = true;
+        }
+      }
+    })();
+
+    _shellReady = true;
+  }
+
+  /* ═════════════════════════════════════════════════════════
+     FORCE SIMULATION — Synchronous velocity Verlet
+     ═════════════════════════════════════════════════════════ */
+  function _runForceSim(simNodes, simLinks) {
+    var alpha = SIM_ALPHA;
+    var decay = 1 - Math.pow(0.001, 1 / SIM_ITERS);
+
+    var techNodes = simNodes.filter(function (n) { return n.type === "tech"; });
+
+    for (var iter = 0; iter < SIM_ITERS; iter++) {
+      for (var i = 0; i < simNodes.length; i++) {
+        for (var j = i + 1; j < simNodes.length; j++) {
+          var a = simNodes[i], b = simNodes[j];
+          var dx = b.x - a.x, dy = b.y - a.y;
+          var d2 = dx * dx + dy * dy || 1;
+          var d = Math.sqrt(d2);
+          var force = (REPULSION * alpha) / d2;
+          var fx = (dx / d) * force, fy = (dy / d) * force;
+          a.vx -= fx; a.vy -= fy;
+          b.vx += fx; b.vy += fy;
+        }
+      }
+
+      simLinks.forEach(function (link) {
+        var s = link.source, t = link.target;
+        var dx = t.x - s.x, dy = t.y - s.y;
+        var d = Math.sqrt(dx * dx + dy * dy) || 1;
+        var force = (d - LINK_DISTANCE) * 0.05 * alpha;
+        var fx = (dx / d) * force, fy = (dy / d) * force;
+        s.vx += fx; s.vy += fy;
+        t.vx -= fx; t.vy -= fy;
+      });
+
+      var catCentroids = {};
+      techNodes.forEach(function (n) {
+        if (n._hidden) return;
+        var c = n.cat;
+        if (!catCentroids[c]) catCentroids[c] = { sx: 0, sy: 0, count: 0 };
+        catCentroids[c].sx += n.x;
+        catCentroids[c].sy += n.y;
+        catCentroids[c].count++;
+      });
+      var CLUSTER_STRENGTH = 0.15;
+      techNodes.forEach(function (n) {
+        if (n._hidden) return;
+        var cc = catCentroids[n.cat];
+        if (!cc || cc.count < 2) return;
+        var cx = cc.sx / cc.count;
+        var cy = cc.sy / cc.count;
+        n.vx += (cx - n.x) * CLUSTER_STRENGTH * alpha;
+        n.vy += (cy - n.y) * CLUSTER_STRENGTH * alpha;
+      });
+
+      simNodes.forEach(function (n) {
+        var d = Math.sqrt(n.x * n.x + n.y * n.y) || 1;
+        if (n.type === "tech") {
+          n.vx -= n.x * CENTER_FORCE * 3 * alpha;
+          n.vy -= n.y * CENTER_FORCE * 3 * alpha;
+        } else {
+          var targetR = LINK_DISTANCE * 1.6;
+          var radialForce = (d - targetR) * 0.003 * alpha;
+          n.vx -= (n.x / d) * radialForce;
+          n.vy -= (n.y / d) * radialForce;
+          n.vx -= n.x * CENTER_FORCE * 0.4 * alpha;
+          n.vy -= n.y * CENTER_FORCE * 0.4 * alpha;
+        }
+      });
+
+      simNodes.forEach(function (n) {
+        n.vx *= 0.6;
+        n.vy *= 0.6;
+        n.x += n.vx;
+        n.y += n.vy;
+      });
+
+      alpha *= (1 - decay);
+    }
+
+    _resolveCollisions(simNodes);
+  }
+
+  function _resolveCollisions(simNodes) {
+    var COLLISION_PADDING = 4;
+    var COLLISION_ITERS   = 80;
+
+    for (var ci = 0; ci < COLLISION_ITERS; ci++) {
+      var anyMoved = false;
+      for (var i = 0; i < simNodes.length; i++) {
+        var a = simNodes[i];
+        if (a._hidden) continue;
+        for (var j = i + 1; j < simNodes.length; j++) {
+          var b = simNodes[j];
+          if (b._hidden) continue;
+          var dx = b.x - a.x, dy = b.y - a.y;
+          var dist = Math.sqrt(dx * dx + dy * dy) || 0.01;
+          var minDist = a.r + b.r + COLLISION_PADDING;
+          if (dist < minDist) {
+            var overlap = (minDist - dist) / 2;
+            var nx = dx / dist, ny = dy / dist;
+            a.x -= nx * overlap; a.y -= ny * overlap;
+            b.x += nx * overlap; b.y += ny * overlap;
+            anyMoved = true;
+          }
+        }
+      }
+      if (!anyMoved) break;
+    }
+  }
+
+  /* ═════════════════════════════════════════════════════════
+     BUILD NODES — Factory callback for createSkillTree
+     ═════════════════════════════════════════════════════════ */
+  function _findSection(itemID) {
+    var sections = ["marp", "bitnaughts", "work", "education", "projects", "hackathons", "games"];
+    for (var i = 0; i < sections.length; i++) {
+      var arr = modalState[sections[i]];
+      if (arr && arr.some(function (item) { return item.ID === itemID; })) return sections[i];
+    }
+    return null;
+  }
+
+  function buildMapNodes(graphWorld, svgNS, helpers) {
+    var nodes = [];
+    _simLinks = [];
+
+    var items = [];
+    var sections = ["marp", "bitnaughts", "work", "education", "projects", "hackathons", "games"];
+    var seenIDs = new Set();
+    sections.forEach(function (sec) {
+      var arr = modalState[sec];
+      if (!arr) return;
+      arr.forEach(function (item) {
+        if (seenIDs.has(item.ID)) return;
+        seenIDs.add(item.ID);
+        items.push(item);
+      });
+    });
+
+    var techSet = {};
+    var linkData = [];
+
+    items.forEach(function (item) {
+      var techs = _extractTechs(item);
+      techs.forEach(function (t) {
+        if (!techSet[t]) {
+          var meta = _techMeta(t);
+          techSet[t] = { count: 0, cat: meta.cat, projects: [] };
+        }
+        techSet[t].count++;
+        techSet[t].projects.push(item.ID);
+        linkData.push({ techLabel: t, projectID: item.ID });
+      });
+    });
+
+    var projConnCount = {};
+    linkData.forEach(function (l) {
+      projConnCount[l.projectID] = (projConnCount[l.projectID] || 0) + 1;
+    });
+
+    var techLabels = Object.keys(techSet);
+    var techNodes = techLabels.map(function (label, i) {
+      var info = techSet[label];
+      var catInfo = TECH_CATEGORIES[info.cat] || TECH_CATEGORIES[TECH_CAT_KEYS[0]] || { color: "160,160,160", label: "Other", emoji: "" };
+      var r = TECH_R + Math.min(info.count * 3, 22);
+
+      var el = document.createElement("div");
+      el.className = "kg-node map-node map-tech-node";
+      el.style.setProperty("--tc", catInfo.color);
+      el.style.setProperty("--kg-size", (r * 2) + "px");
+      el.style.setProperty("--kg-font", Math.max(7, Math.min(11, r * 0.35)) + "px");
+      var techWhisper = _techWhisper(label) || catInfo.emoji;
+      el.innerHTML =
+        '<div class="kg-node-accent"></div>' +
+        '<div class="kg-node-name">' +
+          '<span class="kg-name-layer map-face-default">' + techWhisper + '</span>' +
+          '<span class="kg-name-layer map-face-alt">' + label + '</span>' +
+        '</div>';
+      el.title = label + " (" + info.count + " project" + (info.count !== 1 ? "s" : "") + ")";
+      el.setAttribute("tabindex", "0");
+      el.setAttribute("role", "img");
+      el.setAttribute("aria-label", label + ", " + info.count + " project" + (info.count !== 1 ? "s" : "") + ", " + catInfo.label);
+
+      el.addEventListener("click", function (e) {
+        e.stopPropagation();
+        if (_tree) {
+          var fs = _tree.getFilterSets();
+          fs.techCat.clear();
+          fs.techCat.add(info.cat);
+          _tree.syncFilterUI();
+          _tree.applyFilters();
+        }
+      });
+
+      graphWorld.appendChild(el);
+
+      var angle = (i / techLabels.length) * Math.PI * 2;
+      var spread = 80 + Math.random() * 60;
+
+      var nodeRef = {
+        el: el,
+        id: "tech:" + label,
+        label: label,
+        type: "tech",
+        cat: info.cat,
+        r: r,
+        projectIDs: info.projects,
+        x: Math.cos(angle) * spread,
+        y: Math.sin(angle) * spread,
+        vx: 0, vy: 0,
+        targetX: 0, targetY: 0,
+        _hidden: false,
+        filterKeys: { domain: new Set(), techCat: new Set([info.cat]) },
+      };
+
+      helpers.registerHover(el, nodeRef);
+      return nodeRef;
+    });
+
+    techNodes.forEach(function (tn) {
+      tn.projectIDs.forEach(function (pid) {
+        var domain = VIZ_DOMAIN_MAP[pid] || "software";
+        tn.filterKeys.domain.add(domain);
+      });
+    });
+
+    var projectsWithTechs = new Set(linkData.map(function (l) { return l.projectID; }));
+    var projectNodes = items.filter(function (item) { return projectsWithTechs.has(item.ID); }).map(function (item, i) {
+      var domain = VIZ_DOMAIN_MAP[item.ID] || "software";
+      var themeInfo = VIZ_THEMES[domain] || VIZ_THEMES.software;
+      var connCount = projConnCount[item.ID] || 1;
+      var r = PROJECT_R + Math.min(connCount * 3, 18);
+      var whisper = VIZ_WHISPER_MAP[item.ID] || "";
+
+      var el = document.createElement("div");
+      el.className = "kg-node map-node map-project-node";
+      el.style.setProperty("--tc", themeInfo.color);
+      el.style.setProperty("--kg-size", (r * 2) + "px");
+      el.style.setProperty("--kg-font", Math.max(7, Math.min(11, r * 0.35)) + "px");
+      var shortName = VIZ_SHORTNAME_MAP[item.ID] || item.NAME || item.ID;
+      shortName = shortName.replace(/<[^>]+>/g, "");
+      var rawName = (item.NAME || item.ID).replace(/<[^>]+>/g, "");
+      var emojiMatch = rawName.match(/^(\p{Extended_Pictographic}(?:\uFE0F?\u200D\p{Extended_Pictographic})*)/u);
+      var emoji = emojiMatch ? emojiMatch[1] : (whisper || shortName.charAt(0));
+      el.innerHTML =
+        '<div class="kg-node-accent"></div>' +
+        '<div class="kg-node-name">' +
+          '<span class="kg-name-layer map-face-default">' + emoji + '</span>' +
+          '<span class="kg-name-layer map-face-alt">' + shortName + '</span>' +
+        '</div>';
+      el.title = rawName;
+      el.setAttribute("tabindex", "0");
+      el.setAttribute("role", "img");
+      el.setAttribute("aria-label", rawName);
+
+      el.addEventListener("click", function (e) {
+        e.stopPropagation();
+        var sectionId = _findSection(item.ID);
+        if (sectionId) openEntry(sectionId, item.ID);
+      });
+
+      graphWorld.appendChild(el);
+
+      var angle = (i / items.length) * Math.PI * 2;
+      var spread = 300 + Math.random() * 150;
+
+      var nodeRef = {
+        el: el,
+        id: "proj:" + item.ID,
+        itemID: item.ID,
+        type: "project",
+        domain: domain,
+        item: item,
+        r: r,
+        x: Math.cos(angle) * spread,
+        y: Math.sin(angle) * spread,
+        vx: 0, vy: 0,
+        targetX: 0, targetY: 0,
+        _hidden: false,
+        filterKeys: { domain: new Set([domain]), techCat: new Set() },
+      };
+
+      helpers.registerHover(el, nodeRef);
+      return nodeRef;
+    });
+
+    var projMap = {};
+    projectNodes.forEach(function (pn) { projMap[pn.itemID] = pn; });
+    var techMap = {};
+    techNodes.forEach(function (tn) { techMap[tn.label] = tn; });
+
+    linkData.forEach(function (l) {
+      var pn = projMap[l.projectID];
+      var tn = techMap[l.techLabel];
+      if (pn && tn) pn.filterKeys.techCat.add(tn.cat);
+    });
+
+    var allNodes = techNodes.concat(projectNodes);
+
+    _simLinks = linkData.map(function (l) {
+      var source = techMap[l.techLabel];
+      var target = projMap[l.projectID];
+      return (source && target) ? { source: source, target: target } : null;
+    }).filter(Boolean);
+
+    _runForceSim(allNodes, _simLinks);
+
+    allNodes.forEach(function (n) {
+      n.targetX = n.x;
+      n.targetY = n.y;
+    });
+
+    _simLinks.forEach(function (link) {
+      var catInfo = TECH_CATEGORIES[link.source.cat] || TECH_CATEGORIES[TECH_CAT_KEYS[0]] || { color: "160,160,160" };
+      var thread = helpers.addEdge(link.source, link.target, catInfo.color, 1, 0.3);
+      thread.el.classList.add("map-edge");
+    });
+
+    return { nodes: allNodes, hubs: [], centerVirts: [] };
+  }
+
+  /* ═════════════════════════════════════════════════════════
+     RELAYOUT — Re-run force sim on visible nodes
+     ═════════════════════════════════════════════════════════ */
+  function relayoutMap() {
+    if (!_tree) return;
+    var allNodes = _tree.getNodes();
+    var visible = allNodes.filter(function (n) { return !n._hidden; });
+    if (visible.length === 0) return;
+
+    var visTech = visible.filter(function (n) { return n.type === "tech"; });
+    var visProj = visible.filter(function (n) { return n.type === "project"; });
+    visTech.forEach(function (n, i) {
+      var angle = (i / visTech.length) * Math.PI * 2;
+      var spread = 80 + Math.random() * 60;
+      n.x = Math.cos(angle) * spread;
+      n.y = Math.sin(angle) * spread;
+      n.vx = 0; n.vy = 0;
+    });
+    visProj.forEach(function (n, i) {
+      var angle = (i / visProj.length) * Math.PI * 2;
+      var spread = 300 + Math.random() * 150;
+      n.x = Math.cos(angle) * spread;
+      n.y = Math.sin(angle) * spread;
+      n.vx = 0; n.vy = 0;
+    });
+
+    var threads = _tree.getThreads();
+    var visibleSet = new Set(visible);
+    var visLinks = threads.filter(function (th) {
+      return visibleSet.has(th.from) && visibleSet.has(th.to);
+    }).map(function (th) {
+      return { source: th.from, target: th.to };
+    });
+
+    _runForceSim(visible, visLinks);
+
+    visible.forEach(function (n) {
+      n.targetX = n.x;
+      n.targetY = n.y;
+    });
+
+    _tree.animateToPositions(600);
+  }
+
+  /* ═════════════════════════════════════════════════════════
+     CAMERA FIT
+     ═════════════════════════════════════════════════════════ */
+  function fitMapCamera(animate) {
+    if (!_tree) return;
+    var viewport = modal.querySelector(".viz-viewport");
+    if (!viewport) return;
+    var nodes = _tree.getNodes();
+    var visible = nodes.filter(function (n) { return !n._hidden; });
+    if (visible.length === 0) return;
+
+    var x0 = Infinity, x1 = -Infinity, y0 = Infinity, y1 = -Infinity;
+    visible.forEach(function (n) {
+      if (n.targetX - n.r < x0) x0 = n.targetX - n.r;
+      if (n.targetX + n.r > x1) x1 = n.targetX + n.r;
+      if (n.targetY - n.r < y0) y0 = n.targetY - n.r;
+      if (n.targetY + n.r > y1) y1 = n.targetY + n.r;
+    });
+
+    if (_cameraHandle) { _cameraHandle.cancel(); _cameraHandle = null; }
+
+    var transform = _tree.getTransform();
+    _cameraHandle = animateCameraFit(transform, function () {
+      _tree.updateTransform();
+    }, {
+      vpWidth:  viewport.clientWidth,
+      vpHeight: viewport.clientHeight,
+      bounds:   { x: x0, y: y0, w: x1 - x0, h: y1 - y0 },
+      minScale: MAP_MIN_SCALE,
+      maxScale: MAP_MAX_SCALE,
+      padding:  60,
+      duration: 800,
+      animate:  animate !== false,
+    });
+  }
+
+  /* ═════════════════════════════════════════════════════════
+     TOUR — Two-phase: tech categories → domains
+     ═════════════════════════════════════════════════════════ */
+  function _buildTourSteps() {
+    var steps = [];
+    TECH_CAT_KEYS.forEach(function (k) {
+      var cat = TECH_CATEGORIES[k];
+      if (cat) steps.push({ techCat: [k], label: cat.emoji + " " + cat.label });
+    });
+    DOMAIN_THEMES.forEach(function (d) {
+      var t = VIZ_THEMES[d];
+      if (t) steps.push({ domain: [d], label: t.emoji + " " + t.label });
+    });
+    return steps;
+  }
+
+  function _initTour() {
+    var vp = modal.querySelector(".viz-viewport");
+    if (!vp) return;
+
+    _mapTour = createTourEngine({
+      modal:     modal,
+      viewport:  vp,
+      hintLabel: '<strong>Traverse</strong><span class="scroll-arrow">\uD83D\uDD2D</span>',
+      steps:     _buildTourSteps(),
+      stepDelay: 2500,
+
+      applyStep: function (step) {
+        if (!_tree) return;
+        var fs = _tree.getFilterSets();
+        _tourStepType = step.techCat ? "tech" : "domain";
+        if (step.techCat) {
+          DOMAIN_THEMES.forEach(function (d) { fs.domain.add(d); });
+          fs.techCat.clear();
+          step.techCat.forEach(function (c) { fs.techCat.add(c); });
+        } else if (step.domain) {
+          TECH_CAT_KEYS.forEach(function (k) { fs.techCat.add(k); });
+          fs.domain.clear();
+          step.domain.forEach(function (d) { fs.domain.add(d); });
+        }
+        _tree.syncFilterUI();
+        _tree.applyFilters();
+      },
+
+      resetAll: function () {
+        _tourStepType = null;
+        if (_tree) _tree.resetFilters();
+      },
+
+      fitCamera: function () { fitMapCamera(true); },
+
+      setShowNames: function (show) {
+        _tourShowNames = show ? _tourStepType : false;
+        var vp2 = modal.querySelector(".viz-viewport");
+        if (vp2) {
+          vp2.classList.toggle("map-tour-tech", show && _tourStepType === "tech");
+          vp2.classList.toggle("map-tour-domain", show && _tourStepType === "domain");
+        }
+        if (_tree) _tree.updateGlow();
+      },
+
+      updateGlow: function () { if (_tree) _tree.updateGlow(); },
+
+      glowPills: function () {
+        if (!_tree) return;
+        var fs = _tree.getFilterSets();
+        modal.querySelectorAll(".viz-filter-glow").forEach(function (el) {
+          el.classList.remove("viz-filter-glow");
+        });
+        if (fs.techCat.size < TECH_CAT_KEYS.length) {
+          fs.techCat.forEach(function (c) {
+            var pill = modal.querySelector('.viz-filter[data-filter-group="tech"][data-filter="' + c + '"');
+            if (pill) { void pill.offsetWidth; pill.classList.add("viz-filter-glow"); }
+          });
+        }
+        if (fs.domain.size < DOMAIN_THEMES.length) {
+          fs.domain.forEach(function (d) {
+            var pill = modal.querySelector('.viz-filter[data-filter-group="domain"][data-filter="' + d + '"');
+            if (pill) { void pill.offsetWidth; pill.classList.add("viz-filter-glow"); }
+          });
+        }
+      },
+
+      clearPillGlow: function () {
+        modal.querySelectorAll(".viz-filter-glow").forEach(function (el) {
+          el.classList.remove("viz-filter-glow");
+        });
+      },
+    });
+
+    _mapTour.createHint();
+
+    modal.querySelectorAll(".viz-filter[data-filter-group]").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        if (_mapTour && _mapTour.isTouring()) _mapTour.stop();
+      });
+    });
+  }
+
+  /* ═════════════════════════════════════════════════════════
+     DATA CHECK & INIT
+     ═════════════════════════════════════════════════════════ */
+  function _hasData() {
+    return modalState && (
+      (modalState.work && modalState.work.length) ||
+      (modalState.projects && modalState.projects.length)
+    );
+  }
+
+  function initMap() {
+    _initShell();
+
+    _tree = createSkillTree({
+      modal:            modal,
+      closeBtn:         closeBtn,
+      edgeSvgSelector:  ".map-edges",
+      filterAxes:       filterAxes,
+      buildNodes:       buildMapNodes,
+      initialScale:     1,
+      minScale:         MAP_MIN_SCALE,
+      maxScale:         MAP_MAX_SCALE,
+      collisionIters:   0,
+      collisionPadding: 0,
+      isTouring:        function () { return _mapTour && _mapTour.isTouring(); },
+      onClose:          function () {
+        if (_mapTour && _mapTour.isTouring()) _mapTour.stop();
+      },
+      onFilterApplied:  function () {
+        if (_layoutToggle && !_layoutToggle.isStatic()) relayoutMap();
+        if (!_mapTour || !_mapTour.isTouring()) {
+          var delay = (_layoutToggle && !_layoutToggle.isStatic()) ? 700 : 80;
+          setTimeout(function () { fitMapCamera(true); }, delay);
+        }
+      },
+    });
+
+    _layoutToggle = createLayoutToggle({
+      btn: "mapLayoutToggle",
+      onDynamic: function () { relayoutMap(); },
+    });
+
+    _initTour();
+    _tree.open();
+
+    initVizKeyboardNav({
+      modal: modal,
+      getNodes: function () { return _tree.getNodes(); },
+      onFocus: function (n) {
+        var world = modal.querySelector(".viz-world");
+        var edges = modal.querySelector(".map-edges");
+        if (world) world.querySelectorAll(".kg-highlight").forEach(function (e) { e.classList.remove("kg-highlight"); });
+        if (edges) edges.querySelectorAll(".kg-highlight").forEach(function (e) { e.classList.remove("kg-highlight"); });
+        if (world) world.classList.add("kg-hovering");
+        if (edges) edges.classList.add("kg-hovering");
+        n.el.classList.add("kg-highlight");
+        _tree.getThreads().forEach(function (th) {
+          var peer = null;
+          if (th.from === n) peer = th.to;
+          else if (th.to === n) peer = th.from;
+          if (peer && !peer._hidden) {
+            th.el.classList.add("kg-highlight");
+            peer.el.classList.add("kg-highlight");
+          }
+        });
+        _tree.updateGlow();
+      },
+      onActivate: function (n) {
+        if (n.type === "project" && n.item) {
+          var sec = _findSection(n.itemID);
+          if (sec) openEntry(sec, n.itemID);
+        } else if (n.type === "tech" && _tree) {
+          var fs = _tree.getFilterSets();
+          fs.techCat.clear();
+          fs.techCat.add(n.cat);
+          _tree.syncFilterUI();
+          _tree.applyFilters();
+        }
+      },
+      liveRegionId: "map-live",
+    });
+  }
+
+  /* ─── Global opener ─────────────────────────────────────── */
+  window.openMapModal = function () {
+    if (_tree) {
+      if (_mapTour && _mapTour.isTouring()) _mapTour.stop();
+      _tree.open();
+    } else if (_hasData()) {
+      initMap();
+    } else {
+      window.addEventListener("portfolioDataReady", function once() {
+        window.removeEventListener("portfolioDataReady", once);
+        initMap();
+      });
     }
   };
 

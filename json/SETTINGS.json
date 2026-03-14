@@ -101,9 +101,7 @@
     { "src": "PDF.JS",       "order": 4 },
     { "src": "TIMELINE.JS",  "order": 5 },
     { "src": "SKILLTREE.JS", "order": 5 },
-    { "src": "MERMAID.JS",   "order": 5 },
-    { "src": "MAP.JS",       "order": 5 },
-    { "src": "RADIO.JS",     "order": 6 }
+    { "src": "MERMAID.JS",   "order": 5 },    { "src": "JSON.JS",     "order": 5 },    { "src": "RADIO.JS",     "order": 6 }
   ],
   "data": {
     "path": "json/",

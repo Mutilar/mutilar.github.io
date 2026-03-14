@@ -6,8 +6,14 @@
 //  (min 1 month). Concurrent entries share horizontal width.
 // ═══════════════════════════════════════════════════════════════
 (() => {
-  const timelineModal = document.getElementById("timeline-modal");
-  if (!timelineModal) return;
+  let timelineModal = document.getElementById("timeline-modal");
+  if (!timelineModal) {
+    timelineModal = document.createElement('div');
+    timelineModal.className = 'modal-overlay';
+    timelineModal.id = 'timeline-modal';
+    timelineModal.setAttribute('role', 'dialog');
+    document.body.appendChild(timelineModal);
+  }
 
   // ── Timeline modal shell (replaces TIMELINE-MODAL.HTML fragment) ──
   var _tlFilterHTML = '';

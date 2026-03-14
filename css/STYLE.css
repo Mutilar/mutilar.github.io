@@ -2106,6 +2106,17 @@ html.light-mode .bio-modal-card::after {
 /* ═══════════════════════════════════════════════════════════════
    GAME PLAYER MODAL
    ═══════════════════════════════════════════════════════════════ */
+
+/* Flex-column modal cards need .modal-content to fill remaining space */
+.link-modal-card .modal-content,
+.game-modal-card .modal-content,
+.pdf-modal-card  .modal-content {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
 .game-modal-card {
   max-width: 1100px;
   width: 95vw;
@@ -5865,6 +5876,131 @@ html.light-mode .kg-badge {
     height: 30px;
     font-size: 15px;
   }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   JSON VIEWER — Interactive collapsible JSON tree
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Node tiles ───────────────────────────────────────────── */
+.jv-node {
+  position: absolute;
+  box-sizing: border-box;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(15, 15, 15, 0.8);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: 0 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  z-index: 5;
+  cursor: default;
+  transition: opacity 0.3s ease, background 0.25s ease, border-color 0.25s ease,
+              box-shadow 0.25s ease;
+  font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', 'Consolas', monospace;
+  font-size: 12px;
+  line-height: 1;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.jv-node::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; bottom: 0;
+  width: 3px;
+  background: rgba(var(--tc), 0.55);
+  border-radius: 6px 0 0 6px;
+}
+
+.jv-node:hover {
+  background: rgba(0, 0, 0, 0.95);
+  border-color: rgba(var(--tc), 0.6);
+  box-shadow: 0 0 12px rgba(var(--tc), 0.2),
+              0 0 30px rgba(var(--tc), 0.08);
+  z-index: 10;
+}
+
+/* ── Type badge ───────────────────────────────────────────── */
+.jv-type-badge {
+  flex-shrink: 0;
+  font-size: 10px;
+  font-weight: 800;
+  opacity: 0.7;
+  min-width: 18px;
+  text-align: center;
+}
+
+/* ── Key ──────────────────────────────────────────────────── */
+.jv-key {
+  color: rgba(var(--tc), 0.9);
+  font-weight: 700;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── Separator ────────────────────────────────────────────── */
+.jv-sep {
+  color: rgba(255, 255, 255, 0.3);
+  flex-shrink: 0;
+}
+
+/* ── Value ────────────────────────────────────────────────── */
+.jv-val {
+  color: rgba(255, 255, 255, 0.65);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.jv-val-string  { color: rgba(127, 186, 0, 0.85); }
+.jv-val-number  { color: rgba(255, 185, 0, 0.9); }
+.jv-val-boolean { color: rgba(180, 130, 255, 0.9); }
+.jv-val-null    { color: rgba(140, 140, 140, 0.7); font-style: italic; }
+.jv-val-object  { color: rgba(0, 164, 239, 0.7); }
+.jv-val-array   { color: rgba(242, 80, 34, 0.7); }
+
+/* ── Edges ────────────────────────────────────────────────── */
+.jv-edge {
+  transition: opacity 0.3s ease, stroke 0.25s ease;
+}
+
+/* ── Hover dimming ────────────────────────────────────────── */
+.jv-hovering .jv-node:not(.jv-highlight) { opacity: 0.2; }
+.jv-hovering .jv-edge:not(.jv-highlight) { opacity: 0.08; }
+.jv-hovering .jv-node.jv-highlight       { opacity: 1 !important; }
+.jv-hovering .jv-edge.jv-highlight       { opacity: 1 !important; stroke-width: 2.5 !important; }
+
+/* ── Hidden (filter) ──────────────────────────────────────── */
+.jv-node.jv-hidden,
+.jv-edge.jv-hidden {
+  opacity: 0 !important;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+/* ── Light mode ───────────────────────────────────────────── */
+html.light-mode .jv-node {
+  background: rgba(248, 248, 248, 0.9);
+  border-color: rgba(0, 0, 0, 0.1);
+}
+html.light-mode .jv-node:hover {
+  background: #fff;
+  border-color: rgba(var(--tc), 0.45);
+  box-shadow: 0 0 10px rgba(var(--tc), 0.12),
+              0 0 24px rgba(var(--tc), 0.06);
+}
+html.light-mode .jv-sep { color: rgba(0, 0, 0, 0.25); }
+html.light-mode .jv-val { color: rgba(0, 0, 0, 0.55); }
+html.light-mode .jv-val-string  { color: rgba(60, 120, 0, 0.9); }
+html.light-mode .jv-val-number  { color: rgba(180, 130, 0, 0.95); }
+html.light-mode .jv-val-boolean { color: rgba(120, 70, 200, 0.9); }
+html.light-mode .jv-val-null    { color: rgba(100, 100, 100, 0.7); }
+
+/* ── Mobile ───────────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .jv-node { font-size: 10px; padding: 0 6px; gap: 4px; }
+  .jv-type-badge { font-size: 8px; min-width: 14px; }
 }
 } /* end @layer viz */
 

@@ -1033,3 +1033,471 @@ function boostTouchScroll(el, multiplier) {
     el.removeEventListener("touchcancel", onTouchEnd);
   };
 }
+
+// ═══════════════════════════════════════════════════════════════
+//  VIZ DIAGRAM ENGINE — Generic factory for diagram-style
+//  visualizations (flowcharts, JSON schemas, ER diagrams, etc.)
+//
+//  Provides: modal lifecycle, pan/zoom, dynamic filter pills,
+//  layout toggle (static/dynamic), explore tour, camera fit,
+//  keyboard navigation, and node-action wiring.
+//
+//  The consumer supplies a **plugin** via cfg.load + cfg.build.
+//  The plugin handles all format-specific work: parsing, layout,
+//  rendering, hover wiring, and filter application.
+//
+//  Usage:
+//    createVizDiagram({
+//      modalId, filterId, ariaLabel, openGlobal, closeGlobal,
+//
+//      // Zoom / layout
+//      minScale, maxScale, maxFitScale, startStatic,
+//      nodeIgnoreSelector,      // CSS selector for pan-through
+//      hiddenClass,             // default "viz-hidden"
+//
+//      // Plugin callbacks
+//      load:  () => Promise<source>,
+//      build: (source, world, svgLayer, ctx) => buildResult,
+//
+//      // Optional
+//      nodeActions: { nodeId: fn },
+//      onClose: fn,
+//      exploreLabel, exploreStepDuration,
+//      fitPadding, fitDuration,
+//      rubberBandDrag, zoomStep,
+//    });
+//
+//    buildResult shape (returned by plugin.build):
+//    {
+//      svgW, svgH,                // world dimensions
+//      nodeElements,              // { id: { el, x, y, cls } }
+//      filters,                   // [{ cls, label, color, emoji? }]
+//
+//      rebuild(activeClasses, ctx)      → { svgW, svgH, nodeElements },
+//      applyFilter(activeClasses, ctx)  → { bounds:{x,y,w,h} } | null,
+//      beforeExplore(world, svgLayer)   → void,   // optional
+//      afterExplore(world, svgLayer)    → void,   // optional
+//    }
+//
+//    ctx (engine → plugin):
+//    {
+//      isExploring:     () => bool,
+//      exploreClass:    () => string|null,
+//      exploreDuration: () => number,
+//    }
+//
+//  Returns: { open, close }
+// ═══════════════════════════════════════════════════════════════
+function createVizDiagram(cfg) {
+  var modalId     = cfg.modalId;
+  var filterId    = cfg.filterId;
+  var ariaLabel   = cfg.ariaLabel   || "Diagram";
+  var minScale    = cfg.minScale    || 0.5;
+  var maxScale    = cfg.maxScale    || 1.5;
+  var maxFitScale = cfg.maxFitScale || 1;
+  var hiddenCls   = cfg.hiddenClass || "viz-hidden";
+
+  /* ── Modal DOM ───────────────────────────────────────────── */
+  var modal = document.getElementById(modalId);
+  if (!modal) {
+    var liveId = modalId + "-live";
+    modal = document.createElement("div");
+    modal.className = "modal-overlay";
+    modal.id = modalId;
+    modal.setAttribute("role", "dialog");
+    modal.setAttribute("aria-label", ariaLabel);
+    modal.innerHTML =
+      '<div class="glass-tile modal-card viz-modal-card" style="position:relative;">' +
+        '<div class="modal-sticky-bar">' +
+          '<div class="viz-filter-group tl-glow" role="toolbar" aria-label="Diagram filters">' +
+            '<div class="viz-filter-row">' +
+              '<span class="viz-diagram-pills" id="' + filterId + '"></span>' +
+              '<button class="modal-close" aria-label="Close modal">&times;</button>' +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+        '<div class="viz-viewport" style="cursor:grab;" role="application"' +
+          ' aria-roledescription="Interactive diagram"' +
+          ' aria-label="' + ariaLabel + '. Use arrow keys to navigate.">' +
+          '<div class="sr-only" id="' + liveId + '" aria-live="polite" aria-atomic="true"></div>' +
+          '<div class="sr-only">' + ariaLabel + '</div>' +
+          '<div class="viz-world">' +
+            '<svg class="viz-diagram-edges" xmlns="http://www.w3.org/2000/svg"' +
+              ' viewBox="0 0 6000 6000" aria-hidden="true"></svg>' +
+          '</div>' +
+        '</div>' +
+      '</div>';
+    document.body.appendChild(modal);
+  }
+
+  var pillsEl = document.getElementById(filterId)
+             || modal.querySelector(".viz-diagram-pills");
+
+  /* ── State ───────────────────────────────────────────────── */
+  var _s = { built: false, x: 0, y: 0, scale: 1, world: null, _update: null, _dims: null };
+  var _svgLayer       = null;
+  var _source         = null;
+  var _buildResult    = null;
+  var _visibleBounds  = null;
+  var _fitHandle      = null;
+  var _filterAPI      = null;
+  var _layoutToggle   = null;
+
+  /* ── Explore state ──────────────────────────────────────── */
+  var _exploring           = false;
+  var _exploreGen          = 0;
+  var _exploreTimers       = [];
+  var _exploreCurrentClass = null;
+  var _exploreStepDuration = cfg.exploreStepDuration || 3000;
+  var _hintCF              = createCrossfader();
+  var EXPLORE_LABEL        = cfg.exploreLabel
+    || '<strong>Explore</strong><span class="scroll-arrow">\uD83D\uDD2D</span>';
+
+  /** Context object passed to every plugin callback. */
+  function _ctx() {
+    return {
+      isExploring:     function () { return _exploring; },
+      exploreClass:    function () { return _exploreCurrentClass; },
+      exploreDuration: function () { return _exploreStepDuration; },
+    };
+  }
+
+  /* ── Pan / zoom ─────────────────────────────────────────── */
+  function _initPZ(vp) {
+    var ignore = ".viz-explore-hint";
+    if (cfg.nodeIgnoreSelector) ignore += ", " + cfg.nodeIgnoreSelector;
+    var pz = initPanZoom(vp, _s.world, _s, {
+      minScale: minScale,
+      maxScale: maxScale,
+      getBounds: function () {
+        if (!_s._dims) return null;
+        var vw = vp.clientWidth, vh = vp.clientHeight;
+        var s = _s.scale, pad = 0.75;
+        return {
+          minX: vw * pad - _s._dims.svgW * s,
+          maxX: vw * (1 - pad),
+          minY: vh * pad - _s._dims.svgH * s,
+          maxY: vh * (1 - pad),
+        };
+      },
+      ignoreSelector:  ignore,
+      rubberBandDrag:  cfg.rubberBandDrag !== undefined ? cfg.rubberBandDrag : true,
+      zoomStep:        cfg.zoomStep || [0.92, 1.08],
+      bounceCurve:     "cubic-bezier(0.25, 1, 0.5, 1)",
+      bounceDuration:  340,
+    });
+    _s._update = pz.update;
+  }
+
+  /* ── Camera fit ─────────────────────────────────────────── */
+  function _fitView(animate) {
+    var vp = modal.querySelector(".viz-viewport");
+    if (!vp || !_s.world || !_s._dims) return;
+    var bw = _visibleBounds ? _visibleBounds.w : _s._dims.svgW;
+    var bh = _visibleBounds ? _visibleBounds.h : _s._dims.svgH;
+    var bx = _visibleBounds ? _visibleBounds.x : 0;
+    var by = _visibleBounds ? _visibleBounds.y : 0;
+    if (_fitHandle) { _fitHandle.cancel(); _fitHandle = null; }
+    _s.world.style.transition = "";
+    _fitHandle = animateCameraFit(_s, function () {
+      if (_s._update) _s._update();
+    }, {
+      vpWidth:  vp.clientWidth,
+      vpHeight: vp.clientHeight,
+      bounds:   { x: bx, y: by, w: bw, h: bh },
+      minScale: minScale,
+      maxScale: maxFitScale,
+      padding:  cfg.fitPadding  || 20,
+      duration: cfg.fitDuration || 1000,
+      animate:  animate,
+    });
+  }
+
+  /* ── Node actions ───────────────────────────────────────── */
+  function _wireActions() {
+    if (!cfg.nodeActions || !_s._dims || !_s._dims.nodeElements) return;
+    Object.keys(cfg.nodeActions).forEach(function (id) {
+      var ne = _s._dims.nodeElements[id];
+      if (!ne) return;
+      ne.el.style.cursor = "pointer";
+      ne.el.addEventListener("click", function (e) {
+        e.stopPropagation();
+        cfg.nodeActions[id]();
+      });
+    });
+  }
+
+  /* ── Rebuild (filter change) ────────────────────────────── */
+  function _rebuild(activeClasses) {
+    if (!_buildResult) return;
+    var isDynamic = _layoutToggle && !_layoutToggle.isStatic();
+    if (isDynamic) {
+      var r = _buildResult.rebuild(activeClasses, _ctx());
+      _s._dims = { svgW: r.svgW, svgH: r.svgH, nodeElements: r.nodeElements };
+      _wireActions();
+      _visibleBounds = null;
+      requestAnimationFrame(function () { _fitView(true); });
+    } else {
+      var fr = _buildResult.applyFilter(activeClasses, _ctx());
+      _visibleBounds = fr ? fr.bounds : null;
+      requestAnimationFrame(function () { _fitView(true); });
+    }
+  }
+
+  /* ── Filter pills (built dynamically after data loads) ──── */
+  function _buildPills(filters) {
+    if (!pillsEl || !filters || !filters.length) return null;
+    pillsEl.innerHTML = "";
+    var seen = new Set();
+    var unique = [];
+    filters.forEach(function (f) {
+      if (!seen.has(f.cls)) { seen.add(f.cls); unique.push(f); }
+    });
+    var allClasses = unique.map(function (f) { return f.cls; });
+    var active = new Set(allClasses);
+
+    var allBtn = document.createElement("button");
+    allBtn.className = "viz-filter active";
+    allBtn.style.setProperty("--tc", "255,255,255");
+    allBtn.innerHTML = '<span class="all-indicator">\u2b1c</span>';
+    pillsEl.appendChild(allBtn);
+
+    var btns = [];
+    unique.forEach(function (f) {
+      var tc = f.color || "255,255,255";
+      var btn = document.createElement("button");
+      btn.className = "viz-filter active";
+      btn.dataset.filter = f.cls;
+      btn.style.setProperty("--tc", tc);
+      var emoji = f.emoji;
+      if (!emoji) {
+        var m = (f.label || "").match(/^(\p{Emoji_Presentation}|\p{Emoji}\uFE0F?)/u);
+        emoji = m ? m[0] : "";
+      }
+      btn.innerHTML = '<span class="viz-dot" style="background:rgba(' + tc + ',0.9);"></span> ' + emoji;
+      btn.title = f.label || f.cls;
+      pillsEl.appendChild(btn);
+      btns.push(btn);
+    });
+
+    var sys = createFilterSystem({
+      allThemes:      allClasses,
+      activeFilters:  active,
+      allBtn:         allBtn,
+      themeBtns:      btns,
+      onFilter:       function () { _rebuild(active); },
+      onManualFilter: function () { _stopExplore(false); },
+    });
+
+    var labels = {};
+    unique.forEach(function (f) { labels[f.cls] = f.label || f.cls; });
+    return {
+      allClasses: allClasses,
+      labelMap:   labels,
+      setOnly:    sys.setOnly,
+      addFilter:  sys.addFilter,
+      setAll:     sys.setAll,
+      setNone:    sys.setNone,
+    };
+  }
+
+  /* ── Explore / tour ─────────────────────────────────────── */
+  function _setHintLabel(label) {
+    var hint = modal.querySelector(".viz-explore-hint");
+    if (!hint) return;
+    var m = (label || "").match(/^(\p{Emoji_Presentation}|\p{Emoji}\uFE0F?)\s*/u);
+    var emoji = m ? m[1] : "\uD83D\uDD2D";
+    var text  = m ? label.slice(m[0].length) : label;
+    var html = '<strong>' + text + '</strong><span class="scroll-arrow">' + emoji + '</span>';
+    _hintCF.fade(hint, html);
+  }
+
+  function _resetHintLabel() {
+    var hint = modal.querySelector(".viz-explore-hint");
+    if (!hint) return;
+    if (_exploring) {
+      _hintCF.fade(hint, EXPLORE_LABEL, function () { hint.classList.remove("exploring"); });
+    } else {
+      hint.innerHTML = EXPLORE_LABEL;
+      hint.classList.remove("exploring");
+    }
+  }
+
+  function _glowPill(cls) {
+    if (!pillsEl) return;
+    pillsEl.querySelectorAll(".viz-filter-glow").forEach(function (el) {
+      el.classList.remove("viz-filter-glow");
+    });
+    var pill = pillsEl.querySelector('.viz-filter[data-filter="' + cls + '"]');
+    if (pill) pill.classList.add("viz-filter-glow");
+  }
+
+  function _stopExplore(restoreAll) {
+    _exploreGen++;
+    _exploreTimers.forEach(function (t) { clearTimeout(t); });
+    _exploreTimers = [];
+    _exploring = false;
+    _exploreCurrentClass = null;
+    if (_buildResult && _buildResult.afterExplore) {
+      _buildResult.afterExplore(_s.world, _svgLayer);
+    }
+    if (_s.world) _s.world.classList.remove("viz-exploring");
+    if (pillsEl) pillsEl.querySelectorAll(".viz-filter-glow").forEach(function (el) {
+      el.classList.remove("viz-filter-glow");
+    });
+    _resetHintLabel();
+    if (restoreAll !== false && _filterAPI) _filterAPI.setAll();
+  }
+
+  function _startExplore() {
+    if (!_filterAPI) return;
+    if (_exploring) { _stopExplore(); return; }
+
+    _exploreGen++;
+    var gen = _exploreGen;
+    _exploring = true;
+    if (_s.world) _s.world.classList.add("viz-exploring");
+    var hint = modal.querySelector(".viz-explore-hint");
+    if (hint) hint.classList.add("exploring");
+
+    if (_buildResult && _buildResult.beforeExplore) {
+      _buildResult.beforeExplore(_s.world, _svgLayer);
+    }
+
+    var classes = _filterAPI.allClasses;
+    var labels  = _filterAPI.labelMap;
+    var step    = cfg.exploreStepDuration || 3000;
+
+    _exploreStepDuration = step;
+    _exploreCurrentClass = classes[0];
+    _filterAPI.setOnly(classes[0]);
+    _setHintLabel(labels[classes[0]] || classes[0]);
+    _glowPill(classes[0]);
+
+    for (var i = 1; i < classes.length; i++) {
+      (function (idx) {
+        _exploreTimers.push(setTimeout(function () {
+          if (!_exploring || gen !== _exploreGen) return;
+          _exploreStepDuration = step;
+          _exploreCurrentClass = classes[idx];
+          _filterAPI.addFilter(classes[idx]);
+          _setHintLabel(labels[classes[idx]] || classes[idx]);
+          _glowPill(classes[idx]);
+        }, idx * step));
+      })(i);
+    }
+
+    _exploreTimers.push(setTimeout(function () {
+      if (!_exploring || gen !== _exploreGen) return;
+      _exploring = false;
+      _exploreCurrentClass = null;
+      if (_s.world) _s.world.classList.remove("viz-exploring");
+      if (_buildResult && _buildResult.afterExplore) {
+        _buildResult.afterExplore(_s.world, _svgLayer);
+      }
+      if (pillsEl) pillsEl.querySelectorAll(".viz-filter-glow").forEach(function (el) {
+        el.classList.remove("viz-filter-glow");
+      });
+      if (_filterAPI) _filterAPI.setAll();
+      _resetHintLabel();
+    }, classes.length * step));
+  }
+
+  /* ── Load ───────────────────────────────────────────────── */
+  function _load() {
+    if (_s.built) return;
+    cfg.load().then(function (source) {
+      _source = source;
+      _buildResult = cfg.build(source, _s.world, _svgLayer, _ctx());
+      _s._dims = {
+        svgW: _buildResult.svgW,
+        svgH: _buildResult.svgH,
+        nodeElements: _buildResult.nodeElements,
+      };
+      _s.built = true;
+      _wireActions();
+
+      // Keyboard nav
+      initVizKeyboardNav({
+        modal: modal,
+        getNodes: function () {
+          if (!_s._dims || !_s._dims.nodeElements) return [];
+          return Object.values(_s._dims.nodeElements).map(function (ne) {
+            return {
+              el: ne.el, targetX: ne.x, targetY: ne.y,
+              _hidden: ne.el.classList.contains(hiddenCls),
+            };
+          });
+        },
+        onActivate: function (n) { n.el.click(); },
+        liveRegionId: modalId + "-live",
+      });
+
+      // Filter pills
+      if (_buildResult.filters && _buildResult.filters.length) {
+        _filterAPI = _buildPills(_buildResult.filters);
+
+        // Layout toggle
+        var toggleBtn = document.createElement("button");
+        toggleBtn.className = "viz-layout-toggle";
+        toggleBtn.title = cfg.toggleTitle
+          || "Static: items keep positions when filtering. Dynamic: items reflow into compact positions.";
+        pillsEl.insertBefore(toggleBtn, pillsEl.firstChild);
+        _layoutToggle = createLayoutToggle({
+          btn: toggleBtn,
+          onDynamic: function () { if (_filterAPI) _filterAPI.setAll(); },
+          onStatic: function () {
+            _buildResult = cfg.build(_source, _s.world, _svgLayer, _ctx());
+            _s._dims = {
+              svgW: _buildResult.svgW,
+              svgH: _buildResult.svgH,
+              nodeElements: _buildResult.nodeElements,
+            };
+            _wireActions();
+            _visibleBounds = null;
+            requestAnimationFrame(function () { _fitView(true); });
+          },
+          startStatic: cfg.startStatic !== undefined ? cfg.startStatic : true,
+        });
+      }
+
+      requestAnimationFrame(function () { _fitView(false); });
+    }).catch(function (err) {
+      console.error("[VizDiagram]", modalId, err);
+    });
+  }
+
+  /* ── Modal registration ─────────────────────────────────── */
+  var _reg = registerModal(modalId, {
+    onOpen: function () {
+      if (!_s.built) _load();
+      else requestAnimationFrame(function () { _fitView(false); });
+    },
+    onClose: function () {
+      _stopExplore();
+      if (cfg.onClose) cfg.onClose();
+    },
+  });
+
+  /* ── Wire DOM ───────────────────────────────────────────── */
+  var _vp = modal.querySelector(".viz-viewport");
+  if (_vp) {
+    _s.world  = modal.querySelector(".viz-world");
+    _svgLayer = modal.querySelector("svg");
+    if (_s.world && _svgLayer) _initPZ(_vp);
+
+    createExploreHint({
+      viewport:  _vp,
+      label:     EXPLORE_LABEL,
+      onStart:   _startExplore,
+      isTouring: function () { return _exploring; },
+      onCancel:  _stopExplore,
+    });
+  }
+
+  /* ── Global openers ─────────────────────────────────────── */
+  if (cfg.openGlobal)  window[cfg.openGlobal]  = _reg.open;
+  if (cfg.closeGlobal) window[cfg.closeGlobal] = _reg.close;
+
+  return { open: _reg.open, close: _reg.close };
+}
