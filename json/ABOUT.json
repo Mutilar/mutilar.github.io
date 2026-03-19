@@ -74,7 +74,7 @@
             "togglers": [
               { "label": "PONG", "dot": "🏓", "active": true, "src": "png/pong.gif", "accent": 1, "gameUrl": "builds/pong/index.html", "gameTitle": "🏓 Pong", "gameW": 960, "gameH": 600 },
               { "label": "CHESS", "dot": "♟️", "src": "png/chess.gif", "accent": 2, "gameUrl": "builds/chess/index.html", "gameTitle": "♟️ Chess", "gameW": 960, "gameH": 600 },
-              { "label": "TANKS", "dot": "🪖", "accent": 3, "gameUrl": "builds/tanks/index.html", "gameTitle": "🪖 Tanks", "gameW": 960, "gameH": 600 }
+              { "label": "POPVUJ", "dot": "🪖",  "src": "png/popvuj.gif", "accent": 3, "gameUrl": "builds/popvuj/index.html", "gameTitle": "🪖 PopVuj", "gameW": 960, "gameH": 600 }
             ]
           }
         ]
