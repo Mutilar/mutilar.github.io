@@ -6,7 +6,7 @@
   },
   "header": {
     "id": "about",
-    "heading": "👋🏻 About Me",
+    "heading": "👋🏻 ABOUT",
     "badges": [
       { "label": "Resume", "icon": "fa fa-file-text", "href": "#", "action": "modal", "target": "resume", "glow": true }
     ],
@@ -30,7 +30,7 @@
         "tiles": [
           {
             "emoji": "🧭",
-            "label": "Skill Tree",
+            "label": "SKILL TREE",
             "ariaLabel": "Open Graph of Knowledge",
             "action": "open",
             "img": "png/graph.png",
@@ -43,7 +43,7 @@
           },
           {
             "emoji": "🕰️",
-            "label": "Road Map",
+            "label": "ROAD MAP",
             "ariaLabel": "See more in Timeline",
             "action": "open",
             "img": "png/timeline.png",
@@ -54,14 +54,27 @@
           },
           {
             "emoji": "🧜",
-            "label": "Diagrams",
+            "label": "DIAGRAMS",
             "ariaLabel": "See more about Architecture",
             "action": "open",
-            "img": "png/marp.png",
+            "img": "png/marp-diagram.png",
             "imgAlt": "Architecture",
             "togglers": [
               { "label": "MARP", "dot": "🤖", "active": true, "src": "png/marp-diagram.png", "accent": 1, "open": "mermaidModal", "openArg": "md/MARP.md" },
               { "label": "ARCH", "dot": "🏗️", "src": "png/arch.png", "accent": 2, "open": "mermaidModal", "openArg": "md/ARCH.md" }
+            ]
+          },
+          {
+            "emoji": "🎮",
+            "label": "CODE GAMIFIED",
+            "ariaLabel": "Play a demo",
+            "action": "play",
+            "img": "png/pong.gif",
+            "imgAlt": "Demos",
+            "togglers": [
+              { "label": "PONG", "dot": "🏓", "active": true, "src": "png/pong.gif", "accent": 1, "gameUrl": "builds/pong/index.html", "gameTitle": "🏓 Pong", "gameW": 960, "gameH": 600 },
+              { "label": "MIDI", "dot": "🎹", "accent": 2, "gameUrl": "builds/midi/index.html", "gameTitle": "🎹 Midi", "gameW": 960, "gameH": 600 },
+              { "label": "TANKS", "dot": "🪖", "accent": 3, "gameUrl": "builds/tanks/index.html", "gameTitle": "🪖 Tanks", "gameW": 960, "gameH": 600 }
             ]
           }
         ]
