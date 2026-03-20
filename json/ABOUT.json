@@ -69,12 +69,12 @@
             "label": "CODE GAMIFIED",
             "ariaLabel": "Play a demo",
             "action": "play",
-            "img": "png/pong.gif",
+            "img": "png/galaga.gif",
             "imgAlt": "Demos",
             "togglers": [
-              { "label": "PONG", "dot": "🏓", "active": true, "src": "png/pong.gif", "accent": 1, "gameUrl": "builds/pong/index.html", "gameTitle": "🏓 Pong", "gameW": 960, "gameH": 600 },
-              { "label": "CHESS", "dot": "♟️", "src": "png/chess.gif", "accent": 2, "gameUrl": "builds/chess/index.html", "gameTitle": "♟️ Chess", "gameW": 960, "gameH": 600 },
-              { "label": "POPVUJ", "dot": "🪖",  "src": "png/popvuj.gif", "accent": 3, "gameUrl": "builds/popvuj/index.html", "gameTitle": "🪖 PopVuj", "gameW": 960, "gameH": 600 }
+              { "label": "GALAGA", "dot": "👾", "active": true,  "src": "png/galaga.gif", "accent": 3, "gameUrl": "builds/galaga/index.html", "gameTitle": "👾 Galaga", "gameW": 960, "gameH": 600 },
+              { "label": "PONG", "dot": "🏓", "src": "png/pong.gif", "accent": 1, "gameUrl": "builds/pong/index.html", "gameTitle": "🏓 Pong", "gameW": 960, "gameH": 600 },
+              { "label": "CHESS", "dot": "♟️", "src": "png/chess.gif", "accent": 2, "gameUrl": "builds/chess/index.html", "gameTitle": "♟️ Chess", "gameW": 960, "gameH": 600 }
             ]
           }
         ]
