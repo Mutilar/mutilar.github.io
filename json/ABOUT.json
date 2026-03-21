@@ -72,9 +72,10 @@
             "img": "png/galaga.gif",
             "imgAlt": "Demos",
             "togglers": [
-              { "label": "GALAGA", "dot": "👾", "active": true,  "src": "png/galaga.gif", "accent": 3, "gameUrl": "builds/galaga/index.html", "gameTitle": "👾 Galaga", "gameW": 960, "gameH": 600 },
-              { "label": "PONG", "dot": "🏓", "src": "png/pong.gif", "accent": 1, "gameUrl": "builds/pong/index.html", "gameTitle": "🏓 Pong", "gameW": 960, "gameH": 600 },
-              { "label": "CHESS", "dot": "♟️", "src": "png/chess.gif", "accent": 2, "gameUrl": "builds/chess/index.html", "gameTitle": "♟️ Chess", "gameW": 960, "gameH": 600 }
+              { "label": "GALAGA", "dot": "👾", "active": true,  "src": "png/galaga.gif", "accent": 3, "gameUrl": "builds/galaga/index.html", "gameTitle": "👾", "gameW": 960, "gameH": 600 },
+              { "label": "PONG", "dot": "🏓", "src": "png/pong.gif", "accent": 1, "gameUrl": "builds/pong/index.html", "gameTitle": "🏓", "gameW": 960, "gameH": 600 },
+              { "label": "POOL", "dot": "🎱", "src": "png/pool.gif", "accent": 2, "gameUrl": "builds/pool/index.html", "gameTitle": "🎱", "gameW": 960, "gameH": 600 },
+              { "label": "CHESS", "dot": "♟️", "src": "png/chess.gif", "accent": 2, "gameUrl": "builds/chess/index.html", "gameTitle": "♟️", "gameW": 960, "gameH": 600 }
             ]
           }
         ]
