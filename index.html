@@ -33,7 +33,7 @@
 <link rel="apple-touch-icon" type="image/png" href="png/brian.png">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/v4-shims.min.css">
-<link rel="stylesheet" href="css/STYLE.css">
+<link rel="stylesheet" href=".engine/css/STYLE.css">
 <script>
   // Restore theme before first paint to prevent FOUC
   (function() {
@@ -166,7 +166,7 @@
 
       /* 2. Load engine scripts by tier from settings.scripts[] */
       var scripts = (settings.scripts || []).concat(settings.scripts_local || []);
-      return loadScriptTiers(scripts, 'js/');
+      return loadScriptTiers(scripts, '.engine/js/');
     }).catch(function (err) { console.error('[loader]', err); });
 })();
 </script>

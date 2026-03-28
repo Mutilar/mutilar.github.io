@@ -6,7 +6,7 @@
   },
   "header": {
     "id": "about",
-    "heading": "👋🏻 ABOUT",
+    "heading": "👋🏻 Hello, World!",
     "badges": [
       { "label": "Resume", "icon": "fa fa-file-text", "href": "#", "action": "modal", "target": "resume", "glow": true }
     ],
