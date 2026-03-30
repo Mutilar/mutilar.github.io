@@ -281,8 +281,8 @@
         ],
         "tiles": [
         {
-            "value": "🏗️ 50+",
-            "label": "OPEN SOURCED",
+            "value": "🏗️ 100+",
+            "label": "OPEN SOURCE",
             "imageSrc": "png/digestquest-people.png",
             "imageAlt": "Microsoft E+D",
             "action": {
@@ -295,7 +295,7 @@
             "accent": 0
         },
         {
-            "value": "🤖 3 Robots",
+            "value": "🤖 5 Robots",
             "label": "HARDWARE",
             "imageSrc": "png/marp.png",
             "imageAlt": "Home robot",
@@ -308,7 +308,7 @@
             "accent": 2
         },
         {
-            "value": "🎮 6 Games",
+            "value": "🎮 50+ Games",
             "label": "SOFTWARE",
             "imageSrc": "png/spaceninjas-end.png",
             "imageAlt": "Dusk Rose Codex",
