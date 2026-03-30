@@ -87,9 +87,9 @@
     ]
   },
   "console": {
-    "greeting": "🐧 Hello, World 👋🏻",
+    "greeting": "🐧 Hello, world! 👋🏻",
     "bioPrompt": {
-      "text": "Check my bio?",
+      "text": "👀 Peep my story...",
       "modal": "biography",
       "delay": 2000
     }
