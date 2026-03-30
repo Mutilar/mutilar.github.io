@@ -32,6 +32,7 @@
   "sections": [
     {
       "id": "mtg",
+      "clickAction": "deck",
       "items": [
         {
           "ID": "the-nobles",

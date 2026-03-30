@@ -1,4 +1,95 @@
 {
+  "viz": {
+    "id": "knowledge-modal",
+    "ariaLabel": "Graph of Knowledge",
+    "shell": {
+      "cardClass": "kg-modal-card",
+      "closeId": "knowledgeModalClose",
+      "toggleId": "kgLayoutToggle",
+      "svgClass": "kg-edges",
+      "accessibility": {
+        "toolbarLabel": "Graph filters",
+        "role": "application",
+        "ariaRoledescription": "Interactive knowledge graph",
+        "ariaLabel": "Radial node graph of career items grouped by domain. Use arrow keys to navigate between nodes, Enter to open details.",
+        "liveRegionId": "kg-live",
+        "srDescriptions": [
+          "Skill graph: radial layout of portfolio items organized by robotics, games, and software domains."
+        ]
+      }
+    },
+    "center": {
+      "size": 100,
+      "icon": "🐧",
+      "action": "biography"
+    },
+    "nodes": {
+      "source": "modalState",
+      "require": ["DATE"],
+      "sectorField": "quadrant",
+      "sectorFallback": "domain",
+      "colorSource": "themes",
+      "labelField": "shortname",
+      "labelFallback": "NAME",
+      "whisperField": "whisper",
+      "onClick": "entry"
+    },
+    "filters": [
+      {
+        "key": "domain",
+        "dataAttr": "filter",
+        "mode": "grouped",
+        "itemsFrom": "themes",
+        "sectors": ["robotics", "games", "software"],
+        "overlays": ["education", "work", "projects"]
+      }
+    ],
+    "edges": {
+      "connect": "thread",
+      "style": "bezier",
+      "markers": true,
+      "dynamicColor": true,
+      "glow": true
+    },
+    "sizing": {
+      "field": "duration",
+      "min": 52,
+      "max": 120,
+      "transform": "sqrt"
+    },
+    "camera": {
+      "initialScale": 1.4,
+      "minScale": 1,
+      "maxScale": 4
+    },
+    "collision": {
+      "padding": 2,
+      "iterations": 60
+    },
+    "layout": {
+      "minDist": 100,
+      "maxDist": 400,
+      "spreadFactor": 0.6
+    },
+    "glow": {
+      "whisperCrossfade": true
+    },
+    "tour": {
+      "hintLabel": "<strong>Traverse</strong><span class=\"scroll-arrow\">\uD83D\uDD2D</span>",
+      "stepDelay": 2000,
+      "steps": [
+        { "filters": ["software", "education"], "label": "💻🎓" },
+        { "filters": ["software", "work"],      "label": "💻💼" },
+        { "filters": ["software", "projects"],  "label": "💻🚀" },
+        { "filters": ["robotics", "education"], "label": "🤖🎓" },
+        { "filters": ["robotics", "work"],      "label": "🤖💼" },
+        { "filters": ["robotics", "projects"],  "label": "🤖🚀" },
+        { "filters": ["games", "education"],    "label": "🎮🎓" },
+        { "filters": ["games", "work"],         "label": "🎮💼" },
+        { "filters": ["games", "projects"],     "label": "🎮🚀" }
+      ]
+    }
+  },
   "timeline": {
     "whispers": {
       "microsoft|SWE I &amp; II": [
@@ -191,6 +282,50 @@
     },
     "titleOverrides": {
       "marp": "Home Robot"
+    }
+  },
+  "domains": {
+    "robotics": {
+      "icon": "fa-cogs",
+      "label": "Robotics",
+      "emoji": "🤖",
+      "accent": 2
+    },
+    "games": {
+      "icon": "fa-gamepad",
+      "label": "Games",
+      "emoji": "🎮",
+      "accent": 3
+    },
+    "software": {
+      "icon": "fa-code",
+      "label": "Software",
+      "emoji": "💻",
+      "accent": 0
+    },
+    "research": {
+      "icon": "fa-flask",
+      "label": "Research",
+      "emoji": "🔬",
+      "accent": 1
+    },
+    "education": {
+      "icon": "fa-graduation-cap",
+      "label": "Education",
+      "emoji": "🎓",
+      "accent": 1
+    },
+    "work": {
+      "icon": "fa-briefcase",
+      "label": "Work",
+      "emoji": "💼",
+      "accent": 0
+    },
+    "projects": {
+      "icon": "fa-rocket",
+      "label": "Projects",
+      "emoji": "🚀",
+      "accent": 2
     }
   },
   "techCategories": {
