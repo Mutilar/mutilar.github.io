@@ -26,12 +26,12 @@
     "nodes": {
       "source": "modalState",
       "require": ["DATE"],
-      "sectorField": "quadrant",
-      "sectorFallback": "domain",
+      "sectorField": "QUADRANT",
+      "sectorFallback": "DOMAIN",
       "colorSource": "themes",
-      "labelField": "shortname",
+      "labelField": "SHORTNAME",
       "labelFallback": "NAME",
-      "whisperField": "whisper",
+      "whisperField": "WHISPER",
       "onClick": "entry"
     },
     "filters": [
@@ -40,8 +40,8 @@
         "dataAttr": "filter",
         "mode": "grouped",
         "itemsFrom": "themes",
-        "sectors": ["robotics", "games", "software"],
-        "overlays": ["education", "work", "projects"]
+        "sectors": ["🤖", "🎮", "💻"],
+        "overlays": ["🎓", "💼", "🚀"]
       }
     ],
     "edges": {
@@ -78,15 +78,15 @@
       "hintLabel": "<strong>Traverse</strong><span class=\"scroll-arrow\">\uD83D\uDD2D</span>",
       "stepDelay": 2000,
       "steps": [
-        { "filters": ["software", "education"], "label": "💻🎓" },
-        { "filters": ["software", "work"],      "label": "💻💼" },
-        { "filters": ["software", "projects"],  "label": "💻🚀" },
-        { "filters": ["robotics", "education"], "label": "🤖🎓" },
-        { "filters": ["robotics", "work"],      "label": "🤖💼" },
-        { "filters": ["robotics", "projects"],  "label": "🤖🚀" },
-        { "filters": ["games", "education"],    "label": "🎮🎓" },
-        { "filters": ["games", "work"],         "label": "🎮💼" },
-        { "filters": ["games", "projects"],     "label": "🎮🚀" }
+        { "filters": ["💻", "🎓"], "label": "💻🎓" },
+        { "filters": ["💻", "💼"], "label": "💻💼" },
+        { "filters": ["💻", "🚀"], "label": "💻🚀" },
+        { "filters": ["🤖", "🎓"], "label": "🤖🎓" },
+        { "filters": ["🤖", "💼"], "label": "🤖💼" },
+        { "filters": ["🤖", "🚀"], "label": "🤖🚀" },
+        { "filters": ["🎮", "🎓"], "label": "🎮🎓" },
+        { "filters": ["🎮", "💼"], "label": "🎮💼" },
+        { "filters": ["🎮", "🚀"], "label": "🎮🚀" }
       ]
     }
   },

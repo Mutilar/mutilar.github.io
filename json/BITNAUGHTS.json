@@ -42,10 +42,10 @@
           "GITHUB": "https://github.com/bitnaughts/bitnaughts",
           "PLAY": "https://bitnaughts.io",
           "TEXT": "<b>Parent Repository & Submodule Orchestrator</b><br>BitNaughts is an educational programming video game that teaches players coding concepts through interactive gameplay. The parent repo ties together the full project via <b>Git submodules</b> — linking bitnaughts.unity (game client); bitnaughts.github.io (WebGL front-end); and bitnaughts.mainframe (cloud back-end).",
-          "domain": "games",
-          "source": "projects",
-          "quadrant": "games",
-          "shortname": "☄️<br>Bit<br>Naughts",
+          "DOMAIN": "games",
+          "SOURCE": "projects",
+          "QUADRANT": "games",
+          "SHORTNAME": "☄️<br>Bit<br>Naughts",
           "TECH": "🌿🔺"
         },
         {

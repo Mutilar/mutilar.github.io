@@ -6,7 +6,7 @@
   },
   "header": {
     "id": "about",
-    "heading": "👋🏻 Hello, World!",
+    "heading": "👋🏻 Hello, world!",
     "badges": [
       { "label": "Resume", "icon": "fa fa-file-text", "href": "#", "action": "modal", "target": "resume", "glow": true }
     ],
@@ -30,7 +30,7 @@
         "tiles": [
           {
             "emoji": "🧭",
-            "label": "SKILL TREE",
+            "label": "Skill Tree",
             "ariaLabel": "Open Graph of Knowledge",
             "action": "open",
             "img": "png/graph.png",
@@ -43,7 +43,7 @@
           },
           {
             "emoji": "🕰️",
-            "label": "ROAD MAP",
+            "label": "Road Map",
             "ariaLabel": "See more in Timeline",
             "action": "open",
             "img": "png/timeline.png",
@@ -54,7 +54,7 @@
           },
           {
             "emoji": "🧜",
-            "label": "DIAGRAMS",
+            "label": "Diagrams",
             "ariaLabel": "See more about Architecture",
             "action": "open",
             "img": "png/marp-diagram.png",
@@ -66,7 +66,7 @@
           },
           {
             "emoji": "🎮",
-            "label": "CODE GAMIFIED",
+            "label": "Games",
             "ariaLabel": "Play a demo",
             "action": "play",
             "img": "png/galaga.gif",
