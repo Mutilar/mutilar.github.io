@@ -89,9 +89,9 @@
   "console": {
     "greeting": "👋🏻 Hello, world!",
     "bioPrompt": {
-      "text": "👀 Peep my bio...",
+      "text": "👀 Peep my bio?",
       "modal": "biography",
-      "delay": 2000
+      "delay": 5000
     }
   },
   "scripts": [
@@ -273,7 +273,7 @@
       "layout": "timeline",
       "elementId": "timeline-modal",
       "ariaLabel": "Timeline",
-      "categories": ["robotics", "games", "software", "research", "education"],
+      "categories": ["🤖", "🎮", "💻", "🔬", "🎓"],
       "startDynamic": true
     },
     "knowledgeModal": {

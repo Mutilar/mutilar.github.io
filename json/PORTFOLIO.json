@@ -285,43 +285,43 @@
     }
   },
   "domains": {
-    "robotics": {
+    "🤖": {
       "icon": "fa-cogs",
       "label": "Robotics",
       "emoji": "🤖",
       "accent": 2
     },
-    "games": {
+    "🎮": {
       "icon": "fa-gamepad",
       "label": "Games",
       "emoji": "🎮",
       "accent": 3
     },
-    "software": {
+    "💻": {
       "icon": "fa-code",
       "label": "Software",
       "emoji": "💻",
       "accent": 0
     },
-    "research": {
+    "🔬": {
       "icon": "fa-flask",
       "label": "Research",
       "emoji": "🔬",
       "accent": 1
     },
-    "education": {
+    "🎓": {
       "icon": "fa-graduation-cap",
       "label": "Education",
       "emoji": "🎓",
       "accent": 1
     },
-    "work": {
+    "💼": {
       "icon": "fa-briefcase",
       "label": "Work",
       "emoji": "💼",
       "accent": 0
     },
-    "projects": {
+    "🚀": {
       "icon": "fa-rocket",
       "label": "Projects",
       "emoji": "🚀",
