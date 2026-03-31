@@ -11,7 +11,7 @@
     "portraitAction": "openModal('biography')",
     "scrollHint": {
       "target": "#about",
-      "label": "About",
+      "label": "Hello",
       "arrow": "👋🏻"
     }
   }
