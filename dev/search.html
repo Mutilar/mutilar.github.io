@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Find Files - Windows 95</title>
+  <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/w95.css">
+  <style>
+    body { background: #008080; padding: 24px; font-family: "MS Sans Serif", Tahoma, sans-serif; }
+    .ddl-wrap { position: relative; }
+    .ddl-btn {
+      width: 100%;
+      text-align: left;
+      background: #fff;
+      border: 2px inset #fff;
+      padding: 4px 22px 4px 6px;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 13px;
+      position: relative;
+      min-height: 28px;
+    }
+    .ddl-btn::after {
+      content: "▼";
+      position: absolute;
+      right: 4px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: #c0c0c0;
+      border: 2px outset #fff;
+      width: 18px;
+      height: 18px;
+      line-height: 14px;
+      text-align: center;
+      font-size: 10px;
+    }
+    /* the Name combobox is a real <input>, wrapped in a shell that draws the arrow */
+    .ddl-wrap .combo-shell { position: relative; display: block; }
+    .ddl-wrap .ddl-combo { padding-right: 26px; width: 100%; }
+    .ddl-wrap .combo-shell::after {
+      content: "▼";
+      position: absolute;
+      right: 3px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: #c0c0c0;
+      border: 2px outset #fff;
+      width: 18px;
+      height: 18px;
+      line-height: 14px;
+      text-align: center;
+      font-size: 10px;
+      pointer-events: none;
+    }
+    .ddl-panel {
+      display: none;
+      position: absolute;
+      z-index: 50;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: #c0c0c0;
+      border: 2px outset #fff;
+      max-height: 280px;
+      overflow-y: auto;
+      padding: 4px;
+    }
+    .ddl-panel.open { display: block; }
+    .ddl-search {
+      width: 100%;
+      margin-bottom: 4px;
+      padding: 2px 4px;
+      border: 2px inset #fff;
+      font-family: inherit;
+      font-size: 13px;
+    }
+    .ddl-row {
+      display: flex;
+      align-items: center;
+      padding: 2px 4px;
+      cursor: pointer;
+      font-size: 12px;
+      user-select: none;
+    }
+    .ddl-row:hover { background: #000080; color: #fff; }
+    .ddl-row input { margin-right: 6px; }
+    .results-window { background: #c0c0c0; border: 2px outset #fff; margin-top: 16px; }
+    .results-title {
+      background: #000080;
+      color: #fff;
+      padding: 3px 6px;
+      font-weight: bold;
+      display: flex;
+      justify-content: space-between;
+    }
+    .results-body { background: #fff; max-height: 480px; overflow: auto; }
+    table.files { width: 100%; border-collapse: collapse; font-size: 12px; }
+    table.files th, table.files td {
+      padding: 2px 6px;
+      border-right: 1px solid #c0c0c0;
+      border-bottom: 1px solid #c0c0c0;
+      text-align: left;
+      white-space: nowrap;
+    }
+    table.files thead th {
+      background: #c0c0c0;
+      border: 2px outset #fff;
+      position: sticky;
+      top: 0;
+    }
+    .toolbar { display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap; }
+    .toolbar .field { display: flex; flex-direction: column; min-width: 200px; }
+    .toolbar label { font-size: 12px; margin-bottom: 2px; }
+    .status-bar { background: #c0c0c0; border: 2px inset #fff; padding: 3px 8px; font-size: 12px; margin-top: 4px; }
+    .hidden-row td { color: #808080; font-style: italic; }
+
+    /* Win95 chunky segmented progress bar */
+    .w95-progress-wrap {
+      margin-top: 14px;
+      padding: 10px 12px;
+      background: #c0c0c0;
+      border: 2px inset #fff;
+      display: none;
+    }
+    .w95-progress-wrap.active { display: block; }
+    .w95-progress-label {
+      font-size: 12px;
+      margin-bottom: 6px;
+      display: flex;
+      justify-content: space-between;
+    }
+    .w95-progress-track {
+      height: 22px;
+      background: #fff;
+      border: 2px inset #fff;
+      padding: 2px;
+      overflow: hidden;
+    }
+    .w95-progress-fill {
+      height: 100%;
+      width: 0%;
+      background-image: repeating-linear-gradient(
+        to right,
+        #000080 0,
+        #000080 14px,
+        #c0c0c0 14px,
+        #c0c0c0 18px
+      );
+      transition: width 0.1s linear;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card card-tertiary" style="max-width: 1200px; margin: 0 auto;">
+    <div class="card-header">
+      <span>🔍 Find: Files or Folders</span>
+    </div>
+    <div class="card-body">
+
+      <div class="toolbar">
+        <div class="field ddl-wrap has-combo" id="ddl-name">
+          <label>Named:</label>
+          <div class="combo-shell">
+            <input type="text" class="ddl-btn ddl-combo" id="name-combo"
+                   autocomplete="off"
+                   placeholder="(all) — type 1 letter…">
+          </div>
+          <div class="ddl-panel">
+            <div class="ddl-list"></div>
+          </div>
+        </div>
+
+        <div class="field ddl-wrap" id="ddl-ext">
+          <label>Of type:</label>
+          <button type="button" class="ddl-btn" data-toggle-for="ddl-ext">All extensions</button>
+          <div class="ddl-panel">
+            <div class="ddl-list"></div>
+          </div>
+        </div>
+
+        <div class="field ddl-wrap" id="ddl-date">
+          <label>Date modified:</label>
+          <button type="button" class="ddl-btn" data-toggle-for="ddl-date">All dates</button>
+          <div class="ddl-panel">
+            <div class="ddl-list"></div>
+          </div>
+        </div>
+
+        <div class="field ddl-wrap" id="ddl-hidden">
+          <label>Hidden:</label>
+          <button type="button" class="ddl-btn">All</button>
+          <div class="ddl-panel">
+            <div class="ddl-list"></div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>&nbsp;</label>
+          <button class="btn btn-danger border-dark" id="find-now" type="button">
+            <span class="btn-text">Search</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="w95-progress-wrap" id="progress-wrap">
+        <div class="w95-progress-label">
+          <span id="progress-text">Searching…</span>
+          <span id="progress-pct">0%</span>
+        </div>
+        <div class="w95-progress-track">
+          <div class="w95-progress-fill" id="progress-fill"></div>
+        </div>
+      </div>
+
+      <div class="results-window">
+        <div class="results-title">
+          <span>📁 Search Results</span>
+          <span id="result-count">0 file(s) found</span>
+        </div>
+        <div class="results-body">
+          <table class="files">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Ext</th>
+                <th>Size</th>
+                <th>Modified</th>
+                <th>Hidden</th>
+              </tr>
+            </thead>
+            <tbody id="results-body"></tbody>
+          </table>
+        </div>
+        <div class="status-bar" id="status-bar">Loading sample data…</div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    // ---------- Load CSV ----------
+    let DATA = [];
+    // For each state map: presence of key=false means UNCHECKED; absent or true means checked.
+    const STATE = {
+      names:  new Map(),
+      exts:   new Map(),
+      dates:  new Map(),
+      hidden: new Map(),  // 'true' / 'false' -> checked
+    };
+
+    function parseCSV(text) {
+      const lines = text.split(/\r?\n/).filter(Boolean);
+      const header = lines.shift().split(',');
+      return lines.map(line => {
+        const cells = line.split(',');
+        const row = {};
+        header.forEach((h, i) => row[h] = cells[i]);
+        row.file_size = parseInt(row.file_size, 10);
+        row.hidden = row.hidden === 'true';
+        row.full_name = row.file_name + '.' + row.file_extension;
+        return row;
+      });
+    }
+
+    function fmtSize(n) {
+      if (n < 1024) return n + ' B';
+      if (n < 1024 * 1024) return (n / 1024).toFixed(1) + ' KB';
+      return (n / 1024 / 1024).toFixed(2) + ' MB';
+    }
+
+    // ---------- Dropdown rendering ----------
+    function renderList(panelEl, values, state, labelFn) {
+      const list = panelEl.querySelector('.ddl-list');
+      list.innerHTML = '';
+      const frag = document.createDocumentFragment();
+      values.forEach(v => {
+        const row = document.createElement('label');
+        row.className = 'ddl-row';
+        const cb = document.createElement('input');
+        cb.type = 'checkbox';
+        cb.checked = state.get(v) !== false; // default ON
+        cb.dataset.value = v;
+        cb.addEventListener('change', () => {
+          state.set(v, cb.checked);
+          updateLabel(panelEl.parentElement);
+        });
+        row.appendChild(cb);
+        row.appendChild(document.createTextNode(' ' + (labelFn ? labelFn(v) : v)));
+        frag.appendChild(row);
+      });
+      list.appendChild(frag);
+    }
+
+    // Count "on" items across the full universe for a given state.
+    function countOn(state, universeSize) {
+      let off = 0;
+      state.forEach(v => { if (v === false) off++; });
+      return universeSize - off;
+    }
+
+    const UNIVERSE = { names: [], exts: [], dates: [], hidden: ['true', 'false'] };
+
+    function updateLabel(wrap) {
+      const id = wrap.id;
+      const defaults = {
+        'ddl-name':   'All file names',
+        'ddl-ext':    'All extensions',
+        'ddl-date':   'All dates',
+        'ddl-hidden': 'All',
+      };
+      const state = STATE_FOR[id];
+      const total = id === 'ddl-name'   ? UNIVERSE.names.length
+                   : id === 'ddl-ext'    ? UNIVERSE.exts.length
+                   : id === 'ddl-date'   ? UNIVERSE.dates.length
+                   : UNIVERSE.hidden.length;
+      const on = countOn(state, total);
+      const label = (on === total) ? defaults[id] : `${on.toLocaleString()} of ${total.toLocaleString()} selected`;
+      if (id === 'ddl-name') {
+        const input = wrap.querySelector('.ddl-combo');
+        if (document.activeElement !== input) input.placeholder = label;
+      } else {
+        wrap.querySelector('.ddl-btn').textContent = label;
+      }
+    }
+
+    const STATE_FOR = {
+      'ddl-name':   STATE.names,
+      'ddl-ext':    STATE.exts,
+      'ddl-date':   STATE.dates,
+      'ddl-hidden': STATE.hidden,
+    };
+
+    // ---------- Build dropdowns from data ----------
+    function buildDropdowns() {
+      const nameSet = new Set();
+      const extSet  = new Set();
+      const dateSet = new Set();
+      DATA.forEach(r => {
+        nameSet.add(r.full_name);
+        extSet.add(r.file_extension);
+        dateSet.add(r.date_modified);
+      });
+      UNIVERSE.names = [...nameSet].sort();
+      UNIVERSE.exts  = [...extSet].sort();
+      UNIVERSE.dates = [...dateSet].sort();
+
+      // Default ON: leave maps empty (absent => checked).
+      renderList(document.querySelector('#ddl-ext    .ddl-panel'), UNIVERSE.exts,   STATE.exts);
+      renderList(document.querySelector('#ddl-date   .ddl-panel'), UNIVERSE.dates,  STATE.dates);
+      renderList(document.querySelector('#ddl-hidden .ddl-panel'), UNIVERSE.hidden, STATE.hidden,
+                 v => v === 'true' ? 'True (hidden files)' : 'False (visible files)');
+      // Name list is built lazily (cross-filtered) on open/type.
+      ['ddl-name','ddl-ext','ddl-date','ddl-hidden'].forEach(id => updateLabel(document.getElementById(id)));
+    }
+
+    // ---------- Name list: cross-filtered by current ext + date selections ----------
+    function rebuildNameList() {
+      const panel = document.querySelector('#ddl-name .ddl-panel');
+      const input = document.getElementById('name-combo');
+      const ch = (input.value || '').toLowerCase();
+      // Track best (largest) size per unique full_name in case of duplicates.
+      const sizeByName = new Map();
+      for (const r of DATA) {
+        if (STATE.exts.get(r.file_extension)  === false) continue;
+        if (STATE.dates.get(r.date_modified)  === false) continue;
+        if (STATE.hidden.get(String(r.hidden)) === false) continue;
+        if (ch && r.file_name[0].toLowerCase() !== ch) continue;
+        const prev = sizeByName.get(r.full_name);
+        if (prev === undefined || r.file_size > prev) sizeByName.set(r.full_name, r.file_size);
+      }
+      const names = [...sizeByName.keys()].sort((a, b) => sizeByName.get(b) - sizeByName.get(a));
+      renderList(panel, names, STATE.names, v => `${v}  (${fmtSize(sizeByName.get(v))})`);
+    }
+
+    // ---------- Filter / render results ----------
+    const MAX_DISPLAY = 500;
+    function runSearch() {
+      const tbody = document.getElementById('results-body');
+      tbody.innerHTML = '';
+      const matched = [];
+      for (const r of DATA) {
+        if (STATE.names.get(r.full_name)       === false) continue;
+        if (STATE.exts.get(r.file_extension)   === false) continue;
+        if (STATE.dates.get(r.date_modified)   === false) continue;
+        if (STATE.hidden.get(String(r.hidden)) === false) continue;
+        matched.push(r);
+      }
+      matched.sort((a, b) => b.file_size - a.file_size);
+      const matches = matched.length;
+      const shown = Math.min(matches, MAX_DISPLAY);
+      const frag = document.createDocumentFragment();
+      for (let i = 0; i < shown; i++) {
+        const r = matched[i];
+        const tr = document.createElement('tr');
+        if (r.hidden) tr.className = 'hidden-row';
+        tr.innerHTML = `<td>${r.file_name}</td><td>${r.file_extension}</td><td>${fmtSize(r.file_size)}</td><td>${r.date_modified}</td><td>${r.hidden ? 'Yes' : 'No'}</td>`;
+        frag.appendChild(tr);
+      }
+      tbody.appendChild(frag);
+      document.getElementById('result-count').textContent = `${matches.toLocaleString()} file(s) found`;
+      document.getElementById('status-bar').textContent =
+        matches > MAX_DISPLAY
+          ? `Showing first ${MAX_DISPLAY} of ${matches.toLocaleString()} matches (sorted by size, largest first). Total files in index: ${DATA.length.toLocaleString()}.`
+          : `Showing ${shown} matches (sorted by size, largest first). Total files in index: ${DATA.length.toLocaleString()}.`;
+    }
+
+    // ---------- Dropdown open/close ----------
+    function openPanel(wrap) {
+      const panel = wrap.querySelector('.ddl-panel');
+      document.querySelectorAll('.ddl-panel.open').forEach(p => { if (p !== panel) p.classList.remove('open'); });
+      panel.classList.add('open');
+      if (wrap.id === 'ddl-name') rebuildNameList();
+    }
+    function togglePanel(wrap) {
+      const panel = wrap.querySelector('.ddl-panel');
+      if (panel.classList.contains('open')) panel.classList.remove('open');
+      else openPanel(wrap);
+    }
+
+    // Buttons (Ext, Date)
+    document.querySelectorAll('button.ddl-btn').forEach(btn => {
+      btn.addEventListener('click', e => {
+        e.stopPropagation();
+        togglePanel(btn.parentElement);
+      });
+    });
+
+    // Name combobox input
+    const nameInput = document.getElementById('name-combo');
+    const nameWrap = document.getElementById('ddl-name');
+    nameInput.addEventListener('focus', e => { e.stopPropagation(); openPanel(nameWrap); });
+    nameInput.addEventListener('click', e => { e.stopPropagation(); openPanel(nameWrap); });
+    nameInput.addEventListener('input', () => {
+      // Replace-on-type: keep only the most recently typed character.
+      if (nameInput.value.length > 1) {
+        const pos = nameInput.selectionStart || nameInput.value.length;
+        const ch = nameInput.value.charAt(Math.max(0, pos - 1));
+        nameInput.value = ch;
+        try { nameInput.setSelectionRange(1, 1); } catch (_) {}
+      }
+      openPanel(nameWrap);
+      rebuildNameList();
+    });
+
+    document.addEventListener('click', () => {
+      document.querySelectorAll('.ddl-panel.open').forEach(p => p.classList.remove('open'));
+    });
+    document.querySelectorAll('.ddl-panel').forEach(p => p.addEventListener('click', e => e.stopPropagation()));
+
+    document.getElementById('find-now').addEventListener('click', startSearch);
+
+    // ---------- Fake-progress wrapper around runSearch ----------
+    const findBtn = document.getElementById('find-now');
+    const progWrap = document.getElementById('progress-wrap');
+    const progFill = document.getElementById('progress-fill');
+    const progPct  = document.getElementById('progress-pct');
+    const progText = document.getElementById('progress-text');
+    let searchInFlight = false;
+
+    function setProgress(pct) {
+      progFill.style.width = pct + '%';
+      // Show one decimal once we're in the 99.x crawl, integer otherwise.
+      progPct.textContent = (pct >= 99 && pct < 100)
+        ? pct.toFixed(1) + '%'
+        : Math.floor(pct) + '%';
+    }
+
+    function startSearch() {
+      if (searchInFlight) return;
+      searchInFlight = true;
+      findBtn.disabled = true;
+      progWrap.classList.add('active');
+      progText.textContent = 'Searching C:\\ for matching files…';
+      setProgress(0);
+
+      const rampMs = 3000;     // 0 -> 99 with ease-in (slow start, speeds up)
+      const crawlMs = 3000;    // 99 -> 100 in 0.1 steps, linear over 3s
+      const stepMs = crawlMs / 10;  // 10 ticks of 0.1
+      const startTs = performance.now();
+
+      // Phase 1: ease-in ramp to 99
+      function ramp(now) {
+        const elapsed = now - startTs;
+        if (elapsed < rampMs) {
+          const t = elapsed / rampMs;
+          // cubic ease-in: slow start, speeds up
+          const eased = t * t * t;
+          setProgress(eased * 99);
+          requestAnimationFrame(ramp);
+        } else {
+          setProgress(99);
+          progText.textContent = 'Finalizing index…';
+          // Phase 2: linear 0.1 increments
+          let n = 0;
+          const crawl = setInterval(() => {
+            n++;
+            const v = 99 + n * 0.1;
+            if (n >= 10) {
+              clearInterval(crawl);
+              finish();
+            } else {
+              setProgress(v);
+            }
+          }, stepMs);
+        }
+      }
+      requestAnimationFrame(ramp);
+
+      function finish() {
+        runSearch();
+        setProgress(100);
+        progText.textContent = 'Search complete.';
+        setTimeout(() => {
+          progWrap.classList.remove('active');
+          findBtn.disabled = false;
+          searchInFlight = false;
+        }, 400);
+      }
+    }
+
+    // ---------- Boot ----------
+    fetch('files.csv')
+      .then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.text(); })
+      .then(text => {
+        DATA = parseCSV(text);
+        buildDropdowns();
+        runSearch();
+      })
+      .catch(err => {
+        document.getElementById('status-bar').textContent =
+          'Could not load files.csv — serve this folder over HTTP (e.g. `npx http-server`). ' + err.message;
+      });
+  </script>
+</body>
+</html>
